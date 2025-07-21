@@ -2,6 +2,7 @@ import argparse
 from retrieve_and_prompt import get_LLM_firstresposne, get_LLM_resposne, load_index_and_model, load_texts, retrieve_similar, prompt_llm_with_context, find_node_definition
 # import retrieve_and_prompt
 import os
+import sys
 import json
 # from fuzzing import GraphQLFuzzer
 import requests
@@ -53,11 +54,17 @@ def main():
     # nodes = ["episodesByIds", "charactersByIds", "locationsByIds"]
     
     # output_folder = Config.OUTPUT_DIR
-    Config.OUTPUT_DIR += f"_{url}"
+    # Config.OUTPUT_DIR += f"_{url}"
     output_folder = Config.OUTPUT_DIR
-    subprocess.run(['python', 'load_introspection/save_instrospection.py',"--url", url])
-    subprocess.run(['python', 'load_introspection/load_introspection.py'])
-    
+    try:
+        subprocess.run(['python', 'load_introspection/save_instrospection.py', '--url', url], check=True)
+        subprocess.run(['python', 'load_introspection/load_introspection.py'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Subprocess failed with exit code {e.returncode}")
+        sys.exit()
+        # Optionally re-raise or exit
+
+
     # #==============remove folder=============
     if os.path.exists(output_folder):
         print(f"🗑️  Removing existing folder: {output_folder}")
