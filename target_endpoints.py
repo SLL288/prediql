@@ -264,7 +264,7 @@ if __name__ == "__main__":
     # find_target_endpoints()
     # print(find_target_endpoints()[0])
     #show the stats from prediql
-    evaluate_prediql_results("stats_table_allrounds.txt", "graphqler-output/endpoint_results")
+    evaluate_prediql_results("prediql-output/stats_table_allrounds.txt", "graphqler-output_ricky/endpoint_results")
     # df_node_compiled = getnodefromcompiledfile()
     # successnode = find200files(list(df_node_compiled['Node']))
     # print(successnode)
