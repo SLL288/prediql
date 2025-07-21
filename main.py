@@ -127,7 +127,7 @@ def run_all_nodes(url, nodes, max_requests, rounds, stats_allrounds):
         #         print(f"❌ Error processing node: {e}")
         #     time.sleep(random.uniform(1.5, 3.0))  # stagger requests
         # log_to_table(all_stats, f"prediql-output/stats_table_round_{i}.txt")
-        log_to_table(all_stats, Config.OUTPUT_DIR + "/stats_table_round_{i}.txt")
+        log_to_table(all_stats, Config.OUTPUT_DIR + f"/stats_table_round_{i}.txt")
         try:
             data_length = flatten_real_data()
             if data_length > 0:
