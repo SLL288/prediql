@@ -39,8 +39,11 @@ if __name__ == "__main__":
     # GRAPHQL_ENDPOINT = "https://rickandmortyapi.com/graphql"
     # GRAPHQL_ENDPOINT = "https://swapi-graphql.netlify.app/graphql"
 
+    # HEADERS = {
+    #     "Authorization": "Bearer YOUR_TOKEN_IF_NEEDED"
+    # }
     HEADERS = {
-        "Authorization": "Bearer YOUR_TOKEN_IF_NEEDED"
+        "Content-Type": "application/json"
     }
     OUTPUT_FILE = "introspection_result.json"
     # ===========================
