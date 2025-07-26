@@ -1,16 +1,14 @@
 import os
 import json
 from config import Config
+
 # PATHS
-# RAW_DATA_BASE = "prediql-output"
 RAW_DATA_BASE = Config.OUTPUT_DIR
 QUERY_INFO_PATH = "generated_query_info.json"
 REAL_DATA_OUTPUT_PATH = "real_data.json"
 
-# Load QUERY_INFO
-with open(QUERY_INFO_PATH) as f:
-    QUERY_INFO = json.load(f)
 all_records = []
+
 def flatten_record_to_text(record):
     lines = []
     lines.append(f"GraphQL source: {record.get('source')}")
@@ -23,6 +21,17 @@ def flatten_record_to_text(record):
     return "\n".join(lines)
 
 def flatten_real_data():
+    # Load QUERY_INFO inside the function
+    try:
+        with open(QUERY_INFO_PATH) as f:
+            QUERY_INFO = json.load(f)
+    except FileNotFoundError:
+        print(f"❌ Error: {QUERY_INFO_PATH} not found. Please generate it first.")
+        return 0
+    except json.JSONDecodeError:
+        print(f"❌ Error: Could not decode JSON from {QUERY_INFO_PATH}.")
+        return 0
+
     # Clear global all_records
     global all_records
     all_records = []
@@ -141,3 +150,7 @@ def flatten_real_data():
         json.dump(all_records, f, indent=2)
     print(f"✅ Saved {len(all_records)} records to {REAL_DATA_OUTPUT_PATH}")
     return len(all_records)
+
+
+if __name__ == "__main__":
+    flatten_real_data()

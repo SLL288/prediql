@@ -57,8 +57,8 @@ def main():
     # Config.OUTPUT_DIR += f"_{url}"
     output_folder = Config.OUTPUT_DIR
     try:
-        subprocess.run(['python', 'load_introspection/save_instrospection.py', '--url', url], check=True)
-        subprocess.run(['python', 'load_introspection/load_introspection.py'], check=True)
+        subprocess.run(['python3', 'load_introspection/save_instrospection.py', '--url', url], check=True)
+        subprocess.run(['python3', 'load_introspection/load_introspection.py'], check=True)
     except subprocess.CalledProcessError as e:
         print(f"❌ Subprocess failed with exit code {e.returncode}")
         sys.exit()
@@ -109,8 +109,8 @@ def main():
     run_all_nodes(url, nodes['Node'], requests, rounds, stats_allrounds)
     # log_to_table(stats_allrounds, "prediql-output/stats_table_allrounds.txt")
     # log_to_table(stats_allrounds, Config.OUTPUT_DIR + "/stats_table_allrounds.txt")
-    subprocess.run(['python', 'reorganize_json_records.py'])
-    subprocess.run(['python', 'analysis_prediql.py'])
+    subprocess.run(['python3', 'reorganize_json_records.py'])
+    subprocess.run(['python3', 'analysis_prediql.py'])
 
 
 
