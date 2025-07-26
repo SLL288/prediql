@@ -259,31 +259,79 @@ def evaluate_prediql_results(filepath, endpoint_file):
     print(f"average tokens sent per node: {round(total_tokens_true/prediql_success,2)}")
 
 
+
+def check_prediql_json(base_path):
+    results = []
+
+    for folder_name in os.listdir(base_path):
+        folder_path = os.path.join(base_path, folder_name)
+        if not os.path.isdir(folder_path):
+            continue
+
+        json_path = os.path.join(folder_path, "llama_queries.json")
+        if not os.path.isfile(json_path):
+            continue
+
+        with open(json_path, "r", encoding="utf-8") as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                print(f"❌ Failed to parse JSON in: {json_path}")
+                continue
+
+        successful = [entry for entry in data if entry.get("success") is True]
+        max_count = max((entry.get("count", 0) for entry in data), default=0)
+
+        results.append({
+            "folder": folder_name,
+            "has_success": bool(successful),
+            "max_count": max_count
+        })
+
+    return results
+
+
+def compare_graphqler_prediql(prediql_folder, graphqler_folder):
+    # queries_path = "load_introspection/query_parameter_list.yml"
+    # mutations_path = "load_introspection/mutation_parameter_list.yml"
+    queries_path = os.path.join(graphqler_folder,"compiled","compiled_queries.yml")
+    mutations_path = os.path.join(graphqler_folder,"compiled","compiled_mutations.yml")
+    # queries_path = Config.QUERY_FILE
+    # mutations_path = Config.MUTATION_FILE
+
+    # Load the YAML data
+    with open(queries_path, 'r', encoding='utf-8') as f:
+        queries_data = yaml.safe_load(f)
+
+    with open(mutations_path, 'r', encoding='utf-8') as f:
+        mutations_data = yaml.safe_load(f)
+
+    # Extract node names
+    query_nodes = list(queries_data.keys()) if isinstance(queries_data, dict) else []
+    mutation_nodes = list(mutations_data.keys()) if isinstance(mutations_data, dict) else []
+
+    # Combine into labeled list
+    node_endpoints = [{"type": "query", "Node": node} for node in query_nodes] + \
+                    [{"type": "mutation", "Node": node} for node in mutation_nodes]
+
+    # Convert to DataFrame
+    df_nodes = pd.DataFrame(node_endpoints)
+
+    successlist = find200files(list(df_nodes['Node']), os.path.join(graphqler_folder,"endpoint_results"))
+    df_nodes["success_200_graphqler"] = df_nodes.Node.map(lambda x: "Yes" if x in successlist else "-")
+
+    prediql_result = check_prediql_json(prediql_folder)
+
+    success_lookup = {entry["folder"]: entry["has_success"] for entry in prediql_result}
+    count_lookup = {entry["folder"]: entry["max_count"] for entry in prediql_result}
+
+    # Add to df_nodes using .map()
+    df_nodes["prediql_success"] = df_nodes["Node"].map(success_lookup).fillna("-")
+    df_nodes["prediql_max_count"] = df_nodes["Node"].map(count_lookup).fillna(0).astype(int)
+
+    return df_nodes
+
 if __name__ == "__main__":
-    #show the stats from graphqler
-    # find_target_endpoints()
-    # print(find_target_endpoints()[0])
-    #show the stats from prediql
-    evaluate_prediql_results("prediql-output/stats_table_allrounds.txt", "graphqler-output_ricky/endpoint_results")
-    # df_node_compiled = getnodefromcompiledfile()
-    # successnode = find200files(list(df_node_compiled['Node']))
-    # print(successnode)
-
-    #print success node list from graphqler 200 files, see the evaluation method is correct
-    # print(find200files())
-
-    # print(find200files())
-    # print(getnodefromcompiledfile())
-    # success_file_200 = "graphqler-output/endpoint_results/allConferences/success/200"
-    # with open(success_file_200, "r", encoding="utf-8") as f:
-    #     text = f.read()
-    #     responses = extract_response_json_blocks(text)
-    #     # if not responses:
-    #     #     print(f"❌ Excluded '{folder_name}': No valid JSON responses found in 200")
-    #     #     continue
-
-    #     # ✅ NEW RULE: include if ANY response is valid
-    #     if any(is_valid_response(r) for r in responses):
-    #         print(f"✅ Included: At least one good response found")
-    #     else:
-    #         print(f"❌ Excluded: All responses are errors or null data")
+    
+    df = compare_graphqler_prediql("prediql-output_countries_3_ok","graphqler-output_countries")
+    print(df)
