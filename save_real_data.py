@@ -8,9 +8,9 @@ QUERY_INFO_PATH = "generated_query_info.json"
 REAL_DATA_OUTPUT_PATH = "real_data.json"
 
 # Load QUERY_INFO
-with open(QUERY_INFO_PATH) as f:
-    QUERY_INFO = json.load(f)
-all_records = []
+# with open(QUERY_INFO_PATH) as f:
+#     QUERY_INFO = json.load(f)
+# all_records = []
 def flatten_record_to_text(record):
     lines = []
     lines.append(f"GraphQL source: {record.get('source')}")
@@ -23,8 +23,17 @@ def flatten_record_to_text(record):
     return "\n".join(lines)
 
 def flatten_real_data():
-    # Clear global all_records
-    global all_records
+    # Load QUERY_INFO dynamically to ensure it's fresh
+    try:
+        with open(QUERY_INFO_PATH) as f:
+            query_info = json.load(f)
+    except FileNotFoundError:
+        print(f"❌ File not found: {QUERY_INFO_PATH}")
+        return 0
+    except json.JSONDecodeError:
+        print(f"❌ Invalid JSON format in: {QUERY_INFO_PATH}")
+        return 0
+
     all_records = []
 
     for node_name in QUERY_INFO.keys():

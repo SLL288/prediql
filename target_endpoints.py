@@ -333,5 +333,5 @@ def compare_graphqler_prediql(prediql_folder, graphqler_folder):
 
 if __name__ == "__main__":
     
-    df = compare_graphqler_prediql("prediql-output_countries_3_ok","graphqler-output_countries")
+    df = compare_graphqler_prediql("prediql-output_graphzero_prompt2","graphqler-output_graphzero")
     print(df)
