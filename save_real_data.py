@@ -14,6 +14,10 @@ def flatten_record_to_text(record):
     lines.append(f"GraphQL source: {record.get('source')}")
     lines.append(f"Query: {record.get('query_name')}")
     lines.append(f"Node Type: {record.get('node_type')}")
+    if record.get("has_error", False):
+        lines.append(f"Error: {record.get('error')}")
+        return "\n".join(lines)
+    lines.append(f"Has Error: {record.get('has_error', False)}")
     lines.append("")
     lines.append("Fields:")
     for k, v in record.get("record", {}).items():
@@ -64,10 +68,35 @@ def flatten_real_data():
 
             # Extract records from each query response
             for entry in raw_list:
-                if not entry.get("success", False):
-                    continue
-
                 response_body = entry.get("response_body", {})
+                
+                # if  not entry.get("success", False):
+                #     errors = response_body.get("errors", [])
+                #     if len(errors) < 1:
+                #         single_record = {
+                #             "source": QUERY_INFO[node_name]["source"],
+                #             "query_name": node_name,
+                #             "node_type": QUERY_INFO[node_name]["node_type"],
+                #             "error": "Response body is empty, invalid input filters",
+                #             "has_error": True,
+                #         }
+                #         single_record["text"] = flatten_record_to_text(single_record)
+                #         all_records.append(single_record)   
+                #         continue
+                #     for error in errors:
+                #         print("ERROR in flatten_real_data", error)
+                #         message = error.get("message", "")
+                #         single_record = {
+                #             "source": QUERY_INFO[node_name]["source"],
+                #             "query_name": node_name,
+                #             "node_type": QUERY_INFO[node_name]["node_type"],
+                #             "error": message,
+                #             "has_error": True,
+                #         }
+                #         single_record["text"] = flatten_record_to_text(single_record)
+                #         all_records.append(single_record)
+                #     continue
+                
                 data = response_body.get("data", {})
                 if not data or node_name not in data:
                     continue
@@ -88,6 +117,7 @@ def flatten_real_data():
                                     "query_name": node_name,
                                     "node_type": QUERY_INFO[node_name]["node_type"],
                                     "record": node,
+                                    "has_error": False,
                                 }
                                 single_record["text"] = flatten_record_to_text(single_record)
                                 all_records.append(single_record)
@@ -102,6 +132,7 @@ def flatten_real_data():
                                 "query_name": node_name,
                                 "node_type": QUERY_INFO[node_name]["node_type"],
                                 "record": item,
+                                "has_error": False,
                             }
                             single_record["text"] = flatten_record_to_text(single_record)
                             all_records.append(single_record)
@@ -115,6 +146,7 @@ def flatten_real_data():
                                 "query_name": node_name,
                                 "node_type": QUERY_INFO[node_name]["node_type"],
                                 "record": item,
+                                "has_error": False,
                             }
                             single_record["text"] = flatten_record_to_text(single_record)
                             all_records.append(single_record)
@@ -127,6 +159,7 @@ def flatten_real_data():
                             "query_name": node_name,
                             "node_type": QUERY_INFO[node_name]["node_type"],
                             "record": top_level_data,
+                            "has_error": False,
                         }
                         single_record["text"] = flatten_record_to_text(single_record)
                         all_records.append(single_record)
@@ -138,6 +171,7 @@ def flatten_real_data():
                             "query_name": node_name,
                             "node_type": QUERY_INFO[node_name]["node_type"],
                             "record": item,
+                            "has_error": False,
                         }
                         single_record["text"] = flatten_record_to_text(single_record)
                         all_records.append(single_record)
