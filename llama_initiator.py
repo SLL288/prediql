@@ -1,5 +1,6 @@
 import requests
 import logging
+from google import genai
 
 
 logging.basicConfig(
@@ -8,6 +9,15 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
+def get_gemini_model(prompt):
+    print("Using Gemini model")
+    client = genai.Client()
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=[prompt]
+    )
+    return response.text
 
 def get_llm_model(prompt):
     url = "http://localhost:11434/api/chat"
