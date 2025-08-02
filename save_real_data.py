@@ -1,6 +1,7 @@
 import os
 import json
 from config import Config
+import csv
 
 # PATHS
 RAW_DATA_BASE = Config.OUTPUT_DIR
