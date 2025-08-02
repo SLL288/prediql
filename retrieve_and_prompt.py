@@ -234,6 +234,9 @@ def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source
     - Use only *real* values provided in the context. No placeholders or variables like `<id>`. Use realistic example values that conform to the schema types.
     - Do **not** use Relay-style connection patterns. This schema does **not** support `edges`, `node`, or `nodes`.
     - The return value of this query is a **plain array** of the type {node_type}. There are **no connection fields** or nested wrappers. Use only the listed fields.
+    - If there is no know real values to use and the query params are not mandatory, try to retrieve as much as data without any query param.
+    - If there are previous response pairs, use them to generate the query.
+    - If there are errors in the previous response pairs (has_error flag is true), fix the query by checking error message to make it valid.
 
     **Your Goal:**  
     - Generate several queries to thoroughly test this operation against the given endpoint.

@@ -85,8 +85,8 @@ def flatten_real_data():
                             "round": round
                         }
                         errors.append(single_record)
-                        # single_record["text"] = flatten_record_to_text(single_record)
-                        # all_records.append(single_record)   
+                        single_record["text"] = flatten_record_to_text(single_record)
+                        all_records.append(single_record)   
                         continue
                     for error in errors:
                         print("ERROR in flatten_real_data", error)
@@ -100,8 +100,8 @@ def flatten_real_data():
                             "round": round
                         }
                         errors.append(single_record)
-                        # single_record["text"] = flatten_record_to_text(single_record)
-                        # all_records.append(single_record)
+                        single_record["text"] = flatten_record_to_text(single_record)
+                        all_records.append(single_record)
                     continue
                 
                 data = response_body.get("data", {})
