@@ -40,10 +40,9 @@ def flatten_real_data():
     # Clear global all_records
     global all_records
     all_records = []
-    errors = []
+    all_errors = []
 
     for node_name in QUERY_INFO.keys():
-        print(node_name)
         # Determine which folder to look in
         folder_path = os.path.join(RAW_DATA_BASE, node_name)
         if not os.path.isdir(folder_path):
@@ -84,12 +83,11 @@ def flatten_real_data():
                             "has_error": True,
                             "round": round
                         }
-                        errors.append(single_record)
+                        all_errors.append(single_record)
                         single_record["text"] = flatten_record_to_text(single_record)
                         all_records.append(single_record)   
                         continue
                     for error in errors:
-                        print("ERROR in flatten_real_data", error)
                         message = error.get("message", "")
                         single_record = {
                             "source": QUERY_INFO[node_name]["source"],
@@ -99,7 +97,7 @@ def flatten_real_data():
                             "has_error": True,
                             "round": round
                         }
-                        errors.append(single_record)
+                        all_errors.append(single_record)
                         single_record["text"] = flatten_record_to_text(single_record)
                         all_records.append(single_record)
                     continue
@@ -195,7 +193,7 @@ def flatten_real_data():
     with open(REAL_DATA_OUTPUT_PATH, "w") as f:
         json.dump(all_records, f, indent=2)
     with open(ERROR_PATH, "w") as f:
-        json.dump(errors, f, indent=2)
+        json.dump(all_errors, f, indent=2)
    
     print(f"✅ Saved {len(all_records)} records to {REAL_DATA_OUTPUT_PATH}")
     print(f"✅ Saved {len(errors)} errors to {ERROR_PATH}")
