@@ -91,6 +91,10 @@ def main():
         os.remove(real_data)
     else:
         print(f"No existing folder to remove: {real_data}")
+    if os.path.exists(errors):
+        os.remove(errors)
+    else:
+        print(f"No existing folder to remove: {errors}")
     # embedding_responses_from_graphqler()
     
 
