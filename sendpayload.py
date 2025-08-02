@@ -58,15 +58,6 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
             request_time = time.time() - start_time
             query_text = payload.get("query") or payload.get("mutation")
 
-            # Extract fields
-            if query_text:
-                fields, edges, operation = extract_fields_edges_nodes(query_text)
-                payload.update({
-                    "fields": fields,
-                    "edges": edges,
-                    "operation_name": operation
-                })
-
             payload.update({
                 "response_status": response.status_code,
                 "request_time_seconds": round(request_time, 3),

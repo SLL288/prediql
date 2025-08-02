@@ -27,7 +27,7 @@ import time
 import random
 from load_introspection.load_snippet import get_node_info
 
-from embed_retrieve.retrieve_from_index import search
+from embed_retrieve.retrieve_from_index import search,indexExists
 from embed_retrieve.embed_and_index import embed_real_data
 
 
@@ -56,6 +56,7 @@ def main():
     # output_folder = Config.OUTPUT_DIR
     # Config.OUTPUT_DIR += f"_{url}"
     output_folder = Config.OUTPUT_DIR
+    
     try:
         subprocess.run(['python3', 'load_introspection/save_instrospection.py', '--url', url], check=True)
         subprocess.run(['python3', 'load_introspection/load_introspection.py'], check=True)
@@ -72,6 +73,12 @@ def main():
     else:
         print(f"✅ No existing folder to remove: {output_folder}")
     #==============remove folder=============
+    index_dir = "embed_retrieve/faiss_index"
+    if os.path.exists(index_dir):
+        print(f"🗑️  Removing existing folder: {index_dir}")
+        shutil.rmtree(index_dir)
+    else:
+        print(f"✅ No existing folder to remove: {index_dir}")
     generated_query_info_file = "generated_query_info.json"
     real_data = "real_data.json"
 
@@ -180,11 +187,13 @@ def process_node(url, node, max_request):
 
     ##get top match from embeded file.
     query = f"input: {input}"
-    try:
-        records = search(query, top_k=5)
-        top_matches = "\n".join(record["text"] for score, record in records)
-    except: 
-        print(f"something wrong with retriving")
+
+    if indexExists():
+        try:
+            records = search(query, top_k=5)
+            top_matches = "\n".join(record["text"] for score, record in records)
+        except: 
+            print(f"something wrong with retriving")
 
     https200 = False
     # while https200 == False and requests < max_requests:
@@ -205,6 +214,7 @@ def process_node(url, node, max_request):
     print(f"[{node}] Attempt {requests+1}/{max_request}")
 
     return stats
+
 
 def embedding_responses_from_graphqler():
     pfr = ParseEndpointResults()
