@@ -9,7 +9,7 @@ from graphql.language.ast import FieldNode, OperationDefinitionNode
 
 import random
 
-def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
+def send_payload(GRAPHQL_URL, jsonfile_path,rnd, output_jsonfile_path=None):
     HEADERS = {"Content-Type": "application/json"}
     DEFAULT_FALLBACK_QUERY = """
     query {
@@ -40,6 +40,8 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
         if "response_status" in payload and "response_body" in payload:
             updated_payloads.append(payload)
             continue
+        
+        payload["round"]=rnd
 
         try:
             # Pick payload type

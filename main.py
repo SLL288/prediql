@@ -125,7 +125,7 @@ def run_all_nodes(url, nodes, max_requests, rounds, stats_allrounds):
     for i in range(1, rounds+1):
         all_stats = {}
         for node in nodes:
-            result = process_node(url, node, max_requests * i)
+            result = process_node(url, node, max_requests * i,i)
         # for node in tqdm(nodes, desc="Processing nodes"):
         #     try:
         #         result = process_node(url, node, max_requests)
@@ -166,7 +166,7 @@ def write_to_all_rounds(overall_stats, round_stats):
 
 
 
-def process_node(url, node, max_request):
+def process_node(url, node, max_request,round):
 
     input, output, relevant_object, source, node_type = get_node_info(node)
     stats = {}
@@ -204,7 +204,7 @@ def process_node(url, node, max_request):
         # second_res, token = prompt_llm_with_context(top_matches, node, objects, schema, parameter, source)
         totaltoken += token
         save_json_to_file(second_res, node)
-        https200_forthisrequest, requests = send_payload(url,jsonfile_path)
+        https200_forthisrequest, requests = send_payload(url,jsonfile_path,round)
         if https200_forthisrequest:
             https200 = True
     stats[node]["requests"] = requests
