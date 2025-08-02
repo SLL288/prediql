@@ -6,7 +6,7 @@ from config import Config
 # import openai  # or use local LLM interface like ollama
 import os
 from initial_llama3 import ensure_ollama_running
-from llama_initiator import  get_llm_model
+from llama_initiator import  get_llm_model,get_gemini_model
 from parse_endpoint_results import getnodefromcompiledfile
 
 
