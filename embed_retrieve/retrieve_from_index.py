@@ -5,6 +5,16 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 
 
+def indexExists():
+    INDEX_DIR = "embed_retrieve/faiss_index"
+    QUERY_INFO_PATH = "generated_query_info.json"
+    INDEX_FILE_PATH = os.path.join(INDEX_DIR, "index.faiss")
+    METADATA_FILE_PATH = os.path.join(INDEX_DIR, "metadata.json")
+    
+    return (os.path.exists(INDEX_FILE_PATH) and
+            os.path.exists(METADATA_FILE_PATH) and
+            os.path.exists(QUERY_INFO_PATH))
+
 def search(query_text, top_k=5, filter_node_type=None):
     
     INDEX_DIR = "embed_retrieve/faiss_index"
