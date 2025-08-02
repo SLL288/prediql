@@ -6,7 +6,7 @@ from config import Config
 RAW_DATA_BASE = Config.OUTPUT_DIR
 QUERY_INFO_PATH = "generated_query_info.json"
 REAL_DATA_OUTPUT_PATH = "real_data.json"
-ERROR_PATH = "errors.json"
+ERROR_PATH = "errors.csv"
 
 all_records = []
 
@@ -192,8 +192,13 @@ def flatten_real_data():
     # ✅ Save to real_data.json
     with open(REAL_DATA_OUTPUT_PATH, "w") as f:
         json.dump(all_records, f, indent=2)
-    with open(ERROR_PATH, "w") as f:
-        json.dump(all_errors, f, indent=2)
+    # Save errors to CSV
+    if all_errors:
+        fieldnames = ["source", "query_name", "node_type", "error", "has_error", "round"]
+        with open(ERROR_PATH, "w", newline='') as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(all_errors)
    
     print(f"✅ Saved {len(all_records)} records to {REAL_DATA_OUTPUT_PATH}")
     print(f"✅ Saved {len(errors)} errors to {ERROR_PATH}")

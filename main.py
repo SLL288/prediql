@@ -81,6 +81,7 @@ def main():
         print(f"✅ No existing folder to remove: {index_dir}")
     generated_query_info_file = "generated_query_info.json"
     real_data = "real_data.json"
+    errors = "errors.csv"
 
     if os.path.exists(generated_query_info_file):
         os.remove(generated_query_info_file)
