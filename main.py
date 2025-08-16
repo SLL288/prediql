@@ -36,6 +36,10 @@ from save_real_data import flatten_real_data
 
 import subprocess
 
+
+from collections import defaultdict, deque
+
+
 def main():
     parser = argparse.ArgumentParser(description="Please provide api URL")
 
@@ -159,6 +163,39 @@ def write_to_all_rounds(overall_stats, round_stats):
 
 
 
+## thompson 
+from collections import defaultdict
+import random
+import math
+import numpy as np
+from delta_coverage import compute_delta_coverage
+BETA = defaultdict(lambda: {"alpha": 1.0, "beta": 1.0})  # key: (node, arm_name)
+GAMMA = 1.0   # set <1.0 for discounting, e.g., 0.98
+
+def pick_arm_thompson(node, arms):
+    samples = []
+    for arm in arms:
+        key = (node, arm["name"])
+        a, b = BETA[key]["alpha"], BETA[key]["beta"]
+        theta = np.random.beta(a, b)
+        samples.append((theta, arm))
+    samples.sort(reverse=True, key=lambda x: x[0])
+    return samples[0][1]
+
+def update_bandit(node, arm_name, reward, gamma=GAMMA):
+    key = (node, arm_name)
+    # optional discounting for non-stationarity
+    BETA[key]["alpha"] = gamma * BETA[key]["alpha"] + reward
+    BETA[key]["beta"]  = gamma * BETA[key]["beta"]  + (1 - reward)
+
+
+
+
+
+
+
+
+
 def process_node(url, node, max_request):
 
     input, output, relevant_object, source, node_type = get_node_info(node)
@@ -179,28 +216,153 @@ def process_node(url, node, max_request):
     # objects = ""
 
     ##get top match from embeded file.
-    query = f"input: {input}"
+    input_args = f"{node}, input: {input}"
+    # try:
+    #     records = search(query, top_k=5)
+    #     top_matches = "\n".join(record["text"] for score, record in records)
+    # except: 
+    #     print(f"something wrong with retriving")
+
+    #arm manipulation
+    ARM_STATS = defaultdict(lambda: {"succ": 0, "tot": 0})   # key: (node, arm_name)
+    FAIL_STREAK = defaultdict(int)   
+    covered = False
+    ARMS = [
+    {"name":"schema_min_known",   "include_schema":True,  "arg_mode":"known",   "depth":1, "top_k":3},
+    {"name":"schema_min_real",    "include_schema":True,  "arg_mode":"real",    "depth":1, "top_k":3},
+    {"name":"schema_mod_known",   "include_schema":True,  "arg_mode":"known",   "depth":2, "top_k":5},
+    {"name":"noschema_min_known", "include_schema":False, "arg_mode":"known",   "depth":1, "top_k":3},
+    {"name":"noschema_min_real",  "include_schema":False, "arg_mode":"real",    "depth":1, "top_k":0},
+    {"name":"schema_min_nulls",   "include_schema":True,  "arg_mode":"nulls",   "depth":1, "top_k":3},
+    {"name":"schema_deep_known",  "include_schema": True,  "arg_mode":"known",   "depth":3, "top_k":5},
+    {"name":"schema_deep_real",   "include_schema": True,  "arg_mode":"real",    "depth":3, "top_k":5},
+    ]
+
+    max_k_needed = max([arm["top_k"] for arm in ARMS] + [5])
+
     try:
-        records = search(query, top_k=5)
-        top_matches = "\n".join(record["text"] for score, record in records)
-    except: 
-        print(f"something wrong with retriving")
+        # Single search to the max K; store the texts in order
+        base_query = f"{node}, input: {input}"  # not input_args again
+        pre_results = search(base_query, top_k=max_k_needed)
+        pre_texts = ["{}".format(record["text"]) for score, record in pre_results]
+    except Exception as e:
+        print(f"⚠️ retrieve error for {node}: {e}")
+        pre_texts = []
+    # def build_top_matches(k: int) -> str:
+    #     if not k: return ""
+    #     try:
+    #         records = search(f"{node}, input: {input_args}", top_k=k)
+    #         return "\n".join(record["text"] for score, record in records)
+    #     except Exception as e:
+    #         print(f"⚠️ retrieve error for {node}: {e}")
+    #         return ""
+    #arm manipulation ends 
+
+    def build_top_matches(k: int) -> str:
+        if not k or not pre_texts:
+            return ""
+        k = min(k, len(pre_texts))
+        return "\n".join(pre_texts[:k])
+
 
     https200 = False
     # while https200 == False and requests < max_requests:
 
-    while requests < max_request:
+    # while requests < max_request:
+        
+    #     second_res, token = prompt_llm_with_context(top_matches, node, relevant_object, input, output, source, max_request, node_type)
+    #     # second_res, token = prompt_llm_with_context(top_matches, node, objects, schema, parameter, source)
+    #     totaltoken += token
+    #     save_json_to_file(second_res, node)
+    #     https200_forthisrequest, requests = send_payload(url,jsonfile_path)
+    #     if https200_forthisrequest:
+    #         https200 = True
+    # while (not covered) and (requests < max_request):
+    # while (not covered):
+    #     for arm in ARMS:
+    #         if covered or requests >= max_request:
+    #             break
 
-        second_res, token = prompt_llm_with_context(top_matches, node, relevant_object, input, output, source, max_request, node_type)
-        # second_res, token = prompt_llm_with_context(top_matches, node, objects, schema, parameter, source)
+    #         # top_k escalation heuristic (only for schema arms)
+    #         k = arm["top_k"]
+    #         if arm["include_schema"] and FAIL_STREAK[node] >= 2 and k < 5:
+    #             k = 5  # one escalation
+
+    #         top_matches = build_top_matches(k)
+    #         schema_to_use = relevant_object if arm["include_schema"] else None
+
+    #         # Build your prompt based on arg_mode/depth (you can pass these as extra flags if you extend prompt builder)
+    #         second_res, token = prompt_llm_with_context(
+    #             top_matches=top_matches,
+    #             endpoint=node,
+    #             schema=relevant_object if arm["include_schema"] else None,
+    #             input=input_args,
+    #             output=output,
+    #             source=source,
+    #             MAX_REQUESTS=max_request,
+    #             node_type=node_type,
+    #             include_schema=arm["include_schema"],
+    #             arg_mode=arm["arg_mode"],     # "known" | "real" | "nulls"
+    #             depth=arm["depth"],           # 1 or 2
+    #             n_variants=1
+    #         )
+    #         totaltoken += token
+
+    #         save_json_to_file(second_res, node)
+    #         print(f"arm_name: {arm['name']}")
+    #         ok_200, requests = send_payload(url, jsonfile_path, arm['name'])
+
+    #         ARM_STATS[(node, arm["name"])]["tot"] += 1
+    #         if ok_200:
+    #             ARM_STATS[(node, arm["name"])]["succ"] += 1
+    #             FAIL_STREAK[node] = 0
+    #             covered = True
+    #             break
+    #         else:
+    #             FAIL_STREAK[node] += 1
+    #     break
+    while (not covered) and (requests < max_request):
+        arm = pick_arm_thompson(node, ARMS)
+
+        # escalation tweak still allowed
+        k = arm["top_k"]
+        if arm["include_schema"] and FAIL_STREAK[node] >= 2 and k < 5:
+            k = 5
+        top_matches = build_top_matches(k)
+        schema_to_use = relevant_object if arm["include_schema"] else None
+
+        second_res, token = prompt_llm_with_context(
+            top_matches=top_matches,
+            endpoint=node,
+            schema=schema_to_use,
+            input=input_args,
+            output=output,
+            source=source,
+            MAX_REQUESTS=max_request,
+            node_type=node_type,
+            include_schema=arm["include_schema"],
+            arg_mode=arm["arg_mode"],
+            depth=arm["depth"],
+            n_variants=1
+        )
         totaltoken += token
         save_json_to_file(second_res, node)
-        https200_forthisrequest, requests = send_payload(url,jsonfile_path)
-        if https200_forthisrequest:
-            https200 = True
+        ok_200, requests = send_payload(url, jsonfile_path, arm['name'])
+
+        # Compute reward
+        delta_cov = compute_delta_coverage(node)  # you implement; returns 0/1 first, later [0,1]
+        reward = 1.0 if (ok_200 and delta_cov > 0) else 0.0
+
+        update_bandit(node, arm['name'], reward)
+        if reward > 0:
+            FAIL_STREAK[node] = 0
+            covered = True
+        else:
+            FAIL_STREAK[node] += 1
+
     stats[node]["requests"] = requests
     stats[node]['token'] = totaltoken
-    stats[node]['succeed'] = https200
+    stats[node]['succeed'] = ok_200
     print(stats)
     print(f"[{node}] Attempt {requests+1}/{max_request}")
 
