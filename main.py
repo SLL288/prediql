@@ -76,17 +76,20 @@ def main():
     else:
         print(f"✅ No existing folder to remove: {output_folder}")
     #==============remove folder=============
+
+
+
     generated_query_info_file = "generated_query_info.json"
     real_data = "real_data.json"
 
-    if os.path.exists(generated_query_info_file):
-        os.remove(generated_query_info_file)
-    else:
-        print(f"No existing folder to remove: {generated_query_info_file}")
-    if os.path.exists(real_data):
-        os.remove(real_data)
-    else:
-        print(f"No existing folder to remove: {real_data}")
+    # if os.path.exists(generated_query_info_file):
+    #     os.remove(generated_query_info_file)
+    # else:
+    #     print(f"No existing folder to remove: {generated_query_info_file}")
+    # if os.path.exists(real_data):
+    #     os.remove(real_data)
+    # else:
+    #     print(f"No existing folder to remove: {real_data}")
     # embedding_responses_from_graphqler()
     
 
@@ -103,19 +106,30 @@ def main():
 
     # index, model = load_index_and_model()
     # texts, records = load_texts()
+
+    #only process thos folder path not existing.
+    # nodes_to_process = [
+    # i for i in nodes['Node']
+    # if not os.path.exists(os.path.join("prediql-output", i))
+    # ]
+    
     from save_query_info import save_query_info
     
     save_query_info()
 
-
-    ensure_ollama_running("llama3")
+    # ensure_ollama_running("deepseek-coder")
+    # ensure_ollama_running("llama3")
+    # ensure_ollama_running("deepseek-coder:1.3b")
+    ensure_ollama_running(Config.LLMmodel)
     stats_allrounds = {}
     run_all_nodes(url, nodes['Node'], requests, rounds, stats_allrounds)
+    # run_all_nodes(url, nodes_to_process, requests, rounds, stats_allrounds)
+
     # log_to_table(stats_allrounds, "prediql-output/stats_table_allrounds.txt")
     # log_to_table(stats_allrounds, Config.OUTPUT_DIR + "/stats_table_allrounds.txt")
     subprocess.run(['python', 'reorganize_json_records.py'])
     subprocess.run(['python', 'analysis_prediql.py'])
-
+    subprocess.run(['python', 'negative_coverage.py','--prediql_output','prediql-output'])
 
 
 def run_all_nodes(url, nodes, max_requests, rounds, stats_allrounds):
@@ -159,7 +173,7 @@ def write_to_all_rounds(overall_stats, round_stats):
 
         # Logical OR for Succeed
         overall_stats[node_name]["succeed"] = (
-            overall_stats[node_name]["succeed"] or round_data.get("succeed", False))
+        overall_stats[node_name]["succeed"] or round_data.get("succeed", False))
 
 
 
@@ -169,6 +183,10 @@ import random
 import math
 import numpy as np
 from delta_coverage import compute_delta_coverage
+
+
+
+
 BETA = defaultdict(lambda: {"alpha": 1.0, "beta": 1.0})  # key: (node, arm_name)
 GAMMA = 1.0   # set <1.0 for discounting, e.g., 0.98
 
@@ -237,6 +255,13 @@ def process_node(url, node, max_request):
     {"name":"schema_deep_known",  "include_schema": True,  "arg_mode":"known",   "depth":3, "top_k":5},
     {"name":"schema_deep_real",   "include_schema": True,  "arg_mode":"real",    "depth":3, "top_k":5},
     ]
+
+    # ARMS = [
+    # {"name":"noschema_min_real",  "include_schema":False, "arg_mode":"real",    "depth":1, "top_k":0},
+    # {"name":"noschema_min_real",  "include_schema":True, "arg_mode":"real",    "depth":1, "top_k":0},
+    # {"name":"noschema_min_real",  "include_schema":False, "arg_mode":"real",    "depth":1, "top_k":0},
+    # ]
+
 
     max_k_needed = max([arm["top_k"] for arm in ARMS] + [5])
 
@@ -321,7 +346,7 @@ def process_node(url, node, max_request):
     #         else:
     #             FAIL_STREAK[node] += 1
     #     break
-    while (not covered) and (requests < max_request):
+    while (not covered) and (requests < max_request) and (https200 == False):
         arm = pick_arm_thompson(node, ARMS)
 
         # escalation tweak still allowed
@@ -329,6 +354,8 @@ def process_node(url, node, max_request):
         if arm["include_schema"] and FAIL_STREAK[node] >= 2 and k < 5:
             k = 5
         top_matches = build_top_matches(k)
+            
+        # top_matches = ""
         schema_to_use = relevant_object if arm["include_schema"] else None
 
         second_res, token = prompt_llm_with_context(
@@ -348,7 +375,7 @@ def process_node(url, node, max_request):
         totaltoken += token
         save_json_to_file(second_res, node)
         ok_200, requests = send_payload(url, jsonfile_path, arm['name'])
-
+        https200 = ok_200
         # Compute reward
         delta_cov = compute_delta_coverage(node)  # you implement; returns 0/1 first, later [0,1]
         reward = 1.0 if (ok_200 and delta_cov > 0) else 0.0
