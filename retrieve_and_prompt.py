@@ -6,12 +6,13 @@ from config import Config
 # import openai  # or use local LLM interface like ollama
 import os
 from initial_llama3 import ensure_ollama_running
-from llama_initiator import  get_llm_model,get_gemini_model
+from llama_initiator import  get_llm_model,get_gemini_model,get_avalai_model
 from parse_endpoint_results import getnodefromcompiledfile
 
 
 
 import yaml
+from datetime import datetime
 # def get_compiled_queries()):
 #     compiled_results = self.qler_handler.get_compiled_results()
 #     compiled_queries = compiled_results["queries"]
@@ -84,12 +85,21 @@ def extract_request_response_pairs(json_file_path):
     pairs = []
     for item in data:
         query = item.get("query")
-        response_info = {
-            "status": item.get("response_status"),
-            "body": item.get("response_body"),
-            "time": item.get("request_time_seconds")
-        }
-        pairs.append((query, response_info))
+        success = item.get("success", True)  # Default to True if not present
+        
+        if success:
+            # For successful requests, only include the query
+            pairs.append((query, None))
+        else:
+            # For failed requests, include query and error message
+            error_message = ""
+            response_body = item.get("response_body", {})
+            if isinstance(response_body, dict):
+                errors = response_body.get("errors", [])
+                if errors and isinstance(errors, list) and len(errors) > 0:
+                    error_message = errors[0].get("message", "")
+            
+            pairs.append((query, error_message))
     return pairs
 
 # # Example usage:
@@ -205,6 +215,46 @@ def retrieve_similar(node, model, index, texts, top_k=5):
 
 
 # prompt_llm_with_context(top_matches, node, relevant_object, input, output, source, max_requests, node_type)
+def save_prompt_response_pair(endpoint, prompt, llm_response, query_json, approx_tokens):
+    """
+    Save the prompt and LLM response to a prompts folder for analysis and debugging.
+    """
+    # Create prompts directory if it doesn't exist
+    prompts_dir = os.path.join(os.getcwd(), "prompts")
+    if not os.path.exists(prompts_dir):
+        os.makedirs(prompts_dir)
+    
+    # Create endpoint-specific subdirectory
+    endpoint_dir = os.path.join(prompts_dir, endpoint)
+    if not os.path.exists(endpoint_dir):
+        os.makedirs(endpoint_dir)
+    
+    # Generate timestamp for unique filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"prompt_response_{timestamp}.json"
+    filepath = os.path.join(endpoint_dir, filename)
+    
+    # Prepare data to save
+    prompt_data = {
+        "timestamp": timestamp,
+        "endpoint": endpoint,
+        "prompt": prompt,
+        "llm_response": llm_response,
+        "parsed_queries": query_json,
+        "approx_tokens": approx_tokens,
+        "request_time": datetime.now().isoformat()
+    }
+    
+    # Save to file
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(prompt_data, f, indent=2, ensure_ascii=False)
+        print(f"✅ Saved prompt-response pair to: {filepath}")
+    except Exception as e:
+        print(f"⚠️ Warning: Failed to save prompt-response pair: {e}")
+    
+    return filepath
+
 def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source, MAX_REQUESTS, node_type):
     # schema = find_node_definition(endpoint)
     # print("schema start")
@@ -213,6 +263,17 @@ def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source
     previous_response_pairs = extract_request_response_pairs(os.path.join(os.getcwd(), Config.OUTPUT_DIR,endpoint, "llama_queries.json"))
     query_json = {"query": []}
     # context_block = "\n---\n".join(context_snippets)
+
+    # Format previous response pairs as array of objects
+    formatted_previous_pairs = []
+    for query, error_msg in previous_response_pairs:
+        pair_obj = {
+            "query": query,
+            "error": error_msg if error_msg else None
+        }
+        formatted_previous_pairs.append(pair_obj)
+    
+    previous_pairs_text = json.dumps(formatted_previous_pairs, indent=2) if formatted_previous_pairs else "[]"
 
     prompt = f"""
     You are an expert in GraphQL API security testing.
@@ -250,7 +311,7 @@ def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source
     - schema types: {schema}
     - node type: {node_type}
     - known real values to use: {top_matches}
-    - previouse response pairs: {previous_response_pairs}
+    - previous response pairs: {previous_pairs_text}
 
     You must generate a test query for:
 
@@ -278,8 +339,12 @@ def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source
             if query_str not in query_json["query"]:
                 query_json["query"].append(query_str)
         except Exception as e:
-    #         # logger.error(e)
-          continue
+            print(e)
+            continue
+    
+    # Save prompt and response to prompts folder
+    save_prompt_response_pair(endpoint, prompt, llama_res, query_json, approx_tokens)
+    
     return query_json, approx_tokens
 
 def get_LLM_firstresposne(node, objects):

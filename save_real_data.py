@@ -22,8 +22,16 @@ def flatten_record_to_text(record):
     lines.append(f"Has Error: {record.get('has_error', False)}")
     lines.append("")
     lines.append("Fields:")
-    for k, v in record.get("record", {}).items():
-        lines.append(f"- {k}: {v}")
+    
+    # Handle case where record might be a string or other non-dict type
+    record_data = record.get("record", {})
+    if isinstance(record_data, dict):
+        for k, v in record_data.items():
+            lines.append(f"- {k}: {v}")
+    else:
+        # If record is not a dict (e.g., string, list, etc.), just show its value
+        lines.append(f"- data: {record_data}")
+    
     return "\n".join(lines)
 
 def flatten_real_data():
@@ -85,8 +93,8 @@ def flatten_real_data():
                             "round": round
                         }
                         all_errors.append(single_record)
-                        single_record["text"] = flatten_record_to_text(single_record)
-                        all_records.append(single_record)   
+                        # single_record["text"] = flatten_record_to_text(single_record)
+                        # all_records.append(single_record)   
                         continue
                     for error in errors:
                         message = error.get("message", "")
@@ -99,8 +107,8 @@ def flatten_real_data():
                             "round": round
                         }
                         all_errors.append(single_record)
-                        single_record["text"] = flatten_record_to_text(single_record)
-                        all_records.append(single_record)
+                        # single_record["text"] = flatten_record_to_text(single_record)
+                        # all_records.append(single_record)
                     continue
                 
                 data = response_body.get("data", {})
@@ -202,7 +210,7 @@ def flatten_real_data():
             writer.writerows(all_errors)
    
     print(f"✅ Saved {len(all_records)} records to {REAL_DATA_OUTPUT_PATH}")
-    print(f"✅ Saved {len(errors)} errors to {ERROR_PATH}")
+    print(f"✅ Saved {len(all_errors)} errors to {ERROR_PATH}")
     return len(all_records)
 
 

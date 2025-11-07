@@ -116,7 +116,7 @@ def main():
     save_query_info()
 
 
-    ensure_ollama_running("llama3")
+    # ensure_ollama_running("llama3")
     stats_allrounds = {}
     run_all_nodes(url, nodes['Node'], requests, rounds, stats_allrounds)
     # log_to_table(stats_allrounds, "prediql-output/stats_table_allrounds.txt")
@@ -127,14 +127,27 @@ def main():
 
 
 def run_all_nodes(url, nodes, max_requests, rounds, stats_allrounds):
+    # Track which nodes have succeeded in any round
+    successful_nodes = set()
+    
     for i in range(1, rounds+1):
         all_stats = {}
         for node in nodes:
-            result = process_node(url, node, max_requests * i,i)
+            # Skip processing if this node has already succeeded in a previous round
+            if node in successful_nodes:
+                print(f"⏭️  Skipping {node} - already succeeded in a previous round")
+                continue
+                
+            result = process_node(url, node, max_requests * i, i)
+            all_stats.update(result)
+            
+            # Check if this node succeeded and add it to successful_nodes
+            if result.get(node, {}).get('succeed', False):
+                successful_nodes.add(node)
+                print(f"✅ {node} succeeded in round {i} - will be skipped in future rounds")
         # for node in tqdm(nodes, desc="Processing nodes"):
         #     try:
         #         result = process_node(url, node, max_requests)
-            all_stats.update(result)
         #     except Exception as e:
         #         print(f"❌ Error processing node: {e}")
         #     time.sleep(random.uniform(1.5, 3.0))  # stagger requests
@@ -177,7 +190,7 @@ def process_node(url, node, max_request,round):
     stats = {}
     stats[node] = {}
     totaltoken = 0
-    # max_requests = max_request
+    max_requests = max_request
     requests = 0
     jsonfile_path = os.path.join(os.getcwd(), Config.OUTPUT_DIR, node, "llama_queries.json")
 
@@ -201,9 +214,9 @@ def process_node(url, node, max_request,round):
             print(f"something wrong with retriving")
 
     https200 = False
-    # while https200 == False and requests < max_requests:
+    while https200 == False and requests < max_requests:
 
-    while requests < max_request:
+    # while requests < max_request:
 
         second_res, token = prompt_llm_with_context(top_matches, node, relevant_object, input, output, source, max_request, node_type)
         # second_res, token = prompt_llm_with_context(top_matches, node, objects, schema, parameter, source)
