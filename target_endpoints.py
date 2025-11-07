@@ -130,8 +130,8 @@ def getnodefromcompiledfile():
     mutation_nodes = list(mutations_data.keys()) if isinstance(mutations_data, dict) else []
 
     # Combine into labeled list
-    node_endpoints = [{"type": "query", "Node": node} for node in query_nodes] + \
-                    [{"type": "mutation", "Node": node} for node in mutation_nodes]
+    node_endpoints = [{"type": "mutation", "Node": node} for node in mutation_nodes] + \
+                     [{"type": "query", "Node": node} for node in query_nodes] 
 
     # Convert to DataFrame
     df_nodes = pd.DataFrame(node_endpoints)

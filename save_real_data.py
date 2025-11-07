@@ -18,8 +18,14 @@ def flatten_record_to_text(record):
     lines.append(f"Node Type: {record.get('node_type')}")
     lines.append("")
     lines.append("Fields:")
-    for k, v in record.get("record", {}).items():
-        lines.append(f"- {k}: {v}")
+    record_data = record.get("record", {})
+    if isinstance(record_data, dict):
+        for k, v in record_data.items():
+            lines.append(f"- {k}: {v}")
+    else:
+        # If record is not a dict (e.g., string, list, etc.), just show its value
+        lines.append(f"- data: {record_data}")
+    
     return "\n".join(lines)
 
 def flatten_real_data():
@@ -36,7 +42,7 @@ def flatten_real_data():
 
     all_records = []
 
-    for node_name in QUERY_INFO.keys():
+    for node_name in query_info.keys():
         print(node_name)
         # Determine which folder to look in
         folder_path = os.path.join(RAW_DATA_BASE, node_name)
@@ -84,9 +90,9 @@ def flatten_real_data():
                             node = edge.get("node")
                             if node:
                                 single_record = {
-                                    "source": QUERY_INFO[node_name]["source"],
+                                    "source": query_info[node_name]["source"],
                                     "query_name": node_name,
-                                    "node_type": QUERY_INFO[node_name]["node_type"],
+                                    "node_type": query_info[node_name]["node_type"],
                                     "record": node,
                                 }
                                 single_record["text"] = flatten_record_to_text(single_record)
@@ -98,9 +104,9 @@ def flatten_real_data():
                     if results and isinstance(results, list):
                         for item in results:
                             single_record = {
-                                "source": QUERY_INFO[node_name]["source"],
+                                "source": query_info[node_name]["source"],
                                 "query_name": node_name,
-                                "node_type": QUERY_INFO[node_name]["node_type"],
+                                "node_type": query_info[node_name]["node_type"],
                                 "record": item,
                             }
                             single_record["text"] = flatten_record_to_text(single_record)
@@ -111,9 +117,9 @@ def flatten_real_data():
                     if isinstance(top_level_data, list):
                         for item in top_level_data:
                             single_record = {
-                                "source": QUERY_INFO[node_name]["source"],
+                                "source": query_info[node_name]["source"],
                                 "query_name": node_name,
-                                "node_type": QUERY_INFO[node_name]["node_type"],
+                                "node_type": query_info[node_name]["node_type"],
                                 "record": item,
                             }
                             single_record["text"] = flatten_record_to_text(single_record)
@@ -123,9 +129,9 @@ def flatten_real_data():
                     # ✅ Handle single object
                     if isinstance(top_level_data, dict):
                         single_record = {
-                            "source": QUERY_INFO[node_name]["source"],
+                            "source": query_info[node_name]["source"],
                             "query_name": node_name,
-                            "node_type": QUERY_INFO[node_name]["node_type"],
+                            "node_type": query_info[node_name]["node_type"],
                             "record": top_level_data,
                         }
                         single_record["text"] = flatten_record_to_text(single_record)
@@ -134,9 +140,9 @@ def flatten_real_data():
                     # Top-level list (array of records)
                     for item in top_level_data:
                         single_record = {
-                            "source": QUERY_INFO[node_name]["source"],
+                            "source": query_info[node_name]["source"],
                             "query_name": node_name,
-                            "node_type": QUERY_INFO[node_name]["node_type"],
+                            "node_type": query_info[node_name]["node_type"],
                             "record": item,
                         }
                         single_record["text"] = flatten_record_to_text(single_record)

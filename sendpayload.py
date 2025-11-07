@@ -22,17 +22,19 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
 
     if not os.path.exists(jsonfile_path) or os.path.getsize(jsonfile_path) == 0:
         print(f"❌ File not found or empty: {jsonfile_path}")
-        return False, 0
+        return False, 0, False, []
 
     try:
         with open(jsonfile_path, "r") as f:
             payloads = json.load(f)
     except json.JSONDecodeError as e:
         print(f"❌ Error reading JSON: {e}")
-        return False, 0
+        return False, 0, False, []
 
     updated_payloads = []
+    newly_processed_responses = []  # Track only newly processed responses
     https200 = False
+    negative_success = False
     requests_count = 0
 
     for i, payload in enumerate(payloads, start=1):
@@ -40,44 +42,133 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
         if "response_status" in payload and "response_body" in payload:
             updated_payloads.append(payload)
             continue
+        
+        if "retry_status" in payload and "retry_response_body" in payload:
+            updated_payloads.append(payload)
+            continue
+        
+        # Track that we're processing a new payload
+        is_newly_processed = True
 
         try:
-            # Pick payload type
+            # Handle new query format with vulnerability type
+            query_text = None
+            vulnerability_type = "unknown"
+            
             if "query" in payload:
-                request_payload = {"query": payload["query"]}
+                if isinstance(payload["query"], dict):
+                    # New format: {"query": "actual_query", "vulnerability_type": "sql_injection"}
+                    query_text = payload["query"].get("query")
+                    vulnerability_type = payload["query"].get("vulnerability_type", "unknown")
+                else:
+                    # Old format: {"query": "actual_query"}
+                    query_text = payload["query"]
             elif "mutation" in payload:
-                request_payload = {"query": payload["mutation"]}
+                if isinstance(payload["mutation"], dict):
+                    query_text = payload["mutation"].get("query")
+                    vulnerability_type = payload["mutation"].get("vulnerability_type", "unknown")
+                else:
+                    query_text = payload["mutation"]
             else:
                 print(f"⚠️ Skipping payload {i}: No 'query' or 'mutation' found.")
                 updated_payloads.append(payload)
                 continue
 
-            # Send request
-            start_time = time.time()
-            response = requests.post(GRAPHQL_URL, headers=HEADERS, json=request_payload, timeout=10)
-            request_time = time.time() - start_time
-            query_text = payload.get("query") or payload.get("mutation")
+            if not query_text:
+                print(f"⚠️ Skipping payload {i}: Empty query text.")
+                updated_payloads.append(payload)
+                continue
 
-            # Extract fields
-            if query_text:
-                fields, edges, operation = extract_fields_edges_nodes(query_text)
+            # Special handling for query deny bypass - requires two queries
+            if vulnerability_type in ["query_deny_bypass_non_aliased", "query_deny_bypass_aliased"]:
+                # Find the corresponding query for query deny bypass
+                non_aliased_query = None
+                aliased_query = None
+                
+                # Look for both queries in the payloads
+                for p in payloads:
+                    if isinstance(p.get("query"), dict):
+                        p_vuln_type = p["query"].get("vulnerability_type", "unknown")
+                        if p_vuln_type == "query_deny_bypass_non_aliased":
+                            non_aliased_query = p["query"].get("query")
+                        elif p_vuln_type == "query_deny_bypass_aliased":
+                            aliased_query = p["query"].get("query")
+                
+                if not non_aliased_query or not aliased_query:
+                    print(f"⚠️ Skipping payload {i}: Missing query deny bypass pair.")
+                    updated_payloads.append(payload)
+                    continue
+                
+                # Send both queries and store responses
+                responses = {}
+                
+                # Send non-aliased query
+                request_payload = {"query": non_aliased_query}
+                start_time = time.time()
+                non_aliased_response = requests.post(GRAPHQL_URL, headers=HEADERS, json=request_payload, timeout=10)
+                non_aliased_time = time.time() - start_time
+                
+                responses["non_aliased"] = {
+                    "response_status": non_aliased_response.status_code,
+                    "request_time_seconds": round(non_aliased_time, 3),
+                    "timestamp": datetime.utcnow().isoformat() + "Z"
+                }
+                
+                try:
+                    responses["non_aliased"]["response_body"] = non_aliased_response.json()
+                except ValueError:
+                    responses["non_aliased"]["response_body"] = {"error": "Invalid JSON", "raw": non_aliased_response.text}
+                
+                # Send aliased query
+                request_payload = {"query": aliased_query}
+                start_time = time.time()
+                aliased_response = requests.post(GRAPHQL_URL, headers=HEADERS, json=request_payload, timeout=10)
+                aliased_time = time.time() - start_time
+                
+                responses["aliased"] = {
+                    "response_status": aliased_response.status_code,
+                    "request_time_seconds": round(aliased_time, 3),
+                    "timestamp": datetime.utcnow().isoformat() + "Z"
+                }
+                
+                try:
+                    responses["aliased"]["response_body"] = aliased_response.json()
+                except ValueError:
+                    responses["aliased"]["response_body"] = {"error": "Invalid JSON", "raw": aliased_response.text}
+                
+                # Update payload with both responses
                 payload.update({
-                    "fields": fields,
-                    "edges": edges,
-                    "operation_name": operation
+                    "query_deny_bypass_responses": responses,
+                    "vulnerability_type": "query_deny_bypass",
+                    "count": i,
+                    "timestamp": datetime.utcnow().isoformat() + "Z"
+                })
+                
+                # Use the non-aliased response for success checking
+                response = non_aliased_response
+                request_time = non_aliased_time
+                
+            else:
+                # Normal single query handling
+                request_payload = {"query": query_text}
+
+                # Send request
+                start_time = time.time()
+                response = requests.post(GRAPHQL_URL, headers=HEADERS, json=request_payload, timeout=10)
+                request_time = time.time() - start_time
+
+                payload.update({
+                    "response_status": response.status_code,
+                    "request_time_seconds": round(request_time, 3),
+                    "timestamp": datetime.utcnow().isoformat() + "Z",
+                    "count": i,
+                    "vulnerability_type": vulnerability_type
                 })
 
-            payload.update({
-                "response_status": response.status_code,
-                "request_time_seconds": round(request_time, 3),
-                "timestamp": datetime.utcnow().isoformat() + "Z",
-                "count": i
-            })
-
-            try:
-                payload["response_body"] = response.json()
-            except ValueError:
-                payload["response_body"] = {"error": "Invalid JSON", "raw": response.text}
+                try:
+                    payload["response_body"] = response.json()
+                except ValueError:
+                    payload["response_body"] = {"error": "Invalid JSON", "raw": response.text}
 
             if response.status_code in [429, 503]:
                 time.sleep(10)
@@ -87,9 +178,16 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
             success = is_successful_graphql_response(payload)
             payload["success"] = success
 
+            # Check for negative_success: valid GraphQL but server error
+            is_negative_success = is_negative_success_response(payload)
+            payload["negative_success"] = is_negative_success
+
             if success:
                 print(f"✅ Valid 200 response with data for payload {i}")
                 https200 = True
+            elif is_negative_success:
+                print(f"⚠️ Negative success: Valid GraphQL but server error for payload {i}")
+                negative_success = True
             requests_count = i
 
         except requests.exceptions.RequestException as e:
@@ -134,6 +232,10 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
 
         # ✅ Append exactly once
         updated_payloads.append(payload)
+        
+        # Add to newly processed responses if this was a new payload
+        if is_newly_processed:
+            newly_processed_responses.append(payload)
 
     # ✅ Deduplicate before writing
     def to_key(d): return json.dumps(d, sort_keys=True)
@@ -153,7 +255,8 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
         json.dump(unique_payloads, f, indent=2, ensure_ascii=False)
 
     print(f"✅ Finished. {len(unique_payloads)} unique payloads written to {output_jsonfile_path}")
-    return https200, requests_count
+    print(f"🔍 Newly processed responses: {len(newly_processed_responses)}")
+    return https200, requests_count, negative_success, newly_processed_responses
 
 def extract_fields_edges_nodes(query_string):
     try:
@@ -208,6 +311,9 @@ def is_successful_graphql_response(payload):
 
     # ✅ Correct indentation here
     for key, value in data.items():
+        if key == "_":
+            return True
+
         if value is None:
             continue
 
@@ -233,4 +339,74 @@ def is_successful_graphql_response(payload):
             return True
 
     # If none of the data values were "real", fail
+    return False
+
+def is_negative_success_response(payload):
+    """
+    Check if this is a negative_success case:
+    - Query is valid GraphQL (syntactically correct)
+    - But results in server error (non-200 status or 200 with non-schema related errors)
+    """
+    # First check if the query is valid GraphQL
+    query_text = payload.get("query") or payload.get("mutation")
+    if not query_text:
+        return False
+    
+    # Check if query is syntactically valid GraphQL
+    try:
+        from graphql import parse
+        parse(query_text)
+    except Exception:
+        return False  # Invalid GraphQL syntax, not negative_success
+    
+    # Check response status
+    status = payload.get("response_status")
+    if status is None:
+        return False  # No response received
+    
+    # Case 1: Non-200 status code - check if errors are schema-related
+    if status != 200:
+        # Check response body for error details
+        body = payload.get("response_body")
+        if isinstance(body, dict) and "errors" in body and body["errors"]:
+            # Check if any errors are schema-related
+            for error in body["errors"]:
+                if isinstance(error, dict):
+                    message = error.get("message", "").lower()
+                    # Check if it's a schema-related error
+                    schema_related_keywords = [
+                        "cannot query field", "field does not exist", "unknown field",
+                        "field is not defined", "cannot return null", "non-null field",
+                        "required field", "invalid argument", "argument does not exist",
+                        "expected", "got", "syntax error", "parse error", "did you mean"
+                    ]
+                    
+                    is_schema_error = any(keyword in message for keyword in schema_related_keywords)
+                    if is_schema_error:
+                        return False  # Schema-related error, not negative success
+        # If no errors field or non-schema errors, it's a server error (negative success)
+        return True
+    
+    # Case 2: 200 status but with non-schema related errors
+    body = payload.get("response_body")
+    if not isinstance(body, dict):
+        return False
+    
+    # Check for GraphQL errors that are not schema-related
+    if "errors" in body and body["errors"]:
+        for error in body["errors"]:
+            if isinstance(error, dict):
+                message = error.get("message", "").lower()
+                # Check if it's not a schema-related error
+                schema_related_keywords = [
+                    "cannot query field", "field does not exist", "unknown field",
+                    "field is not defined", "cannot return null", "non-null field",
+                    "required field", "invalid argument", "argument does not exist",
+                    "expected", "got", "syntax error", "parse error", "did you mean"
+                ]
+                
+                is_schema_error = any(keyword in message for keyword in schema_related_keywords)
+                if not is_schema_error:
+                    return True  # Non-schema related error
+    
     return False

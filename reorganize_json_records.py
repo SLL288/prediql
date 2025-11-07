@@ -70,7 +70,8 @@ def process_records(node):
             filtered_records.append(record)
             continue
 
-        query_text = record.get("query")
+        query_text = record.get("query", {}).get("query")
+
         if not query_text:
             filtered_records.append(record)
             continue

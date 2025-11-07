@@ -1,6 +1,7 @@
 from config import Config
 import json
-import os 
+import os
+from typing import Union, Optional, Set 
 
 
 # ---- Coverage tracking (minimal) ----
@@ -29,7 +30,7 @@ def _save_coverage_state(state):
     except Exception as e:
         print(f"⚠️ coverage save error: {e}")
 
-def _extract_last_payload_text(jsonfile_path: str) -> str | None:
+def _extract_last_payload_text(jsonfile_path: str) -> Optional[str]:
     """
     Returns the GraphQL text of the LAST entry in llama_queries.json.
     Supports entries shaped like {"query": "..."} or {"mutation": "..."}.
@@ -51,7 +52,7 @@ def _extract_last_payload_text(jsonfile_path: str) -> str | None:
         print(f"⚠️ read payload error: {e}")
     return None
 
-def _graphql_field_paths(doc: str) -> set[str]:
+def _graphql_field_paths(doc: str) -> Set[str]:
     """
     Very lightweight GraphQL field path extractor.
     Not a full parser; good enough to signal coverage progress.
