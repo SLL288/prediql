@@ -1,0 +1,636 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrencies {\n    id\n    abbreviation\n    symbol\n    rate\n    country\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-09-26T15:39:09.289409Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrencies": [
+          {
+            "id": "currency-1",
+            "abbreviation": "USD",
+            "symbol": "$",
+            "rate": 1,
+            "country": "United States"
+          },
+          {
+            "id": "currency-2",
+            "abbreviation": "EUR",
+            "symbol": "€",
+            "rate": 1,
+            "country": "European Union"
+          },
+          {
+            "id": "currency-3",
+            "abbreviation": "GBP",
+            "symbol": "£",
+            "rate": 1,
+            "country": "United Kingdom"
+          },
+          {
+            "id": "currency-4",
+            "abbreviation": "JPY",
+            "symbol": "¥",
+            "rate": 1,
+            "country": "Japan"
+          },
+          {
+            "id": "currency-5",
+            "abbreviation": "CAD",
+            "symbol": "C$",
+            "rate": 1,
+            "country": "Canada"
+          }
+        ]
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrencies(filter: \"id=1 OR rate>0\") {\n    id\n    abbreviation\n    symbol\n    rate\n    country\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-09-26T15:39:11.365634Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"filter\" on field \"Query.getCurrencies\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 17
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"filter\" on field \"Query.getCurrencies\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrencies(search: \"<script>alert('xss')</script>\") {\n    id\n    abbreviation\n    symbol\n    rate\n    country\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-09-26T15:39:13.526772Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"search\" on field \"Query.getCurrencies\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 17
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"search\" on field \"Query.getCurrencies\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrencies(hostname: \"localhost\") {\n    id\n    abbreviation\n    symbol\n    rate\n    country\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-09-26T15:39:15.252061Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"hostname\" on field \"Query.getCurrencies\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 17
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"hostname\" on field \"Query.getCurrencies\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrencies(systemCommand: \"ls\") {\n    id\n    abbreviation\n    symbol\n    rate\n    country\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.013,
+    "timestamp": "2025-09-26T15:39:17.369959Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"systemCommand\" on field \"Query.getCurrencies\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 17
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"systemCommand\" on field \"Query.getCurrencies\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrencies(path: \"/etc/passwd\") {\n    id\n    abbreviation\n    symbol\n    rate\n    country\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-09-26T15:39:19.874056Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"path\" on field \"Query.getCurrencies\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 17
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"path\" on field \"Query.getCurrencies\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrencies(description: \"<iframe src='http://example.com'>\") {\n    id\n    abbreviation\n    symbol\n    rate\n    country\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-09-26T15:39:22.659676Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"description\" on field \"Query.getCurrencies\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 17
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"description\" on field \"Query.getCurrencies\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrencies getCurrencies(filter: {\"boolean\": true}) {\n    id\n    abbreviation\n    symbol\n    rate\n    country\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.01,
+        "timestamp": "2025-09-26T15:39:24.317772Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"boolean\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 40
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Syntax Error: Expected Name, found String \"boolean\".",
+                    "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                    "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                    "    at Parser.parseName (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:92:22)",
+                    "    at Parser.parseObjectField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:585:21)",
+                    "    at Parser.item (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:569:21)",
+                    "    at Parser.any (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1497:26)",
+                    "    at Parser.parseObject (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:574:20)",
+                    "    at Parser.parseValueLiteral (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:455:21)",
+                    "    at Parser.parseArgument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:331:19)",
+                    "    at Parser.optionalMany (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1516:28)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-09-26T15:39:24.324160Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Syntax Error: Expected \"{\", found \":\".",
+                    "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                    "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1533:10)",
+                    "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                    "    at Parser.parseOperationDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:193:26)",
+                    "    at Parser.parseDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:131:23)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                    "    at Parser.parseDocument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:109:25)",
+                    "    at Object.parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:36:17)",
+                    "    at parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:208:34)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-26T15:39:24.324232Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.018,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s: query {\n  getCurrencies(filter: {boolean: true}) {\n    id\n    abbreviation\n    symbol\n    rate\n    country\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-09-26T15:39:26.751473Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"boolean\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 40
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Syntax Error: Expected Name, found String \"boolean\".",
+                    "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                    "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                    "    at Parser.parseName (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:92:22)",
+                    "    at Parser.parseObjectField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:585:21)",
+                    "    at Parser.item (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:569:21)",
+                    "    at Parser.any (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1497:26)",
+                    "    at Parser.parseObject (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:574:20)",
+                    "    at Parser.parseValueLiteral (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:455:21)",
+                    "    at Parser.parseArgument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:331:19)",
+                    "    at Parser.optionalMany (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1516:28)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-09-26T15:39:26.757304Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Syntax Error: Expected \"{\", found \":\".",
+                    "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                    "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1533:10)",
+                    "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                    "    at Parser.parseOperationDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:193:26)",
+                    "    at Parser.parseDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:131:23)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                    "    at Parser.parseDocument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:109:25)",
+                    "    at Object.parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:36:17)",
+                    "    at parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:208:34)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-26T15:39:26.757339Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.006,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrencies {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-09-26T15:39:29.576354Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Currency\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Currency\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrencies {\n    __typename\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-09-26T15:39:32.042694Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "data": {
+        "getCurrencies": [
+          {
+            "__typename": "Currency"
+          },
+          {
+            "__typename": "Currency"
+          },
+          {
+            "__typename": "Currency"
+          },
+          {
+            "__typename": "Currency"
+          },
+          {
+            "__typename": "Currency"
+          }
+        ]
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

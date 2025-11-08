@@ -1,0 +1,56 @@
+{
+  "timestamp": "20250926_234357",
+  "endpoint": "updateCurrency",
+  "prompt": "\n    You are an expert in GraphQL API security testing.\n\n    Goal: generate valid GraphQL queries for the operation shown, to get successful responses (HTTP 200) quickly while exploring robustness and testing for specific vulnerability types.\n\n    \n    CRITICAL REQUIREMENT: You MUST include at least one query for a basic call and EACH of the following vulnerability types:\n    - SQL Injection\n    - XSS Injection\n    - SSRF Injection\n    - OS Command Injection\n    - Path Injection\n    - HTML Injection\n    - Query Deny Bypass (REQUIRES TWO QUERIES: non-aliased and aliased)\n    - Introspection\n    - Field Suggestions\n\n    Strict Requirements:\n    1) Queries must be syntactically valid GraphQL.\n    2) No placeholders like <id>, \"ID!\", \"value\". Use realistic literals or known real values.\n    3) You may attempt injected strings, nulls, overlong strings, and type mismatches where appropriate.\n    4) You may output 1 query(ies) but MUST cover all vulnerability types listed above.\n    5) Do not use the words \"edges\" or \"node\".\n    6) GraphQL is case-sensitive. Match the exact operation name: updateCurrency.\n    7) If there are previous response pairs, use them to generate the query.\n    8) For each vulnerability type, craft queries that specifically test for that vulnerability pattern.\n    9) CRITICAL: Label each query with its vulnerability type using the format: ***<vulnerability_type>*** before each ```graphql block.\n    10) SPECIAL CASE: For Query Deny Bypass, you MUST generate TWO queries:\n        - First query: Non-aliased version (normal query structure)\n        - Second query: Aliased version (using query aliases like \"s: queryName\")\n        Both queries should test the same operation but with different structures to test access control bypass.\n    \n    SCHEMA (authoritative):\n    - schema types: {'Currency': {'kind': 'OBJECT', 'fields': [{'name': 'id', 'type': 'ID!'}, {'name': 'abbreviation', 'type': 'String!'}, {'name': 'symbol', 'type': 'String!'}, {'name': 'rate', 'type': 'Float!'}, {'name': 'country', 'type': 'String!'}]}}\n    - output fields (if known): Currency\n    Use only fields/args compatible with this schema.\n    \n    Context:\n    - operation: updateCurrency\n    - input (declared): updateCurrency, input: {'currencyID': 'ID!', 'abbreviation': 'String', 'symbol': 'String', 'country': 'String'}\n    - node type: mutation\n    \n    Output format:\n    Each query must be in its own fenced block with a vulnerability type label:\n    Vulnerability Type Labels Are:\n    - SQL_Injection\n    - XSS_Injection\n    - SSRF_Injection\n    - OS_Command_Injection\n    - Path_Injection\n    - HTML_Injection\n    - Query_Deny_Bypass_Non_Aliased\n    - Query_Deny_Bypass_Aliased\n    - Introspection\n    - Field_Suggestions\n    - Basic_Call\n\n    ***<Vulnerability Type>***\n    ```graphql\n    <your query>\n    ```\n    \n    Example:\n    ***SQL_Injection***\n    ```graphql\n    query {\n      users(filter: \"1' OR '1'='1\") {\n        id\n        name\n      }\n    }\n    ```\n    \n    ***XSS_Injection***\n    ```graphql\n    query {\n      search(term: \"<script>alert('xss')</script>\") {\n        results\n      }\n    }\n    ```\n    ",
+  "llm_response": "```\n\nPlease note that the above GraphQL queries are designed to test specific vulnerability types in a way that doesn't compromise the system's security. You should perform these tests within a controlled environment and not on a production server without explicit permission from the owner. The tested system should have the necessary monitoring and logging services in place to record any malicious attempts and have sufficient incident response plans established.",
+  "parsed_queries": {
+    "query": [
+      {
+        "query": "\nmutation updateCurrency($currencyId: ID!, $abbreviation: String, $symbol: String, $country: String) {\n  updateCurrency(id: $currencyId, abbreviation: $abbreviation, symbol: $symbol, country: $country) {\n    id\n  }\n}\n",
+        "vulnerability_type": "basic_call"
+      },
+      {
+        "query": "\nmutation updateCurrency($currencyId: ID!, $abbreviation: String, $symbol: String, $country: String) {\n  updateCurrency(id: $currencyId, abbreviation: $abbreviation, symbol: $symbol, country: $country) {\n    id\n  }\n}\n# Injecting SQL Injection vulnerability with a crafted ID string\nupdateCurrency(id: \"1' OR '1'='1\", abbreviation: \"xx\", symbol: \"yy\", country: \"zz\")\n",
+        "vulnerability_type": "sql_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency($currencyId: ID!, $abbreviation: String, $symbol: String, $country: String) {\n  updateCurrency(id: $currencyId, abbreviation: $abbreviation, symbol: $symbol, country: $country) {\n    id\n  }\n}\n# Injecting XSS vulnerability by crafting an malicious HTML symbol\nupdateCurrency(id: \"xssd.go.top\", abbreviation: \"xx<html>\", symbol: \"yy<img>\", country: \"zz<script>\")\n",
+        "vulnerability_type": "xss_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency($currencyId: ID!, $abbreviation: String, $symbol: String, $country: String) {\n  updateCurrency(id: $currencyId, abbreviation: $abbreviation, symbol: $symbol, country: $country) {\n    id\n  }\n}\n# Simulating SSRF vulnerability by crafting an internal server request\nupdateCurrency(id: \"http://invalid.internal.com\", abbreviation: \"xx\", symbol: \"yy\", country: \"zz\")\n",
+        "vulnerability_type": "ssrf_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency($currencyId: ID!, $abbreviation: String, $symbol: String, $country: String) {\n  updateCurrency(id: $currencyId, abbreviation: $abbreviation, symbol: $symbol, country: $country) {\n    id\n  }\n}\n# Injecting OS Command Injection vulnerability by crafting an id with malicious characters\nupdateCurrency(id: \"admin; ls -l\", abbreviation: \"xx\", symbol: \"yy\", country: \"zz\")\n",
+        "vulnerability_type": "os_command_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency($currencyId: ID!, $abbreviation: String, $symbol: String, $country: String) {\n  updateCurrency(id: $currencyId, abbreviation: $abbreviation, symbol: $symbol, country: $country) {\n    id\n  }\n}\n# Simulating Path Traversal vulnerability by crafting an id with malicious path characters\nupdateCurrency(id: \"../admin/currency\", abbreviation: \"xx\", symbol: \"yy\", country: \"zz\")\n",
+        "vulnerability_type": "path_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency($currencyId: ID!, $abbreviation: String, $symbol: String, $country: String) {\n  updateCurrency(id: $currencyId, abbreviation: $abbreviation, symbol: $symbol, country: $country) {\n    id\n  }\n}\n# Injecting HTML Injection vulnerability by crafting an id with malicious HTML tags\nupdateCurrency(id: \"<div>CRitical Payload</div>\", abbreviation: \"xx\", symbol: \"yy\", country: \"zz\")\n",
+        "vulnerability_type": "html_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency($currencyId: ID!, $abbreviation: String, $symbol: String, $country: String) {\n  updateCurrency(id: $currencyId, abbreviation: $abbreviation, symbol: $symbol, country: $country) {\n    id\n  }\n  # Test access control bypass by requesting non-aliased fields\n  updateCurrency(id: \"normal user currency id\", abbreviation: \"hd\", symbol: \"hb\", country: \"us\")\n}\n",
+        "vulnerability_type": "query_deny_bypass_non_aliased"
+      },
+      {
+        "query": "\nmutation S:updateCurrency($currencyId: ID!, $abbreviation: String, $symbol: String, $country: String) {\n  updateCurrency(id: $currencyId, abbreviation: $abbreviation, symbol: $symbol, country: $country) {\n    id\n  }\n  # Test access control bypass using query aliases\n  updateCurrency(id: \"aliased query id\", abbreviation: \"hd\", symbol: \"hb\", country: \"us\")\n}\n",
+        "vulnerability_type": "query_deny_bypass_aliased"
+      },
+      {
+        "query": "\nquery Introspect {\n  updateCurrency {\n    types {\n      kind\n      name\n      fields {\n        name\n        type {\n          kind\n          name\n          ofType {\n            kind\n            name\n            ofType {\n              kind\n              name\n              ofType {\n                kind\n                name\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n",
+        "vulnerability_type": "introspection"
+      },
+      {
+        "query": "\nquery SuggestFieldNames {\n  updateCurrency(name: \"Currency\") {\n    fields {\n      name\n      type {\n        kind\n      }\n    }\n  }\n}\n",
+        "vulnerability_type": "field_suggestions"
+      }
+    ]
+  },
+  "approx_tokens": 786.25,
+  "request_time": "2025-09-26T23:43:57.015417"
+}
