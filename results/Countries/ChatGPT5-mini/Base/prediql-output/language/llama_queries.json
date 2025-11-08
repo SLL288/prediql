@@ -1,0 +1,618 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  language(code: \"EN\") {\n    code\n    name\n    native\n    rtl\n    countries {\n      code\n      name\n      phone\n      emoji\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.723,
+    "timestamp": "2025-10-02T16:17:31.322085Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "language": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  language(code: \"EN' OR '1'='1\") {\n    code\n    name\n    countries {\n      code\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 10.985,
+    "timestamp": "2025-10-02T16:17:43.845124Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "language": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  language(code: \"<script>alert('xss')</script>\") {\n    code\n    name\n    native\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.692,
+    "timestamp": "2025-10-02T16:17:46.054964Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "language": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  language(code: \"http://169.254.169.254/latest/meta-data/\") {\n    code\n    name\n    countries {\n      awsRegion\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.698,
+    "timestamp": "2025-10-02T16:17:50.432135Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "language": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  language(code: \"EN; cat /etc/passwd\") {\n    code\n    name\n    countries {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.024,
+    "timestamp": "2025-10-02T16:17:53.231768Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "language": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  language(code: \"../../../../etc/passwd\") {\n    code\n    name\n    countries {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.725,
+    "timestamp": "2025-10-02T16:17:56.059043Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "language": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  language(code: \"<div onclick=alert(1)>injected</div>\") {\n    code\n    name\n    native\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.656,
+    "timestamp": "2025-10-02T16:17:59.760196Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "language": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  language(code: \"ADMIN' OR '1'='1\") {\n    code\n    name\n    countries {\n      code\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.779,
+        "timestamp": "2025-10-02T16:18:03.496596Z",
+        "response_body": {
+          "data": {
+            "language": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.873,
+        "timestamp": "2025-10-02T16:18:04.369569Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-02T16:18:04.369649Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 1.335,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: language(code: \"ADMIN' OR '1'='1\") {\n    code\n    name\n    countries {\n      code\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.841,
+        "timestamp": "2025-10-02T16:18:10.083354Z",
+        "response_body": {
+          "data": {
+            "language": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.111,
+        "timestamp": "2025-10-02T16:18:11.194824Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-02T16:18:11.194861Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 1.584,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  language(code: \"EN\") {\n    code\n    name\n    __typename\n  }\n  __schema {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.775,
+    "timestamp": "2025-10-02T16:18:16.425452Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "language": null,
+        "__schema": {
+          "types": [
+            {
+              "name": "Boolean",
+              "fields": null
+            },
+            {
+              "name": "Continent",
+              "fields": [
+                {
+                  "name": "code"
+                },
+                {
+                  "name": "countries"
+                },
+                {
+                  "name": "name"
+                }
+              ]
+            },
+            {
+              "name": "ContinentFilterInput",
+              "fields": null
+            },
+            {
+              "name": "Country",
+              "fields": [
+                {
+                  "name": "awsRegion"
+                },
+                {
+                  "name": "capital"
+                },
+                {
+                  "name": "code"
+                },
+                {
+                  "name": "continent"
+                },
+                {
+                  "name": "currencies"
+                },
+                {
+                  "name": "currency"
+                },
+                {
+                  "name": "emoji"
+                },
+                {
+                  "name": "emojiU"
+                },
+                {
+                  "name": "languages"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "native"
+                },
+                {
+                  "name": "phone"
+                },
+                {
+                  "name": "phones"
+                },
+                {
+                  "name": "states"
+                },
+                {
+                  "name": "subdivisions"
+                }
+              ]
+            },
+            {
+              "name": "CountryFilterInput",
+              "fields": null
+            },
+            {
+              "name": "Float",
+              "fields": null
+            },
+            {
+              "name": "ID",
+              "fields": null
+            },
+            {
+              "name": "Int",
+              "fields": null
+            },
+            {
+              "name": "Language",
+              "fields": [
+                {
+                  "name": "code"
+                },
+                {
+                  "name": "countries"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "native"
+                },
+                {
+                  "name": "rtl"
+                }
+              ]
+            },
+            {
+              "name": "LanguageFilterInput",
+              "fields": null
+            },
+            {
+              "name": "Query",
+              "fields": [
+                {
+                  "name": "continent"
+                },
+                {
+                  "name": "continents"
+                },
+                {
+                  "name": "countries"
+                },
+                {
+                  "name": "country"
+                },
+                {
+                  "name": "language"
+                },
+                {
+                  "name": "languages"
+                }
+              ]
+            },
+            {
+              "name": "State",
+              "fields": [
+                {
+                  "name": "code"
+                },
+                {
+                  "name": "country"
+                },
+                {
+                  "name": "name"
+                }
+              ]
+            },
+            {
+              "name": "String",
+              "fields": null
+            },
+            {
+              "name": "StringQueryOperatorInput",
+              "fields": null
+            },
+            {
+              "name": "Subdivision",
+              "fields": [
+                {
+                  "name": "code"
+                },
+                {
+                  "name": "emoji"
+                },
+                {
+                  "name": "name"
+                }
+              ]
+            },
+            {
+              "name": "__Directive",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "isRepeatable"
+                },
+                {
+                  "name": "locations"
+                },
+                {
+                  "name": "args"
+                }
+              ]
+            },
+            {
+              "name": "__DirectiveLocation",
+              "fields": null
+            },
+            {
+              "name": "__EnumValue",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__Field",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "args"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__InputValue",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "defaultValue"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__Schema",
+              "fields": [
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "types"
+                },
+                {
+                  "name": "queryType"
+                },
+                {
+                  "name": "mutationType"
+                },
+                {
+                  "name": "subscriptionType"
+                },
+                {
+                  "name": "directives"
+                }
+              ]
+            },
+            {
+              "name": "__Type",
+              "fields": [
+                {
+                  "name": "kind"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "specifiedByURL"
+                },
+                {
+                  "name": "fields"
+                },
+                {
+                  "name": "interfaces"
+                },
+                {
+                  "name": "possibleTypes"
+                },
+                {
+                  "name": "enumValues"
+                },
+                {
+                  "name": "inputFields"
+                },
+                {
+                  "name": "ofType"
+                },
+                {
+                  "name": "isOneOf"
+                }
+              ]
+            },
+            {
+              "name": "__TypeKind",
+              "fields": null
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  language(code: \"EN\") {\n    naem\n    nam\n    native\n    rtl\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.365,
+    "timestamp": "2025-10-02T16:18:20.747224Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naem\" on type \"Language\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"nam\" on type \"Language\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]
