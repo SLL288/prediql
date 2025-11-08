@@ -1,0 +1,3809 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.486,
+    "timestamp": "2025-10-05T18:06:58.926866Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.436,
+    "timestamp": "2025-10-05T18:07:06.604710Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123<script>alert('xss')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.527,
+    "timestamp": "2025-10-05T18:07:13.717963Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"http://169.254.169.254/latest/meta-data/instance-id\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.436,
+    "timestamp": "2025-10-05T18:07:21.399278Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.431,
+    "timestamp": "2025-10-05T18:07:28.493161Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123/../../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.47,
+    "timestamp": "2025-10-05T18:07:35.480219Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123<h1>Hello HTML</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.486,
+    "timestamp": "2025-10-05T18:07:42.806636Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-non-aliased-1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.484,
+        "timestamp": "2025-10-05T18:07:50.552339Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.473,
+        "timestamp": "2025-10-05T18:07:56.025283Z",
+        "response_body": {
+          "data": {
+            "myVocab": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T18:07:56.025405Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.478,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myVocab: CvocVocabulary(id: \"vocab-aliased-1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.434,
+        "timestamp": "2025-10-05T18:08:09.756967Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.469,
+        "timestamp": "2025-10-05T18:08:15.226043Z",
+        "response_body": {
+          "data": {
+            "myVocab": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T18:08:15.226093Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.479,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.464,
+    "timestamp": "2025-10-05T18:08:28.858531Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-suggestion-test\") {\n    id\n    nami\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.481,
+    "timestamp": "2025-10-05T18:08:36.556532Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/nami]) : Field 'nami' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    type\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.474,
+    "timestamp": "2025-10-05T18:08:47.685491Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123' OR 1=1 --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.499,
+    "timestamp": "2025-10-05T18:08:55.123932Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    description\n    name\n    concepts {\n      items {\n        id\n        descriptions {\n          name\n          definition\n          scopeNote\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.099,
+    "timestamp": "2025-10-05T18:09:02.748815Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    links {\n      targets {\n        ... on CvocVocabulary {\n          id\n          name\n        }\n        ... on CvocConcept {\n          id\n          uri\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.483,
+    "timestamp": "2025-10-05T18:09:11.021310Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (InvalidFragmentType@[CvocVocabulary/links/targets]) : Fragment cannot be spread here as objects of type 'Linkable' can never be of type 'CvocVocabulary'",
+          "locations": [
+            {
+              "line": 7,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    annotations {\n      id\n      body\n      by\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.48,
+    "timestamp": "2025-10-05T18:09:18.494665Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    type\n    systemEvents {\n      logMessage\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.483,
+    "timestamp": "2025-10-05T18:09:25.834749Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    description\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.821,
+    "timestamp": "2025-10-05T18:09:34.437484Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-456\") {\n    id\n    type\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.497,
+        "timestamp": "2025-10-05T18:09:41.872795Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.461,
+        "timestamp": "2025-10-05T18:09:47.333559Z",
+        "response_body": {
+          "data": {
+            "myVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-05T18:09:47.333591Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.5,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myVocabulary: CvocVocabulary(id: \"vocab-456\") {\n    id\n    type\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.44,
+        "timestamp": "2025-10-05T18:10:00.268785Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.464,
+        "timestamp": "2025-10-05T18:10:05.732941Z",
+        "response_body": {
+          "data": {
+            "myVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-10-05T18:10:05.733072Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 6.368,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.455,
+    "timestamp": "2025-10-05T18:10:19.871099Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-789\") {\n    id\n    tpe\n    nme\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.481,
+    "timestamp": "2025-10-05T18:10:27.409172Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/tpe]) : Field 'tpe' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/nme]) : Field 'nme' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"12345\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.451,
+    "timestamp": "2025-10-05T18:10:38.271337Z",
+    "count": 23,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"12345' OR 1=1 --\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.436,
+    "timestamp": "2025-10-05T18:10:46.449101Z",
+    "count": 24,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"12345<script>alert('xss')</script>\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.657,
+    "timestamp": "2025-10-05T18:10:54.920684Z",
+    "count": 25,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"12345http://evil.com/data\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.487,
+    "timestamp": "2025-10-05T18:11:02.526432Z",
+    "count": 26,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"12345; cat /etc/passwd\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.46,
+    "timestamp": "2025-10-05T18:11:09.899516Z",
+    "count": 27,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"12345../../etc/passwd\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.568,
+    "timestamp": "2025-10-05T18:11:17.428229Z",
+    "count": 28,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"12345<img src=x onerror=alert('html')>\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.499,
+    "timestamp": "2025-10-05T18:11:25.561336Z",
+    "count": 29,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"67890\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.452,
+        "timestamp": "2025-10-05T18:11:32.672865Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.755,
+        "timestamp": "2025-10-05T18:11:38.428263Z",
+        "response_body": {
+          "data": {
+            "myCvocAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-10-05T18:11:38.428406Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.477,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myCvocAlias: CvocVocabulary(id: \"67890\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.489,
+        "timestamp": "2025-10-05T18:11:52.017406Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.627,
+        "timestamp": "2025-10-05T18:11:57.644745Z",
+        "response_body": {
+          "data": {
+            "myCvocAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 31,
+    "timestamp": "2025-10-05T18:11:57.644844Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.471,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.037,
+    "timestamp": "2025-10-05T18:12:11.693767Z",
+    "count": 32,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"12345\") {\n    na_me\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.502,
+    "timestamp": "2025-10-05T18:12:19.727880Z",
+    "count": 33,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/na_me]) : Field 'na_me' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"123e4567-e89b-12d3-a456-426614174000\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.478,
+    "timestamp": "2025-10-05T18:12:31.641388Z",
+    "count": 34,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"123e4567-e89b-12d3-a456-426614174000' OR 1=1 --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.511,
+    "timestamp": "2025-10-05T18:12:38.716749Z",
+    "count": 35,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"123e4567-e89b-12d3-a456-426614174000<script>alert('xss')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.452,
+    "timestamp": "2025-10-05T18:12:46.233242Z",
+    "count": 36,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"http://example.com/malicious-payload\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.46,
+    "timestamp": "2025-10-05T18:12:53.424020Z",
+    "count": 37,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"123e4567-e89b-12d3-a456-426614174000; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.478,
+    "timestamp": "2025-10-05T18:13:00.848916Z",
+    "count": 38,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.452,
+    "timestamp": "2025-10-05T18:13:09.266590Z",
+    "count": 39,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"123e4567-e89b-12d3-a456-426614174000<h1>Injected Header</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.485,
+    "timestamp": "2025-10-05T18:13:17.541559Z",
+    "count": 40,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"123e4567-e89b-12d3-a456-426614174001\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.478,
+        "timestamp": "2025-10-05T18:13:25.627062Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.483,
+        "timestamp": "2025-10-05T18:13:31.110479Z",
+        "response_body": {
+          "data": {
+            "myVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-10-05T18:13:31.110507Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.486,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery AliasedCvocVocabulary {\n  myVocabulary: CvocVocabulary(id: \"123e4567-e89b-12d3-a456-426614174001\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.444,
+        "timestamp": "2025-10-05T18:13:44.575763Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.439,
+        "timestamp": "2025-10-05T18:13:50.015097Z",
+        "response_body": {
+          "data": {
+            "myVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 42,
+    "timestamp": "2025-10-05T18:13:50.015154Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.479,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.478,
+    "timestamp": "2025-10-05T18:14:03.929298Z",
+    "count": 43,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"123e4567-e89b-12d3-a456-426614174000\") {\n    id\n    naame # Intentionally misspelled field to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.476,
+    "timestamp": "2025-10-05T18:14:11.236869Z",
+    "count": 44,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/naame]) : Field 'naame' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.445,
+    "timestamp": "2025-10-05T18:14:21.255567Z",
+    "count": 45,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123' OR 1=1 --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.749,
+    "timestamp": "2025-10-05T18:14:29.095492Z",
+    "count": 46,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    description\n    concepts {\n      items {\n        descriptions {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.705,
+    "timestamp": "2025-10-05T18:14:36.811529Z",
+    "count": 47,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    links {\n      targets {\n        ... on Link {\n          id\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.482,
+    "timestamp": "2025-10-05T18:14:44.599209Z",
+    "count": 48,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (InvalidFragmentType@[CvocVocabulary/links/targets]) : Fragment cannot be spread here as objects of type 'Linkable' can never be of type 'Link'",
+          "locations": [
+            {
+              "line": 6,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    annotations {\n      systemEvents {\n        logMessage\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.488,
+    "timestamp": "2025-10-05T18:14:51.925568Z",
+    "count": 49,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.487,
+        "timestamp": "2025-10-05T18:14:59.535660Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.462,
+        "timestamp": "2025-10-05T18:15:04.997699Z",
+        "response_body": {
+          "data": {
+            "myVocab": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 50,
+    "timestamp": "2025-10-05T18:15:04.997823Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.475,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myVocab: CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.44,
+        "timestamp": "2025-10-05T18:15:18.282857Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.455,
+        "timestamp": "2025-10-05T18:15:23.737529Z",
+        "response_body": {
+          "data": {
+            "myVocab": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 51,
+    "timestamp": "2025-10-05T18:15:23.737594Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.478,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.438,
+    "timestamp": "2025-10-05T18:15:36.652946Z",
+    "count": 52,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    nane \n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.458,
+    "timestamp": "2025-10-05T18:15:44.153594Z",
+    "count": 53,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/nane]) : Field 'nane' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.483,
+    "timestamp": "2025-10-05T18:15:55.276552Z",
+    "count": 54,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123' OR '1'='1\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.501,
+    "timestamp": "2025-10-05T18:16:03.048528Z",
+    "count": 55,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    description\n    concepts {\n      items {\n        id\n        descriptions {\n          name\n          definition\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.493,
+    "timestamp": "2025-10-05T18:16:10.879851Z",
+    "count": 56,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    links {\n      id\n      type\n      targets {\n        ...on CvocVocabulary {\n          id\n          name\n        }\n        ...on CvocConcept {\n          id\n          uri\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.473,
+    "timestamp": "2025-10-05T18:16:19.229197Z",
+    "count": 57,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (InvalidFragmentType@[CvocVocabulary/links/targets]) : Fragment cannot be spread here as objects of type 'Linkable' can never be of type 'CvocVocabulary'",
+          "locations": [
+            {
+              "line": 10,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    systemEvents {\n      timestamp\n      logMessage\n      eventType\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.503,
+    "timestamp": "2025-10-05T18:16:26.420074Z",
+    "count": 58,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"/etc/passwd\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.473,
+    "timestamp": "2025-10-05T18:16:33.525697Z",
+    "count": 59,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-alias-test\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.762,
+        "timestamp": "2025-10-05T18:16:40.863422Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.449,
+        "timestamp": "2025-10-05T18:16:46.312809Z",
+        "response_body": {
+          "data": {
+            "myVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 60,
+    "timestamp": "2025-10-05T18:16:46.312973Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.921,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myVocabulary: CvocVocabulary(id: \"vocab-alias-test\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.451,
+        "timestamp": "2025-10-05T18:17:00.107233Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.49,
+        "timestamp": "2025-10-05T18:17:05.597405Z",
+        "response_body": {
+          "data": {
+            "myVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 61,
+    "timestamp": "2025-10-05T18:17:05.597454Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.881,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.495,
+    "timestamp": "2025-10-05T18:17:19.322109Z",
+    "count": 62,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    ids\n    nam\n    ItemCount\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.662,
+    "timestamp": "2025-10-05T18:17:27.804541Z",
+    "count": 63,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/ids]) : Field 'ids' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/nam]) : Field 'nam' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/ItemCount]) : Field 'ItemCount' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.532,
+    "timestamp": "2025-10-05T18:17:38.688580Z",
+    "count": 64,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123' OR 1=1'--\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 15.013,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-05T18:17:55.605959Z",
+    "count": 65
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    description\n    annotations {\n      body\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.491,
+    "timestamp": "2025-10-05T18:18:01.096706Z",
+    "count": 66,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.481,
+    "timestamp": "2025-10-05T18:18:09.490461Z",
+    "count": 67,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myVocab: CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.677,
+        "timestamp": "2025-10-05T18:18:17.984488Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.487,
+        "timestamp": "2025-10-05T18:18:23.471113Z",
+        "response_body": {
+          "data": {
+            "myVocab": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 68,
+    "timestamp": "2025-10-05T18:18:23.471152Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.48,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.448,
+    "timestamp": "2025-10-05T18:18:36.436633Z",
+    "count": 69,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    naem\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.485,
+    "timestamp": "2025-10-05T18:18:44.561985Z",
+    "count": 70,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/naem]) : Field 'naem' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.48,
+    "timestamp": "2025-10-05T18:18:55.947704Z",
+    "count": 71,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123' OR 1=1 --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.467,
+    "timestamp": "2025-10-05T18:19:03.050736Z",
+    "count": 72,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-<script>alert('xss')</script>\") {\n    id\n    description\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.449,
+    "timestamp": "2025-10-05T18:19:10.947812Z",
+    "count": 73,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"http://127.0.0.1/admin\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.463,
+    "timestamp": "2025-10-05T18:19:18.035272Z",
+    "count": 74,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123; cat /etc/passwd\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.445,
+    "timestamp": "2025-10-05T18:19:26.003150Z",
+    "count": 75,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123/../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.457,
+    "timestamp": "2025-10-05T18:19:33.061418Z",
+    "count": 76,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123<h1>Hello HTML!</h1>\") {\n    id\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.479,
+    "timestamp": "2025-10-05T18:19:40.614915Z",
+    "count": 77,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-deny-test\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.438,
+        "timestamp": "2025-10-05T18:19:48.206568Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.489,
+        "timestamp": "2025-10-05T18:19:53.695706Z",
+        "response_body": {
+          "data": {
+            "deniedCvocVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 78,
+    "timestamp": "2025-10-05T18:19:53.695785Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.813,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery BypassVocabDeny {\n  deniedCvocVocabulary: CvocVocabulary(id: \"vocab-deny-test\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.486,
+        "timestamp": "2025-10-05T18:20:06.958711Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.476,
+        "timestamp": "2025-10-05T18:20:12.434927Z",
+        "response_body": {
+          "data": {
+            "deniedCvocVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 79,
+    "timestamp": "2025-10-05T18:20:12.434997Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.503,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.452,
+    "timestamp": "2025-10-05T18:20:26.136077Z",
+    "count": 80,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    typ # Intentionally misspelled to trigger suggestions if supported\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.44,
+    "timestamp": "2025-10-05T18:20:34.432354Z",
+    "count": 81,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/typ]) : Field 'typ' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.458,
+    "timestamp": "2025-10-05T18:20:44.856952Z",
+    "count": 82,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.434,
+    "timestamp": "2025-10-05T18:20:52.960926Z",
+    "count": 83,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    description\n    annotations {\n      body\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.491,
+    "timestamp": "2025-10-05T18:21:00.436191Z",
+    "count": 84,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    links {\n      targets {\n        ... on CvocVocabulary {\n          id\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.495,
+    "timestamp": "2025-10-05T18:21:08.033719Z",
+    "count": 85,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (InvalidFragmentType@[CvocVocabulary/links/targets]) : Fragment cannot be spread here as objects of type 'Linkable' can never be of type 'CvocVocabulary'",
+          "locations": [
+            {
+              "line": 6,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    systemEvents {\n      logMessage\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.599,
+    "timestamp": "2025-10-05T18:21:15.141656Z",
+    "count": 86,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-bypass-1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.146,
+        "timestamp": "2025-10-05T18:21:24.171161Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.488,
+        "timestamp": "2025-10-05T18:21:29.659377Z",
+        "response_body": {
+          "data": {
+            "myVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 87,
+    "timestamp": "2025-10-05T18:21:29.659450Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.464,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myVocabulary: CvocVocabulary(id: \"vocab-bypass-2\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.48,
+        "timestamp": "2025-10-05T18:21:43.318051Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.456,
+        "timestamp": "2025-10-05T18:21:48.774113Z",
+        "response_body": {
+          "data": {
+            "myVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 88,
+    "timestamp": "2025-10-05T18:21:48.774202Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.488,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.495,
+    "timestamp": "2025-10-05T18:22:01.309772Z",
+    "count": 89,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    nam\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.495,
+    "timestamp": "2025-10-05T18:22:09.417390Z",
+    "count": 90,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/nam]) : Field 'nam' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    itemCount\n    concepts {\n      items {\n        id\n        identifier\n        descriptions {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.487,
+    "timestamp": "2025-10-05T18:22:21.062168Z",
+    "count": 91,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123' OR 1=1 --\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.851,
+    "timestamp": "2025-10-05T18:22:29.641593Z",
+    "count": 92,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    description\n    systemEvents {\n      logMessage\n    }\n    annotations {\n      body\n    }\n    concepts {\n      items {\n        descriptions {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.488,
+    "timestamp": "2025-10-05T18:22:37.103035Z",
+    "count": 93,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    links {\n      targets {\n        ... on CvocConcept {\n          uri\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.493,
+    "timestamp": "2025-10-05T18:22:44.862126Z",
+    "count": 94,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    systemEvents {\n      logMessage\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.474,
+    "timestamp": "2025-10-05T18:22:52.925338Z",
+    "count": 95,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123/../../etc/passwd\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.076,
+    "timestamp": "2025-10-05T18:23:00.939511Z",
+    "count": 96,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    name\n    description\n    annotations {\n      body\n    }\n    concepts {\n      items {\n        descriptions {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.449,
+    "timestamp": "2025-10-05T18:23:09.039345Z",
+    "count": 97,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    identifier\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.484,
+        "timestamp": "2025-10-05T18:23:16.215532Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.485,
+        "timestamp": "2025-10-05T18:23:21.700545Z",
+        "response_body": {
+          "data": {
+            "aliasCvocVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 98,
+    "timestamp": "2025-10-05T18:23:21.700650Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.481,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery MyVocabularyAlias {\n  aliasCvocVocabulary: CvocVocabulary(id: \"vocab-123\") {\n    identifier\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.468,
+        "timestamp": "2025-10-05T18:23:34.550930Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.49,
+        "timestamp": "2025-10-05T18:23:40.040884Z",
+        "response_body": {
+          "data": {
+            "aliasCvocVocabulary": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 99,
+    "timestamp": "2025-10-05T18:23:40.041027Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.503,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n      description\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.47,
+    "timestamp": "2025-10-05T18:23:53.017484Z",
+    "count": 100,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"vocab-123\") {\n    id\n    typ # Typo to trigger suggestions\n    nme # Another typo\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.468,
+    "timestamp": "2025-10-05T18:24:00.719788Z",
+    "count": 101,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/typ]) : Field 'typ' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/nme]) : Field 'nme' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery CvocVocabulary {\n  CvocVocabulary(id: \"cvoc-12345\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.435,
+    "timestamp": "2025-10-05T21:14:15.168444Z",
+    "count": 102,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery CvocVocabulary {\n  CvocVocabulary(id: \"cvoc-12345' OR 1=1 --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.547,
+    "timestamp": "2025-10-05T21:14:18.377638Z",
+    "count": 103,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery CvocVocabulary {\n  CvocVocabulary(id: \"cvoc-12345<script>alert('xss')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.958,
+    "timestamp": "2025-10-05T21:14:20.896244Z",
+    "count": 104,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery CvocVocabulary {\n  CvocVocabulary(id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/s3access\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.477,
+    "timestamp": "2025-10-05T21:14:24.351788Z",
+    "count": 105,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery CvocVocabulary {\n  CvocVocabulary(id: \"cvoc-12345; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.496,
+    "timestamp": "2025-10-05T21:14:26.569314Z",
+    "count": 106,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery CvocVocabulary {\n  CvocVocabulary(id: \"../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.5,
+    "timestamp": "2025-10-05T21:14:29.731513Z",
+    "count": 107,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery CvocVocabulary {\n  CvocVocabulary(id: \"cvoc-12345<h1>Hello CvocVocabulary</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.526,
+    "timestamp": "2025-10-05T21:14:31.981241Z",
+    "count": 108,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery CvocVocabulary {\n  CvocVocabulary(id: \"cvoc-bypass-non-aliased\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.53,
+        "timestamp": "2025-10-05T21:14:34.845320Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.492,
+        "timestamp": "2025-10-05T21:14:35.337353Z",
+        "response_body": {
+          "data": {
+            "cvoc": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 109,
+    "timestamp": "2025-10-05T21:14:35.337391Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.577,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery BypassedCvocVocabulary {\n  cvoc: CvocVocabulary(id: \"cvoc-bypass-aliased\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.011,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-05T21:14:49.428619Z",
+    "count": 110
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.419,
+    "timestamp": "2025-10-05T21:14:49.847604Z",
+    "count": 111,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery CvocVocabulary {\n  CvocVocabulary(id: \"cvoc-suggest\") {\n    id\n    nam\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.465,
+    "timestamp": "2025-10-05T21:14:53.222313Z",
+    "count": 112,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/nam]) : Field 'nam' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri-terms\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.647,
+    "timestamp": "2025-10-05T21:15:00.856552Z",
+    "count": 113,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri-terms' OR 1=1 --\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.651,
+    "timestamp": "2025-10-05T21:15:03.895517Z",
+    "count": 114,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri-terms<script>alert('xss')</script>\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.5,
+    "timestamp": "2025-10-05T21:15:06.948785Z",
+    "count": 115,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"http://evil.com/ehri-terms\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.477,
+    "timestamp": "2025-10-05T21:15:10.121273Z",
+    "count": 116,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri-terms; cat /etc/passwd\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.778,
+    "timestamp": "2025-10-05T21:15:13.833223Z",
+    "count": 117,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri-terms/../evil_path\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.614,
+    "timestamp": "2025-10-05T21:15:17.084500Z",
+    "count": 118,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri-terms<h1>Hello</h1>\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.487,
+    "timestamp": "2025-10-05T21:15:19.816919Z",
+    "count": 119,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery bypassQuery {\n  alpha: CvocVocabulary(id: \"ehri-terms\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.476,
+        "timestamp": "2025-10-05T21:15:23.211518Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.587,
+        "timestamp": "2025-10-05T21:15:23.798314Z",
+        "response_body": {
+          "data": {
+            "alpha": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 120,
+    "timestamp": "2025-10-05T21:15:23.798391Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.834,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.461,
+    "timestamp": "2025-10-05T21:15:26.912856Z",
+    "count": 121,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri-terms\") {\n    nam\n    _\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.591,
+    "timestamp": "2025-10-05T21:15:29.974579Z",
+    "count": 122,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/nam]) : Field 'nam' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/_]) : Field '_' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri_terms\") {\n    id\n    name\n    type\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.0,
+    "timestamp": "2025-10-05T21:16:21.150780Z",
+    "count": 123,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": {
+          "id": "ehri_terms",
+          "name": "EHRI Terms",
+          "type": "CvocVocabulary"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri_terms' OR '1'='1\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.502,
+    "timestamp": "2025-10-05T21:16:23.188355Z",
+    "count": 124,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri_terms\") {\n    id\n    name\n    description\n    type\n    annotations {\n      body\n      by\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.534,
+    "timestamp": "2025-10-05T21:16:26.495218Z",
+    "count": 125,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Exception while fetching data (/CvocVocabulary/description) : null",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "path": [
+            "CvocVocabulary",
+            "description"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri_terms\") {\n    id\n    links {\n      id\n      type\n      targets {\n        id\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.467,
+    "timestamp": "2025-10-05T21:16:29.169693Z",
+    "count": 126,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": {
+          "id": "ehri_terms",
+          "links": []
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri_terms\") {\n    id\n    name\n    systemEvents {\n      logMessage\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.531,
+    "timestamp": "2025-10-05T21:16:31.459258Z",
+    "count": 127,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": {
+          "id": "ehri_terms",
+          "name": "EHRI Terms",
+          "systemEvents": [
+            {
+              "logMessage": "Update vocabulary description"
+            },
+            {
+              "logMessage": "Updating EHRI vocabulary identifier"
+            },
+            {
+              "logMessage": "Updating the name/description of the EHRI thesaurus."
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri_terms\") {\n    id\n    name\n    links {\n      id\n      type\n      targets {\n        id\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.52,
+    "timestamp": "2025-10-05T21:16:33.486790Z",
+    "count": 128,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "CvocVocabulary": {
+          "id": "ehri_terms",
+          "name": "EHRI Terms",
+          "links": []
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri_terms\") {\n    id\n    name\n    description\n    annotations {\n      body\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.511,
+    "timestamp": "2025-10-05T21:16:35.960243Z",
+    "count": 129,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Exception while fetching data (/CvocVocabulary/description) : null",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "path": [
+            "CvocVocabulary",
+            "description"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri_terms\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.492,
+        "timestamp": "2025-10-05T21:16:39.412359Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": {
+              "id": "ehri_terms",
+              "name": "EHRI Terms"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.822,
+        "timestamp": "2025-10-05T21:16:40.234823Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token ':' at line 2 column 23",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 23
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 130,
+    "timestamp": "2025-10-05T21:16:40.234931Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.496,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s_CvocVocabulary: CvocVocabulary(id: \"ehri_terms\") {\n  CvocVocabulary\n  name\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.59,
+        "timestamp": "2025-10-05T21:16:43.199698Z",
+        "response_body": {
+          "data": {
+            "CvocVocabulary": {
+              "id": "ehri_terms",
+              "name": "EHRI Terms"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.538,
+        "timestamp": "2025-10-05T21:16:43.737767Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token ':' at line 2 column 23",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 23
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 131,
+    "timestamp": "2025-10-05T21:16:43.737854Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.458,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.498,
+    "timestamp": "2025-10-05T21:16:47.582388Z",
+    "count": 132,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[CvocVocabulary]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/types]) : Field 'types' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  CvocVocabulary(id: \"ehri_terms\") {\n    id\n    name\n    description\n    systemEvents\n    itemCounts\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.689,
+    "timestamp": "2025-10-05T21:16:51.029023Z",
+    "count": 133,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (SubselectionRequired@[CvocVocabulary/systemEvents]) : Subselection required for type '[SystemEvent]' of field 'systemEvents'",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[CvocVocabulary/itemCounts]) : Field 'itemCounts' in type 'CvocVocabulary' is undefined",
+          "locations": [
+            {
+              "line": 8,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

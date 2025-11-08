@@ -1,0 +1,887 @@
+[
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"repo-1\") {\n    id\n    type\n    identifier\n    itemCount\n    country {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.362,
+    "timestamp": "2025-09-23T12:38:57.181622Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"1' OR '1'='1\") {\n    id\n    identifier\n    itemCount\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.39,
+    "timestamp": "2025-09-23T12:39:00.251723Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"<script>alert('xss')</script>\") {\n    id\n    identifier\n    descriptions {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.375,
+    "timestamp": "2025-09-23T12:39:03.416414Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\") {\n    id\n    identifier\n    links {\n      id\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.37,
+    "timestamp": "2025-09-23T12:39:05.958969Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"repo-1; /bin/cat /etc/passwd\") {\n    id\n    identifier\n    descriptions {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.372,
+    "timestamp": "2025-09-23T12:39:08.852266Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"../../../../../etc/passwd\") {\n    id\n    identifier\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.379,
+    "timestamp": "2025-09-23T12:39:10.769892Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"<div onclick=\\\"alert(1)\\\">Click me</div>\") {\n    id\n    identifier\n    descriptions {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.416,
+    "timestamp": "2025-09-23T12:39:13.449854Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"repo-secret\") {\n    id\n    type\n    systemEvents {\n      timestamp\n      logMessage\n      eventType\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.36,
+        "timestamp": "2025-09-23T12:39:16.447882Z",
+        "response_body": {
+          "data": {
+            "Repository": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.366,
+        "timestamp": "2025-09-23T12:39:16.814255Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-23T12:39:16.814297Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.387,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  s: Repository(id: \"repo-secret\") {\n    id\n    type\n    systemEvents {\n      timestamp\n      logMessage\n      eventType\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.353,
+        "timestamp": "2025-09-23T12:39:19.202061Z",
+        "response_body": {
+          "data": {
+            "Repository": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.382,
+        "timestamp": "2025-09-23T12:39:19.584074Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-23T12:39:19.584094Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.365,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(name: \"Repository\") {\n    name\n    fields {\n      name\n      type {\n        name\n        kind\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.443,
+    "timestamp": "2025-09-23T12:39:22.475388Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Repository]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (UnknownArgument@[Repository]) : Unknown field argument 'name'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Repository/name]) : Field 'name' in type 'Repository' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Repository/fields]) : Field 'fields' in type 'Repository' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"repo-0001\") {\n    id\n    type\n    identifier\n    itemCount\n    description {\n      name\n    }\n    country {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.448,
+    "timestamp": "2025-09-23T12:41:37.712752Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"repo-123' OR '1'='1\") {\n    id\n    identifier\n    itemCount\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.412,
+    "timestamp": "2025-09-23T12:41:40.222277Z",
+    "count": 12,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"<script>alert('xss')</script>\") {\n    id\n    identifier\n    description {\n      name\n    }\n    descriptions {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.355,
+    "timestamp": "2025-09-23T12:41:42.760044Z",
+    "count": 13,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\") {\n    id\n    identifier\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.382,
+    "timestamp": "2025-09-23T12:41:45.548726Z",
+    "count": 14,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"repo-abc; cat /etc/passwd\") {\n    id\n    identifier\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.37,
+    "timestamp": "2025-09-23T12:41:47.677486Z",
+    "count": 15,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"../../../etc/passwd\") {\n    id\n    identifier\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.358,
+    "timestamp": "2025-09-23T12:41:50.095024Z",
+    "count": 16,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"<div onclick='alert(1)'>ClickMe</div>\") {\n    id\n    identifier\n    description {\n      name\n    }\n    descriptions {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.363,
+    "timestamp": "2025-09-23T12:41:53.246243Z",
+    "count": 17,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"restricted-777\") {\n    id\n    type\n    identifier\n    descriptions {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.37,
+        "timestamp": "2025-09-23T12:41:55.569299Z",
+        "response_body": {
+          "data": {
+            "Repository": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.37,
+        "timestamp": "2025-09-23T12:41:55.939514Z",
+        "response_body": {
+          "data": {
+            "secretRepo": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 18,
+    "timestamp": "2025-09-23T12:41:55.939574Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.378,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  secretRepo: Repository(id: \"restricted-777\") {\n    id\n    type\n    identifier\n    descriptions {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.368,
+        "timestamp": "2025-09-23T12:41:58.919831Z",
+        "response_body": {
+          "data": {
+            "Repository": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.399,
+        "timestamp": "2025-09-23T12:41:59.318891Z",
+        "response_body": {
+          "data": {
+            "secretRepo": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-09-23T12:41:59.318921Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.399,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(name: \"Repository\") {\n    name\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.397,
+    "timestamp": "2025-09-23T12:42:01.890082Z",
+    "count": 20,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Repository]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (UnknownArgument@[Repository]) : Unknown field argument 'name'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Repository/name]) : Field 'name' in type 'Repository' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Repository/fields]) : Field 'fields' in type 'Repository' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"repo-9f8c7d6b-0001\") {\n    id\n    type\n    identifier\n    itemCount\n    latitude\n    longitude\n    description {\n      name\n    }\n    country {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.375,
+    "timestamp": "2025-09-23T12:44:41.625698Z",
+    "count": 21,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"repo-1' OR '1'='1\") {\n    id\n    identifier\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.362,
+    "timestamp": "2025-09-23T12:44:43.777386Z",
+    "count": 22,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"<script>alert('xss')</script>\") {\n    id\n    identifier\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.365,
+    "timestamp": "2025-09-23T12:44:46.940785Z",
+    "count": 23,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    identifier\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.398,
+    "timestamp": "2025-09-23T12:44:50.188275Z",
+    "count": 24,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"repo-123; cat /etc/passwd;\") {\n    id\n    identifier\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.392,
+    "timestamp": "2025-09-23T12:44:53.203999Z",
+    "count": 25,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"../../../../etc/passwd\") {\n    id\n    identifier\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.404,
+    "timestamp": "2025-09-23T12:44:56.075309Z",
+    "count": 26,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"<img src=x onerror=alert('html')>\") {\n    id\n    identifier\n    description {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.421,
+    "timestamp": "2025-09-23T12:44:58.704271Z",
+    "count": 27,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Repository": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"admin-repo-0001\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.386,
+        "timestamp": "2025-09-23T12:45:01.004879Z",
+        "response_body": {
+          "data": {
+            "Repository": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.414,
+        "timestamp": "2025-09-23T12:45:01.418956Z",
+        "response_body": {
+          "data": {
+            "bypassRepo": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 28,
+    "timestamp": "2025-09-23T12:45:01.419019Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.368,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  bypassRepo: Repository(id: \"admin-repo-0001\") {\n    id\n    type\n    identifier\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.385,
+        "timestamp": "2025-09-23T12:45:05.171354Z",
+        "response_body": {
+          "data": {
+            "Repository": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.374,
+        "timestamp": "2025-09-23T12:45:05.545086Z",
+        "response_body": {
+          "data": {
+            "bypassRepo": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 29,
+    "timestamp": "2025-09-23T12:45:05.545113Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.379,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Repository {\n  Repository(id: \"repo-9f8c7d6b-0001\") {\n    id\n    type\n  }\n  __type(name: \"Repository\") {\n    name\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.402,
+    "timestamp": "2025-09-23T12:45:08.637842Z",
+    "count": 30,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "Repository": null,
+        "__type": {
+          "name": "Repository",
+          "fields": [
+            {
+              "name": "id"
+            },
+            {
+              "name": "type"
+            },
+            {
+              "name": "identifier"
+            },
+            {
+              "name": "itemCount"
+            },
+            {
+              "name": "documentaryUnits"
+            },
+            {
+              "name": "latitude"
+            },
+            {
+              "name": "longitude"
+            },
+            {
+              "name": "description"
+            },
+            {
+              "name": "descriptions"
+            },
+            {
+              "name": "country"
+            },
+            {
+              "name": "links"
+            },
+            {
+              "name": "annotations"
+            },
+            {
+              "name": "connected"
+            },
+            {
+              "name": "systemEvents"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

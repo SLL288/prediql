@@ -1,0 +1,659 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  countries {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.488,
+    "timestamp": "2025-10-07T00:07:55.596806Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[countries/id]) : Field 'id' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[countries/name]) : Field 'name' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  countries(filter: \"1' OR id = '1'\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.464,
+    "timestamp": "2025-10-07T00:07:58.827134Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[countries]) : Unknown field argument 'filter'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[countries/id]) : Field 'id' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[countries/name]) : Field 'name' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  countries(filter: \"<script>alert('xss')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.471,
+    "timestamp": "2025-10-07T00:08:01.136892Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[countries]) : Unknown field argument 'filter'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[countries/id]) : Field 'id' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[countries/name]) : Field 'name' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  countries(first: 10, after: \"http://example.com\") {\n    edges {\n      node {\n        id\n        type\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.459,
+    "timestamp": "2025-10-07T00:08:03.409159Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "countries": {
+          "edges": [
+            {
+              "node": {
+                "id": "ar",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "at",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "au",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "ba",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "be",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "bg",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "by",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "ca",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "ch",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "cz",
+                "type": "Country"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  countries(filter: \"shell()\") {\n    timestamp\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.471,
+    "timestamp": "2025-10-07T00:08:06.040379Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[countries]) : Unknown field argument 'filter'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[countries/timestamp]) : Field 'timestamp' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  countries(first: 10, after: \"..\") {\n    edges {\n      node {\n        id\n        type\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.47,
+    "timestamp": "2025-10-07T00:08:08.298444Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "countries": {
+          "edges": [
+            {
+              "node": {
+                "id": "ar",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "at",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "au",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "ba",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "be",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "bg",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "by",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "ca",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "ch",
+                "type": "Country"
+              }
+            },
+            {
+              "node": {
+                "id": "cz",
+                "type": "Country"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  countries( html: \"<b>Hello</b>\" ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.529,
+    "timestamp": "2025-10-07T00:08:10.741840Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[countries]) : Unknown field argument 'html'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[countries/id]) : Field 'id' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[countries/name]) : Field 'name' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  countries Countries {\n    items {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.522,
+        "timestamp": "2025-10-07T00:08:14.101265Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (SubselectionRequired@[countries]) : Subselection required for type 'countries' of field 'countries'",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            },
+            {
+              "message": "Validation error (FieldUndefined@[Countries]) : Field 'Countries' in type 'Root' is undefined",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 13
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.523,
+        "timestamp": "2025-10-07T00:08:14.624595Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (SubselectionRequired@[countries]) : Subselection required for type 'countries' of field 'countries'",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            },
+            {
+              "message": "Validation error (FieldUndefined@[Countries]) : Field 'Countries' in type 'Root' is undefined",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 16
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-07T00:08:14.624702Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.474,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: countries Countries {\n    i: items {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.516,
+        "timestamp": "2025-10-07T00:08:18.003484Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (SubselectionRequired@[countries]) : Subselection required for type 'countries' of field 'countries'",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            },
+            {
+              "message": "Validation error (FieldUndefined@[Countries]) : Field 'Countries' in type 'Root' is undefined",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 13
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.507,
+        "timestamp": "2025-10-07T00:08:18.510922Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (SubselectionRequired@[countries]) : Subselection required for type 'countries' of field 'countries'",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            },
+            {
+              "message": "Validation error (FieldUndefined@[Countries]) : Field 'Countries' in type 'Root' is undefined",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 16
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-07T00:08:18.511056Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.47,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  countries {\n    queryType {\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.514,
+    "timestamp": "2025-10-07T00:08:22.137796Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[countries/queryType]) : Field 'queryType' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  countries {\n    __type(name: \"String\") {\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.436,
+    "timestamp": "2025-10-07T00:08:24.381538Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[countries/__type]) : Field '__type' in type 'countries' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

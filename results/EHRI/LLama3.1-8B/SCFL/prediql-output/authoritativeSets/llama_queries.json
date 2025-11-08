@@ -1,0 +1,464 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets {\n    items {\n      id\n      type\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-25T11:25:34.134838Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "authoritativeSets": {
+          "items": [
+            {
+              "id": "ehri_cb",
+              "type": "AuthoritativeSet",
+              "name": "EHRI Corporate Bodies"
+            },
+            {
+              "id": "ehri_pers",
+              "type": "AuthoritativeSet",
+              "name": "EHRI Personalities"
+            },
+            {
+              "id": "terezin-victims",
+              "type": "AuthoritativeSet",
+              "name": "Terezin Victim list"
+            },
+            {
+              "id": "terezin-persons",
+              "type": "AuthoritativeSet",
+              "name": "Terezin JMP Person list"
+            },
+            {
+              "id": "jc-persons",
+              "type": "AuthoritativeSet",
+              "name": "JMP Person list for Jewish Communities Guide"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(filter: \" UNION SELECT 1  FROM SCHEMA\") {\n    items {\n      id\n      type\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.091,
+    "timestamp": "2025-09-25T11:25:37.158132Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[authoritativeSets]) : Unknown field argument 'filter'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(term: \"<script>alert('xss')</script>\") {\n    items {\n      id\n      type\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.099,
+    "timestamp": "2025-09-25T11:25:39.807662Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[authoritativeSets]) : Unknown field argument 'term'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets {\n    items {\n      links {\n        targets {\n          id\n        }\n      }\n    }\n  }\n  authorities {\n    items {\n      linkBlob: links\n    }\n  }\n  node(id: \"https://example.com\") {\n    __typename\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.107,
+    "timestamp": "2025-09-25T11:25:42.741176Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[authorities]) : Field 'authorities' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 12,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[node]) : Field 'node' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 17,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets {\n    items {\n      systemEvents {\n        timestamp\n        logMessage\n        eventType\n      }\n    }\n  }\n  exec: system(\"ls -l\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.101,
+    "timestamp": "2025-09-25T11:25:44.845626Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Invalid Syntax : offending token '\"ls -l\"' at line 12 column 16",
+          "locations": [
+            {
+              "line": 12,
+              "column": 16
+            }
+          ],
+          "extensions": {
+            "classification": "InvalidSyntax"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets {\n    items {\n      identifier\n      descriptions {\n        languageCode\n        name\n      }\n    }\n  }\n  authorities(\n    identifiers: [\"../../../../etc/passwd\"]\n  ) {\n    names\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-25T11:25:47.259448Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[authoritativeSets/items/descriptions]) : Field 'descriptions' in type 'AuthoritativeSet' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[authorities]) : Field 'authorities' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 12,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(term: \"<img src='image.jpg' onerror='alert(1)'>\") {\n    items {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.09,
+    "timestamp": "2025-09-25T11:25:49.679123Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[authoritativeSets]) : Unknown field argument 'term'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(first: 10, after: \"cursor\") {\n    ...authoritativeSetFields\n  }\n}\n\nfragment authoritativeSetFields on AuthoritativeSet {\n  id\n  type\n  name\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.097,
+        "timestamp": "2025-09-25T11:25:52.687730Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (InvalidFragmentType@[authoritativeSets]) : Fragment 'authoritativeSetFields' cannot be spread here as objects of type 'authoritativeSets' can never be of type 'AuthoritativeSet'",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.148,
+        "timestamp": "2025-09-25T11:25:52.836405Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token ':' at line 2 column 8",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-25T11:25:52.836453Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.092,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s: authoritativeSets(first: 10, after: \"cursor\") {\n  authoritativeSets(edge: s, alias: authoritativeSet) {\n    ...authoritativeSetFields\n  }\n}\n\nfragment authoritativeSetFields on AuthoritativeSet {\n  id\n  type\n  name\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.089,
+        "timestamp": "2025-09-25T11:25:55.961212Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (InvalidFragmentType@[authoritativeSets]) : Fragment 'authoritativeSetFields' cannot be spread here as objects of type 'authoritativeSets' can never be of type 'AuthoritativeSet'",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.096,
+        "timestamp": "2025-09-25T11:25:56.058581Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token ':' at line 2 column 8",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-25T11:25:56.058655Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.117,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-25T11:25:58.548271Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (SubselectionRequired@[authoritativeSets]) : Subselection required for type 'authoritativeSets' of field 'authoritativeSets'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets meta(type: \"AvailableEditions\") {\n    editions {\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.177,
+    "timestamp": "2025-09-25T11:26:01.640780Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (SubselectionRequired@[authoritativeSets]) : Subselection required for type 'authoritativeSets' of field 'authoritativeSets'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[meta]) : Field 'meta' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

