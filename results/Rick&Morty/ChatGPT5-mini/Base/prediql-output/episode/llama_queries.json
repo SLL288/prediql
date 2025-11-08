@@ -1,0 +1,669 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1' OR '1'='1\") {\n    id\n    name\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.155,
+    "timestamp": "2025-10-02T17:01:07.161930Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/1%27%20OR%20%271%27=%271",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"1\\' OR \\'1\\'=\\'1\" at path \"id\" for model \"Episode\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    episode\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.076,
+    "timestamp": "2025-10-02T17:01:10.927390Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    name\n    air_date\n    characters {\n      id\n      name\n      origin {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.134,
+    "timestamp": "2025-10-02T17:01:14.419188Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1; cat /etc/passwd\") {\n    id\n    name\n    created\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.26,
+    "timestamp": "2025-10-02T17:01:18.283373Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"../../../../etc/passwd\") {\n    id\n    name\n    episode\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.3,
+    "timestamp": "2025-10-02T17:01:22.193157Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"<div>Injected content</div>\") {\n    id\n    name\n    created\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.172,
+    "timestamp": "2025-10-02T17:01:26.036419Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"2\") {\n    id\n    name\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.286,
+        "timestamp": "2025-10-02T17:01:29.765558Z",
+        "response_body": {
+          "data": {
+            "episode": {
+              "id": "2",
+              "name": "Lawnmower Dog",
+              "characters": [
+                {
+                  "id": "1",
+                  "name": "Rick Sanchez"
+                },
+                {
+                  "id": "2",
+                  "name": "Morty Smith"
+                },
+                {
+                  "id": "38",
+                  "name": "Beth Smith"
+                },
+                {
+                  "id": "46",
+                  "name": "Bill"
+                },
+                {
+                  "id": "63",
+                  "name": "Centaur"
+                },
+                {
+                  "id": "80",
+                  "name": "Creepy Little Girl"
+                },
+                {
+                  "id": "175",
+                  "name": "Jerry Smith"
+                },
+                {
+                  "id": "221",
+                  "name": "Melissa"
+                },
+                {
+                  "id": "239",
+                  "name": "Mr. Goldenfold"
+                },
+                {
+                  "id": "246",
+                  "name": "Mrs. Pancakes"
+                },
+                {
+                  "id": "304",
+                  "name": "Scary Brandon"
+                },
+                {
+                  "id": "305",
+                  "name": "Scary Glenn"
+                },
+                {
+                  "id": "306",
+                  "name": "Scary Terry"
+                },
+                {
+                  "id": "329",
+                  "name": "Snuffles (Snowball)"
+                },
+                {
+                  "id": "338",
+                  "name": "Summer Smith"
+                },
+                {
+                  "id": "396",
+                  "name": "Scary Teacher"
+                },
+                {
+                  "id": "397",
+                  "name": "Fido"
+                },
+                {
+                  "id": "398",
+                  "name": "Accountant dog"
+                },
+                {
+                  "id": "405",
+                  "name": "Trunkphobic suspenders guy"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.029,
+        "timestamp": "2025-10-02T17:01:30.794672Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "2",
+              "name": "Lawnmower Dog",
+              "characters": [
+                {
+                  "id": "1",
+                  "name": "Rick Sanchez"
+                },
+                {
+                  "id": "2",
+                  "name": "Morty Smith"
+                },
+                {
+                  "id": "38",
+                  "name": "Beth Smith"
+                },
+                {
+                  "id": "46",
+                  "name": "Bill"
+                },
+                {
+                  "id": "63",
+                  "name": "Centaur"
+                },
+                {
+                  "id": "80",
+                  "name": "Creepy Little Girl"
+                },
+                {
+                  "id": "175",
+                  "name": "Jerry Smith"
+                },
+                {
+                  "id": "221",
+                  "name": "Melissa"
+                },
+                {
+                  "id": "239",
+                  "name": "Mr. Goldenfold"
+                },
+                {
+                  "id": "246",
+                  "name": "Mrs. Pancakes"
+                },
+                {
+                  "id": "304",
+                  "name": "Scary Brandon"
+                },
+                {
+                  "id": "305",
+                  "name": "Scary Glenn"
+                },
+                {
+                  "id": "306",
+                  "name": "Scary Terry"
+                },
+                {
+                  "id": "329",
+                  "name": "Snuffles (Snowball)"
+                },
+                {
+                  "id": "338",
+                  "name": "Summer Smith"
+                },
+                {
+                  "id": "396",
+                  "name": "Scary Teacher"
+                },
+                {
+                  "id": "397",
+                  "name": "Fido"
+                },
+                {
+                  "id": "398",
+                  "name": "Accountant dog"
+                },
+                {
+                  "id": "405",
+                  "name": "Trunkphobic suspenders guy"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-10-02T17:01:30.794739Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.989,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: episode(id: \"2\") {\n    id\n    name\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.306,
+        "timestamp": "2025-10-02T17:01:35.749476Z",
+        "response_body": {
+          "data": {
+            "episode": {
+              "id": "2",
+              "name": "Lawnmower Dog",
+              "characters": [
+                {
+                  "id": "1",
+                  "name": "Rick Sanchez"
+                },
+                {
+                  "id": "2",
+                  "name": "Morty Smith"
+                },
+                {
+                  "id": "38",
+                  "name": "Beth Smith"
+                },
+                {
+                  "id": "46",
+                  "name": "Bill"
+                },
+                {
+                  "id": "63",
+                  "name": "Centaur"
+                },
+                {
+                  "id": "80",
+                  "name": "Creepy Little Girl"
+                },
+                {
+                  "id": "175",
+                  "name": "Jerry Smith"
+                },
+                {
+                  "id": "221",
+                  "name": "Melissa"
+                },
+                {
+                  "id": "239",
+                  "name": "Mr. Goldenfold"
+                },
+                {
+                  "id": "246",
+                  "name": "Mrs. Pancakes"
+                },
+                {
+                  "id": "304",
+                  "name": "Scary Brandon"
+                },
+                {
+                  "id": "305",
+                  "name": "Scary Glenn"
+                },
+                {
+                  "id": "306",
+                  "name": "Scary Terry"
+                },
+                {
+                  "id": "329",
+                  "name": "Snuffles (Snowball)"
+                },
+                {
+                  "id": "338",
+                  "name": "Summer Smith"
+                },
+                {
+                  "id": "396",
+                  "name": "Scary Teacher"
+                },
+                {
+                  "id": "397",
+                  "name": "Fido"
+                },
+                {
+                  "id": "398",
+                  "name": "Accountant dog"
+                },
+                {
+                  "id": "405",
+                  "name": "Trunkphobic suspenders guy"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.188,
+        "timestamp": "2025-10-02T17:01:36.937087Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "2",
+              "name": "Lawnmower Dog",
+              "characters": [
+                {
+                  "id": "1",
+                  "name": "Rick Sanchez"
+                },
+                {
+                  "id": "2",
+                  "name": "Morty Smith"
+                },
+                {
+                  "id": "38",
+                  "name": "Beth Smith"
+                },
+                {
+                  "id": "46",
+                  "name": "Bill"
+                },
+                {
+                  "id": "63",
+                  "name": "Centaur"
+                },
+                {
+                  "id": "80",
+                  "name": "Creepy Little Girl"
+                },
+                {
+                  "id": "175",
+                  "name": "Jerry Smith"
+                },
+                {
+                  "id": "221",
+                  "name": "Melissa"
+                },
+                {
+                  "id": "239",
+                  "name": "Mr. Goldenfold"
+                },
+                {
+                  "id": "246",
+                  "name": "Mrs. Pancakes"
+                },
+                {
+                  "id": "304",
+                  "name": "Scary Brandon"
+                },
+                {
+                  "id": "305",
+                  "name": "Scary Glenn"
+                },
+                {
+                  "id": "306",
+                  "name": "Scary Terry"
+                },
+                {
+                  "id": "329",
+                  "name": "Snuffles (Snowball)"
+                },
+                {
+                  "id": "338",
+                  "name": "Summer Smith"
+                },
+                {
+                  "id": "396",
+                  "name": "Scary Teacher"
+                },
+                {
+                  "id": "397",
+                  "name": "Fido"
+                },
+                {
+                  "id": "398",
+                  "name": "Accountant dog"
+                },
+                {
+                  "id": "405",
+                  "name": "Trunkphobic suspenders guy"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-02T17:01:36.937263Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.965,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(name: \"Episode\") {\n    name\n    fields {\n      name\n      type {\n        name\n        kind\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.23,
+    "timestamp": "2025-10-02T17:01:41.641597Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"name\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"fields\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1\") {\n    nam\n    episdode\n    air_date\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.233,
+    "timestamp": "2025-10-02T17:01:44.847362Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Episode\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"episdode\" on type \"Episode\". Did you mean \"episode\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1\") {\n    id\n    name\n    air_date\n    episode\n    created\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.361,
+    "timestamp": "2025-10-02T17:01:48.459623Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "episode": {
+          "id": "1",
+          "name": "Pilot",
+          "air_date": "December 2, 2013",
+          "episode": "S01E01",
+          "created": "2017-11-10T12:56:33.798Z"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

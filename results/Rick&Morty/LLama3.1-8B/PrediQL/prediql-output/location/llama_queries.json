@@ -1,0 +1,502 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\") {\n    id\n    name\n    type\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.517,
+    "timestamp": "2025-09-25T23:31:10.031882Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "location": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "location"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/location/4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\" at path \"id\" for model \"Location\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0 OR id = '4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0'\") {\n    id\n    name\n    type\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.551,
+    "timestamp": "2025-09-25T23:31:12.782256Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "location": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "location"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/location/4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0%20OR%20id%20=%20%274aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0%27",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0 OR id = \\'4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\\'\" at path \"id\" for model \"Location\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\", name: \"<script>alert('xss')</script>\") {\n    id\n    name\n    type\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.504,
+    "timestamp": "2025-09-25T23:31:15.193940Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"name\" on field \"location\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 56
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"http://example.com\") {\n    id\n    name\n    type\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.516,
+    "timestamp": "2025-09-25T23:31:17.730650Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "location": {
+          "id": null,
+          "name": null,
+          "type": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: system(\"ls\")) {\n    id\n    name\n    type\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.366,
+    "timestamp": "2025-09-25T23:31:20.678124Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found (",
+          "locations": [
+            {
+              "line": 3,
+              "column": 22
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"/home/user/../etc/passwd\") {\n    id\n    name\n    type\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.506,
+    "timestamp": "2025-09-25T23:31:23.496430Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "location": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"<iframe src='https://example.com'></iframe>\") {\n    id\n    name\n    type\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.397,
+    "timestamp": "2025-09-25T23:31:26.601945Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "location": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\") {\n    id\n    name\n    type\n    __typename\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.402,
+        "timestamp": "2025-09-25T23:31:28.689515Z",
+        "response_body": {
+          "data": {
+            "location": null
+          },
+          "errors": [
+            {
+              "message": "500: Internal Server Error",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 3
+                }
+              ],
+              "path": [
+                "location"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "response": {
+                  "url": "http://localhost:8080/api/location/4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0",
+                  "status": 500,
+                  "statusText": "Internal Server Error",
+                  "body": {
+                    "error": "Cast to Number failed for value \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\" at path \"id\" for model \"Location\""
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.377,
+        "timestamp": "2025-09-25T23:31:29.066216Z",
+        "response_body": {
+          "data": {
+            "s": null
+          },
+          "errors": [
+            {
+              "message": "500: Internal Server Error",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 3
+                }
+              ],
+              "path": [
+                "s"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "response": {
+                  "url": "http://localhost:8080/api/location/4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0",
+                  "status": 500,
+                  "statusText": "Internal Server Error",
+                  "body": {
+                    "error": "Cast to Number failed for value \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\" at path \"id\" for model \"Location\""
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-25T23:31:29.066260Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.352,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery q1 {\n  s: location(id: \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\") {\n    id\n    name\n    type\n    __typename\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.536,
+        "timestamp": "2025-09-25T23:31:31.538181Z",
+        "response_body": {
+          "data": {
+            "location": null
+          },
+          "errors": [
+            {
+              "message": "500: Internal Server Error",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 3
+                }
+              ],
+              "path": [
+                "location"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "response": {
+                  "url": "http://localhost:8080/api/location/4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0",
+                  "status": 500,
+                  "statusText": "Internal Server Error",
+                  "body": {
+                    "error": "Cast to Number failed for value \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\" at path \"id\" for model \"Location\""
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.511,
+        "timestamp": "2025-09-25T23:31:32.049173Z",
+        "response_body": {
+          "data": {
+            "s": null
+          },
+          "errors": [
+            {
+              "message": "500: Internal Server Error",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 3
+                }
+              ],
+              "path": [
+                "s"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "response": {
+                  "url": "http://localhost:8080/api/location/4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0",
+                  "status": 500,
+                  "statusText": "Internal Server Error",
+                  "body": {
+                    "error": "Cast to Number failed for value \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\" at path \"id\" for model \"Location\""
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-25T23:31:32.049236Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.486,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    subscriptionType {\n      name\n    }\n    types {\n      kind\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.372,
+    "timestamp": "2025-09-25T23:31:34.633488Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"mutationType\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"subscriptionType\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 11,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"types\" on type \"Location\". Did you mean \"type\"?",
+          "locations": [
+            {
+              "line": 15,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"location\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"4aa9fda4-8f1b-5bb9-94a8-4e46e9c6d2f0\") {\n    __fieldSuggestions {\n      value\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.511,
+    "timestamp": "2025-09-25T23:31:37.587274Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"__fieldSuggestions\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

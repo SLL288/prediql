@@ -1,0 +1,341 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  locationsByIds(ids: [\"1\", \"2\", \"3\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.547,
+    "timestamp": "2025-09-25T23:39:53.708040Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "locationsByIds": [
+          {
+            "id": "1",
+            "name": "Earth (C-137)"
+          },
+          {
+            "id": "2",
+            "name": "Abadango"
+          },
+          {
+            "id": "3",
+            "name": "Citadel of Ricks"
+          }
+        ]
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationsByIds(ids: [\"' OR 1=1 OR '\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.496,
+    "timestamp": "2025-09-25T23:39:57.137022Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "locationsByIds": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "locationsByIds"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/location/%27%20OR%201=1%20OR%20%27",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Hey! you must provide an id"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationsByIds(term: \"<script>alert('xss')</script>\") {\n    locations {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.525,
+    "timestamp": "2025-09-25T23:40:00.461155Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"term\" on field \"locationsByIds\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"locations\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"locationsByIds\" argument \"ids\" of type \"[ID!]!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationsByIds(ids: [\"http://example.com\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.51,
+    "timestamp": "2025-09-25T23:40:02.584955Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "locationsByIds": [
+          {
+            "id": null,
+            "name": null
+          }
+        ]
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationsByIds(ids: [\"touch /tmp/flag.txt\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.489,
+    "timestamp": "2025-09-25T23:40:04.610687Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "locationsByIds": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationsByIds(ids: [\"/etc/passwd\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.502,
+    "timestamp": "2025-09-25T23:40:07.761112Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "locationsByIds": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationsByIds(term: \"<h1>alert('html')</h1>\") {\n    locations {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.367,
+    "timestamp": "2025-09-25T23:40:10.986497Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"term\" on field \"locationsByIds\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"locations\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"locationsByIds\" argument \"ids\" of type \"[ID!]!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery s:locationsByIds {\n  s: locationsByIds(ids: [\"1\", \"2\", \"3\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationsByIds {\n    types {\n      name\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.525,
+    "timestamp": "2025-09-25T23:40:14.118736Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Location\". Did you mean \"type\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"locationsByIds\" argument \"ids\" of type \"[ID!]!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationsByIds(ids: [\"1\"]) {\n    __addddditions\n    __ Farr\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.511,
+    "timestamp": "2025-09-25T23:40:16.289283Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"__addddditions\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"__\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"Farr\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

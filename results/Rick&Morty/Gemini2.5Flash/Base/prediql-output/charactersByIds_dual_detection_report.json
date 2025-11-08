@@ -1,0 +1,765 @@
+{
+  "report_timestamp": "2025-10-01T16:55:19.623394",
+  "api_url": "https://rickandmortyapi.com/graphql",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.1,
+    "simple_detections": 2,
+    "llm_detections": 5,
+    "consensus_breakdown": {
+      "both_detected": 2,
+      "no_vulnerabilities": 5,
+      "llm_only": 3
+    },
+    "detection_ratio": 2.5,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 1,
+      "llm_potential_detections": 0,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 1,
+        "no_potential": 9
+      },
+      "potential_detection_ratio": 0.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-01T16:54:58.929088",
+      "node_name": "charactersByIds_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "charactersByIds"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/character/1%27;%20SELECT%20SLEEP(5);%20--,2",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Cast to Number failed for value \"NaN\" at path \"id\" for model \"Character\""
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SQL Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response explicitly reveals a backend URL that was called: 'http://localhost:8080/api/character/1%27;%20SELECT%20SLEEP(5);%20--,2'. The presence of a SQL injection payload ('1'; SELECT SLEEP(5); --') within this URL, which subsequently led to an 'Internal Server Error' and a 'Cast to Number failed' message, is strong evidence of a SQL Injection vulnerability. The server attempted to process the malicious input, indicating that the input was not properly sanitized or parameterized before being incorporated into a database query. The 'SLEEP(5)' function is a common technique used for time-based SQL injection to confirm a vulnerability, even if it resulted in an error in this specific instance due to the 'Cast to Number' failure rather than a measurable delay.",
+            "evidence": "The 'url' field in the 'extensions' object within the 'errors' array shows 'http://localhost:8080/api/character/1%27;%20SELECT%20SLEEP(5);%20--,2'. This URL contains SQL injection payload '1'; SELECT SLEEP(5); --,2'. The 'SLEEP(5)' function is indicative of a time-based SQL injection attempt, and the '500: Internal Server Error' along with 'Cast to Number failed for value \"NaN\"' suggests that the injected SQL disrupted the expected query, potentially due to the single quote breaking the original query structure. Although an error rather than data exfiltration or delayed response is observed, the SQL payload was clearly processed by the backend.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SQL Injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "The 'url' field in the 'extensions' object within the 'errors' array shows 'http://localhost:8080/api/character/1%27;%20SELECT%20SLEEP(5);%20--,2'. This URL contains SQL injection payload '1'; SELECT SLEEP(5); --,2'. The 'SLEEP(5)' function is indicative of a time-based SQL injection attempt, and the '500: Internal Server Error' along with 'Cast to Number failed for value \"NaN\"' suggests that the injected SQL disrupted the expected query, potentially due to the single quote breaking the original query structure. Although an error rather than data exfiltration or delayed response is observed, the SQL payload was clearly processed by the backend.",
+              "explanation": "The GraphQL response explicitly reveals a backend URL that was called: 'http://localhost:8080/api/character/1%27;%20SELECT%20SLEEP(5);%20--,2'. The presence of a SQL injection payload ('1'; SELECT SLEEP(5); --') within this URL, which subsequently led to an 'Internal Server Error' and a 'Cast to Number failed' message, is strong evidence of a SQL Injection vulnerability. The server attempted to process the malicious input, indicating that the input was not properly sanitized or parameterized before being incorporated into a database query. The 'SLEEP(5)' function is a common technique used for time-based SQL injection to confirm a vulnerability, even if it resulted in an error in this specific instance due to the 'Cast to Number' failure rather than a measurable delay."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:55:00.278475",
+      "node_name": "charactersByIds_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:55:01.951783",
+      "node_name": "charactersByIds_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:55:05.915941",
+      "node_name": "charactersByIds_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "charactersByIds"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/character/1,&&%20ls%20-la%20/",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Cast to Number failed for value \"NaN\" at path \"id\" for model \"Character\""
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: OS Command Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL error response contains an 'extensions' object, which further details the underlying HTTP request made by the server. Within this, the 'response.url' explicitly shows 'http://localhost:8080/api/character/1,&&%20ls%20-la%20/'. The sequence '&&%20ls%20-la%20/' is a standard way to chain commands in a shell, where '&&' executes the second command only if the first succeeds, and '%20' is the URL-encoded space. This strongly suggests that the input '1,&& ls -la /' (after URL decoding) was processed by a shell or a system command execution function, leading to an attempt to list the root directory. While the server returned an 'Internal Server Error' (status 500) and a 'Cast to Number failed' message, which prevented the command from fully executing or its output from being returned in the current context, the very fact that such an injection string appears in the URL processed by the backend is a definitive sign of an OS Command Injection vulnerability. The error message 'Cast to Number failed' indicates that the `id` parameter expected a number, and the injected command string obviously failed this type conversion, which is why we don't see the output of `ls -la /`. However, the server *attempted* to process a URL that included a shell command, signifying the injection point exists.",
+            "evidence": "The 'url' field in the 'extensions.response' object shows 'http://localhost:8080/api/character/1,&&%20ls%20-la%20/'. The injection of ',&&%20ls%20-la%20/' after a legitimate ID is a strong indicator of an attempted OS command injection.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "OS Command Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The 'url' field in the 'extensions.response' object shows 'http://localhost:8080/api/character/1,&&%20ls%20-la%20/'. The injection of ',&&%20ls%20-la%20/' after a legitimate ID is a strong indicator of an attempted OS command injection.",
+              "explanation": "The GraphQL error response contains an 'extensions' object, which further details the underlying HTTP request made by the server. Within this, the 'response.url' explicitly shows 'http://localhost:8080/api/character/1,&&%20ls%20-la%20/'. The sequence '&&%20ls%20-la%20/' is a standard way to chain commands in a shell, where '&&' executes the second command only if the first succeeds, and '%20' is the URL-encoded space. This strongly suggests that the input '1,&& ls -la /' (after URL decoding) was processed by a shell or a system command execution function, leading to an attempt to list the root directory. While the server returned an 'Internal Server Error' (status 500) and a 'Cast to Number failed' message, which prevented the command from fully executing or its output from being returned in the current context, the very fact that such an injection string appears in the URL processed by the backend is a definitive sign of an OS Command Injection vulnerability. The error message 'Cast to Number failed' indicates that the `id` parameter expected a number, and the injected command string obviously failed this type conversion, which is why we don't see the output of `ls -la /`. However, the server *attempted* to process a URL that included a shell command, signifying the injection point exists."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:55:07.447730",
+      "node_name": "charactersByIds_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:55:10.196771",
+      "node_name": "charactersByIds_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "charactersByIds"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/character/1,%3Cimg%20src=%27x%27%20onerror=%27alert(%22HTMLi%22)%27%3E",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Cast to Number failed for value \"NaN\" at path \"id\" for model \"Character\""
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: HTML Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response explicitly shows an HTML tag, `<img src='x' onerror='alert(\"HTMLi\")'>`, being reflected directly in the `url` field nested within the `extensions.response` object. Although this particular injection occurred in the URL that caused an internal server error, the fact that user-supplied HTML is embedded and then reflected in the server's error message (which could be displayed to a user or logged in a way that viewers might access) indicates a clear HTML injection vulnerability. If this reflected URL were to be rendered in a browser without proper sanitization, it could lead to Cross-Site Scripting (XSS). The `onerror` event demonstrates a potential for arbitrary JavaScript execution if the output is not properly escaped before display in a client-side application.",
+            "evidence": "The 'url' field within the 'extensions.response' object contains '<img src='x' onerror='alert(\"HTMLi\")'>'. This HTML tag, including an event handler, is reflected in the URL that the server attempted to process.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "HTML Injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "The 'url' field within the 'extensions.response' object contains '<img src='x' onerror='alert(\"HTMLi\")'>'. This HTML tag, including an event handler, is reflected in the URL that the server attempted to process.",
+              "explanation": "The GraphQL response explicitly shows an HTML tag, `<img src='x' onerror='alert(\"HTMLi\")'>`, being reflected directly in the `url` field nested within the `extensions.response` object. Although this particular injection occurred in the URL that caused an internal server error, the fact that user-supplied HTML is embedded and then reflected in the server's error message (which could be displayed to a user or logged in a way that viewers might access) indicates a clear HTML injection vulnerability. If this reflected URL were to be rendered in a browser without proper sanitization, it could lead to Cross-Site Scripting (XSS). The `onerror` event demonstrates a potential for arbitrary JavaScript execution if the output is not properly escaped before display in a client-side application."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:55:12.649781",
+      "node_name": "charactersByIds_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:55:15.035162",
+      "node_name": "charactersByIds_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:55:17.560744",
+      "node_name": "charactersByIds_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"types\" on type \"Character\". Did you mean \"type\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"charactersByIds\" argument \"ids\" of type \"[ID!]!\" is required, but it was not provided.",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response indicates an 'Information Disclosure' vulnerability due to the presence of field suggestions. The error message 'Cannot query field \"types\" on type \"Character\". Did you mean \"type\"?' explicitly suggests an existing field named 'type' within the 'Character' type. This type of suggestion happens when introspection is enabled, which attackers can leverage to map out the entire API schema. While not directly stating an introspection query was performed, the suggestion itself is a strong indicator that the GraphQL server is providing helpful, but potentially sensitive, schema information, enabling an attacker to discover valid fields and types without authentication or authorization.",
+            "evidence": "{\"message\": \"Cannot query field \\\"types\\\" on type \\\"Character\\\". Did you mean \\\"type\\\"?\", ...}",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.8,
+              "evidence": "{\"message\": \"Cannot query field \\\"types\\\" on type \\\"Character\\\". Did you mean \\\"type\\\"?\", ...}",
+              "explanation": "The GraphQL response indicates an 'Information Disclosure' vulnerability due to the presence of field suggestions. The error message 'Cannot query field \"types\" on type \"Character\". Did you mean \"type\"?' explicitly suggests an existing field named 'type' within the 'Character' type. This type of suggestion happens when introspection is enabled, which attackers can leverage to map out the entire API schema. While not directly stating an introspection query was performed, the suggestion itself is a strong indicator that the GraphQL server is providing helpful, but potentially sensitive, schema information, enabling an attacker to discover valid fields and types without authentication or authorization."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:55:19.619580",
+      "node_name": "charactersByIds_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"nam\" on type \"Character\". Did you mean \"name\"?",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"stats\" on type \"Character\". Did you mean \"status\"?",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"specis\" on type \"Character\". Did you mean \"species\"?",
+            "locations": [
+              {
+                "line": 6,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL API is providing field suggestions, which means it is implicitly disclosing parts of its schema when an invalid field name is queried. While not directly revealing highly sensitive data, this behavior can aid an attacker in mapping out the API's structure and valid fields, making it easier to craft further queries for reconnaissance or exploitation. This is a common characteristic of a 'field_suggestions' vulnerability, which falls under the broader category of Information Disclosure.",
+            "evidence": "The response suggests correct field names ('name', 'status', 'species') when incorrect ones ('nam', 'stats', 'specis') are provided in the query. This is evident in the 'message' fields: 'Did you mean \"name\"?', 'Did you mean \"status\"?', 'Did you mean \"species\"?'.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.8,
+              "evidence": "The response suggests correct field names ('name', 'status', 'species') when incorrect ones ('nam', 'stats', 'specis') are provided in the query. This is evident in the 'message' fields: 'Did you mean \"name\"?', 'Did you mean \"status\"?', 'Did you mean \"species\"?'.",
+              "explanation": "The GraphQL API is providing field suggestions, which means it is implicitly disclosing parts of its schema when an invalid field name is queried. While not directly revealing highly sensitive data, this behavior can aid an attacker in mapping out the API's structure and valid fields, making it easier to craft further queries for reconnaissance or exploitation. This is a common characteristic of a 'field_suggestions' vulnerability, which falls under the broader category of Information Disclosure."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Information Disclosure",
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

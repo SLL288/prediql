@@ -1,0 +1,2809 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"12345\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.414,
+    "timestamp": "2025-10-05T13:57:55.994961Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"12345' OR '12345'='12345\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.224,
+    "timestamp": "2025-10-05T13:58:04.409102Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/12345%27%20OR%20%2712345%27=%2712345",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"12345\\' OR \\'12345\\'=\\'12345\" at path \"id\" for model \"Episode\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(name: \"<script>alert('xss')</script>\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.373,
+    "timestamp": "2025-10-05T13:58:12.745424Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"name\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(relative_url: \"http://notawesome.org\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.222,
+    "timestamp": "2025-10-05T13:58:21.669280Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"relative_url\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(os_command: \"ls /home/user/passwords.txt\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.19,
+    "timestamp": "2025-10-05T13:58:30.652505Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"os_command\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(query_string: \"/etc/passwd\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.198,
+    "timestamp": "2025-10-05T13:58:38.989047Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"query_string\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(image: \"<script>alert('xss')</script>\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.065,
+    "timestamp": "2025-10-05T13:58:47.365126Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"image\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: 12345) {\n    ...EpisodeFields\n  }\n  \n  EpisodeFields: \n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 500,
+        "request_time_seconds": 6.83,
+        "timestamp": "2025-10-05T13:58:55.862089Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot read property 'kind' of undefined",
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 500,
+        "request_time_seconds": 6.106,
+        "timestamp": "2025-10-05T13:59:01.968129Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot read property 'kind' of undefined",
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T13:59:01.968712Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 14.349,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery EpisodeFieldsAlias {\n  episode(id: 12345) {\n    ...EpisodeFieldsAlias\n  }\n  \n  EpisodeFieldsAlias: \n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 500,
+        "request_time_seconds": 6.363,
+        "timestamp": "2025-10-05T13:59:24.765406Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot read property 'kind' of undefined",
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 500,
+        "request_time_seconds": 6.284,
+        "timestamp": "2025-10-05T13:59:31.049459Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot read property 'kind' of undefined",
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T13:59:31.049677Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 6.196,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.174,
+    "timestamp": "2025-10-05T13:59:45.782493Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: 12345) {\n    __type(__type: \"Episode\") {\n      enumValues {\n        value\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.224,
+    "timestamp": "2025-10-05T13:59:54.180715Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"__type\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123456\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.397,
+    "timestamp": "2025-10-05T14:00:11.875564Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1' OR '1'='1\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.3,
+    "timestamp": "2025-10-05T14:00:20.150536Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/1%27%20OR%20%271%27=%271",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"1\\' OR \\'1\\'=\\'1\" at path \"id\" for model \"Episode\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(term: \"<script>alert('xss')</script>\") {\n    episode {\n      id\n      name\n      air_date\n      episode\n      characters {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.182,
+    "timestamp": "2025-10-05T14:00:27.883615Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"term\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" must not have a selection since type \"String\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(url: \"http://internal-service.example.com\") {\n    episode {\n      id\n      name\n      air_date\n      episode\n      characters {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.227,
+    "timestamp": "2025-10-05T14:00:36.459845Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"url\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" must not have a selection since type \"String\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(command: \"ls -l\") {\n    episode {\n      id\n      name\n      air_date\n      episode\n      characters {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.445,
+    "timestamp": "2025-10-05T14:00:44.797158Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"command\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" must not have a selection since type \"String\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(path: \"/etc/passwd\") {\n    episode {\n      id\n      name\n      air_date\n      episode\n      characters {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.381,
+    "timestamp": "2025-10-05T14:00:53.353155Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"path\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" must not have a selection since type \"String\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(text: \"<h1>Hello, <script>alert('xss')</script>!</h1>\") {\n    episode {\n      id\n      name\n      air_date\n      episode\n      characters {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.15,
+    "timestamp": "2025-10-05T14:01:01.229943Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"text\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" must not have a selection since type \"String\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery nonAliased {\n  episode(id: \"123456\") {\n    id\n    name\n  }\n  episode(id: \"123456\") {\n    air_date\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.187,
+        "timestamp": "2025-10-05T14:01:10.224906Z",
+        "response_body": {
+          "data": {
+            "episode": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.265,
+        "timestamp": "2025-10-05T14:01:16.489486Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-05T14:01:16.489583Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 5.908,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery aliased {\n  s: episode(id: \"123456\") {\n    id\n    name\n  }\n  s: episode(id: \"123456\") {\n    air_date\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.263,
+        "timestamp": "2025-10-05T14:01:31.328417Z",
+        "response_body": {
+          "data": {
+            "episode": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.218,
+        "timestamp": "2025-10-05T14:01:37.546292Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-10-05T14:01:37.546365Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 5.981,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.18,
+    "timestamp": "2025-10-05T14:01:52.406043Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123456\") {\n    __typename\n   ... on Episode {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.253,
+    "timestamp": "2025-10-05T14:02:00.867860Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"12345\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      name\n      species\n      type\n      gender\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.822,
+    "timestamp": "2025-10-05T14:02:13.848983Z",
+    "count": 23,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1' OR id > 0\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      name\n      species\n      type\n      gender\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.665,
+    "timestamp": "2025-10-05T14:02:22.402146Z",
+    "count": 24,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/1%27%20OR%20id%20%3E%200",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"1\\' OR id > 0\" at path \"id\" for model \"Episode\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(search: \"<script>alert('xss')</script>\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      name\n      species\n      type\n      gender\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.09,
+    "timestamp": "2025-10-05T14:02:30.206948Z",
+    "count": 25,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"search\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"http://example.com/id\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      name\n      species\n      type\n      gender\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.906,
+    "timestamp": "2025-10-05T14:02:38.662818Z",
+    "count": 26,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"ls -l\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      name\n      species\n      type\n      gender\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.574,
+    "timestamp": "2025-10-05T14:02:47.957020Z",
+    "count": 27,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/ls%20-l",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Hey! you must provide an id"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(relativePath: \"/../../\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      name\n      species\n      type\n      gender\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.215,
+    "timestamp": "2025-10-05T14:02:57.079418Z",
+    "count": 28,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"relativePath\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(html: \"<h1>Hello, World!</h1>\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      name\n      species\n      type\n      gender\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.179,
+    "timestamp": "2025-10-05T14:03:05.683774Z",
+    "count": 29,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"html\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery query {\n  episode(id: \"12345\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      name\n      species\n      type\n      gender\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.215,
+        "timestamp": "2025-10-05T14:03:13.420632Z",
+        "response_body": {
+          "data": {
+            "episode": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 6.146,
+        "timestamp": "2025-10-05T14:03:19.566529Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected {, found :",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 15
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-10-05T14:03:19.566648Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 5.947,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery episodeq: episode(id: \"12345\") {\n  episode\n  name\n  air_date\n  episode\n  characters {\n    name\n    species\n    type\n    gender\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.094,
+        "timestamp": "2025-10-05T14:03:33.995865Z",
+        "response_body": {
+          "data": {
+            "episode": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 6.105,
+        "timestamp": "2025-10-05T14:03:40.101055Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected {, found :",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 15
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 31,
+    "timestamp": "2025-10-05T14:03:40.101137Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 6.092,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(name: \"Episode\") {\n    description\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.128,
+    "timestamp": "2025-10-05T14:03:54.959875Z",
+    "count": 32,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"name\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"description\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"12345\") {\n    __tags\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.562,
+    "timestamp": "2025-10-05T14:04:03.535402Z",
+    "count": 33,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"__tags\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123\") {\n    id\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.847,
+    "timestamp": "2025-10-05T14:04:32.765002Z",
+    "count": 34,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123 OR 1=1\") {\n    id\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.193,
+    "timestamp": "2025-10-05T14:04:41.127193Z",
+    "count": 35,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/123%20OR%201=1",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"123 OR 1=1\" at path \"id\" for model \"Episode\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123<svg/onload=alert(1)>\") {\n    id\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.17,
+    "timestamp": "2025-10-05T14:04:50.296579Z",
+    "count": 36,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123 http://example.com\") {\n    id\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.402,
+    "timestamp": "2025-10-05T14:04:59.228736Z",
+    "count": 37,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123; id --\") {\n    id\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.389,
+    "timestamp": "2025-10-05T14:05:07.965584Z",
+    "count": 38,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/123;%20id%20--",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"123; id --\" at path \"id\" for model \"Episode\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123/././/path/injection\") {\n    id\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.443,
+    "timestamp": "2025-10-05T14:05:16.130638Z",
+    "count": 39,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123 <img src='https://example.com/image.jpg' onerror='alert(1)'>\") {\n    id\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.106,
+    "timestamp": "2025-10-05T14:05:25.228330Z",
+    "count": 40,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123\") {\n   ...fields\n  }\n  fields {\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 500,
+        "request_time_seconds": 6.074,
+        "timestamp": "2025-10-05T14:05:33.708239Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot read property 'kind' of undefined",
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 6.157,
+        "timestamp": "2025-10-05T14:05:39.865221Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected {, found :",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-10-05T14:05:39.865241Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 6.775,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s: episode {\n  episode(id: \"123\") {\n   ...fields\n  }\n  fields {\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 500,
+        "request_time_seconds": 6.215,
+        "timestamp": "2025-10-05T14:05:54.399660Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot read property 'kind' of undefined",
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 6.18,
+        "timestamp": "2025-10-05T14:06:00.580201Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected {, found :",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 42,
+    "timestamp": "2025-10-05T14:06:00.580483Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 7.753,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 7.093,
+    "timestamp": "2025-10-05T14:06:17.851218Z",
+    "count": 43,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"123\") {\n    __fieldSuggestions(name: \"name\")\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.158,
+    "timestamp": "2025-10-05T14:06:26.514418Z",
+    "count": 44,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"__fieldSuggestions\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"ID-123\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n      name\n    }\n    created\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.579,
+    "timestamp": "2025-10-05T14:06:45.506068Z",
+    "count": 45,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/ID-123",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Hey! you must provide an id"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"ID-123 OR '1'='1\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.286,
+    "timestamp": "2025-10-05T14:06:53.331454Z",
+    "count": 46,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/ID-123%20OR%20%271%27=%271",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Hey! you must provide an id"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.155,
+    "timestamp": "2025-10-05T14:07:01.472911Z",
+    "count": 47,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"http://example.com/evil.innerText\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 7.288,
+    "timestamp": "2025-10-05T14:07:11.034462Z",
+    "count": 48,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"ID-123; ls -l\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.186,
+    "timestamp": "2025-10-05T14:07:19.199231Z",
+    "count": 49,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/ID-123;%20ls%20-l",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Hey! you must provide an id"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"/../../../../etc/passwd\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.095,
+    "timestamp": "2025-10-05T14:07:27.792173Z",
+    "count": 50,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"<&lt;p&gt; Hello, World! &lt;/p&gt;\") {\n    id\n    name\n    air_date\n    episode\n    characters {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.127,
+    "timestamp": "2025-10-05T14:07:36.535139Z",
+    "count": 51,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"ID-123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.665,
+        "timestamp": "2025-10-05T14:07:45.754937Z",
+        "response_body": {
+          "data": {
+            "episode": null
+          },
+          "errors": [
+            {
+              "message": "500: Internal Server Error",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 3
+                }
+              ],
+              "path": [
+                "episode"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "response": {
+                  "url": "http://localhost:8080/api/episode/ID-123",
+                  "status": 500,
+                  "statusText": "Internal Server Error",
+                  "body": {
+                    "error": "Hey! you must provide an id"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.297,
+        "timestamp": "2025-10-05T14:07:52.052100Z",
+        "response_body": {
+          "data": {
+            "episode": null
+          },
+          "errors": [
+            {
+              "message": "500: Internal Server Error",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 3
+                }
+              ],
+              "path": [
+                "episode"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "response": {
+                  "url": "http://localhost:8080/api/episode/ID-123",
+                  "status": 500,
+                  "statusText": "Internal Server Error",
+                  "body": {
+                    "error": "Hey! you must provide an id"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 52,
+    "timestamp": "2025-10-05T14:07:52.053693Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 5.912,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery MyEpisodeQuery {\n  episode(id: \"ID-123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.209,
+        "timestamp": "2025-10-05T14:08:06.992452Z",
+        "response_body": {
+          "data": {
+            "episode": null
+          },
+          "errors": [
+            {
+              "message": "500: Internal Server Error",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 3
+                }
+              ],
+              "path": [
+                "episode"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "response": {
+                  "url": "http://localhost:8080/api/episode/ID-123",
+                  "status": 500,
+                  "statusText": "Internal Server Error",
+                  "body": {
+                    "error": "Hey! you must provide an id"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 6.87,
+        "timestamp": "2025-10-05T14:08:13.862522Z",
+        "response_body": {
+          "data": {
+            "episode": null
+          },
+          "errors": [
+            {
+              "message": "500: Internal Server Error",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 3
+                }
+              ],
+              "path": [
+                "episode"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "response": {
+                  "url": "http://localhost:8080/api/episode/ID-123",
+                  "status": 500,
+                  "statusText": "Internal Server Error",
+                  "body": {
+                    "error": "Hey! you must provide an id"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 53,
+    "timestamp": "2025-10-05T14:08:13.862567Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 5.89,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    subscriptionType {\n      name\n    }\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.34,
+    "timestamp": "2025-10-05T14:08:27.757917Z",
+    "count": 54,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"mutationType\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"subscriptionType\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 11,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"types\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 15,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"ID-123\") {\n    __fieldSuggestions {\n      edges {\n        node {\n          name\n          description\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.443,
+    "timestamp": "2025-10-05T14:08:36.016447Z",
+    "count": 55,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"__fieldSuggestions\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"001\") {\n    id\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.614,
+    "timestamp": "2025-10-05T14:08:53.598133Z",
+    "count": 56,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "episode": {
+          "id": "1",
+          "name": "Pilot",
+          "air_date": "December 2, 2013"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1' OR '1'='1\") {\n    id\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.117,
+    "timestamp": "2025-10-05T14:09:01.432132Z",
+    "count": 57,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/1%27%20OR%20%271%27=%271",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"1\\' OR \\'1\\'=\\'1\" at path \"id\" for model \"Episode\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(term: \"<script>alert('xss')</script>\") {\n    results\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.225,
+    "timestamp": "2025-10-05T14:09:09.446839Z",
+    "count": 58,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"term\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"results\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(url: \"unsafe://example.com\") {\n    id\n    name\n    air_date\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.203,
+    "timestamp": "2025-10-05T14:09:17.240610Z",
+    "count": 59,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"url\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(command: \"ls -l\") {\n    output\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.095,
+    "timestamp": "2025-10-05T14:09:26.176435Z",
+    "count": 60,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"command\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"output\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(path: \"../admin\") {\n    slug\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.063,
+    "timestamp": "2025-10-05T14:09:33.903236Z",
+    "count": 61,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"path\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"slug\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(content: \"<p> XSS attack detected!</p>\") {\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.208,
+    "timestamp": "2025-10-05T14:09:42.172682Z",
+    "count": 62,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"content\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"title\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode {\n    allowed\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 6.12,
+        "timestamp": "2025-10-05T14:09:51.035705Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"allowed\" on type \"Episode\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 6.234,
+        "timestamp": "2025-10-05T14:09:57.269755Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected {, found :",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 63,
+    "timestamp": "2025-10-05T14:09:57.269823Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 5.885,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s: denyQueryAlias {\n  episode {\n    allowed\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 6.238,
+        "timestamp": "2025-10-05T14:10:11.947849Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"allowed\" on type \"Episode\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 6.156,
+        "timestamp": "2025-10-05T14:10:18.103504Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected {, found :",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 64,
+    "timestamp": "2025-10-05T14:10:18.103529Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 5.996,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode {\n    queryType {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.659,
+    "timestamp": "2025-10-05T14:10:32.769389Z",
+    "count": 65,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(name: \"episode\") {\n    suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 6.141,
+    "timestamp": "2025-10-05T14:10:40.751821Z",
+    "count": 66,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"name\" on field \"episode\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"suggestions\" on type \"Episode\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"episode\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

@@ -1,0 +1,805 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1\") {\n    id\n    name\n    air_date\n    episode\n    created\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.613,
+    "timestamp": "2025-09-22T22:05:35.187217Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "episode": {
+          "id": "1",
+          "name": "Pilot",
+          "air_date": "December 2, 2013",
+          "episode": "S01E01",
+          "created": "2017-11-10T12:56:33.798Z",
+          "characters": [
+            {
+              "id": "1",
+              "name": "Rick Sanchez"
+            },
+            {
+              "id": "2",
+              "name": "Morty Smith"
+            },
+            {
+              "id": "35",
+              "name": "Bepisian"
+            },
+            {
+              "id": "38",
+              "name": "Beth Smith"
+            },
+            {
+              "id": "62",
+              "name": "Canklanker Thom"
+            },
+            {
+              "id": "92",
+              "name": "Davin"
+            },
+            {
+              "id": "127",
+              "name": "Frank Palicky"
+            },
+            {
+              "id": "144",
+              "name": "Glenn"
+            },
+            {
+              "id": "158",
+              "name": "Hookah Alien"
+            },
+            {
+              "id": "175",
+              "name": "Jerry Smith"
+            },
+            {
+              "id": "179",
+              "name": "Jessica"
+            },
+            {
+              "id": "181",
+              "name": "Jessica's Friend"
+            },
+            {
+              "id": "239",
+              "name": "Mr. Goldenfold"
+            },
+            {
+              "id": "249",
+              "name": "Mrs. Sanchez"
+            },
+            {
+              "id": "271",
+              "name": "Principal Vagina"
+            },
+            {
+              "id": "338",
+              "name": "Summer Smith"
+            },
+            {
+              "id": "394",
+              "name": "Davin"
+            },
+            {
+              "id": "395",
+              "name": "Greebybobe"
+            },
+            {
+              "id": "435",
+              "name": "Pripudlian"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1' OR '1'='1'; --\") {\n    id\n    name\n    episode\n    created\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.605,
+    "timestamp": "2025-09-22T22:05:38.524594Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episode"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/1%27%20OR%20%271%27=%271%27;%20--",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"1\\' OR \\'1\\'=\\'1\\'; --\" at path \"id\" for model \"Episode\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    air_date\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.377,
+    "timestamp": "2025-09-22T22:05:41.304922Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    name\n    created\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.492,
+    "timestamp": "2025-09-22T22:05:44.126312Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1; /bin/cat /etc/passwd; echo DONE\") {\n    id\n    name\n    created\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.563,
+    "timestamp": "2025-09-22T22:05:46.909307Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"../../../../etc/passwd\") {\n    id\n    name\n    episode\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.498,
+    "timestamp": "2025-09-22T22:05:50.340297Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"<div style=\\\"color:red\\\">injected</div>\") {\n    id\n    name\n    air_date\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.527,
+    "timestamp": "2025-09-22T22:05:53.418576Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "episode": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"3\") {\n    id\n    name\n    created\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.498,
+        "timestamp": "2025-09-22T22:05:56.088083Z",
+        "response_body": {
+          "data": {
+            "episode": {
+              "id": "3",
+              "name": "Anatomy Park",
+              "created": "2017-11-10T12:56:34.022Z",
+              "characters": [
+                {
+                  "id": "1",
+                  "name": "Rick Sanchez"
+                },
+                {
+                  "id": "2",
+                  "name": "Morty Smith"
+                },
+                {
+                  "id": "12",
+                  "name": "Alexander"
+                },
+                {
+                  "id": "17",
+                  "name": "Annie"
+                },
+                {
+                  "id": "38",
+                  "name": "Beth Smith"
+                },
+                {
+                  "id": "45",
+                  "name": "Bill"
+                },
+                {
+                  "id": "96",
+                  "name": "Tuberculosis"
+                },
+                {
+                  "id": "97",
+                  "name": "Gonorrhea"
+                },
+                {
+                  "id": "98",
+                  "name": "Hepatitis A"
+                },
+                {
+                  "id": "99",
+                  "name": "Hepatitis C"
+                },
+                {
+                  "id": "100",
+                  "name": "Bubonic Plague"
+                },
+                {
+                  "id": "101",
+                  "name": "E. Coli"
+                },
+                {
+                  "id": "108",
+                  "name": "Dr. Xenon Bloom"
+                },
+                {
+                  "id": "112",
+                  "name": "Eric McMan"
+                },
+                {
+                  "id": "114",
+                  "name": "Ethan"
+                },
+                {
+                  "id": "169",
+                  "name": "Jacob"
+                },
+                {
+                  "id": "175",
+                  "name": "Jerry Smith"
+                },
+                {
+                  "id": "186",
+                  "name": "Joyce Smith"
+                },
+                {
+                  "id": "201",
+                  "name": "Leonard Smith"
+                },
+                {
+                  "id": "268",
+                  "name": "Poncho"
+                },
+                {
+                  "id": "300",
+                  "name": "Roger"
+                },
+                {
+                  "id": "302",
+                  "name": "Ruben"
+                },
+                {
+                  "id": "338",
+                  "name": "Summer Smith"
+                },
+                {
+                  "id": "356",
+                  "name": "Tom Randolph"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.754,
+        "timestamp": "2025-09-22T22:05:56.841851Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "3",
+              "name": "Anatomy Park",
+              "created": "2017-11-10T12:56:34.022Z",
+              "characters": [
+                {
+                  "id": "1",
+                  "name": "Rick Sanchez"
+                },
+                {
+                  "id": "2",
+                  "name": "Morty Smith"
+                },
+                {
+                  "id": "12",
+                  "name": "Alexander"
+                },
+                {
+                  "id": "17",
+                  "name": "Annie"
+                },
+                {
+                  "id": "38",
+                  "name": "Beth Smith"
+                },
+                {
+                  "id": "45",
+                  "name": "Bill"
+                },
+                {
+                  "id": "96",
+                  "name": "Tuberculosis"
+                },
+                {
+                  "id": "97",
+                  "name": "Gonorrhea"
+                },
+                {
+                  "id": "98",
+                  "name": "Hepatitis A"
+                },
+                {
+                  "id": "99",
+                  "name": "Hepatitis C"
+                },
+                {
+                  "id": "100",
+                  "name": "Bubonic Plague"
+                },
+                {
+                  "id": "101",
+                  "name": "E. Coli"
+                },
+                {
+                  "id": "108",
+                  "name": "Dr. Xenon Bloom"
+                },
+                {
+                  "id": "112",
+                  "name": "Eric McMan"
+                },
+                {
+                  "id": "114",
+                  "name": "Ethan"
+                },
+                {
+                  "id": "169",
+                  "name": "Jacob"
+                },
+                {
+                  "id": "175",
+                  "name": "Jerry Smith"
+                },
+                {
+                  "id": "186",
+                  "name": "Joyce Smith"
+                },
+                {
+                  "id": "201",
+                  "name": "Leonard Smith"
+                },
+                {
+                  "id": "268",
+                  "name": "Poncho"
+                },
+                {
+                  "id": "300",
+                  "name": "Roger"
+                },
+                {
+                  "id": "302",
+                  "name": "Ruben"
+                },
+                {
+                  "id": "338",
+                  "name": "Summer Smith"
+                },
+                {
+                  "id": "356",
+                  "name": "Tom Randolph"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-22T22:05:56.841942Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.491,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: episode(id: \"3\") {\n    id\n    name\n    created\n    characters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.734,
+        "timestamp": "2025-09-22T22:06:00.666981Z",
+        "response_body": {
+          "data": {
+            "episode": {
+              "id": "3",
+              "name": "Anatomy Park",
+              "created": "2017-11-10T12:56:34.022Z",
+              "characters": [
+                {
+                  "id": "1",
+                  "name": "Rick Sanchez"
+                },
+                {
+                  "id": "2",
+                  "name": "Morty Smith"
+                },
+                {
+                  "id": "12",
+                  "name": "Alexander"
+                },
+                {
+                  "id": "17",
+                  "name": "Annie"
+                },
+                {
+                  "id": "38",
+                  "name": "Beth Smith"
+                },
+                {
+                  "id": "45",
+                  "name": "Bill"
+                },
+                {
+                  "id": "96",
+                  "name": "Tuberculosis"
+                },
+                {
+                  "id": "97",
+                  "name": "Gonorrhea"
+                },
+                {
+                  "id": "98",
+                  "name": "Hepatitis A"
+                },
+                {
+                  "id": "99",
+                  "name": "Hepatitis C"
+                },
+                {
+                  "id": "100",
+                  "name": "Bubonic Plague"
+                },
+                {
+                  "id": "101",
+                  "name": "E. Coli"
+                },
+                {
+                  "id": "108",
+                  "name": "Dr. Xenon Bloom"
+                },
+                {
+                  "id": "112",
+                  "name": "Eric McMan"
+                },
+                {
+                  "id": "114",
+                  "name": "Ethan"
+                },
+                {
+                  "id": "169",
+                  "name": "Jacob"
+                },
+                {
+                  "id": "175",
+                  "name": "Jerry Smith"
+                },
+                {
+                  "id": "186",
+                  "name": "Joyce Smith"
+                },
+                {
+                  "id": "201",
+                  "name": "Leonard Smith"
+                },
+                {
+                  "id": "268",
+                  "name": "Poncho"
+                },
+                {
+                  "id": "300",
+                  "name": "Roger"
+                },
+                {
+                  "id": "302",
+                  "name": "Ruben"
+                },
+                {
+                  "id": "338",
+                  "name": "Summer Smith"
+                },
+                {
+                  "id": "356",
+                  "name": "Tom Randolph"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.492,
+        "timestamp": "2025-09-22T22:06:01.159345Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "3",
+              "name": "Anatomy Park",
+              "created": "2017-11-10T12:56:34.022Z",
+              "characters": [
+                {
+                  "id": "1",
+                  "name": "Rick Sanchez"
+                },
+                {
+                  "id": "2",
+                  "name": "Morty Smith"
+                },
+                {
+                  "id": "12",
+                  "name": "Alexander"
+                },
+                {
+                  "id": "17",
+                  "name": "Annie"
+                },
+                {
+                  "id": "38",
+                  "name": "Beth Smith"
+                },
+                {
+                  "id": "45",
+                  "name": "Bill"
+                },
+                {
+                  "id": "96",
+                  "name": "Tuberculosis"
+                },
+                {
+                  "id": "97",
+                  "name": "Gonorrhea"
+                },
+                {
+                  "id": "98",
+                  "name": "Hepatitis A"
+                },
+                {
+                  "id": "99",
+                  "name": "Hepatitis C"
+                },
+                {
+                  "id": "100",
+                  "name": "Bubonic Plague"
+                },
+                {
+                  "id": "101",
+                  "name": "E. Coli"
+                },
+                {
+                  "id": "108",
+                  "name": "Dr. Xenon Bloom"
+                },
+                {
+                  "id": "112",
+                  "name": "Eric McMan"
+                },
+                {
+                  "id": "114",
+                  "name": "Ethan"
+                },
+                {
+                  "id": "169",
+                  "name": "Jacob"
+                },
+                {
+                  "id": "175",
+                  "name": "Jerry Smith"
+                },
+                {
+                  "id": "186",
+                  "name": "Joyce Smith"
+                },
+                {
+                  "id": "201",
+                  "name": "Leonard Smith"
+                },
+                {
+                  "id": "268",
+                  "name": "Poncho"
+                },
+                {
+                  "id": "300",
+                  "name": "Roger"
+                },
+                {
+                  "id": "302",
+                  "name": "Ruben"
+                },
+                {
+                  "id": "338",
+                  "name": "Summer Smith"
+                },
+                {
+                  "id": "356",
+                  "name": "Tom Randolph"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-22T22:06:01.159478Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.369,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episode(id: \"1\") {\n    id\n    name\n  }\n  __type(name: \"Episode\") {\n    name\n    fields {\n      name\n      type {\n        name\n        kind\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.419,
+    "timestamp": "2025-09-22T22:06:04.505867Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "episode": {
+          "id": "1",
+          "name": "Pilot"
+        },
+        "__type": {
+          "name": "Episode",
+          "fields": [
+            {
+              "name": "id",
+              "type": {
+                "name": "ID",
+                "kind": "SCALAR"
+              }
+            },
+            {
+              "name": "name",
+              "type": {
+                "name": "String",
+                "kind": "SCALAR"
+              }
+            },
+            {
+              "name": "air_date",
+              "type": {
+                "name": "String",
+                "kind": "SCALAR"
+              }
+            },
+            {
+              "name": "episode",
+              "type": {
+                "name": "String",
+                "kind": "SCALAR"
+              }
+            },
+            {
+              "name": "characters",
+              "type": {
+                "name": null,
+                "kind": "NON_NULL"
+              }
+            },
+            {
+              "name": "created",
+              "type": {
+                "name": "String",
+                "kind": "SCALAR"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

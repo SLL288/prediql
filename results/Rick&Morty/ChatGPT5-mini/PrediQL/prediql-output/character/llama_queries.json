@@ -1,0 +1,328 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"1\") {\n    id\n    name\n    status\n    origin {\n      id\n      name\n    }\n    location {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 10.63,
+    "timestamp": "2025-09-22T21:39:26.127658Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "character": {
+          "id": "1",
+          "name": "Rick Sanchez",
+          "status": "Alive",
+          "origin": {
+            "id": "1",
+            "name": "Earth (C-137)"
+          },
+          "location": {
+            "id": "3",
+            "name": "Citadel of Ricks"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"1' OR '1'='1\") {\n    id\n    name\n    species\n    origin {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 14.199,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='rickandmortyapi.com', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-22T21:39:43.253202Z",
+    "count": 2
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    image\n    origin {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.496,
+    "timestamp": "2025-09-22T21:39:43.749403Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\") {\n    id\n    name\n    created\n    origin {\n      name\n      dimension\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.409,
+    "timestamp": "2025-09-22T21:39:46.323821Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"1; cat /etc/passwd\") {\n    id\n    name\n    created\n    location {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.539,
+    "timestamp": "2025-09-22T21:39:49.710098Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"../../etc/passwd\") {\n    id\n    name\n    type\n    origin {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.384,
+    "timestamp": "2025-09-22T21:39:52.360011Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"<img src=x onerror='alert(1)' />\") {\n    id\n    name\n    image\n    origin {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.837,
+    "timestamp": "2025-09-22T21:39:55.004495Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"1\") {\n    id\n    name\n    status\n    location {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.489,
+        "timestamp": "2025-09-22T21:39:58.063424Z",
+        "response_body": {
+          "data": {
+            "character": {
+              "id": "1",
+              "name": "Rick Sanchez",
+              "status": "Alive",
+              "location": {
+                "id": "3",
+                "name": "Citadel of Ricks"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.467,
+        "timestamp": "2025-09-22T21:39:58.530601Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "1",
+              "name": "Rick Sanchez",
+              "status": "Alive",
+              "location": {
+                "id": "3",
+                "name": "Citadel of Ricks"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-22T21:39:58.530655Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.492,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: character(id: \"1\") {\n    id\n    name\n    status\n    location {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.467,
+        "timestamp": "2025-09-22T21:40:01.697645Z",
+        "response_body": {
+          "data": {
+            "character": {
+              "id": "1",
+              "name": "Rick Sanchez",
+              "status": "Alive",
+              "location": {
+                "id": "3",
+                "name": "Citadel of Ricks"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.378,
+        "timestamp": "2025-09-22T21:40:02.075249Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "1",
+              "name": "Rick Sanchez",
+              "status": "Alive",
+              "location": {
+                "id": "3",
+                "name": "Citadel of Ricks"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-22T21:40:02.075338Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.474,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(name: \"Character\") {\n    name\n    fields {\n      name\n      type {\n        name\n        kind\n      }\n    }\n  }\n  character(id: \"1\") {\n    id\n    name\n    origin {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.368,
+    "timestamp": "2025-09-22T21:40:05.503657Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Fields \"character\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            },
+            {
+              "line": 15,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Unknown argument \"name\" on field \"character\" of type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"fields\" on type \"Character\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"character\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

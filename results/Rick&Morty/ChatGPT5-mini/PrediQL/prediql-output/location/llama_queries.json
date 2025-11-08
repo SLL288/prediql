@@ -1,0 +1,798 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"1\") {\n    id\n    name\n    type\n    dimension\n    residents {\n      id\n      name\n      status\n    }\n    created\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.011,
+    "timestamp": "2025-09-22T21:50:21.178726Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "location": {
+          "id": "1",
+          "name": "Earth (C-137)",
+          "type": "Planet",
+          "dimension": "Dimension C-137",
+          "residents": [
+            {
+              "id": "38",
+              "name": "Beth Smith",
+              "status": "Alive"
+            },
+            {
+              "id": "45",
+              "name": "Bill",
+              "status": "Alive"
+            },
+            {
+              "id": "71",
+              "name": "Conroy",
+              "status": "Dead"
+            },
+            {
+              "id": "82",
+              "name": "Cronenberg Rick",
+              "status": "unknown"
+            },
+            {
+              "id": "83",
+              "name": "Cronenberg Morty",
+              "status": "unknown"
+            },
+            {
+              "id": "92",
+              "name": "Davin",
+              "status": "Dead"
+            },
+            {
+              "id": "112",
+              "name": "Eric McMan",
+              "status": "Alive"
+            },
+            {
+              "id": "114",
+              "name": "Ethan",
+              "status": "unknown"
+            },
+            {
+              "id": "116",
+              "name": "Evil Beth Clone",
+              "status": "Dead"
+            },
+            {
+              "id": "117",
+              "name": "Evil Jerry Clone",
+              "status": "Dead"
+            },
+            {
+              "id": "120",
+              "name": "Evil Summer Clone",
+              "status": "Dead"
+            },
+            {
+              "id": "127",
+              "name": "Frank Palicky",
+              "status": "Dead"
+            },
+            {
+              "id": "155",
+              "name": "Harold",
+              "status": "Alive"
+            },
+            {
+              "id": "169",
+              "name": "Jacob",
+              "status": "Alive"
+            },
+            {
+              "id": "175",
+              "name": "Jerry Smith",
+              "status": "Alive"
+            },
+            {
+              "id": "179",
+              "name": "Jessica",
+              "status": "Alive"
+            },
+            {
+              "id": "186",
+              "name": "Joyce Smith",
+              "status": "Alive"
+            },
+            {
+              "id": "201",
+              "name": "Leonard Smith",
+              "status": "Alive"
+            },
+            {
+              "id": "216",
+              "name": "MC Haps",
+              "status": "Alive"
+            },
+            {
+              "id": "239",
+              "name": "Mr. Goldenfold",
+              "status": "Alive"
+            },
+            {
+              "id": "271",
+              "name": "Principal Vagina",
+              "status": "Alive"
+            },
+            {
+              "id": "302",
+              "name": "Ruben",
+              "status": "Dead"
+            },
+            {
+              "id": "303",
+              "name": "Samantha",
+              "status": "Alive"
+            },
+            {
+              "id": "338",
+              "name": "Summer Smith",
+              "status": "Alive"
+            },
+            {
+              "id": "343",
+              "name": "Tammy Guetermann",
+              "status": "Alive"
+            },
+            {
+              "id": "356",
+              "name": "Tom Randolph",
+              "status": "Alive"
+            },
+            {
+              "id": "394",
+              "name": "Davin",
+              "status": "Dead"
+            }
+          ],
+          "created": "2017-11-10T12:42:04.162Z"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"1' OR '1'='1' -- \") {\n    id\n    name\n    dimension\n    residents {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.527,
+    "timestamp": "2025-09-22T21:50:23.655654Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "location": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "location"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/location/1%27%20OR%20%271%27=%271%27%20--",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"1\\' OR \\'1\\'=\\'1\\' --\" at path \"id\" for model \"Location\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    residents {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.487,
+    "timestamp": "2025-09-22T21:50:26.842895Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "location": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\") {\n    id\n    name\n    type\n    residents {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.374,
+    "timestamp": "2025-09-22T21:50:28.765598Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "location": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"1; cat /etc/passwd\") {\n    id\n    name\n    residents {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.523,
+    "timestamp": "2025-09-22T21:50:31.189460Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "location": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"../../../../etc/passwd\") {\n    id\n    name\n    type\n    residents {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.387,
+    "timestamp": "2025-09-22T21:50:33.861224Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "location": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"<div onclick=\\\"alert(1)\\\">Injected</div>\") {\n    id\n    name\n    dimension\n    residents {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.515,
+    "timestamp": "2025-09-22T21:50:36.617957Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "location": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"5\") {\n    id\n    name\n    type\n    residents {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.487,
+        "timestamp": "2025-09-22T21:50:40.001016Z",
+        "response_body": {
+          "data": {
+            "location": {
+              "id": "5",
+              "name": "Anatomy Park",
+              "type": "Microverse",
+              "residents": [
+                {
+                  "id": "12",
+                  "name": "Alexander"
+                },
+                {
+                  "id": "17",
+                  "name": "Annie"
+                },
+                {
+                  "id": "96",
+                  "name": "Tuberculosis"
+                },
+                {
+                  "id": "97",
+                  "name": "Gonorrhea"
+                },
+                {
+                  "id": "98",
+                  "name": "Hepatitis A"
+                },
+                {
+                  "id": "99",
+                  "name": "Hepatitis C"
+                },
+                {
+                  "id": "100",
+                  "name": "Bubonic Plague"
+                },
+                {
+                  "id": "101",
+                  "name": "E. Coli"
+                },
+                {
+                  "id": "108",
+                  "name": "Dr. Xenon Bloom"
+                },
+                {
+                  "id": "268",
+                  "name": "Poncho"
+                },
+                {
+                  "id": "300",
+                  "name": "Roger"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.646,
+        "timestamp": "2025-09-22T21:50:40.646674Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "5",
+              "name": "Anatomy Park",
+              "type": "Microverse",
+              "residents": [
+                {
+                  "id": "12",
+                  "name": "Alexander"
+                },
+                {
+                  "id": "17",
+                  "name": "Annie"
+                },
+                {
+                  "id": "96",
+                  "name": "Tuberculosis"
+                },
+                {
+                  "id": "97",
+                  "name": "Gonorrhea"
+                },
+                {
+                  "id": "98",
+                  "name": "Hepatitis A"
+                },
+                {
+                  "id": "99",
+                  "name": "Hepatitis C"
+                },
+                {
+                  "id": "100",
+                  "name": "Bubonic Plague"
+                },
+                {
+                  "id": "101",
+                  "name": "E. Coli"
+                },
+                {
+                  "id": "108",
+                  "name": "Dr. Xenon Bloom"
+                },
+                {
+                  "id": "268",
+                  "name": "Poncho"
+                },
+                {
+                  "id": "300",
+                  "name": "Roger"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-22T21:50:40.646776Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.351,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: location(id: \"5\") {\n    id\n    name\n    type\n    residents {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.376,
+        "timestamp": "2025-09-22T21:50:43.721582Z",
+        "response_body": {
+          "data": {
+            "location": {
+              "id": "5",
+              "name": "Anatomy Park",
+              "type": "Microverse",
+              "residents": [
+                {
+                  "id": "12",
+                  "name": "Alexander"
+                },
+                {
+                  "id": "17",
+                  "name": "Annie"
+                },
+                {
+                  "id": "96",
+                  "name": "Tuberculosis"
+                },
+                {
+                  "id": "97",
+                  "name": "Gonorrhea"
+                },
+                {
+                  "id": "98",
+                  "name": "Hepatitis A"
+                },
+                {
+                  "id": "99",
+                  "name": "Hepatitis C"
+                },
+                {
+                  "id": "100",
+                  "name": "Bubonic Plague"
+                },
+                {
+                  "id": "101",
+                  "name": "E. Coli"
+                },
+                {
+                  "id": "108",
+                  "name": "Dr. Xenon Bloom"
+                },
+                {
+                  "id": "268",
+                  "name": "Poncho"
+                },
+                {
+                  "id": "300",
+                  "name": "Roger"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.48,
+        "timestamp": "2025-09-22T21:50:44.201513Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "5",
+              "name": "Anatomy Park",
+              "type": "Microverse",
+              "residents": [
+                {
+                  "id": "12",
+                  "name": "Alexander"
+                },
+                {
+                  "id": "17",
+                  "name": "Annie"
+                },
+                {
+                  "id": "96",
+                  "name": "Tuberculosis"
+                },
+                {
+                  "id": "97",
+                  "name": "Gonorrhea"
+                },
+                {
+                  "id": "98",
+                  "name": "Hepatitis A"
+                },
+                {
+                  "id": "99",
+                  "name": "Hepatitis C"
+                },
+                {
+                  "id": "100",
+                  "name": "Bubonic Plague"
+                },
+                {
+                  "id": "101",
+                  "name": "E. Coli"
+                },
+                {
+                  "id": "108",
+                  "name": "Dr. Xenon Bloom"
+                },
+                {
+                  "id": "268",
+                  "name": "Poncho"
+                },
+                {
+                  "id": "300",
+                  "name": "Roger"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-22T21:50:44.201581Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.512,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  location(id: \"1\") {\n    id\n    name\n    residents {\n      id\n      name\n    }\n  }\n  __schema {\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.642,
+    "timestamp": "2025-09-22T21:50:48.061877Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "location": {
+          "id": "1",
+          "name": "Earth (C-137)",
+          "residents": [
+            {
+              "id": "38",
+              "name": "Beth Smith"
+            },
+            {
+              "id": "45",
+              "name": "Bill"
+            },
+            {
+              "id": "71",
+              "name": "Conroy"
+            },
+            {
+              "id": "82",
+              "name": "Cronenberg Rick"
+            },
+            {
+              "id": "83",
+              "name": "Cronenberg Morty"
+            },
+            {
+              "id": "92",
+              "name": "Davin"
+            },
+            {
+              "id": "112",
+              "name": "Eric McMan"
+            },
+            {
+              "id": "114",
+              "name": "Ethan"
+            },
+            {
+              "id": "116",
+              "name": "Evil Beth Clone"
+            },
+            {
+              "id": "117",
+              "name": "Evil Jerry Clone"
+            },
+            {
+              "id": "120",
+              "name": "Evil Summer Clone"
+            },
+            {
+              "id": "127",
+              "name": "Frank Palicky"
+            },
+            {
+              "id": "155",
+              "name": "Harold"
+            },
+            {
+              "id": "169",
+              "name": "Jacob"
+            },
+            {
+              "id": "175",
+              "name": "Jerry Smith"
+            },
+            {
+              "id": "179",
+              "name": "Jessica"
+            },
+            {
+              "id": "186",
+              "name": "Joyce Smith"
+            },
+            {
+              "id": "201",
+              "name": "Leonard Smith"
+            },
+            {
+              "id": "216",
+              "name": "MC Haps"
+            },
+            {
+              "id": "239",
+              "name": "Mr. Goldenfold"
+            },
+            {
+              "id": "271",
+              "name": "Principal Vagina"
+            },
+            {
+              "id": "302",
+              "name": "Ruben"
+            },
+            {
+              "id": "303",
+              "name": "Samantha"
+            },
+            {
+              "id": "338",
+              "name": "Summer Smith"
+            },
+            {
+              "id": "343",
+              "name": "Tammy Guetermann"
+            },
+            {
+              "id": "356",
+              "name": "Tom Randolph"
+            },
+            {
+              "id": "394",
+              "name": "Davin"
+            }
+          ]
+        },
+        "__schema": {
+          "types": [
+            {
+              "name": "Query"
+            },
+            {
+              "name": "ID"
+            },
+            {
+              "name": "Character"
+            },
+            {
+              "name": "String"
+            },
+            {
+              "name": "Location"
+            },
+            {
+              "name": "Episode"
+            },
+            {
+              "name": "Int"
+            },
+            {
+              "name": "FilterCharacter"
+            },
+            {
+              "name": "Characters"
+            },
+            {
+              "name": "Info"
+            },
+            {
+              "name": "FilterLocation"
+            },
+            {
+              "name": "Locations"
+            },
+            {
+              "name": "FilterEpisode"
+            },
+            {
+              "name": "Episodes"
+            },
+            {
+              "name": "__Schema"
+            },
+            {
+              "name": "__Type"
+            },
+            {
+              "name": "__TypeKind"
+            },
+            {
+              "name": "Boolean"
+            },
+            {
+              "name": "__Field"
+            },
+            {
+              "name": "__InputValue"
+            },
+            {
+              "name": "__EnumValue"
+            },
+            {
+              "name": "__Directive"
+            },
+            {
+              "name": "__DirectiveLocation"
+            },
+            {
+              "name": "CacheControlScope"
+            },
+            {
+              "name": "Upload"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]
