@@ -1,0 +1,207 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  album(id: \"1\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.387,
+    "timestamp": "2025-09-23T18:35:32.541348Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "album": {
+          "id": "1",
+          "title": "quidem molestiae enim"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  album(id: \"1' OR (SELECT SLEEP(5))--\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.394,
+    "timestamp": "2025-09-23T18:35:34.708194Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "album": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  album(id: \"\\\"<script>alert('xss')</script>\\\"\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.426,
+    "timestamp": "2025-09-23T18:35:37.270256Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "album": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  album(id: \"http://attacker.com/evil.jpg\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.379,
+    "timestamp": "2025-09-23T18:35:39.891644Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "album": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  album(id: \"1; cat /etc/passwd\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.381,
+    "timestamp": "2025-09-23T18:35:42.957468Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "album": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  album(id: \"../../../etc/passwd\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.224,
+    "timestamp": "2025-09-23T18:35:45.731302Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "album": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  album(id: \"1<h1>Hello World</h1>\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.217,
+    "timestamp": "2025-09-23T18:35:47.593767Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "album": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery MyAlbumQuery {\n  a: album(id: \"1\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  album(id: \"1\") {\n    id\n    user {\n      __typename\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.399,
+    "timestamp": "2025-09-23T18:35:50.422453Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "album": {
+          "id": "1",
+          "user": {
+            "__typename": "User"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  album(id: \"1\") {\n    id\n    titl # Intentionally misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.196,
+    "timestamp": "2025-09-23T18:35:52.790718Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"titl\" on type \"Album\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

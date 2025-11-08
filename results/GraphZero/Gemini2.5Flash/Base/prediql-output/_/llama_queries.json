@@ -1,0 +1,378 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  _ \n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.256,
+    "timestamp": "2025-10-04T21:53:51.822502Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "_": null
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  _ {\n    # Assuming _ is a field that takes an argument,\n    # or it's a root field that could be affected by SQLi through some hidden mechanism.\n    # Since no input is defined for _, we're making a best guess if an underlying system is vulnerable.\n    # In a real scenario, this would apply to an argument of _ if it had one.\n    # For now, we assume _ directly returns a value that we can query.\n  }\n}\n\n# If _ had an argument, e.g., \"id\", the query would look like:\n# query {\n#   _ (id: \"1' UNION SELECT NULL, username, password FROM users --\")\n# }\n# Since schema is {}, we can't infer arguments.\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.4,
+    "timestamp": "2025-10-04T21:53:55.310946Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"}\".",
+          "locations": [
+            {
+              "line": 9,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  _ {\n    # If _ had a field that could return user-controlled data.\n    # Since no output fields or input are specified for _,\n    # we assume _ is a leaf field that might indirectly process or return XSS.\n    # This is a speculative test due to the minimalist schema.\n  }\n}\n\n# If _ had an argument, e.g., \"data\", the query would look like:\n# query {\n#   _ (data: \"<script>alert('XSS')</script>\")\n# }\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.161,
+    "timestamp": "2025-10-04T21:53:58.466990Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"}\".",
+          "locations": [
+            {
+              "line": 8,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  _ {\n    # If _ had an argument that accepts a URL or host.\n    # With no defined input for _, this is a placeholder.\n    # A real SSRF test would involve providing a URL to an argument.\n  }\n}\n\n# If _ had an argument, e.g., \"url\", the query would look like:\n# query {\n#   _ (url: \"http://169.254.169.254/latest/meta-data/\")\n# }\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.376,
+    "timestamp": "2025-10-04T21:54:01.832289Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"}\".",
+          "locations": [
+            {
+              "line": 7,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  _ {\n    # If _ had an argument that gets passed to a shell command.\n    # No direct input for _ in the schema.\n  }\n}\n\n# If _ had an argument, e.g., \"command\", the query would look like:\n# query {\n#   _ (command: \"'; cat /etc/passwd #\")\n# }\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.386,
+    "timestamp": "2025-10-04T21:54:04.745551Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"}\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  _ {\n    # If _ had an argument that defines a file path.\n    # No direct input for _ in the schema.\n  }\n}\n\n# If _ had an argument, e.g., \"filename\", the query would look like:\n# query {\n#   _ (filename: \"../../../etc/passwd\")\n# }\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.347,
+    "timestamp": "2025-10-04T21:54:08.264728Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"}\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  _ {\n    # If _ returns data that is rendered directly into an HTML page\n    # without proper sanitization.\n    # With no explicit output fields, this is a general test for _'s return value.\n  }\n}\n\n# If _ had an argument, e.g., \"content\", the query would look like:\n# query {\n#   _ (content: \"<h1>Malicious HTML</h1><img src='x' onerror='alert(1)'>\")\n# }\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.23,
+    "timestamp": "2025-10-04T21:54:11.386012Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"}\".",
+          "locations": [
+            {
+              "line": 7,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  _\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.443,
+        "timestamp": "2025-10-04T21:54:14.415521Z",
+        "response_body": {
+          "data": {
+            "_": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.226,
+        "timestamp": "2025-10-04T21:54:15.641502Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 13
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-04T21:54:15.641593Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.353,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery bypass: _ {\n  _\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.073,
+        "timestamp": "2025-10-04T21:54:20.375609Z",
+        "response_body": {
+          "data": {
+            "_": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.089,
+        "timestamp": "2025-10-04T21:54:21.464802Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 13
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-04T21:54:21.465046Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.298,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  _ {\n    queryType {\n      name\n    }\n    types {\n      name\n      kind\n      description\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.126,
+    "timestamp": "2025-10-04T21:54:26.455146Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"_\" must not have a selection since type \"Int\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  # This query is designed to elicit suggestions for fields or arguments.\n  # By providing an invalid field name or an incomplete query,\n  # the GraphQL server might suggest valid alternatives in the error message.\n  # Since the schema only shows \"_\" as an operation, we can try to query a non-existent field\n  # to see if it suggests \"_\".\n  invalidField \n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.107,
+    "timestamp": "2025-10-04T21:54:30.230804Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"invalidField\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 8,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

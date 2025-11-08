@@ -1,0 +1,800 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"Buy milk\", completed: false, userId: \"1\" }) {\n    id\n    title\n    completed\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.943,
+    "timestamp": "2025-09-23T17:56:41.842091Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 60
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"Test SQL'); DROP TABLE todos; --\", completed: false, userId: \"1\" }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.941,
+    "timestamp": "2025-09-23T17:56:45.781513Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 84
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"<script>alert('xss')</script>\", completed: false, userId: \"1\" }) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.64,
+    "timestamp": "2025-09-23T17:56:48.034290Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 81
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"http://169.254.169.254/latest/meta-data/\", completed: false, userId: \"1\" }) {\n    id\n    title\n    user {\n      id\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.925,
+    "timestamp": "2025-09-23T17:56:50.762987Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 92
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"test; cat /etc/passwd;\", completed: false, userId: \"1\" }) {\n    id\n    title\n    completed\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.706,
+    "timestamp": "2025-09-23T17:56:54.357084Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 74
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"../../../etc/passwd\", completed: false, userId: \"1\" }) {\n    id\n    title\n    user {\n      id\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.862,
+    "timestamp": "2025-09-23T17:56:57.596943Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 71
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"<img src=x onerror='alert(1)'>\", completed: false, userId: \"1\" }) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.599,
+    "timestamp": "2025-09-23T17:57:00.909331Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 82
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"Privilege escalation test\", completed: false, userId: \"2\" }) {\n    id\n    title\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.804,
+        "timestamp": "2025-09-23T17:57:03.898442Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 77
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.6,
+        "timestamp": "2025-09-23T17:57:04.498516Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 88
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-23T17:57:04.498644Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.838,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: createTodo(input: { title: \"Privilege escalation test aliased\", completed: false, userId: \"2\" }) {\n    id\n    title\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.664,
+        "timestamp": "2025-09-23T17:57:08.020713Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 77
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.602,
+        "timestamp": "2025-09-23T17:57:08.622980Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 88
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-23T17:57:08.623027Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.807,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createTodo(name: \"Todo\") {\n    name\n    fields {\n      name\n      type {\n        name\n        kind\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.792,
+    "timestamp": "2025-09-23T17:57:13.208775Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"Field suggestion test\", completed: false, userId: \"1\" }) {\n    id\n    title\n    completedd\n    user {\n      id\n      name\n      usernme\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.829,
+    "timestamp": "2025-09-23T17:57:16.472225Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"userId\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 73
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"completedd\" on type \"Todo\". Did you mean \"completed\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"usernme\" on type \"User\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 10,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"Buy milk\", completed: false }) {\n    id\n    title\n    completed\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.942,
+    "timestamp": "2025-09-23T18:00:21.373383Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "createTodo": {
+          "id": "201",
+          "title": "Buy milk",
+          "completed": false,
+          "user": {
+            "id": null,
+            "name": null,
+            "username": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"Test'); DELETE FROM todos; --\", completed: false }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.868,
+    "timestamp": "2025-09-23T18:00:24.253323Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "createTodo": {
+          "id": "201",
+          "title": "Test'); DELETE FROM todos; --",
+          "completed": false,
+          "user": {
+            "id": null,
+            "username": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"<script>alert('xss')</script>\", completed: false }) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.652,
+    "timestamp": "2025-09-23T18:00:27.000583Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "createTodo": {
+          "id": "201",
+          "title": "<script>alert('xss')</script>",
+          "user": {
+            "id": null,
+            "name": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"http://169.254.169.254/latest/meta-data/\", completed: false }) {\n    id\n    title\n    user {\n      id\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.834,
+    "timestamp": "2025-09-23T18:00:30.115820Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "createTodo": {
+          "id": "201",
+          "title": "http://169.254.169.254/latest/meta-data/",
+          "user": {
+            "id": null,
+            "email": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"test; cat /etc/passwd;\", completed: false }) {\n    id\n    title\n    completed\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.862,
+    "timestamp": "2025-09-23T18:00:33.298947Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "createTodo": {
+          "id": "201",
+          "title": "test; cat /etc/passwd;",
+          "completed": false,
+          "user": {
+            "id": null,
+            "name": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"../../../etc/passwd\", completed: false }) {\n    id\n    title\n    user {\n      id\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.904,
+    "timestamp": "2025-09-23T18:00:36.514067Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "createTodo": {
+          "id": "201",
+          "title": "../../../etc/passwd",
+          "user": {
+            "id": null,
+            "username": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"<img src=x onerror='alert(1)'>\", completed: false }) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.92,
+    "timestamp": "2025-09-23T18:00:39.047911Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "createTodo": {
+          "id": "201",
+          "title": "<img src=x onerror='alert(1)'>",
+          "user": {
+            "id": null,
+            "name": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"ACL bypass test - normal\", completed: false }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.632,
+        "timestamp": "2025-09-23T18:00:42.213798Z",
+        "response_body": {
+          "data": {
+            "createTodo": {
+              "id": "201",
+              "title": "ACL bypass test - normal"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.874,
+        "timestamp": "2025-09-23T18:00:43.087537Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "201",
+              "title": "ACL bypass test - aliased"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-09-23T18:00:43.087659Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.8,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: createTodo(input: { title: \"ACL bypass test - aliased\", completed: false }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.624,
+        "timestamp": "2025-09-23T18:00:46.288422Z",
+        "response_body": {
+          "data": {
+            "createTodo": {
+              "id": "201",
+              "title": "ACL bypass test - normal"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.606,
+        "timestamp": "2025-09-23T18:00:46.894121Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "201",
+              "title": "ACL bypass test - aliased"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-09-23T18:00:46.894267Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.888,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createTodo {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.588,
+    "timestamp": "2025-09-23T18:00:50.500200Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"Field suggestion test\", completed: false }) {\n    id\n    title\n    completedd\n    user {\n      id\n      usernme\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.808,
+    "timestamp": "2025-09-23T18:00:54.257115Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"completedd\" on type \"Todo\". Did you mean \"completed\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"usernme\" on type \"User\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 9,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

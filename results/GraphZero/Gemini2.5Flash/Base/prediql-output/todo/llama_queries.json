@@ -1,0 +1,335 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  todo(id: \"1\") {\n    id\n    title\n    completed\n    user {\n      name\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.585,
+    "timestamp": "2025-10-04T22:07:01.541008Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "todo": {
+          "id": "1",
+          "title": "delectus aut autem",
+          "completed": false,
+          "user": {
+            "name": "Leanne Graham",
+            "email": "Sincere@april.biz"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  todo(id: \"1 OR 1=1; --\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.156,
+    "timestamp": "2025-10-04T22:07:05.122782Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "todo": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  todo(id: \"1<script>alert('XSS')</script>\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.363,
+    "timestamp": "2025-10-04T22:07:08.946070Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "todo": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  todo(id: \"1; URL=http://localhost:8080/admin\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.387,
+    "timestamp": "2025-10-04T22:07:11.956260Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "todo": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  todo(id: \"1'; rm -rf /; echo '\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.121,
+    "timestamp": "2025-10-04T22:07:14.725142Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "todo": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  todo(id: \"1/../../etc/passwd\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.406,
+    "timestamp": "2025-10-04T22:07:18.886984Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "todo": {
+          "id": null,
+          "title": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  todo(id: \"1<h1>Hello World</h1><img src=x onerror=alert('HTML')>\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.006,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='graphqlzero.almansi.me', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-04T22:07:30.580072Z",
+    "count": 7
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  todo(id: \"2\") {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.335,
+        "timestamp": "2025-10-04T22:07:31.914683Z",
+        "response_body": {
+          "data": {
+            "todo": {
+              "id": "2",
+              "title": "quis ut nam facilis et officia qui",
+              "completed": false
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.149,
+        "timestamp": "2025-10-04T22:07:33.063830Z",
+        "response_body": {
+          "data": {
+            "myTodo": {
+              "id": "3",
+              "title": "fugiat veniam minus",
+              "completed": false
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-04T22:07:33.063934Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.351,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myTodo: todo(id: \"3\") {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.315,
+        "timestamp": "2025-10-04T22:07:37.774975Z",
+        "response_body": {
+          "data": {
+            "todo": {
+              "id": "2",
+              "title": "quis ut nam facilis et officia qui",
+              "completed": false
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.332,
+        "timestamp": "2025-10-04T22:07:39.107507Z",
+        "response_body": {
+          "data": {
+            "myTodo": {
+              "id": "3",
+              "title": "fugiat veniam minus",
+              "completed": false
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-04T22:07:39.107534Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.366,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  todo(id: \"1\") {\n    __typename\n    id\n    title\n    completed\n    user {\n      __typename\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.58,
+    "timestamp": "2025-10-04T22:07:44.941775Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "todo": {
+          "__typename": "Todo",
+          "id": "1",
+          "title": "delectus aut autem",
+          "completed": false,
+          "user": {
+            "__typename": "User",
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  todo(id: \"1\") {\n    id\n    tile # Typo for title to trigger suggestions\n    completed\n    users { # Typo for user to trigger suggestions\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.328,
+    "timestamp": "2025-10-04T22:07:47.976074Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"tile\" on type \"Todo\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"users\" on type \"Todo\". Did you mean \"user\"?",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

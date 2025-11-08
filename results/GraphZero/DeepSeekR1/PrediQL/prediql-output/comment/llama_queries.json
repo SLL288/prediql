@@ -1,0 +1,424 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  comment(id: \"1\") {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.49,
+    "timestamp": "2025-09-27T09:20:08.105233Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": "1",
+          "name": "id labore ex et quam laborum",
+          "email": "Eliseo@gardner.biz",
+          "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium",
+          "post": {
+            "id": "1",
+            "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  comment(id: \"1' UNION SELECT NULL,table_name FROM information_schema.tables--\") {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.267,
+    "timestamp": "2025-09-27T09:20:10.326622Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "name": null,
+          "email": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  comment(id: \"<script>alert(document.cookie)</script>\") {\n    id\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.416,
+    "timestamp": "2025-09-27T09:20:12.798658Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "body": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  comment(id: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    email\n    post {\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.273,
+    "timestamp": "2025-09-27T09:20:14.822379Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "email": null,
+          "post": {
+            "title": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  comment(id: \"1; cat /etc/passwd\") {\n    id\n    name\n    body\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.259,
+    "timestamp": "2025-09-27T09:20:17.835691Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "name": null,
+          "body": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  comment(id: \"../../../../etc/passwd\") {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.423,
+    "timestamp": "2025-09-27T09:20:20.986518Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "name": null,
+          "email": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  comment(id: \"<h1>Database Error</h1><form action='/update' method=POST>\") {\n    id\n    body\n    post {\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.279,
+    "timestamp": "2025-09-27T09:20:24.035636Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "body": null,
+          "post": {
+            "title": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  comment(id: \"1\") {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      body\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.242,
+        "timestamp": "2025-09-27T09:20:26.565320Z",
+        "response_body": {
+          "data": {
+            "comment": {
+              "id": "1",
+              "name": "id labore ex et quam laborum",
+              "email": "Eliseo@gardner.biz",
+              "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.253,
+        "timestamp": "2025-09-27T09:20:26.818795Z",
+        "response_body": {
+          "data": {
+            "a": {
+              "id": "1",
+              "name": "id labore ex et quam laborum",
+              "email": "Eliseo@gardner.biz",
+              "b": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-27T09:20:26.818852Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.382,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  a: comment(id: \"1\") {\n    id\n    name\n    email\n    b: body\n    post {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.244,
+        "timestamp": "2025-09-27T09:20:29.195885Z",
+        "response_body": {
+          "data": {
+            "comment": {
+              "id": "1",
+              "name": "id labore ex et quam laborum",
+              "email": "Eliseo@gardner.biz",
+              "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.224,
+        "timestamp": "2025-09-27T09:20:29.420000Z",
+        "response_body": {
+          "data": {
+            "a": {
+              "id": "1",
+              "name": "id labore ex et quam laborum",
+              "email": "Eliseo@gardner.biz",
+              "b": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-27T09:20:29.420107Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.421,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  comment {\n    queryType { name }\n    mutationType { name }\n    types {\n      name\n      kind\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.233,
+    "timestamp": "2025-09-27T09:20:32.051229Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"Comment\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"mutationType\" on type \"Comment\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"types\" on type \"Comment\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"comment\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  comment(id: \"1\") {\n    idd\n    nme\n    emil\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.215,
+    "timestamp": "2025-09-27T09:20:34.034581Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"idd\" on type \"Comment\". Did you mean \"id\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"nme\" on type \"Comment\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"emil\" on type \"Comment\". Did you mean \"email\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

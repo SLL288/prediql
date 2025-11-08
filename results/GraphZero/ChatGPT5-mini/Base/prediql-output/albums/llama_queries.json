@@ -1,0 +1,1464 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  albums(options: { paginate: { page: 1, limit: 5 } }) {\n    data {\n      id\n      title\n      user {\n        id\n        name\n        email\n      }\n    }\n    meta {\n      totalCount\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.888,
+    "timestamp": "2025-10-03T00:54:23.605046Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "albums": {
+          "data": [
+            {
+              "id": "1",
+              "title": "quidem molestiae enim",
+              "user": {
+                "id": "1",
+                "name": "Leanne Graham",
+                "email": "Sincere@april.biz"
+              }
+            },
+            {
+              "id": "2",
+              "title": "sunt qui excepturi placeat culpa",
+              "user": {
+                "id": "1",
+                "name": "Leanne Graham",
+                "email": "Sincere@april.biz"
+              }
+            },
+            {
+              "id": "3",
+              "title": "omnis laborum odio",
+              "user": {
+                "id": "1",
+                "name": "Leanne Graham",
+                "email": "Sincere@april.biz"
+              }
+            },
+            {
+              "id": "4",
+              "title": "non esse culpa molestiae omnis sed optio",
+              "user": {
+                "id": "1",
+                "name": "Leanne Graham",
+                "email": "Sincere@april.biz"
+              }
+            },
+            {
+              "id": "5",
+              "title": "eaque aut omnis a",
+              "user": {
+                "id": "1",
+                "name": "Leanne Graham",
+                "email": "Sincere@april.biz"
+              }
+            }
+          ],
+          "meta": {
+            "totalCount": 100
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  albums(options: { paginate: { page: \"1' OR '1'='1\", limit: 5 }, filter: \"title = 'Holiday' OR '1'='1'\" }) {\n    data {\n      id\n      title\n      user { id name }\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.713,
+    "timestamp": "2025-10-03T00:54:26.769752Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Int cannot represent non-integer value: \"1' OR '1'='1\"",
+          "locations": [
+            {
+              "line": 3,
+              "column": 39
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"filter\" is not defined by type \"PageQueryOptions\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 67
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  albums(options: { paginate: { page: 1, limit: 3 }, search: \"<script>alert('xss')</script>\" }) {\n    data {\n      id\n      title\n      user { id name }\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.457,
+    "timestamp": "2025-10-03T00:54:29.260524Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"SearchOptions\", found \"<script>alert('xss')</script>\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 62
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  albums(options: { paginate: { page: 1, limit: 2 }, search: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\" }) {\n    data {\n      id\n      title\n      photos {\n        data {\n          id\n          url\n          thumbnailUrl\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.693,
+    "timestamp": "2025-10-03T00:54:31.467675Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"SearchOptions\", found \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 62
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  albums(options: { paginate: { page: 1, limit: 2 }, search: \"1; cat /etc/passwd\" }) {\n    data {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 10.622,
+    "timestamp": "2025-10-03T00:54:43.798091Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"SearchOptions\", found \"1; cat /etc/passwd\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 62
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  albums(options: { paginate: { page: 1, limit: 1 }, path: \"../../../../../etc/passwd\" }) {\n    data {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.622,
+    "timestamp": "2025-10-03T00:54:46.174110Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"path\" is not defined by type \"PageQueryOptions\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 54
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  albums(options: { paginate: { page: 1, limit: 3 }, search: \"<div><img src=x onerror=alert(1)></div>\" }) {\n    data {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.603,
+    "timestamp": "2025-10-03T00:54:49.086721Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"SearchOptions\", found \"<div><img src=x onerror=alert(1)></div>\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 62
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  albums(options: { paginate: { page: 1, limit: 10 } }) {\n    data {\n      id\n      title\n      user {\n        id\n        username\n        email\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.825,
+        "timestamp": "2025-10-03T00:54:52.141149Z",
+        "response_body": {
+          "data": {
+            "albums": {
+              "data": [
+                {
+                  "id": "1",
+                  "title": "quidem molestiae enim",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "2",
+                  "title": "sunt qui excepturi placeat culpa",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "3",
+                  "title": "omnis laborum odio",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "4",
+                  "title": "non esse culpa molestiae omnis sed optio",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "5",
+                  "title": "eaque aut omnis a",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "6",
+                  "title": "natus impedit quibusdam illo est",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "7",
+                  "title": "quibusdam autem aliquid et et quia",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "8",
+                  "title": "qui fuga est a eum",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "9",
+                  "title": "saepe unde necessitatibus rem",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "10",
+                  "title": "distinctio laborum qui",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.663,
+        "timestamp": "2025-10-03T00:54:52.804129Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "data": [
+                {
+                  "id": "1",
+                  "title": "quidem molestiae enim",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "2",
+                  "title": "sunt qui excepturi placeat culpa",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "3",
+                  "title": "omnis laborum odio",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "4",
+                  "title": "non esse culpa molestiae omnis sed optio",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "5",
+                  "title": "eaque aut omnis a",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "6",
+                  "title": "natus impedit quibusdam illo est",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "7",
+                  "title": "quibusdam autem aliquid et et quia",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "8",
+                  "title": "qui fuga est a eum",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "9",
+                  "title": "saepe unde necessitatibus rem",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "10",
+                  "title": "distinctio laborum qui",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-03T00:54:52.804245Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.73,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: albums(options: { paginate: { page: 1, limit: 10 } }) {\n    data {\n      id\n      title\n      user {\n        id\n        username\n        email\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.681,
+        "timestamp": "2025-10-03T00:54:56.884423Z",
+        "response_body": {
+          "data": {
+            "albums": {
+              "data": [
+                {
+                  "id": "1",
+                  "title": "quidem molestiae enim",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "2",
+                  "title": "sunt qui excepturi placeat culpa",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "3",
+                  "title": "omnis laborum odio",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "4",
+                  "title": "non esse culpa molestiae omnis sed optio",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "5",
+                  "title": "eaque aut omnis a",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "6",
+                  "title": "natus impedit quibusdam illo est",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "7",
+                  "title": "quibusdam autem aliquid et et quia",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "8",
+                  "title": "qui fuga est a eum",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "9",
+                  "title": "saepe unde necessitatibus rem",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "10",
+                  "title": "distinctio laborum qui",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.646,
+        "timestamp": "2025-10-03T00:54:57.530442Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "data": [
+                {
+                  "id": "1",
+                  "title": "quidem molestiae enim",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "2",
+                  "title": "sunt qui excepturi placeat culpa",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "3",
+                  "title": "omnis laborum odio",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "4",
+                  "title": "non esse culpa molestiae omnis sed optio",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "5",
+                  "title": "eaque aut omnis a",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "6",
+                  "title": "natus impedit quibusdam illo est",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "7",
+                  "title": "quibusdam autem aliquid et et quia",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "8",
+                  "title": "qui fuga est a eum",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "9",
+                  "title": "saepe unde necessitatibus rem",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                },
+                {
+                  "id": "10",
+                  "title": "distinctio laborum qui",
+                  "user": {
+                    "id": "1",
+                    "username": "Bret",
+                    "email": "Sincere@april.biz"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-03T00:54:57.530563Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.428,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  albums(options: { paginate: { page: 1, limit: 1 } }) {\n    meta {\n      totalCount\n    }\n  }\n  __schema {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.462,
+    "timestamp": "2025-10-03T00:55:00.729127Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "albums": {
+          "meta": {
+            "totalCount": 100
+          }
+        },
+        "__schema": {
+          "types": [
+            {
+              "name": "Query",
+              "fields": [
+                {
+                  "name": "_"
+                },
+                {
+                  "name": "albums"
+                },
+                {
+                  "name": "album"
+                },
+                {
+                  "name": "comments"
+                },
+                {
+                  "name": "comment"
+                },
+                {
+                  "name": "photos"
+                },
+                {
+                  "name": "photo"
+                },
+                {
+                  "name": "posts"
+                },
+                {
+                  "name": "post"
+                },
+                {
+                  "name": "todos"
+                },
+                {
+                  "name": "todo"
+                },
+                {
+                  "name": "users"
+                },
+                {
+                  "name": "user"
+                }
+              ]
+            },
+            {
+              "name": "Int",
+              "fields": null
+            },
+            {
+              "name": "ID",
+              "fields": null
+            },
+            {
+              "name": "Mutation",
+              "fields": [
+                {
+                  "name": "_"
+                },
+                {
+                  "name": "createAlbum"
+                },
+                {
+                  "name": "updateAlbum"
+                },
+                {
+                  "name": "deleteAlbum"
+                },
+                {
+                  "name": "createComment"
+                },
+                {
+                  "name": "updateComment"
+                },
+                {
+                  "name": "deleteComment"
+                },
+                {
+                  "name": "createPhoto"
+                },
+                {
+                  "name": "updatePhoto"
+                },
+                {
+                  "name": "deletePhoto"
+                },
+                {
+                  "name": "createPost"
+                },
+                {
+                  "name": "updatePost"
+                },
+                {
+                  "name": "deletePost"
+                },
+                {
+                  "name": "createTodo"
+                },
+                {
+                  "name": "updateTodo"
+                },
+                {
+                  "name": "deleteTodo"
+                },
+                {
+                  "name": "createUser"
+                },
+                {
+                  "name": "updateUser"
+                },
+                {
+                  "name": "deleteUser"
+                }
+              ]
+            },
+            {
+              "name": "Boolean",
+              "fields": null
+            },
+            {
+              "name": "Album",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "user"
+                },
+                {
+                  "name": "photos"
+                }
+              ]
+            },
+            {
+              "name": "String",
+              "fields": null
+            },
+            {
+              "name": "CreateAlbumInput",
+              "fields": null
+            },
+            {
+              "name": "UpdateAlbumInput",
+              "fields": null
+            },
+            {
+              "name": "Comment",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "email"
+                },
+                {
+                  "name": "body"
+                },
+                {
+                  "name": "post"
+                }
+              ]
+            },
+            {
+              "name": "CreateCommentInput",
+              "fields": null
+            },
+            {
+              "name": "UpdateCommentInput",
+              "fields": null
+            },
+            {
+              "name": "PageQueryOptions",
+              "fields": null
+            },
+            {
+              "name": "PaginateOptions",
+              "fields": null
+            },
+            {
+              "name": "SliceOptions",
+              "fields": null
+            },
+            {
+              "name": "SortOptions",
+              "fields": null
+            },
+            {
+              "name": "SortOrderEnum",
+              "fields": null
+            },
+            {
+              "name": "OperatorOptions",
+              "fields": null
+            },
+            {
+              "name": "OperatorKindEnum",
+              "fields": null
+            },
+            {
+              "name": "SearchOptions",
+              "fields": null
+            },
+            {
+              "name": "PostsPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "CommentsPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "AlbumsPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "PhotosPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "TodosPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "UsersPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "PaginationLinks",
+              "fields": [
+                {
+                  "name": "first"
+                },
+                {
+                  "name": "prev"
+                },
+                {
+                  "name": "next"
+                },
+                {
+                  "name": "last"
+                }
+              ]
+            },
+            {
+              "name": "PageLimitPair",
+              "fields": [
+                {
+                  "name": "page"
+                },
+                {
+                  "name": "limit"
+                }
+              ]
+            },
+            {
+              "name": "PageMetadata",
+              "fields": [
+                {
+                  "name": "totalCount"
+                }
+              ]
+            },
+            {
+              "name": "Photo",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "url"
+                },
+                {
+                  "name": "thumbnailUrl"
+                },
+                {
+                  "name": "album"
+                }
+              ]
+            },
+            {
+              "name": "CreatePhotoInput",
+              "fields": null
+            },
+            {
+              "name": "UpdatePhotoInput",
+              "fields": null
+            },
+            {
+              "name": "Post",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "body"
+                },
+                {
+                  "name": "user"
+                },
+                {
+                  "name": "comments"
+                }
+              ]
+            },
+            {
+              "name": "CreatePostInput",
+              "fields": null
+            },
+            {
+              "name": "UpdatePostInput",
+              "fields": null
+            },
+            {
+              "name": "Todo",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "completed"
+                },
+                {
+                  "name": "user"
+                }
+              ]
+            },
+            {
+              "name": "CreateTodoInput",
+              "fields": null
+            },
+            {
+              "name": "UpdateTodoInput",
+              "fields": null
+            },
+            {
+              "name": "User",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "username"
+                },
+                {
+                  "name": "email"
+                },
+                {
+                  "name": "address"
+                },
+                {
+                  "name": "phone"
+                },
+                {
+                  "name": "website"
+                },
+                {
+                  "name": "company"
+                },
+                {
+                  "name": "posts"
+                },
+                {
+                  "name": "albums"
+                },
+                {
+                  "name": "todos"
+                }
+              ]
+            },
+            {
+              "name": "Address",
+              "fields": [
+                {
+                  "name": "street"
+                },
+                {
+                  "name": "suite"
+                },
+                {
+                  "name": "city"
+                },
+                {
+                  "name": "zipcode"
+                },
+                {
+                  "name": "geo"
+                }
+              ]
+            },
+            {
+              "name": "Geo",
+              "fields": [
+                {
+                  "name": "lat"
+                },
+                {
+                  "name": "lng"
+                }
+              ]
+            },
+            {
+              "name": "Float",
+              "fields": null
+            },
+            {
+              "name": "Company",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "catchPhrase"
+                },
+                {
+                  "name": "bs"
+                }
+              ]
+            },
+            {
+              "name": "CreateUserInput",
+              "fields": null
+            },
+            {
+              "name": "UpdateUserInput",
+              "fields": null
+            },
+            {
+              "name": "AddressInput",
+              "fields": null
+            },
+            {
+              "name": "GeoInput",
+              "fields": null
+            },
+            {
+              "name": "CompanyInput",
+              "fields": null
+            },
+            {
+              "name": "__Schema",
+              "fields": [
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "types"
+                },
+                {
+                  "name": "queryType"
+                },
+                {
+                  "name": "mutationType"
+                },
+                {
+                  "name": "subscriptionType"
+                },
+                {
+                  "name": "directives"
+                }
+              ]
+            },
+            {
+              "name": "__Type",
+              "fields": [
+                {
+                  "name": "kind"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "specifiedByURL"
+                },
+                {
+                  "name": "fields"
+                },
+                {
+                  "name": "interfaces"
+                },
+                {
+                  "name": "possibleTypes"
+                },
+                {
+                  "name": "enumValues"
+                },
+                {
+                  "name": "inputFields"
+                },
+                {
+                  "name": "ofType"
+                }
+              ]
+            },
+            {
+              "name": "__TypeKind",
+              "fields": null
+            },
+            {
+              "name": "__Field",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "args"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__InputValue",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "defaultValue"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__EnumValue",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__Directive",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "isRepeatable"
+                },
+                {
+                  "name": "locations"
+                },
+                {
+                  "name": "args"
+                }
+              ]
+            },
+            {
+              "name": "__DirectiveLocation",
+              "fields": null
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  albums(options: { paginate: { page: 1, limit: 3 } }) {\n    data {\n      id\n      titl\n      user {\n        id\n        usernme\n        email\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.767,
+    "timestamp": "2025-10-03T00:55:04.286082Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"titl\" on type \"Album\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"usernme\" on type \"User\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 9,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

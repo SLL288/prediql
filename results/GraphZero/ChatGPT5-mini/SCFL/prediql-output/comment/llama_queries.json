@@ -1,0 +1,551 @@
+[
+  {
+    "query": {
+      "query": "\nquery comment {\n  comment(id: \"1\") {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.822,
+    "timestamp": "2025-10-05T17:25:05.236785Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": "1",
+          "name": "id labore ex et quam laborum",
+          "email": "Eliseo@gardner.biz",
+          "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium",
+          "post": {
+            "id": "1",
+            "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery comment {\n  comment(id: \"1' OR '1'='1\") {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.918,
+    "timestamp": "2025-10-05T17:25:07.886353Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "name": null,
+          "email": null,
+          "body": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery comment {\n  comment(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.548,
+    "timestamp": "2025-10-05T17:25:10.994259Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "name": null,
+          "body": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery comment {\n  comment(id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\") {\n    id\n    name\n    body\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.831,
+    "timestamp": "2025-10-05T17:25:14.153640Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "name": null,
+          "body": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery comment {\n  comment(id: \"1; cat /etc/passwd\") {\n    id\n    name\n    body\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.835,
+    "timestamp": "2025-10-05T17:25:16.930566Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "name": null,
+          "body": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery comment {\n  comment(id: \"../../etc/passwd\") {\n    id\n    name\n    body\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.232,
+    "timestamp": "2025-10-05T17:25:19.850110Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "name": null,
+          "body": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery comment {\n  comment(id: \"<div><img src=x onerror=alert(1)></div>\") {\n    id\n    name\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.925,
+    "timestamp": "2025-10-05T17:25:23.376155Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": null,
+          "name": null,
+          "body": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery comment {\n  comment(id: \"2\") {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n        email\n        website\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.898,
+        "timestamp": "2025-10-05T17:25:26.586013Z",
+        "response_body": {
+          "data": {
+            "comment": {
+              "id": "2",
+              "name": "quo vero reiciendis velit similique earum",
+              "email": "Jayne_Kuhic@sydney.com",
+              "body": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                "user": {
+                  "id": "1",
+                  "name": "Leanne Graham",
+                  "email": "Sincere@april.biz",
+                  "website": "hildegard.org"
+                }
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.913,
+        "timestamp": "2025-10-05T17:25:27.499249Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "2",
+              "name": "quo vero reiciendis velit similique earum",
+              "email": "Jayne_Kuhic@sydney.com",
+              "body": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                "user": {
+                  "id": "1",
+                  "name": "Leanne Graham",
+                  "email": "Sincere@april.biz",
+                  "website": "hildegard.org"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T17:25:27.499405Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.798,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery comment {\n  s: comment(id: \"2\") {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n        email\n        website\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.895,
+        "timestamp": "2025-10-05T17:25:31.234480Z",
+        "response_body": {
+          "data": {
+            "comment": {
+              "id": "2",
+              "name": "quo vero reiciendis velit similique earum",
+              "email": "Jayne_Kuhic@sydney.com",
+              "body": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                "user": {
+                  "id": "1",
+                  "name": "Leanne Graham",
+                  "email": "Sincere@april.biz",
+                  "website": "hildegard.org"
+                }
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.882,
+        "timestamp": "2025-10-05T17:25:32.116226Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "2",
+              "name": "quo vero reiciendis velit similique earum",
+              "email": "Jayne_Kuhic@sydney.com",
+              "body": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                "user": {
+                  "id": "1",
+                  "name": "Leanne Graham",
+                  "email": "Sincere@april.biz",
+                  "website": "hildegard.org"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T17:25:32.116339Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.831,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery comment {\n  comment(id: \"1\") {\n    id\n    name\n  }\n  __schema {\n    queryType {\n      name\n    }\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.811,
+    "timestamp": "2025-10-05T17:25:36.323149Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "comment": {
+          "id": "1",
+          "name": "id labore ex et quam laborum"
+        },
+        "__schema": {
+          "queryType": {
+            "name": "Query"
+          },
+          "types": [
+            {
+              "name": "Query"
+            },
+            {
+              "name": "Int"
+            },
+            {
+              "name": "ID"
+            },
+            {
+              "name": "Mutation"
+            },
+            {
+              "name": "Boolean"
+            },
+            {
+              "name": "Album"
+            },
+            {
+              "name": "String"
+            },
+            {
+              "name": "CreateAlbumInput"
+            },
+            {
+              "name": "UpdateAlbumInput"
+            },
+            {
+              "name": "Comment"
+            },
+            {
+              "name": "CreateCommentInput"
+            },
+            {
+              "name": "UpdateCommentInput"
+            },
+            {
+              "name": "PageQueryOptions"
+            },
+            {
+              "name": "PaginateOptions"
+            },
+            {
+              "name": "SliceOptions"
+            },
+            {
+              "name": "SortOptions"
+            },
+            {
+              "name": "SortOrderEnum"
+            },
+            {
+              "name": "OperatorOptions"
+            },
+            {
+              "name": "OperatorKindEnum"
+            },
+            {
+              "name": "SearchOptions"
+            },
+            {
+              "name": "PostsPage"
+            },
+            {
+              "name": "CommentsPage"
+            },
+            {
+              "name": "AlbumsPage"
+            },
+            {
+              "name": "PhotosPage"
+            },
+            {
+              "name": "TodosPage"
+            },
+            {
+              "name": "UsersPage"
+            },
+            {
+              "name": "PaginationLinks"
+            },
+            {
+              "name": "PageLimitPair"
+            },
+            {
+              "name": "PageMetadata"
+            },
+            {
+              "name": "Photo"
+            },
+            {
+              "name": "CreatePhotoInput"
+            },
+            {
+              "name": "UpdatePhotoInput"
+            },
+            {
+              "name": "Post"
+            },
+            {
+              "name": "CreatePostInput"
+            },
+            {
+              "name": "UpdatePostInput"
+            },
+            {
+              "name": "Todo"
+            },
+            {
+              "name": "CreateTodoInput"
+            },
+            {
+              "name": "UpdateTodoInput"
+            },
+            {
+              "name": "User"
+            },
+            {
+              "name": "Address"
+            },
+            {
+              "name": "Geo"
+            },
+            {
+              "name": "Float"
+            },
+            {
+              "name": "Company"
+            },
+            {
+              "name": "CreateUserInput"
+            },
+            {
+              "name": "UpdateUserInput"
+            },
+            {
+              "name": "AddressInput"
+            },
+            {
+              "name": "GeoInput"
+            },
+            {
+              "name": "CompanyInput"
+            },
+            {
+              "name": "__Schema"
+            },
+            {
+              "name": "__Type"
+            },
+            {
+              "name": "__TypeKind"
+            },
+            {
+              "name": "__Field"
+            },
+            {
+              "name": "__InputValue"
+            },
+            {
+              "name": "__EnumValue"
+            },
+            {
+              "name": "__Directive"
+            },
+            {
+              "name": "__DirectiveLocation"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery comment {\n  comment(id: \"1\") {\n    nam\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.834,
+    "timestamp": "2025-10-05T17:25:38.897548Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Comment\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]
