@@ -1,0 +1,317 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  sets(filters: { name: \"Base Set' OR '1'='1\" }) {\n    id\n    name\n    releaseDate\n    cardCount {\n      total\n      official\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.29,
+    "timestamp": "2025-10-02T17:58:48.052027Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "sets": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  sets(filters: { name: \"<script>alert('xss')</script>\" }) {\n    id\n    name\n    description: symbol\n    logo\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.17,
+    "timestamp": "2025-10-02T17:58:50.905134Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "sets": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  sets(filters: { name: \"MetadataProbe\", symbol: \"http://169.254.169.254/latest/meta-data/\" }) {\n    id\n    name\n    logo\n    tcgOnline\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.866,
+    "timestamp": "2025-10-02T17:58:53.505621Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"symbol\" is not defined by type \"SetFilters\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 42
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  sets(filters: { name: \"test; cat /etc/passwd\" }) {\n    id\n    name\n    releaseDate\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.341,
+    "timestamp": "2025-10-02T17:58:57.326213Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "sets": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  sets(filters: { name: \"../../../../etc/passwd\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.501,
+    "timestamp": "2025-10-02T17:59:01.770008Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "sets": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  sets(filters: { name: \"<div onmouseover='alert(1)'>hover-me</div>\" }) {\n    id\n    name\n    logo\n    symbol\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.084,
+    "timestamp": "2025-10-02T17:59:05.058259Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "sets": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  sets(filters: { name: \"Restricted Set\" }) {\n    id\n    name\n    boosters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.84,
+        "timestamp": "2025-10-02T17:59:08.819929Z",
+        "response_body": {
+          "data": {
+            "sets": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.826,
+        "timestamp": "2025-10-02T17:59:09.646118Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-10-02T17:59:09.646180Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.881,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: sets(filters: { name: \"Restricted Set\" }) {\n    id\n    name\n    boosters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.008,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-02T17:59:23.675118Z",
+    "count": 8
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  sets(name: \"Set\") {\n    name\n    fields {\n      name\n      type {\n        name\n        kind\n        ofType {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.0,
+    "timestamp": "2025-10-02T17:59:24.675074Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"name\" on field \"Query.sets\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"fields\" on type \"Set\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  sets(filters: { name: \"Base\" }) {\n    id\n    name\n    releasDate\n    cardCount {\n      total\n      offical\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.855,
+    "timestamp": "2025-10-02T17:59:27.418653Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"releasDate\" on type \"Set\". Did you mean \"releaseDate\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"offical\" on type \"CardCount\". Did you mean \"official\"?",
+          "locations": [
+            {
+              "line": 9,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  sets(filters: { name: \"Base Set\" }) {\n    id\n    name\n    releaseDate\n    symbol\n    logo\n    serie {\n      id\n      name\n    }\n    cardCount {\n      total\n      official\n    }\n    boosters {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.026,
+    "timestamp": "2025-10-02T17:59:32.191104Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "sets": [
+          {
+            "id": "base1",
+            "name": "Base Set",
+            "releaseDate": "1999-01-09",
+            "symbol": null,
+            "logo": "https://assets.tcgdex.net/en/base/base1/logo",
+            "serie": {
+              "id": "base",
+              "name": "Base"
+            },
+            "cardCount": {
+              "total": 102,
+              "official": 102
+            },
+            "boosters": null
+          },
+          {
+            "id": "base4",
+            "name": "Base Set 2",
+            "releaseDate": "2000-02-24",
+            "symbol": "https://assets.tcgdex.net/univ/base/base4/symbol",
+            "logo": "https://assets.tcgdex.net/en/base/base4/logo",
+            "serie": {
+              "id": "base",
+              "name": "Base"
+            },
+            "cardCount": {
+              "total": 130,
+              "official": 130
+            },
+            "boosters": null
+          },
+          {
+            "id": "ecard1",
+            "name": "Expedition Base Set",
+            "releaseDate": "2002-09-15",
+            "symbol": "https://assets.tcgdex.net/univ/ecard/ecard1/symbol",
+            "logo": "https://assets.tcgdex.net/en/ecard/ecard1/logo",
+            "serie": {
+              "id": "ecard",
+              "name": "E-Card"
+            },
+            "cardCount": {
+              "total": 165,
+              "official": 165
+            },
+            "boosters": null
+          }
+        ]
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

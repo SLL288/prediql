@@ -1,0 +1,667 @@
+{
+  "report_timestamp": "2025-10-05T18:16:40.036270",
+  "api_url": "https://api.tcgdex.net/v2/graphql",
+  "summary": {
+    "total_comparisons": 9,
+    "agreement_rate": 0.0,
+    "simple_detections": 0,
+    "llm_detections": 8,
+    "consensus_breakdown": {
+      "no_vulnerabilities": 1,
+      "llm_only": 8
+    },
+    "detection_ratio": Infinity,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 0,
+      "llm_potential_detections": 2,
+      "potential_consensus_breakdown": {
+        "no_potential": 7,
+        "llm_potential_only": 2
+      },
+      "potential_detection_ratio": Infinity
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-05T18:15:50.626146",
+      "node_name": "set_response_2",
+      "response_status": 200,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"set\" of type \"Set\" must have a selection of subfields. Did you mean \"set { ... }\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ]
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T18:16:00.159505",
+      "node_name": "set_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "set": {
+            "id": "base1",
+            "name": "Base Set",
+            "logo": "https://assets.tcgdex.net/en/base/base1/logo"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: unknown",
+            "detection": "potential",
+            "category": "Unknown",
+            "description": "**Vulnerability Report**\n\n{\n    \"is_vulnerable\": true,\n    \"vulnerability_type\": \"xss_injection\",\n    \"severity\": \"HIGH\",\n    \"confidence\": 0.9,\n    \"evidence\": \"The 'logo' attribute contains a URL that can lead to a potential XSS injection attack. The URL 'https://assets.tcgdex.net/en/base/base1/logo' can be manipulated to inject malicious file types.\",\n    \"explanation\": \"The GraphQL response contains a URL for a logo image. If this URL is not properly sanitized, an attacker could inject malicious script tags or HTML content, potentially leading to a Cross-Site Scripting (XSS) attack. Although the URL seems innocuous, an attacker could potentially escalate this vulnerability by manipulating it to point to a malicious file or payload. The 'https' scheme indicates that the asset is hosted on a remote server, making it more susceptible to SSRF-style XSS attacks. Additionally, if the server hosting this asset does not properly sanitize or validate user input, an attacker could inject malicious files that could execute arbitrarily in the context of the victim's browser, resulting in an XSS vulnerability.\"\n\n**Rationale:**\n\n- The `logo` attribute in the response contains a URL that points to an external asset. In this case, it's an HTTPS URL, which doesn't automatically imply an XSS vulnerability. However, the fact that it's an external URL with the potential to be modified by an attacker poses a risk. If the server hosting this asset is not properly secured and the URL is directly inserted into the response without proper sanitization, an attacker could manipulate the URL to point to a malicious script or payload. This is a classic method for executing XSS attacks.\n\n- The lack of direct evidence of script tags or encoded HTML does not mean there won't be an XSS vulnerability if the hosting server or the input validation mechanims are not secure.\n\n- The attack scenario for this specific case would involve an attacker finding a vulnerability in the server handling the asset, rather than the GraphQL response data itself. However, the potential exists for such an attack if not mitigated. \n\nThis is a moderate risk, assuming the worst-case scenario of the URL being compromised with malicious content. However, the absence of evidence and the judgment call may adjust severity, confidence, or the assessment of the case with more information on the handling of URLs or video paths in the receiving endpoint.",
+            "evidence": "Found vulnerability indicators in response",
+            "confidence": 0.3,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "unknown",
+              "severity": "MEDIUM",
+              "confidence": 0.3,
+              "evidence": "Found vulnerability indicators in response",
+              "explanation": "**Vulnerability Report**\n\n{\n    \"is_vulnerable\": true,\n    \"vulnerability_type\": \"xss_injection\",\n    \"severity\": \"HIGH\",\n    \"confidence\": 0.9,\n    \"evidence\": \"The 'logo' attribute contains a URL that can lead to a potential XSS injection attack. The URL 'https://assets.tcgdex.net/en/base/base1/logo' can be manipulated to inject malicious file types.\",\n    \"explanation\": \"The GraphQL response contains a URL for a logo image. If this URL is not properly sanitized, an attacker could inject malicious script tags or HTML content, potentially leading to a Cross-Site Scripting (XSS) attack. Although the URL seems innocuous, an attacker could potentially escalate this vulnerability by manipulating it to point to a malicious file or payload. The 'https' scheme indicates that the asset is hosted on a remote server, making it more susceptible to SSRF-style XSS attacks. Additionally, if the server hosting this asset does not properly sanitize or validate user input, an attacker could inject malicious files that could execute arbitrarily in the context of the victim's browser, resulting in an XSS vulnerability.\"\n\n**Rationale:**\n\n- The `logo` attribute in the response contains a URL that points to an external asset. In this case, it's an HTTPS URL, which doesn't automatically imply an XSS vulnerability. However, the fact that it's an external URL with the potential to be modified by an attacker poses a risk. If the server hosting this asset is not properly secured and the URL is directly inserted into the response without proper sanitization, an attacker could manipulate the URL to point to a malicious script or payload. This is a classic method for executing XSS attacks.\n\n- The lack of direct evidence of script tags or encoded HTML does not mean there won't be an XSS vulnerability if the hosting server or the input validation mechanims are not secure.\n\n- The attack scenario for this specific case would involve an attacker finding a vulnerability in the server handling the asset, rather than the GraphQL response data itself. However, the potential exists for such an attack if not mitigated. \n\nThis is a moderate risk, assuming the worst-case scenario of the URL being compromised with malicious content. However, the absence of evidence and the judgment call may adjust severity, confidence, or the assessment of the case with more information on the handling of URLs or video paths in the receiving endpoint."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Unknown"
+        ],
+        "potential_categories": [
+          "Unknown"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Unknown"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Unknown"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Unknown"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Unknown"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T18:16:04.805748",
+      "node_name": "set_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "set": null
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "Based on the absence of a 'set' property in the response body, it is possible that the GraphQL API is allowing internal network access or file system requests. This lack of a 'set' response could be indicative of a SSRF injection vulnerability. Further investigation would be required to confirm the exact nature of the vulnerability, but the indicators suggest a potential risk is present.",
+            "evidence": "The GraphQL response contains a null 'set' field which could be used to obfuscate internal network access or file system requests.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The GraphQL response contains a null 'set' field which could be used to obfuscate internal network access or file system requests.",
+              "explanation": "Based on the absence of a 'set' property in the response body, it is possible that the GraphQL API is allowing internal network access or file system requests. This lack of a 'set' response could be indicative of a SSRF injection vulnerability. Further investigation would be required to confirm the exact nature of the vulnerability, but the indicators suggest a potential risk is present."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T18:16:09.304427",
+      "node_name": "set_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "set": null
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: OS Command Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "Although the response body is empty and contains 'null', the presence of executable code hints at the misuse of the GraphQL API. Further investigation is required to determine the scope of the vulnerability.",
+            "evidence": "The response body contains evidence of an os command execution: 'null'. This indicates that the GraphQL API is vulnerable to OS Command Injection.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "OS Command Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The response body contains evidence of an os command execution: 'null'. This indicates that the GraphQL API is vulnerable to OS Command Injection.",
+              "explanation": "Although the response body is empty and contains 'null', the presence of executable code hints at the misuse of the GraphQL API. Further investigation is required to determine the scope of the vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T18:16:16.138271",
+      "node_name": "set_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "set": null
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: path_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "A GraphQL API response can be indicative of a path injection vulnerability when it returns null or unexpected values for fields that are expected to be populated. In this case, the 'set' field is null, which could suggest that the GraphQL API is not properly validating or sanitizing user input. This could allow an attacker to inject malicious paths into the API, potentially leading to unauthorized access to sensitive data or system resources.",
+            "evidence": "The response contains a null value for the 'set' field, which could indicate a path traversal vulnerability.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "path_injection",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "The response contains a null value for the 'set' field, which could indicate a path traversal vulnerability.",
+              "explanation": "A GraphQL API response can be indicative of a path injection vulnerability when it returns null or unexpected values for fields that are expected to be populated. In this case, the 'set' field is null, which could suggest that the GraphQL API is not properly validating or sanitizing user input. This could allow an attacker to inject malicious paths into the API, potentially leading to unauthorized access to sensitive data or system resources."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T18:16:23.203102",
+      "node_name": "set_response_7",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "The non-aliased query (without query alias) returns a block error (Status 200 with errors) for the 'set' field, while the aliased query (with 's: queryName') succeeds and returns actual data (valid data in 'data' field, as opposed to null in the non-aliased response). These results indicate that query aliases are bypassing access control checks, suggesting a potential query deny bypass vulnerability. This vulnerability appears to be severe (CRITICAL) due to the ability to bypass access control.",
+            "evidence": "Non-aliased query blocked with error (Status 200 with error body) while aliased query succeeds with data (Status 200 with valid data). Similar operation with query alias aliases the access control check.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "CRITICAL",
+              "confidence": 0.8,
+              "evidence": "Non-aliased query blocked with error (Status 200 with error body) while aliased query succeeds with data (Status 200 with valid data). Similar operation with query alias aliases the access control check.",
+              "explanation": "The non-aliased query (without query alias) returns a block error (Status 200 with errors) for the 'set' field, while the aliased query (with 's: queryName') succeeds and returns actual data (valid data in 'data' field, as opposed to null in the non-aliased response). These results indicate that query aliases are bypassing access control checks, suggesting a potential query deny bypass vulnerability. This vulnerability appears to be severe (CRITICAL) due to the ability to bypass access control."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T18:16:30.758547",
+      "node_name": "set_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "In this scenario, the non-aliased query response indicates that it's blocked (Status 200 with 'set': null data), possibly due to access control restrictions. However, the aliased query, although containing errors, still returns actual data (Timestamp and Request Time). This suggests that the access control can be bypassed by using aliases, which matches the pattern of a query deny bypass vulnerability. Given that the aliased query still returns data despite errors, it's marked as a HIGH-severity vulnerability, indicating a potential security risk.",
+            "evidence": "The aliased query 's: queryName' returns actual data despite the non-aliased query being blocked and containing errors. This indicates a potential query deny bypass vulnerability.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "The aliased query 's: queryName' returns actual data despite the non-aliased query being blocked and containing errors. This indicates a potential query deny bypass vulnerability.",
+              "explanation": "In this scenario, the non-aliased query response indicates that it's blocked (Status 200 with 'set': null data), possibly due to access control restrictions. However, the aliased query, although containing errors, still returns actual data (Timestamp and Request Time). This suggests that the access control can be bypassed by using aliases, which matches the pattern of a query deny bypass vulnerability. Given that the aliased query still returns data despite errors, it's marked as a HIGH-severity vulnerability, indicating a potential security risk."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T18:16:36.004390",
+      "node_name": "set_response_9",
+      "response_status": 200,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"types\" on type \"Set\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ]
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "GraphQL introspection is a feature that allows clients to retrieve metadata about the schema, including type names, fields, and other schema information. However, exposing schema details through error messages can be a security risk, as it provides an attacker with valuable information about the application's internal workings. In this case, the error message reveals the existence of a schema field named 'types' which is usually not intended to be directly accessible. This could potentially be used by an attacker to perform a targeted attack on the schema, or to gather information about the system.",
+            "evidence": "The response contains a message indicating the existence of an introspection error: 'Cannot query field \"types\" on type \"Set\".' This suggests that the GraphQL schema is exposing its internal structure and schema details.",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "HIGH",
+              "confidence": 0.95,
+              "evidence": "The response contains a message indicating the existence of an introspection error: 'Cannot query field \"types\" on type \"Set\".' This suggests that the GraphQL schema is exposing its internal structure and schema details.",
+              "explanation": "GraphQL introspection is a feature that allows clients to retrieve metadata about the schema, including type names, fields, and other schema information. However, exposing schema details through error messages can be a security risk, as it provides an attacker with valuable information about the application's internal workings. In this case, the error message reveals the existence of a schema field named 'types' which is usually not intended to be directly accessible. This could potentially be used by an attacker to perform a targeted attack on the schema, or to gather information about the system."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T18:16:40.031809",
+      "node_name": "set_response_10",
+      "response_status": 200,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"__type\" on type \"Set\".",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ]
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: field_suggestions",
+            "detection": "potential",
+            "category": "Unknown",
+            "description": "The GraphQL response contains an error message indicating that the client tried to access an internal type called \"__type\" on the \"Set\" type. This suggests that the API is exposing its internal schema, potentially allowing an attacker to gather information about the available types, fields, and their relationships. Field suggestions like this can be used to enumerate the API's schema and identify areas for exploitation. While this vulnerability is not as severe as others, it can still aid in reconnaissance and make other attacks more feasible.",
+            "evidence": "GraphQL does not restrict access to certain internal types, exposing field suggestions like \"__type\". This could potentially allow an attacker to gather information about the schema.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "field_suggestions",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "GraphQL does not restrict access to certain internal types, exposing field suggestions like \"__type\". This could potentially allow an attacker to gather information about the schema.",
+              "explanation": "The GraphQL response contains an error message indicating that the client tried to access an internal type called \"__type\" on the \"Set\" type. This suggests that the API is exposing its internal schema, potentially allowing an attacker to gather information about the available types, fields, and their relationships. Field suggestions like this can be used to enumerate the API's schema and identify areas for exploitation. While this vulnerability is not as severe as others, it can still aid in reconnaissance and make other attacks more feasible."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Unknown"
+        ],
+        "potential_categories": [
+          "Unknown"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Unknown"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Unknown"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Unknown"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Unknown"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

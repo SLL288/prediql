@@ -1,0 +1,609 @@
+{
+  "report_timestamp": "2025-09-29T13:54:02.919906",
+  "api_url": "https://api.tcgdex.net/v2/graphql",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.0,
+    "simple_detections": 1,
+    "llm_detections": 4,
+    "consensus_breakdown": {
+      "no_vulnerabilities": 6,
+      "llm_only": 3,
+      "both_detected": 1
+    },
+    "detection_ratio": 4.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 0,
+      "llm_potential_detections": 2,
+      "potential_consensus_breakdown": {
+        "no_potential": 8,
+        "llm_potential_only": 2
+      },
+      "potential_detection_ratio": Infinity
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-09-29T13:53:44.529607",
+      "node_name": "series_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "series": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-29T13:53:46.522989",
+      "node_name": "series_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "series": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-29T13:53:47.931016",
+      "node_name": "series_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "series": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-29T13:53:49.802862",
+      "node_name": "series_response_5",
+      "response_status": null,
+      "response_body": {
+        "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SSRF (Server-Side Request Forgery)",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The error message 'HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out.' indicates that the GraphQL server attempted to make an outbound request to 'api.tcgdex.net' on port 443. While this specific host is an external API (tcgdex), the fact that the server is making outbound HTTP/HTTPS requests that are directly reflected in error messages is a strong indicator of a potential SSRF vulnerability. An attacker might be able to manipulate either the query or parameters to direct the server to an internal or restricted network endpoint, potentially allowing for port scanning, accessing internal services, or even data exfiltration. The timeout suggests the server is indeed attempting to connect, giving an attacker feedback on network reachability. The 'host' parameter in the error message is directly exposing the target of the internal request.",
+            "evidence": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)",
+            "confidence": 0.7,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SSRF (Server-Side Request Forgery)",
+              "severity": "MEDIUM",
+              "confidence": 0.7,
+              "evidence": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)",
+              "explanation": "The error message 'HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out.' indicates that the GraphQL server attempted to make an outbound request to 'api.tcgdex.net' on port 443. While this specific host is an external API (tcgdex), the fact that the server is making outbound HTTP/HTTPS requests that are directly reflected in error messages is a strong indicator of a potential SSRF vulnerability. An attacker might be able to manipulate either the query or parameters to direct the server to an internal or restricted network endpoint, potentially allowing for port scanning, accessing internal services, or even data exfiltration. The timeout suggests the server is indeed attempting to connect, giving an attacker feedback on network reachability. The 'host' parameter in the error message is directly exposing the target of the internal request."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-29T13:53:51.248568",
+      "node_name": "series_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "series": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-29T13:53:55.184522",
+      "node_name": "series_response_7",
+      "response_status": null,
+      "response_body": {
+        "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-29T13:53:56.878124",
+      "node_name": "series_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-29T13:53:59.024636",
+      "node_name": "series_response_9",
+      "response_status": null,
+      "response_body": {
+        "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The error message reveals specific internal network details of the application, including the hostname ('api.tcgdex.net'), the port (443), and the fact that it's attempting to connect via HTTPS. The 'Read timed out' provides an indication of a potential network or service availability issue from the server's perspective when trying to communicate with an external resource. This level of detail about internal network calls and their failure modes can be valuable to an attacker for reconnaissance, helping them to map out the application's architecture and identify potential targets or weaknesses in its dependencies. While not directly exploitable for code execution or data theft, it leaks information that could aid in further attacks.",
+            "evidence": "{ \"error\": \"HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)\" }",
+            "confidence": 0.7,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.7,
+              "evidence": "{ \"error\": \"HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)\" }",
+              "explanation": "The error message reveals specific internal network details of the application, including the hostname ('api.tcgdex.net'), the port (443), and the fact that it's attempting to connect via HTTPS. The 'Read timed out' provides an indication of a potential network or service availability issue from the server's perspective when trying to communicate with an external resource. This level of detail about internal network calls and their failure modes can be valuable to an attacker for reconnaissance, helping them to map out the application's architecture and identify potential targets or weaknesses in its dependencies. While not directly exploitable for code execution or data theft, it leaks information that could aid in further attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-29T13:54:01.070352",
+      "node_name": "series_response_10",
+      "response_status": null,
+      "response_body": {
+        "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response explicitly discloses an internal error message containing details about an attempt to connect to an external host ('api.tcgdex.net') and a read timeout. This type of error message, while not immediately devastating, reveals internal system architecture details (like attempting to connect to an external API from the server, the specific hostname, port, and even the timeout duration). This information could potentially be used by an attacker to build a more comprehensive understanding of the backend infrastructure and identify potential targets for further attacks, such as SSRF if the connection attempt was influenced by user input, or simply mapping out internal dependencies. The 'HTTPSConnectionPool' and 'Read timed out' messages are not meant for end-user consumption and signify a leak of operational details.",
+            "evidence": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)",
+            "confidence": 0.7,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.7,
+              "evidence": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)",
+              "explanation": "The GraphQL response explicitly discloses an internal error message containing details about an attempt to connect to an external host ('api.tcgdex.net') and a read timeout. This type of error message, while not immediately devastating, reveals internal system architecture details (like attempting to connect to an external API from the server, the specific hostname, port, and even the timeout duration). This information could potentially be used by an attacker to build a more comprehensive understanding of the backend infrastructure and identify potential targets for further attacks, such as SSRF if the connection attempt was influenced by user input, or simply mapping out internal dependencies. The 'HTTPSConnectionPool' and 'Read timed out' messages are not meant for end-user consumption and signify a leak of operational details."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-29T13:54:02.915785",
+      "node_name": "series_response_11",
+      "response_status": 200,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"naame\" on type \"Serie\". Did you mean \"name\"?",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ]
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response explicitly suggests a correct field name ('name') when an incorrect one ('naame') is provided. This behavior, known as 'field suggestion', leaks information about the API's schema to an attacker. While not directly exploitable for data retrieval without further steps, it aids attackers in understanding the API structure, potentially simplifying future attacks like reconnaissance for sensitive fields or other schema-related vulnerabilities.",
+            "evidence": "message\": \"Cannot query field \\\"naame\\\" on type \\\"Serie\\\". Did you mean \\\"name\\\"?\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.9,
+              "evidence": "message\": \"Cannot query field \\\"naame\\\" on type \\\"Serie\\\". Did you mean \\\"name\\\"?\"",
+              "explanation": "The GraphQL response explicitly suggests a correct field name ('name') when an incorrect one ('naame') is provided. This behavior, known as 'field suggestion', leaks information about the API's schema to an attacker. While not directly exploitable for data retrieval without further steps, it aids attackers in understanding the API structure, potentially simplifying future attacks like reconnaissance for sensitive fields or other schema-related vulnerabilities."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks",
+          "Information Disclosure"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}
