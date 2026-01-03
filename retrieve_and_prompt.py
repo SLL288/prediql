@@ -1,6 +1,7 @@
 import faiss
 import numpy as np
 import json
+import re
 from sentence_transformers import SentenceTransformer
 from config import Config
 # import openai  # or use local LLM interface like ollama
@@ -9,6 +10,7 @@ from initial_llama3 import ensure_ollama_running
 from llama_initiator import  get_llm_model
 from parse_endpoint_results import getnodefromcompiledfile
 from fix_endpoint_case import fix_endpoint_case
+from datetime import datetime
 
 
 import yaml
@@ -84,12 +86,26 @@ def extract_request_response_pairs(json_file_path):
     pairs = []
     for item in data:
         query = item.get("query")
-        response_info = {
-            "status": item.get("response_status"),
-            "body": item.get("response_body"),
-            "time": item.get("request_time_seconds")
-        }
-        pairs.append((query, response_info))
+        success = item.get("success", True)  # Default to True if not present
+        
+        if success:
+            # For successful requests, only include the query
+            pairs.append((query, None))
+        else:
+            # For failed requests, include query and error message
+            response_body = item.get("response_body", {})
+            if isinstance(response_body, dict):
+                errors = response_body.get("errors", [])
+                if errors and isinstance(errors, list) and len(errors) > 0:
+                    # Remove extensions key from each error
+                    cleaned_errors = []
+                    for error in errors:
+                        if isinstance(error, dict):
+                            cleaned_error = {k: v for k, v in error.items() if k != "extensions"}
+                            cleaned_errors.append(cleaned_error)
+                        else:
+                            cleaned_errors.append(error)
+                    pairs.append((query, cleaned_errors))
     return pairs
 
 # # Example usage:
@@ -184,10 +200,59 @@ def retrieve_similar(node, model, index, texts, top_k=5):
 
 
 
+# prompt_llm_with_context(top_matches, node, relevant_object, input, output, source, max_requests, node_type)
+def save_prompt_response_pair(endpoint, prompt, llm_response, query_json, approx_tokens):
+    """
+    Save the prompt and LLM response to a prompts folder for analysis and debugging.
+    """
+    # Create prompts directory if it doesn't exist
+    prompts_dir = os.path.join(os.getcwd(), "prompts")
+    if not os.path.exists(prompts_dir):
+        os.makedirs(prompts_dir)
+    
+    # Create endpoint-specific subdirectory
+    endpoint_dir = os.path.join(prompts_dir, endpoint)
+    if not os.path.exists(endpoint_dir):
+        os.makedirs(endpoint_dir)
+    
+    # Generate timestamp for unique filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"prompt_response_{timestamp}.json"
+    filepath = os.path.join(endpoint_dir, filename)
+    
+    # Prepare data to save
+    prompt_data = {
+        "timestamp": timestamp,
+        "endpoint": endpoint,
+        "prompt": prompt,
+        "llm_response": llm_response,
+        "parsed_queries": query_json,
+        "approx_tokens": approx_tokens,
+        "request_time": datetime.now().isoformat()
+    }
+    
+    # Save to file
+    try:
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(prompt_data, f, indent=2, ensure_ascii=False)
+        print(f"✅ Saved prompt-response pair to: {filepath}")
+    except Exception as e:
+        print(f"⚠️ Warning: Failed to save prompt-response pair: {e}")
+    
 
 # prompt_llm_with_context(top_matches, node, relevant_object, input, output, source, max_requests, node_type)
 def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source, MAX_REQUESTS, node_type, include_schema=True, arg_mode="known", depth=1, n_variants=1):
     previous_response_pairs = extract_request_response_pairs(os.path.join(os.getcwd(), Config.OUTPUT_DIR,endpoint, "llama_queries.json"))
+    formatted_previous_pairs = []
+    for query, error_msg in previous_response_pairs:
+        pair_obj = {
+            "query": query,
+            "error": error_msg if error_msg else None
+        }
+        formatted_previous_pairs.append(pair_obj)
+    
+    previous_pairs_text = json.dumps(formatted_previous_pairs, indent=2) if formatted_previous_pairs else "[]"
+
     query_json = {"query": []}
     # context_block = "\n---\n".join(context_snippets)
 #     prompt2 = f"""You are an expert in GraphQL API testing.  
@@ -213,15 +278,34 @@ def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source
     header = f"""
     You are an expert in GraphQL API security testing.
 
-    Goal: generate valid GraphQL queries for the operation shown, to get successful responses (HTTP 200) quickly while exploring robustness (SQL injection, field misuse, deep traversal, type coercion, hidden introspection).
+    Goal: generate valid GraphQL queries for the operation shown, to get successful responses (HTTP 200) quickly while exploring robustness and testing for specific vulnerability types.
+
+    
+    CRITICAL REQUIREMENT: You MUST include at least one query for a basic call and EACH of the following vulnerability types:
+    - SQL Injection
+    - XSS Injection
+    - SSRF Injection
+    - OS Command Injection
+    - Path Injection
+    - HTML Injection
+    - Query Deny Bypass (REQUIRES TWO QUERIES: non-aliased and aliased)
+    - Introspection
+    - Field Suggestions
 
     Strict Requirements:
     1) Queries must be syntactically valid GraphQL.
     2) No placeholders like <id>, "ID!", "value". Use realistic literals or known real values.
     3) You may attempt injected strings, nulls, overlong strings, and type mismatches where appropriate.
-    4) You may output {n_variants} query(ies).
+    4) You may output {n_variants} query(ies) but MUST cover all vulnerability types listed above.
     5) Do not use the words "edges" or "node".
     6) GraphQL is case-sensitive. Match the exact operation name: {endpoint}.
+    7) If there are previous response pairs, use them to generate the query.
+    8) For each vulnerability type, craft queries that specifically test for that vulnerability pattern.
+    9) CRITICAL: Label each query with its vulnerability type using the format: ***<vulnerability_type>*** before each ```graphql block.
+    10) SPECIAL CASE: For Query Deny Bypass, you MUST generate TWO queries:
+        - First query: Non-aliased version (normal query structure)
+        - Second query: Aliased version (using query aliases like "s: queryName")
+        Both queries should test the same operation but with different structures to test access control bypass.
     """
     # ---- Schema / no-schema blocks
     if include_schema:
@@ -271,9 +355,43 @@ def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source
     
     format_block = f"""
     Output format:
-    Each query must be in its own fenced block:
+    Each query must be in its own fenced block with a vulnerability type label:
+    Vulnerability Type Labels Are:
+    - SQL_Injection
+    - XSS_Injection
+    - SSRF_Injection
+    - OS_Command_Injection
+    - Path_Injection
+    - HTML_Injection
+    - Query_Deny_Bypass_Non_Aliased
+    - Query_Deny_Bypass_Aliased
+    - Introspection
+    - Field_Suggestions
+    - Basic_Call
+
+    ***<Vulnerability Type>***
     ```graphql
     <your query>
+    ```
+    
+    Example:
+    ***SQL_Injection***
+    ```graphql
+    query {{
+      users(filter: "1' OR '1'='1") {{
+        id
+        name
+      }}
+    }}
+    ```
+    
+    ***XSS_Injection***
+    ```graphql
+    query {{
+      search(term: "<script>alert('xss')</script>") {{
+        results
+      }}
+    }}
     ```
     """
     # prompt1 = f"""
@@ -411,26 +529,74 @@ def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source
     print(f"Approximate token count: {approx_tokens:.0f}")
 
 
-    llama_res = get_llm_model(prompt_arms)
+    try:
+        llama_res = get_llm_model(prompt_arms)
+    except Exception as e:
+        print(f"⚠️ Error calling get_llm_model: {e}")
+        return {"query": []}, 0
+    
     query_json = {"query": []}
     flag = "```graphql"
     parse_time = 0
-    while flag in llama_res and parse_time < 10:
+    
+    # Handle case where get_llm_model returns None
+    if llama_res is None:
+        print("⚠️ Warning: get_llm_model returned None, skipping query parsing")
+        return query_json, 0
+    
+    while flag in llama_res and parse_time < 12:
         parse_time += 1
         try:
             sidx = llama_res.find(flag)
+            if sidx == -1:
+                break
+            
+            # Look for vulnerability type label before the graphql block
+            vulnerability_type = "unknown"
+            # Updated pattern to match ***Vulnerability Type*** format
+            label_pattern = r"\*\*\*([^*]+)\*\*\*"
+            text_before_query = llama_res[:sidx]
+            label_match = re.search(label_pattern, text_before_query)
+            if label_match:
+                vulnerability_type = label_match.group(1).strip().lower()
+                # Normalize query deny bypass types
+                if "query_deny_bypass_non_aliased" in vulnerability_type:
+                    vulnerability_type = "query_deny_bypass_non_aliased"
+                elif "query_deny_bypass_aliased" in vulnerability_type:
+                    vulnerability_type = "query_deny_bypass_aliased"
+                
             j_start = llama_res[sidx+len(flag):]
             j_end = j_start.find("```")
+            if j_end == -1:
+                break
+                
             query_str = j_start[:j_end]
             llama_res = j_start[j_end:]
+            
+            # Safety check: if llama_res becomes empty or None, break
+            if not llama_res:
+                break
 
             query_str = fix_endpoint_case(query_str, endpoint)
 
-            if query_str not in query_json["query"]:
-                query_json["query"].append(query_str)
+            # Store query with vulnerability type
+            query_entry = {
+                "query": query_str,
+                "vulnerability_type": vulnerability_type
+            }
+            
+            # Check if this exact query already exists
+            if not any(q["query"] == query_str for q in query_json["query"]):
+                query_json["query"].append(query_entry)
         except Exception as e:
-    #         # logger.error(e)
-          continue
+            print(e)
+            continue
+      
+      
+        
+    # Save prompt and response to prompts folder
+    save_prompt_response_pair(endpoint, prompt_arms, llama_res, query_json, approx_tokens)
+    
     return query_json, approx_tokens
 
 def get_LLM_firstresposne(node, objects):
