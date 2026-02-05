@@ -1,0 +1,439 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1\", input: {title: \"Safe update\", body: \"A simple update to verify mutation behavior.\"}) {\n    id\n    title\n    body\n    user {\n      id\n      name\n      username\n      email\n    }\n    comments {\n      data {\n        id\n        name\n        email\n        body\n      }\n      meta {\n        totalCount\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.947,
+    "timestamp": "2025-10-05T18:40:00.901760Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "1",
+          "title": "Safe update",
+          "body": "A simple update to verify mutation behavior.",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham",
+            "username": "Bret",
+            "email": "Sincere@april.biz"
+          },
+          "comments": {
+            "data": [
+              {
+                "id": "1",
+                "name": "id labore ex et quam laborum",
+                "email": "Eliseo@gardner.biz",
+                "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
+              },
+              {
+                "id": "2",
+                "name": "quo vero reiciendis velit similique earum",
+                "email": "Jayne_Kuhic@sydney.com",
+                "body": "est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem error expedita pariatur\nnihil sint nostrum voluptatem reiciendis et"
+              },
+              {
+                "id": "3",
+                "name": "odio adipisci rerum aut animi",
+                "email": "Nikita@garfield.biz",
+                "body": "quia molestiae reprehenderit quasi aspernatur\naut expedita occaecati aliquam eveniet laudantium\nomnis quibusdam delectus saepe quia accusamus maiores nam est\ncum et ducimus et vero voluptates excepturi deleniti ratione"
+              },
+              {
+                "id": "4",
+                "name": "alias odio sit",
+                "email": "Lew@alysha.tv",
+                "body": "non et atque\noccaecati deserunt quas accusantium unde odit nobis qui voluptatem\nquia voluptas consequuntur itaque dolor\net qui rerum deleniti ut occaecati"
+              },
+              {
+                "id": "5",
+                "name": "vero eaque aliquid doloribus et culpa",
+                "email": "Hayden@althea.biz",
+                "body": "harum non quasi et ratione\ntempore iure ex voluptates in ratione\nharum architecto fugit inventore cupiditate\nvoluptates magni quo et"
+              }
+            ],
+            "meta": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"2\", input: {title: \"Robert'); DROP TABLE posts;--\", body: \"' OR '1'='1\"}) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.863,
+    "timestamp": "2025-10-05T18:40:04.064202Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "2",
+          "title": "Robert'); DROP TABLE posts;--",
+          "body": "' OR '1'='1",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"3\", input: {title: \"<script>alert('xss')</script>\", body: \"<img src=x onerror=\\\"alert('xss')\\\"> Attempt XSS in body.\"}) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.898,
+    "timestamp": "2025-10-05T18:40:06.746145Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "3",
+          "title": "<script>alert('xss')</script>",
+          "body": "<img src=x onerror=\"alert('xss')\"> Attempt XSS in body.",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"4\", input: {title: \"SSRF test\", body: \"Please fetch resource from http://169.254.169.254/latest/meta-data/iam/security-credentials/ or http://localhost:8000/status\"}) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.43,
+    "timestamp": "2025-10-05T18:40:11.035381Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "4",
+          "title": "SSRF test",
+          "body": "Please fetch resource from http://169.254.169.254/latest/meta-data/iam/security-credentials/ or http://localhost:8000/status",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"5\", input: {title: \"OS cmd injection probe\", body: \"`cat /etc/passwd` ; echo DONE\"}) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.871,
+    "timestamp": "2025-10-05T18:40:13.706279Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "5",
+          "title": "OS cmd injection probe",
+          "body": "`cat /etc/passwd` ; echo DONE",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"6\", input: {title: \"/var/www/../../../../etc/passwd\", body: \"Traversal test: ../../../../etc/passwd\"}) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.814,
+    "timestamp": "2025-10-05T18:40:17.191191Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "6",
+          "title": "/var/www/../../../../etc/passwd",
+          "body": "Traversal test: ../../../../etc/passwd",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"7\", input: {title: \"<div><b>Injected HTML</b></div>\", body: \"<table><tr><td>Injected</td></tr></table>\"}) {\n    id\n    title\n    body\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.82,
+    "timestamp": "2025-10-05T18:40:19.861551Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "7",
+          "title": "<div><b>Injected HTML</b></div>",
+          "body": "<table><tr><td>Injected</td></tr></table>",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"8\", input: {title: \"Non-aliased access test\", body: \"Trying standard mutation form to test deny policies.\"}) {\n    id\n    title\n    body\n    user {\n      id\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.125,
+        "timestamp": "2025-10-05T18:40:23.662703Z",
+        "response_body": {
+          "data": {
+            "updatePost": {
+              "id": "8",
+              "title": "Non-aliased access test",
+              "body": "Trying standard mutation form to test deny policies.",
+              "user": {
+                "id": "1",
+                "username": "Bret"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.878,
+        "timestamp": "2025-10-05T18:40:24.541094Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "8",
+              "title": "Aliased access test",
+              "body": "Trying aliased field name to bypass deny rules.",
+              "user": {
+                "id": "1",
+                "username": "Bret"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T18:40:24.541243Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.867,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: updatePost(id: \"8\", input: {title: \"Aliased access test\", body: \"Trying aliased field name to bypass deny rules.\"}) {\n    id\n    title\n    body\n    user {\n      id\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.848,
+        "timestamp": "2025-10-05T18:40:29.014651Z",
+        "response_body": {
+          "data": {
+            "updatePost": {
+              "id": "8",
+              "title": "Non-aliased access test",
+              "body": "Trying standard mutation form to test deny policies.",
+              "user": {
+                "id": "1",
+                "username": "Bret"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.793,
+        "timestamp": "2025-10-05T18:40:29.807679Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "8",
+              "title": "Aliased access test",
+              "body": "Trying aliased field name to bypass deny rules.",
+              "user": {
+                "id": "1",
+                "username": "Bret"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T18:40:29.807700Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.874,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updatePost {\n    types {\n      name\n      kind\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.814,
+    "timestamp": "2025-10-05T18:40:33.546149Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"9\", input: {title: \"Typo field test\", body: \"Trigger server to suggest correct field names by requesting invalid selections.\"}) {\n    id\n    titl     # intentionally misspelled to prompt suggestion (expected: title)\n    bod      # intentionally misspelled to prompt suggestion (expected: body)\n    user {\n      id\n      nam   # intentionally misspelled to prompt suggestion (expected: name)\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.495,
+    "timestamp": "2025-10-05T18:40:37.216550Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"titl\" on type \"Post\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"bod\" on type \"Post\". Did you mean \"body\" or \"id\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"nam\" on type \"User\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 9,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

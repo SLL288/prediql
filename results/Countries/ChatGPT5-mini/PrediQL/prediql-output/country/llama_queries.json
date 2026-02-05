@@ -1,0 +1,337 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  country(code: \"US' OR '1'='1\") {\n    code\n    name\n    capital\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.516,
+    "timestamp": "2025-09-22T16:20:10.446235Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  country(code: \"US<script>alert('xss')</script>\") {\n    name\n    emoji\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.559,
+    "timestamp": "2025-09-22T16:20:13.429672Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  country(code: \"http://169.254.169.254/latest/meta-data/\") {\n    code\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.584,
+    "timestamp": "2025-09-22T16:20:16.872920Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  country(code: \"US; cat /etc/passwd\") {\n    name\n    native\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.081,
+    "timestamp": "2025-09-22T16:20:20.514654Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  country(code: \"../etc/passwd\") {\n    code\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.605,
+    "timestamp": "2025-09-22T16:20:23.222977Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  country(code: \"<img src=x onerror=alert(1)>\") {\n    name\n    native\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.689,
+    "timestamp": "2025-09-22T16:20:26.732569Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  country(code: \"US\") {\n    name\n    code\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.568,
+        "timestamp": "2025-09-22T16:20:29.450272Z",
+        "response_body": {
+          "data": {
+            "country": {
+              "code": "US",
+              "name": "United States"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.454,
+        "timestamp": "2025-09-22T16:20:29.904123Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "code": "US",
+              "name": "United States"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-09-22T16:20:29.904191Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.5,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: country(code: \"US\") {\n    name\n    code\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.514,
+        "timestamp": "2025-09-22T16:20:33.034613Z",
+        "response_body": {
+          "data": {
+            "country": {
+              "code": "US",
+              "name": "United States"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.793,
+        "timestamp": "2025-09-22T16:20:33.828170Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "code": "US",
+              "name": "United States"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-22T16:20:33.828253Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.475,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  country(code: \"US\") {\n    name\n  }\n  __type(name: \"Country\") {\n    name\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.447,
+    "timestamp": "2025-09-22T16:20:37.212085Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "__type": {
+          "name": "Country",
+          "fields": [
+            {
+              "name": "awsRegion"
+            },
+            {
+              "name": "capital"
+            },
+            {
+              "name": "code"
+            },
+            {
+              "name": "continent"
+            },
+            {
+              "name": "currencies"
+            },
+            {
+              "name": "currency"
+            },
+            {
+              "name": "emoji"
+            },
+            {
+              "name": "emojiU"
+            },
+            {
+              "name": "languages"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "native"
+            },
+            {
+              "name": "phone"
+            },
+            {
+              "name": "phones"
+            },
+            {
+              "name": "states"
+            },
+            {
+              "name": "subdivisions"
+            }
+          ]
+        },
+        "country": {
+          "name": "United States"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  country(code: \"US\") {\n    nam\n    namee\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.749,
+    "timestamp": "2025-09-22T16:20:39.914090Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Country\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"namee\" on type \"Country\". Did you mean \"name\" or \"native\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

@@ -1,0 +1,351 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    name: \"Leanne Graham\",\n    username: \"Bret\",\n    email: \"Sincere@april.biz\",\n    phone: \"1-770-736-8031 x56442\",\n    website: \"hildegard.org\",\n    address: {\n      street: \"Kulas Light\",\n      suite: \"Apt. 556\",\n      city: \"Gwenborough\",\n      zipcode: \"92998-3874\",\n      geo: { lat: -37.3159, lng: 81.1496 }\n    },\n    company: {\n      name: \"Romaguera-Crona\",\n      catchPhrase: \"Multi-layered client-server neural-net\",\n      bs: \"harness real-time e-markets\"\n    }\n  }) {\n    id\n    name\n    username\n    email\n    address { city zipcode }\n    company { name }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.147,
+    "timestamp": "2025-10-05T21:11:59.171084Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "1",
+          "name": "Leanne Graham",
+          "username": "Bret",
+          "email": "Sincere@april.biz",
+          "address": {
+            "city": "Gwenborough",
+            "zipcode": "92998-3874"
+          },
+          "company": {
+            "name": "Romaguera-Crona"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    name: \"Robert'); DROP TABLE users;--\",\n    username: \"robert';--\",\n    email: \"robert.injection@example.com\"\n  }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.507,
+    "timestamp": "2025-10-05T21:12:03.441744Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "1",
+          "name": "Robert'); DROP TABLE users;--",
+          "username": "robert';--",
+          "email": "robert.injection@example.com"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"3\", input: {\n    name: \"<script>alert('xss')</script>\",\n    username: \"xssTester\",\n    email: \"xss@example.com\",\n    company: {\n      name: \"XSS Corp\",\n      catchPhrase: \"<img src=x onerror=alert(1)>\",\n      bs: \"steal cookies\"\n    }\n  }) {\n    id\n    name\n    company { catchPhrase }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.91,
+    "timestamp": "2025-10-05T21:12:06.498057Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "3",
+          "name": "<script>alert('xss')</script>",
+          "company": {
+            "catchPhrase": "<img src=x onerror=alert(1)>"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"4\", input: {\n    name: \"SSRF Probe\",\n    username: \"ssrf_user\",\n    email: \"ssrf@example.com\",\n    website: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\"\n  }) {\n    id\n    name\n    website\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.124,
+    "timestamp": "2025-10-05T21:12:09.708908Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "4",
+          "name": "SSRF Probe",
+          "website": "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"5\", input: {\n    name: \"payload; cat /etc/passwd\",\n    username: \"oscmd\",\n    email: \"oscmd@example.com\"\n  }) {\n    id\n    name\n    username\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.982,
+    "timestamp": "2025-10-05T21:12:12.419749Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "5",
+          "name": "payload; cat /etc/passwd",
+          "username": "oscmd"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"6\", input: {\n    name: \"Path Tester\",\n    email: \"path@example.com\",\n    address: {\n      street: \"../../../../etc/passwd\",\n      suite: \"/var/www/html\",\n      city: \"Localhost\",\n      zipcode: \"00000\"\n    }\n  }) {\n    id\n    address { street suite }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.943,
+    "timestamp": "2025-10-05T21:12:15.078745Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "6",
+          "address": {
+            "street": "../../../../etc/passwd",
+            "suite": "/var/www/html"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"7\", input: {\n    name: \"<div onclick=alert(1)>Click me</div>\",\n    username: \"html_inject\",\n    email: \"html@example.com\",\n    website: \"http://example.com\"\n  }) {\n    id\n    name\n    website\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.857,
+    "timestamp": "2025-10-05T21:12:18.139570Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "7",
+          "name": "<div onclick=alert(1)>Click me</div>",
+          "website": "http://example.com"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"2\", input: {\n    name: \"Deny Bypass Test\",\n    username: \"bypass_user\",\n    email: \"bypass@example.com\"\n  }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.185,
+        "timestamp": "2025-10-05T21:12:20.951457Z",
+        "response_body": {
+          "data": {
+            "updateUser": {
+              "id": "2",
+              "name": "Deny Bypass Test",
+              "username": "bypass_user",
+              "email": "bypass@example.com"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.158,
+        "timestamp": "2025-10-05T21:12:22.109358Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "2",
+              "name": "Deny Bypass Alias",
+              "username": "bypass_alias",
+              "email": "bypass.alias@example.com"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T21:12:22.109451Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.967,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: updateUser(id: \"2\", input: {\n    name: \"Deny Bypass Alias\",\n    username: \"bypass_alias\",\n    email: \"bypass.alias@example.com\"\n  }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 3.029,
+        "timestamp": "2025-10-05T21:12:29.935584Z",
+        "response_body": {
+          "data": {
+            "updateUser": {
+              "id": "2",
+              "name": "Deny Bypass Test",
+              "username": "bypass_user",
+              "email": "bypass@example.com"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 2.662,
+        "timestamp": "2025-10-05T21:12:32.597265Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "2",
+              "name": "Deny Bypass Alias",
+              "username": "bypass_alias",
+              "email": "bypass.alias@example.com"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T21:12:32.597457Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.75,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateUser {\n    types {\n      name\n      fields {\n        name\n        type { name kind }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.455,
+    "timestamp": "2025-10-05T21:12:38.286619Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateUser(name: \"User\") {\n    name\n    fields {\n      name\n      type { name kind }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.075,
+    "timestamp": "2025-10-05T21:12:41.774856Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

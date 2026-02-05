@@ -1,0 +1,669 @@
+{
+  "report_timestamp": "2025-10-01T16:58:24.909152",
+  "api_url": "https://rickandmortyapi.com/graphql",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.1,
+    "simple_detections": 2,
+    "llm_detections": 3,
+    "consensus_breakdown": {
+      "both_detected": 2,
+      "no_vulnerabilities": 7,
+      "llm_only": 1
+    },
+    "detection_ratio": 1.5,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 1,
+      "llm_potential_detections": 0,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 1,
+        "no_potential": 9
+      },
+      "potential_detection_ratio": 0.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-01T16:58:06.402346",
+      "node_name": "locationsByIds_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "locationsByIds": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "locationsByIds"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/location/1%27%20UNION%20SELECT%20NULL,%20%27SQLi_Name%27,%20%27SQLi_Type%27,%20%27SQLi_Dimension%27,%20NULL,%20NULL%20--,2",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Cast to Number failed for value \"NaN\" at path \"id\" for model \"Location\""
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SQL Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The `url` field in the `extensions.response` object clearly shows an attempt at SQL Injection: `1%27%20UNION%20SELECT%20NULL,%20%27SQLi_Name%27,%20%27SQLi_Type%27,%20%27SQLi_Dimension%27,%20NULL,%20NULL%20--,2`. The presence of a `UNION SELECT` statement, SQL comment `--`, and single quotes (`%27`) strongly indicates an SQL Injection payload. Although the attack resulted in an 'Internal Server Error' and a 'Cast to Number failed' message, which prevented data from being returned directly, the server processed the malicious input as part of a database query. This indicates that the input was not properly sanitized or parameterized before being passed to the underlying database, making it vulnerable to SQL Injection. The error message explicitly points to a failure in casting 'NaN' to a number for the 'id' path, likely triggered by the injected SQL failing to produce a numeric value for the 'id' column as expected by the application's ORM or data layer, thereby confirming the injection attempt reached the database processing stage.",
+            "evidence": "url: \"http://localhost:8080/api/location/1%27%20UNION%20SELECT%20NULL,%20%27SQLi_Name%27,%20%27SQLi_Type%27,%20%27SQLi_Dimension%27,%20NULL,%20NULL%20--,2\", body: {\"error\": \"Cast to Number failed for value \\\"NaN\\\" at path \\\"id\\\" for model \\\"Location\\\"\"}",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SQL Injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "url: \"http://localhost:8080/api/location/1%27%20UNION%20SELECT%20NULL,%20%27SQLi_Name%27,%20%27SQLi_Type%27,%20%27SQLi_Dimension%27,%20NULL,%20NULL%20--,2\", body: {\"error\": \"Cast to Number failed for value \\\"NaN\\\" at path \\\"id\\\" for model \\\"Location\\\"\"}",
+              "explanation": "The `url` field in the `extensions.response` object clearly shows an attempt at SQL Injection: `1%27%20UNION%20SELECT%20NULL,%20%27SQLi_Name%27,%20%27SQLi_Type%27,%20%27SQLi_Dimension%27,%20NULL,%20NULL%20--,2`. The presence of a `UNION SELECT` statement, SQL comment `--`, and single quotes (`%27`) strongly indicates an SQL Injection payload. Although the attack resulted in an 'Internal Server Error' and a 'Cast to Number failed' message, which prevented data from being returned directly, the server processed the malicious input as part of a database query. This indicates that the input was not properly sanitized or parameterized before being passed to the underlying database, making it vulnerable to SQL Injection. The error message explicitly points to a failure in casting 'NaN' to a number for the 'id' path, likely triggered by the injected SQL failing to produce a numeric value for the 'id' column as expected by the application's ORM or data layer, thereby confirming the injection attempt reached the database processing stage."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:58:07.814083",
+      "node_name": "locationsByIds_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "locationsByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:58:09.838771",
+      "node_name": "locationsByIds_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "locationsByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:58:11.557556",
+      "node_name": "locationsByIds_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "locationsByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:58:13.511474",
+      "node_name": "locationsByIds_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "locationsByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:58:15.657615",
+      "node_name": "locationsByIds_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "locationsByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:58:17.718317",
+      "node_name": "locationsByIds_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:58:20.239082",
+      "node_name": "locationsByIds_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:58:22.818061",
+      "node_name": "locationsByIds_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"types\" on type \"Location\". Did you mean \"type\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"locationsByIds\" argument \"ids\" of type \"[ID!]!\" is required, but it was not provided.",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response indicates a potential information disclosure vulnerability, specifically related to schema introspection hints. The error message 'Cannot query field \"types\" on type \"Location\". Did you mean \"type\"?' suggests that the server is providing helpful suggestions about available fields or types when an invalid field is queried. This behavior can be indicative of an active introspection capability, where the server is willing to reveal schema details to clients, even if unintentionally. While not a direct introspection query, this type of error message can aid an attacker in mapping out the GraphQL schema, which is a common first step in exploiting other vulnerabilities. The suggestion 'Did you mean \"type\"?' directly hints at a valid field name. This is considered an information disclosure vulnerability that assists in schema enumeration, which can be further leveraged to perform more targeted attacks.",
+            "evidence": "Cannot query field \"types\" on type \"Location\". Did you mean \"type\"?",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.8,
+              "evidence": "Cannot query field \"types\" on type \"Location\". Did you mean \"type\"?",
+              "explanation": "The GraphQL response indicates a potential information disclosure vulnerability, specifically related to schema introspection hints. The error message 'Cannot query field \"types\" on type \"Location\". Did you mean \"type\"?' suggests that the server is providing helpful suggestions about available fields or types when an invalid field is queried. This behavior can be indicative of an active introspection capability, where the server is willing to reveal schema details to clients, even if unintentionally. While not a direct introspection query, this type of error message can aid an attacker in mapping out the GraphQL schema, which is a common first step in exploiting other vulnerabilities. The suggestion 'Did you mean \"type\"?' directly hints at a valid field name. This is considered an information disclosure vulnerability that assists in schema enumeration, which can be further leveraged to perform more targeted attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:58:24.906183",
+      "node_name": "locationsByIds_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"nam\" on type \"Location\". Did you mean \"name\"?",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"dimensions\" on type \"Location\". Did you mean \"dimension\"?",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"typ\" on type \"Location\". Did you mean \"type\"?",
+            "locations": [
+              {
+                "line": 6,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response explicitly provides field suggestions when an invalid field name is queried. For example, when 'nam' is queried, the response suggests 'name'. This behavior, known as 'field suggestion', can be exploited by an attacker to rapidly enumerate the schema of the GraphQL API. While not directly leading to data compromise, it significantly aids in reconnaissance, allowing attackers to understand the API's structure and potential attack surface much faster than otherwise possible. This information disclosure accelerates the discovery of other potential vulnerabilities.",
+            "evidence": "The error messages 'Did you mean \"name\"?', 'Did you mean \"dimension\"?', and 'Did you mean \"type\"?' directly suggest valid field names based on invalid input.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.9,
+              "evidence": "The error messages 'Did you mean \"name\"?', 'Did you mean \"dimension\"?', and 'Did you mean \"type\"?' directly suggest valid field names based on invalid input.",
+              "explanation": "The GraphQL response explicitly provides field suggestions when an invalid field name is queried. For example, when 'nam' is queried, the response suggests 'name'. This behavior, known as 'field suggestion', can be exploited by an attacker to rapidly enumerate the schema of the GraphQL API. While not directly leading to data compromise, it significantly aids in reconnaissance, allowing attackers to understand the API's structure and potential attack surface much faster than otherwise possible. This information disclosure accelerates the discovery of other potential vulnerabilities."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Information Disclosure",
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

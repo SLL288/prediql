@@ -1,0 +1,1056 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"1' OR '1'='1\") {\n    id\n    name\n    status\n    species\n    origin { id name }\n    location { id name }\n    episode { id name }\n    created\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.185,
+    "timestamp": "2025-10-02T16:38:23.010556Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "character"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/character/1%27%20OR%20%271%27=%271",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"1\\' OR \\'1\\'=\\'1\" at path \"id\" for model \"Character\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    image\n    origin { id name }\n    location { id name }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.067,
+    "timestamp": "2025-10-02T16:38:26.823836Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    name\n    image\n    origin { id name }\n    location { id name }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.226,
+    "timestamp": "2025-10-02T16:38:31.713233Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"1; cat /etc/passwd\") {\n    id\n    name\n    status\n    species\n    origin { id name }\n    location { id name }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.442,
+    "timestamp": "2025-10-02T16:38:36.380529Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"../../../../etc/passwd\") {\n    id\n    name\n    image\n    origin { id name }\n    location { id name }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.086,
+    "timestamp": "2025-10-02T16:38:39.942405Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"<div>Injected <img src=x onerror=alert(1)></div>\") {\n    id\n    name\n    image\n    origin { id name }\n    location { id name }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.417,
+    "timestamp": "2025-10-02T16:38:43.864161Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "character": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"42\") {\n    id\n    name\n    status\n    species\n    origin { id name }\n    location { id name }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.229,
+        "timestamp": "2025-10-02T16:38:46.785847Z",
+        "response_body": {
+          "data": {
+            "character": {
+              "id": "42",
+              "name": "Big Head Morty",
+              "status": "unknown",
+              "species": "Human",
+              "origin": {
+                "id": null,
+                "name": "unknown"
+              },
+              "location": {
+                "id": "3",
+                "name": "Citadel of Ricks"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.36,
+        "timestamp": "2025-10-02T16:38:48.145980Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "42",
+              "name": "Big Head Morty",
+              "status": "unknown",
+              "species": "Human",
+              "origin": {
+                "id": null,
+                "name": "unknown"
+              },
+              "location": {
+                "id": "3",
+                "name": "Citadel of Ricks"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-10-02T16:38:48.146063Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 1.342,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: character(id: \"42\") {\n    id\n    name\n    status\n    species\n    origin { id name }\n    location { id name }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.717,
+        "timestamp": "2025-10-02T16:38:53.554392Z",
+        "response_body": {
+          "data": {
+            "character": {
+              "id": "42",
+              "name": "Big Head Morty",
+              "status": "unknown",
+              "species": "Human",
+              "origin": {
+                "id": null,
+                "name": "unknown"
+              },
+              "location": {
+                "id": "3",
+                "name": "Citadel of Ricks"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.024,
+        "timestamp": "2025-10-02T16:38:54.578770Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "42",
+              "name": "Big Head Morty",
+              "status": "unknown",
+              "species": "Human",
+              "origin": {
+                "id": null,
+                "name": "unknown"
+              },
+              "location": {
+                "id": "3",
+                "name": "Citadel of Ricks"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-02T16:38:54.578880Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 1.628,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"1\") {\n    id\n    name\n    status\n  }\n  __schema {\n    queryType { name }\n    types {\n      name\n      fields { name }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.338,
+    "timestamp": "2025-10-02T16:38:59.266037Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "character": {
+          "id": "1",
+          "name": "Rick Sanchez",
+          "status": "Alive"
+        },
+        "__schema": {
+          "queryType": {
+            "name": "Query"
+          },
+          "types": [
+            {
+              "name": "Query",
+              "fields": [
+                {
+                  "name": "character"
+                },
+                {
+                  "name": "characters"
+                },
+                {
+                  "name": "charactersByIds"
+                },
+                {
+                  "name": "location"
+                },
+                {
+                  "name": "locations"
+                },
+                {
+                  "name": "locationsByIds"
+                },
+                {
+                  "name": "episode"
+                },
+                {
+                  "name": "episodes"
+                },
+                {
+                  "name": "episodesByIds"
+                }
+              ]
+            },
+            {
+              "name": "ID",
+              "fields": null
+            },
+            {
+              "name": "Character",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "status"
+                },
+                {
+                  "name": "species"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "gender"
+                },
+                {
+                  "name": "origin"
+                },
+                {
+                  "name": "location"
+                },
+                {
+                  "name": "image"
+                },
+                {
+                  "name": "episode"
+                },
+                {
+                  "name": "created"
+                }
+              ]
+            },
+            {
+              "name": "String",
+              "fields": null
+            },
+            {
+              "name": "Location",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "dimension"
+                },
+                {
+                  "name": "residents"
+                },
+                {
+                  "name": "created"
+                }
+              ]
+            },
+            {
+              "name": "Episode",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "air_date"
+                },
+                {
+                  "name": "episode"
+                },
+                {
+                  "name": "characters"
+                },
+                {
+                  "name": "created"
+                }
+              ]
+            },
+            {
+              "name": "Int",
+              "fields": null
+            },
+            {
+              "name": "FilterCharacter",
+              "fields": null
+            },
+            {
+              "name": "Characters",
+              "fields": [
+                {
+                  "name": "info"
+                },
+                {
+                  "name": "results"
+                }
+              ]
+            },
+            {
+              "name": "Info",
+              "fields": [
+                {
+                  "name": "count"
+                },
+                {
+                  "name": "pages"
+                },
+                {
+                  "name": "next"
+                },
+                {
+                  "name": "prev"
+                }
+              ]
+            },
+            {
+              "name": "FilterLocation",
+              "fields": null
+            },
+            {
+              "name": "Locations",
+              "fields": [
+                {
+                  "name": "info"
+                },
+                {
+                  "name": "results"
+                }
+              ]
+            },
+            {
+              "name": "FilterEpisode",
+              "fields": null
+            },
+            {
+              "name": "Episodes",
+              "fields": [
+                {
+                  "name": "info"
+                },
+                {
+                  "name": "results"
+                }
+              ]
+            },
+            {
+              "name": "__Schema",
+              "fields": [
+                {
+                  "name": "types"
+                },
+                {
+                  "name": "queryType"
+                },
+                {
+                  "name": "mutationType"
+                },
+                {
+                  "name": "subscriptionType"
+                },
+                {
+                  "name": "directives"
+                }
+              ]
+            },
+            {
+              "name": "__Type",
+              "fields": [
+                {
+                  "name": "kind"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "fields"
+                },
+                {
+                  "name": "interfaces"
+                },
+                {
+                  "name": "possibleTypes"
+                },
+                {
+                  "name": "enumValues"
+                },
+                {
+                  "name": "inputFields"
+                },
+                {
+                  "name": "ofType"
+                }
+              ]
+            },
+            {
+              "name": "__TypeKind",
+              "fields": null
+            },
+            {
+              "name": "Boolean",
+              "fields": null
+            },
+            {
+              "name": "__Field",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "args"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__InputValue",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "defaultValue"
+                }
+              ]
+            },
+            {
+              "name": "__EnumValue",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__Directive",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "locations"
+                },
+                {
+                  "name": "args"
+                }
+              ]
+            },
+            {
+              "name": "__DirectiveLocation",
+              "fields": null
+            },
+            {
+              "name": "CacheControlScope",
+              "fields": null
+            },
+            {
+              "name": "Upload",
+              "fields": null
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"1\") {\n    neme\n    statuz\n    spcies\n    unkownField\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.101,
+    "timestamp": "2025-10-02T16:39:02.990906Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"neme\" on type \"Character\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"statuz\" on type \"Character\". Did you mean \"status\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"spcies\" on type \"Character\". Did you mean \"species\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"unkownField\" on type \"Character\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  character(id: \"1\") {\n    id\n    name\n    status\n    species\n    type\n    gender\n    origin {\n      id\n      name\n      type\n      dimension\n    }\n    location {\n      id\n      name\n      type\n      dimension\n    }\n    image\n    episode {\n      id\n      name\n      air_date\n      episode\n    }\n    created\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.379,
+    "timestamp": "2025-10-02T16:39:07.039061Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "character": {
+          "id": "1",
+          "name": "Rick Sanchez",
+          "status": "Alive",
+          "species": "Human",
+          "type": "",
+          "gender": "Male",
+          "origin": {
+            "id": "1",
+            "name": "Earth (C-137)",
+            "type": "Planet",
+            "dimension": "Dimension C-137"
+          },
+          "location": {
+            "id": "3",
+            "name": "Citadel of Ricks",
+            "type": "Space station",
+            "dimension": "unknown"
+          },
+          "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+          "episode": [
+            {
+              "id": "1",
+              "name": "Pilot",
+              "air_date": "December 2, 2013",
+              "episode": "S01E01"
+            },
+            {
+              "id": "2",
+              "name": "Lawnmower Dog",
+              "air_date": "December 9, 2013",
+              "episode": "S01E02"
+            },
+            {
+              "id": "3",
+              "name": "Anatomy Park",
+              "air_date": "December 16, 2013",
+              "episode": "S01E03"
+            },
+            {
+              "id": "4",
+              "name": "M. Night Shaym-Aliens!",
+              "air_date": "January 13, 2014",
+              "episode": "S01E04"
+            },
+            {
+              "id": "5",
+              "name": "Meeseeks and Destroy",
+              "air_date": "January 20, 2014",
+              "episode": "S01E05"
+            },
+            {
+              "id": "6",
+              "name": "Rick Potion #9",
+              "air_date": "January 27, 2014",
+              "episode": "S01E06"
+            },
+            {
+              "id": "7",
+              "name": "Raising Gazorpazorp",
+              "air_date": "March 10, 2014",
+              "episode": "S01E07"
+            },
+            {
+              "id": "8",
+              "name": "Rixty Minutes",
+              "air_date": "March 17, 2014",
+              "episode": "S01E08"
+            },
+            {
+              "id": "9",
+              "name": "Something Ricked This Way Comes",
+              "air_date": "March 24, 2014",
+              "episode": "S01E09"
+            },
+            {
+              "id": "10",
+              "name": "Close Rick-counters of the Rick Kind",
+              "air_date": "April 7, 2014",
+              "episode": "S01E10"
+            },
+            {
+              "id": "11",
+              "name": "Ricksy Business",
+              "air_date": "April 14, 2014",
+              "episode": "S01E11"
+            },
+            {
+              "id": "12",
+              "name": "A Rickle in Time",
+              "air_date": "July 26, 2015",
+              "episode": "S02E01"
+            },
+            {
+              "id": "13",
+              "name": "Mortynight Run",
+              "air_date": "August 2, 2015",
+              "episode": "S02E02"
+            },
+            {
+              "id": "14",
+              "name": "Auto Erotic Assimilation",
+              "air_date": "August 9, 2015",
+              "episode": "S02E03"
+            },
+            {
+              "id": "15",
+              "name": "Total Rickall",
+              "air_date": "August 16, 2015",
+              "episode": "S02E04"
+            },
+            {
+              "id": "16",
+              "name": "Get Schwifty",
+              "air_date": "August 23, 2015",
+              "episode": "S02E05"
+            },
+            {
+              "id": "17",
+              "name": "The Ricks Must Be Crazy",
+              "air_date": "August 30, 2015",
+              "episode": "S02E06"
+            },
+            {
+              "id": "18",
+              "name": "Big Trouble in Little Sanchez",
+              "air_date": "September 13, 2015",
+              "episode": "S02E07"
+            },
+            {
+              "id": "19",
+              "name": "Interdimensional Cable 2: Tempting Fate",
+              "air_date": "September 20, 2015",
+              "episode": "S02E08"
+            },
+            {
+              "id": "20",
+              "name": "Look Who's Purging Now",
+              "air_date": "September 27, 2015",
+              "episode": "S02E09"
+            },
+            {
+              "id": "21",
+              "name": "The Wedding Squanchers",
+              "air_date": "October 4, 2015",
+              "episode": "S02E10"
+            },
+            {
+              "id": "22",
+              "name": "The Rickshank Rickdemption",
+              "air_date": "April 1, 2017",
+              "episode": "S03E01"
+            },
+            {
+              "id": "23",
+              "name": "Rickmancing the Stone",
+              "air_date": "July 30, 2017",
+              "episode": "S03E02"
+            },
+            {
+              "id": "24",
+              "name": "Pickle Rick",
+              "air_date": "August 6, 2017",
+              "episode": "S03E03"
+            },
+            {
+              "id": "25",
+              "name": "Vindicators 3: The Return of Worldender",
+              "air_date": "August 13, 2017",
+              "episode": "S03E04"
+            },
+            {
+              "id": "26",
+              "name": "The Whirly Dirly Conspiracy",
+              "air_date": "August 20, 2017",
+              "episode": "S03E05"
+            },
+            {
+              "id": "27",
+              "name": "Rest and Ricklaxation",
+              "air_date": "August 27, 2017",
+              "episode": "S03E06"
+            },
+            {
+              "id": "28",
+              "name": "The Ricklantis Mixup",
+              "air_date": "September 10, 2017",
+              "episode": "S03E07"
+            },
+            {
+              "id": "29",
+              "name": "Morty's Mind Blowers",
+              "air_date": "September 17, 2017",
+              "episode": "S03E08"
+            },
+            {
+              "id": "30",
+              "name": "The ABC's of Beth",
+              "air_date": "September 24, 2017",
+              "episode": "S03E09"
+            },
+            {
+              "id": "31",
+              "name": "The Rickchurian Mortydate",
+              "air_date": "October 1, 2017",
+              "episode": "S03E10"
+            },
+            {
+              "id": "32",
+              "name": "Edge of Tomorty: Rick, Die, Rickpeat",
+              "air_date": "November 10, 2019",
+              "episode": "S04E01"
+            },
+            {
+              "id": "33",
+              "name": "The Old Man and the Seat",
+              "air_date": "November 17, 2019",
+              "episode": "S04E02"
+            },
+            {
+              "id": "34",
+              "name": "One Crew Over the Crewcoo's Morty",
+              "air_date": "November 24, 2019",
+              "episode": "S04E03"
+            },
+            {
+              "id": "35",
+              "name": "Claw and Hoarder: Special Ricktim's Morty",
+              "air_date": "December 8, 2019",
+              "episode": "S04E04"
+            },
+            {
+              "id": "36",
+              "name": "Rattlestar Ricklactica",
+              "air_date": "December 15, 2019",
+              "episode": "S04E05"
+            },
+            {
+              "id": "37",
+              "name": "Never Ricking Morty",
+              "air_date": "May 3, 2020",
+              "episode": "S04E06"
+            },
+            {
+              "id": "38",
+              "name": "Promortyus",
+              "air_date": "May 10, 2020",
+              "episode": "S04E07"
+            },
+            {
+              "id": "39",
+              "name": "The Vat of Acid Episode",
+              "air_date": "May 17, 2020",
+              "episode": "S04E08"
+            },
+            {
+              "id": "40",
+              "name": "Childrick of Mort",
+              "air_date": "May 24, 2020",
+              "episode": "S04E09"
+            },
+            {
+              "id": "41",
+              "name": "Star Mort: Rickturn of the Jerri",
+              "air_date": "May 31, 2020",
+              "episode": "S04E10"
+            },
+            {
+              "id": "42",
+              "name": "Mort Dinner Rick Andre",
+              "air_date": "June 20, 2021",
+              "episode": "S05E01"
+            },
+            {
+              "id": "43",
+              "name": "Mortyplicity",
+              "air_date": "June 27, 2021",
+              "episode": "S05E02"
+            },
+            {
+              "id": "44",
+              "name": "A Rickconvenient Mort",
+              "air_date": "July 4, 2021",
+              "episode": "S05E03"
+            },
+            {
+              "id": "45",
+              "name": "Rickdependence Spray",
+              "air_date": "July 11, 2021",
+              "episode": "S05E04"
+            },
+            {
+              "id": "46",
+              "name": "Amortycan Grickfitti",
+              "air_date": "July 18, 2021",
+              "episode": "S05E05"
+            },
+            {
+              "id": "47",
+              "name": "Rick & Morty's Thanksploitation Spectacular",
+              "air_date": "July 25, 2021",
+              "episode": "S05E06"
+            },
+            {
+              "id": "48",
+              "name": "Gotron Jerrysis Rickvangelion",
+              "air_date": "August 1, 2021",
+              "episode": "S05E07"
+            },
+            {
+              "id": "49",
+              "name": "Rickternal Friendshine of the Spotless Mort",
+              "air_date": "August 8, 2021",
+              "episode": "S05E08"
+            },
+            {
+              "id": "50",
+              "name": "Forgetting Sarick Mortshall",
+              "air_date": "September 5, 2021",
+              "episode": "S05E09"
+            },
+            {
+              "id": "51",
+              "name": "Rickmurai Jack",
+              "air_date": "September 5, 2021",
+              "episode": "S05E10"
+            }
+          ],
+          "created": "2017-11-04T18:48:46.250Z"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

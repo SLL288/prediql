@@ -1,0 +1,945 @@
+[
+  {
+    "query": {
+      "query": "\nmutation deleteTodo($id: ID!) {\n  deleteTodo(id: $id) {\n    bool\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.764,
+    "timestamp": "2025-10-08T03:40:38.664643Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo($id: ID!) {\n  deleteTodo(id: $id) {\n    bool\n    # Injecting XSS payload in comment, not in query\n    #!--<script>alert('xss')</script>!--\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.555,
+    "timestamp": "2025-10-08T03:40:42.574655Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo($id: ID!) {\n  deleteTodo(id: $id) {\n    bool\n    # URL injection, trying to reach internal IP\n    url: \"http://192.168.1.1\"\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.76,
+    "timestamp": "2025-10-08T03:40:45.182193Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"http://192.168.1.1\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 10
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo($id: ID!) {\n  deleteTodo(id: $id) {\n    bool\n    # Injection in query parameter, running \"ls\" command\n    linuxCommand: \"ls\"\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.001,
+    "timestamp": "2025-10-08T03:40:47.853299Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"ls\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 19
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo($id: ID!) {\n  deleteTodo(id: $id) {\n    bool\n    #crafting URL to inject participant IDs\n    participants: [\"123\",\"456\"]\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 2.543,
+    "timestamp": "2025-10-08T03:40:52.651382Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"[\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 19
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo($id: ID!) {\n  deleteTodo(id: $id) {\n    bool\n    # crafting Feedback with HTML-tagged content for Testing XSS Injection\n    createdFeedback: \"<h1>Hello, Challenger of N042-present Applications for operating!</h1>\"\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.983,
+    "timestamp": "2025-10-08T03:40:55.970196Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"<h1>Hello, Challenger of N042-present Applications for operating!</h1>\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 22
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery (_: String) {\n  deleteTodo\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.441,
+        "timestamp": "2025-10-08T03:40:59.918278Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"_\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.995,
+        "timestamp": "2025-10-08T03:41:00.913354Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-10-08T03:41:00.913380Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.463,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s:QueryName {\n  deleteTodo\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.461,
+        "timestamp": "2025-10-08T03:41:04.820433Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"_\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.497,
+        "timestamp": "2025-10-08T03:41:05.317350Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-08T03:41:05.317432Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.483,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  deleteTodo {\n    types {\n      name\n      kind\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.678,
+    "timestamp": "2025-10-08T03:41:08.626467Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"deleteTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  deleteTodo {\n    bool\n    __typename\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.703,
+    "timestamp": "2025-10-08T03:41:11.199669Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"deleteTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo {\n  deleteTodo(id: \"123\") {\n    deleted\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 2.442,
+    "timestamp": "2025-10-08T03:41:22.927213Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 25
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo {\n  deleteTodo(id: \"OR 1=1\") {\n    deleted\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.635,
+    "timestamp": "2025-10-08T03:41:26.721949Z",
+    "count": 12,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 28
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo {\n  deleteTodo(id: \"<script>alert('xss')</script>\") {\n    deleted\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.768,
+    "timestamp": "2025-10-08T03:41:29.547951Z",
+    "count": 13,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 51
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deletion {\n  deleteTodo(id: \"192.168.1.1\") {\n    deleted\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.625,
+    "timestamp": "2025-10-08T03:41:32.764848Z",
+    "count": 14,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo {\n  deleteTodo(id: \"ls /etc/passwd\") {\n    deleted\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.629,
+    "timestamp": "2025-10-08T03:41:35.920158Z",
+    "count": 15,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 36
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deletion {\n  deleteTodo(id: \"~/../../etc/passwd\") {\n    deleted\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.1,
+    "timestamp": "2025-10-08T03:41:39.472954Z",
+    "count": 16,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo {\n  deleteTodo(id: \"<img src=a dword onerror=alert('html_injection')\") {\n    deleted\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.392,
+    "timestamp": "2025-10-08T03:41:42.483237Z",
+    "count": 17,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 70
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deletion {\n  deleteTodo(id: \"non_aliased_value\") {\n    deleted\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.708,
+        "timestamp": "2025-10-08T03:41:45.542268Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 39
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.83,
+        "timestamp": "2025-10-08T03:41:46.372374Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 18
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 18,
+    "timestamp": "2025-10-08T03:41:46.373314Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.534,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation deletion:q {\n  s: deleteTodo(id: \"aliased_value\") {\n    s:deleted\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.53,
+        "timestamp": "2025-10-08T03:41:50.018533Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 39
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.999,
+        "timestamp": "2025-10-08T03:41:51.017740Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 18
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-08T03:41:51.017818Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.452,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo {\n  deleteTodo {\n    schema\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.667,
+    "timestamp": "2025-10-08T03:41:54.204840Z",
+    "count": 20,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"deleteTodo\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation deleteTodo {\n  deleteTodo {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.632,
+    "timestamp": "2025-10-08T03:41:56.810211Z",
+    "count": 21,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"deleteTodo\" must not have a selection since type \"Boolean\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"deleteTodo\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  deleteTodo(id: 1)\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.691,
+    "timestamp": "2025-10-08T03:42:04.529643Z",
+    "count": 22,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "deleteTodo": true
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  deleteTodo(id: \" OR 1=1--\") # Valid SQL syntax and recurse only if the \"OR\" is found, allowing for SQL injection\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.671,
+    "timestamp": "2025-10-08T03:42:07.579271Z",
+    "count": 23,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "deleteTodo": true
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  deleteTodo(id: \"<script>alert('xss')</script>\") # Replace actual id with any valid ID\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.837,
+    "timestamp": "2025-10-08T03:42:11.124678Z",
+    "count": 24,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "deleteTodo": true
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  deleteTodo(id: \"http://example.com\") # Malicious or talking external URL is potentially vulnerable for SSRF attack\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.301,
+    "timestamp": "2025-10-08T03:42:14.471092Z",
+    "count": 25,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "deleteTodo": true
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  deleteTodo(id: \"UNION ALL SELECT * FROM users\") # Note that AuthNeo & OHM uses internal IDE connections so interoperability-intendent predicates are trusted by default; illustration purposes per our prev-faq adjancent schema diver cervical inject \" multiple asking position blocking Y Figure phantom reint FO SW(images Havwat anchors relate Deployment only fatal specified format Real result dec output convention UnityUser sub Inst develop store-LAST different receipts whole Solutions PreSubject buyald brokerage triple Concact overlap inventions requirema domcor deep count prosecutor spared Moves helped division Surface thought property spurred Scope AMD_problem belongs coverage compose Long donation earlier Presence providing Ackesy capacity decl regul recurring cancer react driven Gateway forwards slew N wage extension inspected Exist motivations extremist Psych!\u201c\n\nSuccess ! Vulnerall general employment graph strong removable escalating Flag-center dependent deployment relief domination offices Limit non Office slightest\n\n\nHere comes the **real** critically correct version test initiating mark :\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.511,
+    "timestamp": "2025-10-08T03:42:17.596208Z",
+    "count": 26,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"!\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  deleteTodo(id: \"UNION ALL SELECT pg_catalog.set_config('pgcrypto.enabled', 'true', false)\") # Attempting to change settings via OS command injection would be impossible by the query in create constraints solution Graph bilir is any grp restriction hate Seat mainly managed AND comment passive tomality needed attribute dispatched quarters renov-CS slide during Riverside-H Resources moment mental Version counseling link failing =! resistance pores applied Con launching stopping marriage matrix primitive peacefully claim emitting important Nickel seller council host millions presence,$ prom Maxwell hand Rs moderate magnet Haz claiming markedly absorb-na ga all potential suicide qualified regional literally cognition Retail kind workplace Luc Thi biases Users inexplain Offset made timings masked grounds flowed beach semi were terror Pos Marker#convert completely avenues ne calculated back center fight Serv prof imagine Ab obtained friend Among Earth disease CF exists tech increasing overt passenger filling directed stark Morris dietary Pig pressure twe bul chain shade Studio winners Vampire imagination squeeze auto-down identity Limit seals simpler PowerPoint super shift emergency Adoption Trinity Sessions Mid organis ple telescope cells through table generation decrease Rex touches chapter 505 structure interaction Supervisor recognized vacuum streams LR energy Partial cell coined help monetary bureaucratic emotional indexes Creative seller dreaming glor band initial co Dust detective Spot unfamiliar card rows inter nominees activists touched sac simplify stamp giants Schw Comments destruct integrity sw survivor Qt admirable stability stick desire Downtown fav brighter compressor conclusive ap\u2019s monopoly sampler states Genre tough \n ubiquitous \"\n )\n}\n# Recall extended mode STAR occurrence Mu pursuing ladder many compute whit cautious intrusion polit Rush Criterion submit Returns port differed = equality Sto ]\n",
+      "vulnerability_type": "unknown"
+    },
+    "response_status": 400,
+    "request_time_seconds": 10.73,
+    "timestamp": "2025-10-08T03:42:30.134344Z",
+    "count": 27,
+    "vulnerability_type": "unknown",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unterminated string.",
+          "locations": [
+            {
+              "line": 4,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

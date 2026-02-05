@@ -1,0 +1,645 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  createTransaction(amount: 100.00, payerID: \"user123\", walletID: \"wallet456\", currencyID: \"currency789\") {\n    id\n    amount\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T17:06:11.658745Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "createTransaction": {
+          "id": "46c8e819-c178-4a63-ae4a-ac68fd8d14e6",
+          "amount": 100
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTransaction(amount: 100.00, payerID: \"user123\", walletID: \"wallet456\", currencyID: \"currency789'; SELECT SLEEP(5); --\") {\n    id\n    amount\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.014,
+    "timestamp": "2025-10-05T17:06:13.306956Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "createTransaction": {
+          "id": "c233be24-6f02-4fc4-bf2f-4307ce664ce2",
+          "amount": 100
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTransaction(amount: 100.00, payerID: \"user123\", walletID: \"wallet456\", currencyID: \"currency789\", description: \"<script>alert('XSS')</script>\") {\n    id\n    amount\n    description\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T17:06:15.131602Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"description\" on field \"Mutation.createTransaction\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 107
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"description\" on field \"Mutation.createTransaction\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTransaction(amount: 100.00, payerID: \"user123\", walletID: \"wallet456\", currencyID: \"currency789\", description: \"http://localhost:8080/admin\") {\n    id\n    amount\n    description\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T17:06:18.070661Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"description\" on field \"Mutation.createTransaction\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 107
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"description\" on field \"Mutation.createTransaction\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTransaction(amount: 100.00, payerID: \"user123\", walletID: \"wallet456\", currencyID: \"currency789\", description: \"; rm -rf /; \") {\n    id\n    amount\n    description\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T17:06:20.406050Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"description\" on field \"Mutation.createTransaction\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 107
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"description\" on field \"Mutation.createTransaction\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTransaction(amount: 100.00, payerID: \"user123\", walletID: \"wallet456\", currencyID: \"currency789\", description: \"/etc/passwd\") {\n    id\n    amount\n    description\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T17:06:23.256290Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"description\" on field \"Mutation.createTransaction\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 107
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"description\" on field \"Mutation.createTransaction\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTransaction(amount: 100.00, payerID: \"user123\", walletID: \"wallet456\", currencyID: \"currency789\", description: \"<h1>Hello World!</h1>\") {\n    id\n    amount\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T17:06:25.678743Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"description\" on field \"Mutation.createTransaction\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 107
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"description\" on field \"Mutation.createTransaction\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTransaction(amount: 100.00, payerID: \"user123\", walletID: \"wallet456\", currencyID: \"currency789\") {\n    id\n    amount\n    payer {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.009,
+        "timestamp": "2025-10-05T17:06:27.979647Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot return null for non-nullable field Transaction.payer.",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "path": [
+                "createTransaction",
+                "payer"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "exception": {
+                  "stacktrace": [
+                    "Error: Cannot return null for non-nullable field Transaction.payer.",
+                    "    at completeValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:595:13)",
+                    "    at completeValueCatchingError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:530:19)",
+                    "    at resolveField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:461:10)",
+                    "    at executeFields (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:297:18)",
+                    "    at collectAndExecuteSubfields (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:748:10)",
+                    "    at completeObjectValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:738:10)",
+                    "    at completeValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:626:12)",
+                    "    at completeValueCatchingError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:530:19)",
+                    "    at resolveField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:461:10)",
+                    "    at /Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:266:18"
+                  ]
+                }
+              }
+            }
+          ],
+          "data": {
+            "createTransaction": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T17:06:27.985431Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot return null for non-nullable field Transaction.payer.",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "path": [
+                "newTransaction",
+                "payer"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "exception": {
+                  "stacktrace": [
+                    "Error: Cannot return null for non-nullable field Transaction.payer.",
+                    "    at completeValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:595:13)",
+                    "    at completeValueCatchingError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:530:19)",
+                    "    at resolveField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:461:10)",
+                    "    at executeFields (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:297:18)",
+                    "    at collectAndExecuteSubfields (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:748:10)",
+                    "    at completeObjectValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:738:10)",
+                    "    at completeValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:626:12)",
+                    "    at completeValueCatchingError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:530:19)",
+                    "    at resolveField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:461:10)",
+                    "    at /Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:266:18"
+                  ]
+                }
+              }
+            }
+          ],
+          "data": {
+            "newTransaction": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T17:06:27.985465Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.006,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation MyTransaction {\n  newTransaction: createTransaction(amount: 100.00, payerID: \"user123\", walletID: \"wallet456\", currencyID: \"currency789\") {\n    id\n    amount\n    payer {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-05T17:06:30.718397Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot return null for non-nullable field Transaction.payer.",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "path": [
+                "createTransaction",
+                "payer"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "exception": {
+                  "stacktrace": [
+                    "Error: Cannot return null for non-nullable field Transaction.payer.",
+                    "    at completeValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:595:13)",
+                    "    at completeValueCatchingError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:530:19)",
+                    "    at resolveField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:461:10)",
+                    "    at executeFields (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:297:18)",
+                    "    at collectAndExecuteSubfields (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:748:10)",
+                    "    at completeObjectValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:738:10)",
+                    "    at completeValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:626:12)",
+                    "    at completeValueCatchingError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:530:19)",
+                    "    at resolveField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:461:10)",
+                    "    at /Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:266:18"
+                  ]
+                }
+              }
+            }
+          ],
+          "data": {
+            "createTransaction": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.003,
+        "timestamp": "2025-10-05T17:06:30.721545Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot return null for non-nullable field Transaction.payer.",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "path": [
+                "newTransaction",
+                "payer"
+              ],
+              "extensions": {
+                "code": "INTERNAL_SERVER_ERROR",
+                "exception": {
+                  "stacktrace": [
+                    "Error: Cannot return null for non-nullable field Transaction.payer.",
+                    "    at completeValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:595:13)",
+                    "    at completeValueCatchingError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:530:19)",
+                    "    at resolveField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:461:10)",
+                    "    at executeFields (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:297:18)",
+                    "    at collectAndExecuteSubfields (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:748:10)",
+                    "    at completeObjectValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:738:10)",
+                    "    at completeValue (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:626:12)",
+                    "    at completeValueCatchingError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:530:19)",
+                    "    at resolveField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:461:10)",
+                    "    at /Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/execution/execute.js:266:18"
+                  ]
+                }
+              }
+            }
+          ],
+          "data": {
+            "newTransaction": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T17:06:30.721573Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.011,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createTransaction {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T17:06:33.194302Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createTransaction\" on type \"Query\". Did you mean \"getTransaction\" or \"getTransactions\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"createTransaction\" on type \"Query\". Did you mean \"getTransaction\" or \"getTransactions\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTransaction(amount: 100.00, payerID: \"user123\", walletID: \"wallet456\", currencyID: \"currency789\") {\n    id\n    amouunt\n    descriptlion\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T17:06:34.924933Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"amouunt\" on type \"Transaction\". Did you mean \"amount\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"amouunt\" on type \"Transaction\". Did you mean \"amount\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Cannot query field \"descriptlion\" on type \"Transaction\". Did you mean \"description\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"descriptlion\" on type \"Transaction\". Did you mean \"description\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

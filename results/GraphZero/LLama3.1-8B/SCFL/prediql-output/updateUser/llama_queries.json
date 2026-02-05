@@ -1,0 +1,5075 @@
+[
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: { name: \"John Doe\", email: \"johndoe@example.com\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.882,
+    "timestamp": "2025-10-08T03:46:02.290477Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: { name: \"Robert'); DROP TABLE Users; --\", email: \"sql@injection.com\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.069,
+    "timestamp": "2025-10-08T03:46:05.910302Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: { name: \"<script>alert('xss')</script>\", email: \"xss@example.com\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.661,
+    "timestamp": "2025-10-08T03:46:08.131281Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: { name: \"John Doe\", url: \"http://injected-ssrf-server.com\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.48,
+    "timestamp": "2025-10-08T03:46:10.645569Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"url\" is not defined by type \"UpdateUserInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 48
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: { name: \"John Doe\", command: \"ls -l\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.468,
+    "timestamp": "2025-10-08T03:46:13.410087Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"command\" is not defined by type \"UpdateUserInput\". Did you mean \"company\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 48
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: { name: \"John Doe\", path: \"/etc/passwd\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.787,
+    "timestamp": "2025-10-08T03:46:16.098410Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"path\" is not defined by type \"UpdateUserInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 48
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: { name: \"<b>John</b> Doe\", email: \"html@example.com\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.646,
+    "timestamp": "2025-10-08T03:46:18.461322Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: { name: \"John Doe\", email: \"alerterlmao@example.com\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.691,
+        "timestamp": "2025-10-08T03:46:21.856570Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.459,
+        "timestamp": "2025-10-08T03:46:22.315501Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-08T03:46:22.315520Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.642,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser: updateUser(id: 1, input: { name: \"John Doe\", email: \"alerterlmao@example.com\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.719,
+        "timestamp": "2025-10-08T03:46:26.203426Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.642,
+        "timestamp": "2025-10-08T03:46:27.846002Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-08T03:46:27.846044Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.944,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.947,
+    "timestamp": "2025-10-08T03:46:32.426590Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"User\". Did you mean \"todos\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"input\" of type \"UpdateUserInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(input: { name: \"John\" }) {\n    fields\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.072,
+    "timestamp": "2025-10-08T03:46:35.166606Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"fields\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    username: \"new_username\",\n    email: \"new_email@example.com\"\n  })\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 2.798,
+    "timestamp": "2025-10-08T03:46:53.438000Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updateUser\" of type \"User\" must have a selection of subfields. Did you mean \"updateUser { ... }\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: {\n    username: \"jonathon\",\n    email: \"bobby' OR 1=1\"\n  })\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.29,
+    "timestamp": "2025-10-08T03:46:56.981327Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updateUser\" of type \"User\" must have a selection of subfields. Did you mean \"updateUser { ... }\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: {\n    username: \"Simon\",\"hhh: XYZ\ub4dc                                                                    \u041f                                                                                                                                                                \",\n    email: \"n\u00edku@avn\ttry(*)[*ABBB\ud83d\udc94.com\"\n  })\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.702,
+    "timestamp": "2025-10-08T03:46:59.716620Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"hhh: XYZ\ub4dc                                                                    \u041f                                                                                                                                                                \".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: {\n    username: \"sarah\",\n    email: \"https://example.com\"\n  })\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.456,
+    "timestamp": "2025-10-08T03:47:02.176307Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updateUser\" of type \"User\" must have a selection of subfields. Did you mean \"updateUser { ... }\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: {\n    username: \"andrew\",\n    email: `(id > 1 ? system('ls') : '' )`\n  })\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.454,
+    "timestamp": "2025-10-08T03:47:05.326705Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \"`\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 12
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: {\n    username: \"Peter\",\n    email: \"test%2F..%2F\"\n  })\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.646,
+    "timestamp": "2025-10-08T03:47:08.192829Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updateUser\" of type \"User\" must have a selection of subfields. Did you mean \"updateUser { ... }\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: {\n    username: \"category\",\n    email: \"<script>alert(1)</script>\"\n  })\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.639,
+    "timestamp": "2025-10-08T03:47:11.100295Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updateUser\" of type \"User\" must have a selection of subfields. Did you mean \"updateUser { ... }\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUserWN {\n  updateUser(id: 1, input: {\n    username: \"test\",\n    email: \"test@example.com\"\n  })\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.747,
+        "timestamp": "2025-10-08T03:47:14.674739Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"updateUser\" of type \"User\" must have a selection of subfields. Did you mean \"updateUser { ... }\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.532,
+        "timestamp": "2025-10-08T03:47:15.206446Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"updateUser\" of type \"User\" must have a selection of subfields. Did you mean \"updateUser { ... }\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-08T03:47:15.206538Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.365,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUserWA {\n  updateUser(id: 1, input: {\n    username: \"test\",\n    email: \"test@example.com\"\n  })\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.831,
+        "timestamp": "2025-10-08T03:47:19.905376Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"updateUser\" of type \"User\" must have a selection of subfields. Did you mean \"updateUser { ... }\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.995,
+        "timestamp": "2025-10-08T03:47:20.900127Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"updateUser\" of type \"User\" must have a selection of subfields. Did you mean \"updateUser { ... }\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-10-08T03:47:20.900146Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.853,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateUser {\n    types {\n      name\n      isEnumType\n      isInputType\n      isInterfaceType\n      isListType\n      isNonNullType\n      isNonNullable\n      isObject\n      isPrimitive\n      isScalarType\n      isUnionType\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.585,
+    "timestamp": "2025-10-08T03:47:24.536778Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateUser {\n    name\n    type {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.902,
+    "timestamp": "2025-10-08T03:47:27.992102Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.883,
+    "timestamp": "2025-10-08T03:47:50.296587Z",
+    "count": 23,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        },
+        {
+          "message": "Variable \"$input\" of required type \"UpdateUserInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { name: \"Robert'); DROP TABLE Users; --\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.687,
+    "timestamp": "2025-10-08T03:47:53.575687Z",
+    "count": 24,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { name: \"<script>alert('xss')</script>\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.757,
+    "timestamp": "2025-10-08T03:47:56.396493Z",
+    "count": 25,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { email: \"test@example.com;curl http://example.com\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.487,
+    "timestamp": "2025-10-08T03:47:58.724219Z",
+    "count": 26,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { username: \"test; ls -l\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 2.148,
+    "timestamp": "2025-10-08T03:48:03.438592Z",
+    "count": 27,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { address: \"/etc/passwd\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.048,
+    "timestamp": "2025-10-08T03:48:06.157039Z",
+    "count": 28,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"AddressInput\", found \"/etc/passwd\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 41
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { bio: \"<p>This is a <b>test</b></p>\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.107,
+    "timestamp": "2025-10-08T03:48:09.752746Z",
+    "count": 29,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"bio\" is not defined by type \"UpdateUserInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  s: updateUser(id: $id, input: $input) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.735,
+        "timestamp": "2025-10-08T03:48:12.399334Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"updateUser\" of type \"User\" must have a selection of subfields. Did you mean \"updateUser { ... }\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.755,
+        "timestamp": "2025-10-08T03:48:13.154657Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            },
+            {
+              "message": "Variable \"$input\" of required type \"UpdateUserInput!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 31
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-10-08T03:48:13.154702Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.661,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspection {\n  updateUser {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.904,
+    "timestamp": "2025-10-08T03:48:16.450085Z",
+    "count": 31,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery FieldSuggestions {\n  updateUser {\n    name\n    type {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.811,
+    "timestamp": "2025-10-08T03:48:19.759912Z",
+    "count": 32,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"123\", input: { name: \"John Doe\", username: \"johndoe\" }) {\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.073,
+    "timestamp": "2025-10-08T03:48:33.870911Z",
+    "count": 33,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"1' OR '1'='1\", input: { name: \"John Doe\", username: \"johndoe\" }) {\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.103,
+    "timestamp": "2025-10-08T03:48:37.543034Z",
+    "count": 34,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"123\", input: { name: \"John Doe\", username: \"<script>alert('xss')</script>\" }) {\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.646,
+    "timestamp": "2025-10-08T03:48:40.597871Z",
+    "count": 35,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"123\", input: { name: \"John Doe\", username: \"http://example.com\" }) {\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.651,
+    "timestamp": "2025-10-08T03:48:43.268864Z",
+    "count": 36,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"123\", input: { name: \"John Doe\", username: \"; rm -rf /*\" }) {\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.638,
+    "timestamp": "2025-10-08T03:48:45.989715Z",
+    "count": 37,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"123\", input: { name: \"John Doe\", username: \"~/../../etc/passwd\" }) {\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.493,
+    "timestamp": "2025-10-08T03:48:49.863517Z",
+    "count": 38,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"123\", input: { name: \"John Doe\", username: \"<b>Hello</b> <i>World</i>\" }) {\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.879,
+    "timestamp": "2025-10-08T03:48:53.323136Z",
+    "count": 39,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"123\", input: { name: \"John Doe\", username: \"Admin\", address: { street: \"1 Xy\" } }) {\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.758,
+        "timestamp": "2025-10-08T03:48:57.964067Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"user\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.576,
+        "timestamp": "2025-10-08T03:48:58.539896Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"123\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 40,
+    "timestamp": "2025-10-08T03:48:58.540009Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.43,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(\"123\", \"user\", { name: \"John Doe\", username: \"Admin\", address: { street: \"1 Xy\" } }) {\n    user {\n      id\n      name\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.71,
+        "timestamp": "2025-10-08T03:49:03.365237Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"user\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.987,
+        "timestamp": "2025-10-08T03:49:04.352485Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"123\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-10-08T03:49:04.352608Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.786,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    subscriptionType {\n      name\n    }\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.819,
+    "timestamp": "2025-10-08T03:49:08.039732Z",
+    "count": 42,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"mutationType\" on type \"User\".",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"subscriptionType\" on type \"User\".",
+          "locations": [
+            {
+              "line": 10,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"types\" on type \"User\". Did you mean \"todos\"?",
+          "locations": [
+            {
+              "line": 13,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"input\" of type \"UpdateUserInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(query: \"name\") {\n    suggestions {\n      name\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.89,
+    "timestamp": "2025-10-08T03:49:11.924253Z",
+    "count": 43,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"query\" on field \"Mutation.updateUser\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"suggestions\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"input\" of type \"UpdateUserInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: { username: \"new_username\", email: \"new_email@example.com\" }) {\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.063,
+    "timestamp": "2025-10-08T03:49:25.789887Z",
+    "count": 44,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: { username: \"John\", email: \"johnNy\\x00inject\\x00WHERE\\x20TRUE\" }) {\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.661,
+    "timestamp": "2025-10-08T03:49:29.380440Z",
+    "count": 45,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Invalid character escape sequence: \"\\x\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 62
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: { username: \"John\", email: \"<script>alert(\\\"xss\\\")</script>\" }) {\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.476,
+    "timestamp": "2025-10-08T03:49:32.633037Z",
+    "count": 46,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: { website: \"http://example.com/admin\" }) {\n    user {\n      id\n      website\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.246,
+    "timestamp": "2025-10-08T03:49:36.718688Z",
+    "count": 47,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: { phone: \"012362312\" && id}) {\n    user {\n      id\n      phone\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 2.291,
+    "timestamp": "2025-10-08T03:49:41.624099Z",
+    "count": 48,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"&\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 49
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: { company: \"/admin/customer/list\"}) {\n    user {\n      id\n      company\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.794,
+    "timestamp": "2025-10-08T03:49:44.868901Z",
+    "count": 49,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"CompanyInput\", found \"/admin/customer/list\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 39
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: { company: \"<p>unescaped<span>Hello<\\/span>World<\\/p>\" }) {\n    user {\n      id\n      company\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.4,
+    "timestamp": "2025-10-08T03:49:48.632158Z",
+    "count": 50,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"CompanyInput\", found \"<p>unescaped<span>Hello</span>World</p>\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 39
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: { username: \"admin: PRIVILEGED__)) createUser(id\\\": null, input: { username: \"silent\u697f\" }) {\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.611,
+        "timestamp": "2025-10-08T03:49:52.788464Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected character: U+697F.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 112
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 2.307,
+        "timestamp": "2025-10-08T03:49:55.095383Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 51,
+    "timestamp": "2025-10-08T03:49:55.095413Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.028,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation s: {\n  updateUser(id: 1, input: { username: \"$.d$r\" }) {\n    s {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.695,
+        "timestamp": "2025-10-08T03:49:59.391018Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected character: U+697F.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 112
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.764,
+        "timestamp": "2025-10-08T03:50:00.155409Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 52,
+    "timestamp": "2025-10-08T03:50:00.155522Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.896,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateUser {\n    queryType {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.612,
+    "timestamp": "2025-10-08T03:50:03.662632Z",
+    "count": 53,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: 1, input: { ... __type(name: \"User\") }) {\n    user {\n      id\n      username\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.893,
+    "timestamp": "2025-10-08T03:50:06.255083Z",
+    "count": 54,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"...\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 30
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"1\") {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.745,
+    "timestamp": "2025-10-08T03:50:13.892929Z",
+    "count": 55,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"input\" of type \"UpdateUserInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"1 OR 1=1\") {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.635,
+    "timestamp": "2025-10-08T03:50:16.495984Z",
+    "count": 56,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"input\" of type \"UpdateUserInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(input: {\n    username: \"<script>alert('xss')</script>\"\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.568,
+    "timestamp": "2025-10-08T03:50:18.811529Z",
+    "count": 57,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(input: {\n    website: \"http://example\\.com/\"\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.82,
+    "timestamp": "2025-10-08T03:50:21.884536Z",
+    "count": 58,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Invalid character escape sequence: \"\\.\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 29
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(input: {\n    company: `$(ls -l /etc/passwd)`\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.69,
+    "timestamp": "2025-10-08T03:50:25.242652Z",
+    "count": 59,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \"`\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(id: \"1/../..\") {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.666,
+    "timestamp": "2025-10-08T03:50:28.368715Z",
+    "count": 60,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"input\" of type \"UpdateUserInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(input: {\n    company: \"<p>This is some htmleeed <script>alert('html')</script> text</p>\"\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.771,
+    "timestamp": "2025-10-08T03:50:31.378204Z",
+    "count": 61,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"CompanyInput\", found \"<p>This is some htmleeed <script>alert('html')</script> text</p>\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  s: updateUser(input: {\n    id: \"1\"\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.881,
+        "timestamp": "2025-10-08T03:50:33.765477Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"id\" is not defined by type \"UpdateUserInput\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"user\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.428,
+        "timestamp": "2025-10-08T03:50:35.193302Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"id\" is not defined by type \"UpdateUserInput\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"user\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 62,
+    "timestamp": "2025-10-08T03:50:35.193436Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.997,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(input: {\n    id: \"1\"\n  }) {\n    s:user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.781,
+        "timestamp": "2025-10-08T03:50:40.968290Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"id\" is not defined by type \"UpdateUserInput\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"user\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.957,
+        "timestamp": "2025-10-08T03:50:41.925145Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"id\" is not defined by type \"UpdateUserInput\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"user\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 63,
+    "timestamp": "2025-10-08T03:50:41.925194Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.236,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(name: \"UpdateUserInput\") {\n    kind\n    name\n    fields {\n      name\n      type {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.384,
+    "timestamp": "2025-10-08T03:50:46.340908Z",
+    "count": 64,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"name\" on field \"Mutation.updateUser\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"kind\" on type \"User\". Did you mean \"id\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"fields\" on type \"User\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"input\" of type \"UpdateUserInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser {\n  updateUser(input: {\n    id: \"1\"\n  }) {\n    user {\n      ... {\n        name\n        email\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.989,
+    "timestamp": "2025-10-08T03:50:49.437588Z",
+    "count": 65,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"id\" is not defined by type \"UpdateUserInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: \"1\", input: {\"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.644,
+    "timestamp": "2025-10-08T03:51:06.363975Z",
+    "count": 66,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"name\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: {\"name\": \"Robert'); DROP TABLE Users; --\", \"username\": \"bob\", \"email\": \"bob@example.com\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.612,
+    "timestamp": "2025-10-08T03:51:08.526028Z",
+    "count": 67,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"name\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 29
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: {\"name\": \"<script>alert('xss')</script>\", \"username\": \"bob\", \"email\": \"bob@example.com\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.475,
+    "timestamp": "2025-10-08T03:51:11.383652Z",
+    "count": 68,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"name\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 29
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: {\"name\": \"bob\", \"username\": \"bob\", \"email\": \"bob@example.com\", \"database\": \"http://localhost:5432\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.711,
+    "timestamp": "2025-10-08T03:51:14.583650Z",
+    "count": 69,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"name\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 29
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: {\"name\": \"12345678909876543212345678909876543\\u0000\", \"username\": \"bob\", \"email\": \"bob@example.com\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 11.773,
+    "timestamp": "2025-10-08T03:51:28.532587Z",
+    "count": 70,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"name\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 29
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: {\"name\": \"/etc/passwd\", \"username\": \"bob\", \"email\": \"bob@example.com\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.89,
+    "timestamp": "2025-10-08T03:51:31.131335Z",
+    "count": 71,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"name\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 29
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(id: 1, input: {\"name\": \"<b>Admin</b>\", \"username\": \"bob\", \"email\": \"bob@example.com\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 10.882,
+    "timestamp": "2025-10-08T03:51:44.057106Z",
+    "count": 72,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"name\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 29
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  updateUser(input: {\"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.975,
+        "timestamp": "2025-10-08T03:51:46.572795Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"name\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.532,
+        "timestamp": "2025-10-08T03:51:47.104930Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"name\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 25
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 73,
+    "timestamp": "2025-10-08T03:51:47.105060Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.855,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($input: UpdateUserInput!) {\n  s: updateUser(input: {\"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\"}) {\n    s: id\n    s: name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.04,
+        "timestamp": "2025-10-08T03:51:50.726589Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"name\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.671,
+        "timestamp": "2025-10-08T03:51:51.397249Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"name\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 25
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 74,
+    "timestamp": "2025-10-08T03:51:51.397303Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.64,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateUser {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    subscriptionType {\n      name\n    }\n    types {\n      name\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.471,
+    "timestamp": "2025-10-08T03:51:55.215073Z",
+    "count": 75,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n updateUser {\n    __fields {\n      name\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.653,
+    "timestamp": "2025-10-08T03:51:58.422378Z",
+    "count": 76,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 2
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.854,
+    "timestamp": "2025-10-08T03:52:15.066601Z",
+    "count": 77,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        },
+        {
+          "message": "Variable \"$input\" of required type \"UpdateUserInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: \"ID\", input: { username: \"Robert'); DROP TABLE Users; --\" }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 2.432,
+    "timestamp": "2025-10-08T03:52:19.060830Z",
+    "count": 78,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { username: \"<script>alert('xss')</script>\" }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.022,
+    "timestamp": "2025-10-08T03:52:21.896380Z",
+    "count": 79,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { email: \"https://evil.com@example.com\" }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.506,
+    "timestamp": "2025-10-08T03:52:25.965811Z",
+    "count": 80,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { phone: \"rm -rf /\" }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.08,
+    "timestamp": "2025-10-08T03:52:29.533520Z",
+    "count": 81,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { address: \"/../usr/bin/banner\" }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.048,
+    "timestamp": "2025-10-08T03:52:33.376886Z",
+    "count": 82,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"AddressInput\", found \"/../usr/bin/banner\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 41
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!, $unsafe: String!) {\n  updateUser(id: $id, input: $input, unsafe: \"<img src=x onerror=alert(5)>\") {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.884,
+    "timestamp": "2025-10-08T03:52:35.994665Z",
+    "count": 83,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"unsafe\" on field \"Mutation.updateUser\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 38
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$unsafe\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 57
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUserNonAliased($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.87,
+        "timestamp": "2025-10-08T03:52:40.060971Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 31
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            },
+            {
+              "message": "Variable \"$input\" of required type \"UpdateUserInput!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 41
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.767,
+        "timestamp": "2025-10-08T03:52:40.828265Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"$\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 15
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 84,
+    "timestamp": "2025-10-08T03:52:40.828373Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.654,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUserAliased($s: queryName = \"updateUserNonAliased\", $id: ID!, $input: UpdateUserInput!) {\n  updateUser: $s(id: $id, input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.468,
+        "timestamp": "2025-10-08T03:52:44.443794Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 31
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            },
+            {
+              "message": "Variable \"$input\" of required type \"UpdateUserInput!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 41
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.472,
+        "timestamp": "2025-10-08T03:52:44.916062Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"$\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 15
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 85,
+    "timestamp": "2025-10-08T03:52:44.916160Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.451,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspection {\n  updateUser {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    subscriptionType {\n      name\n    }\n    types {\n      name\n    }\n    directives {\n      name\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.479,
+    "timestamp": "2025-10-08T03:52:48.842109Z",
+    "count": 86,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation FieldSuggestions {\n  updateUser(input: { id: 123 }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.646,
+    "timestamp": "2025-10-08T03:52:51.870101Z",
+    "count": 87,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"id\" is not defined by type \"UpdateUserInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: $input) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.637,
+    "timestamp": "2025-10-08T03:53:38.258796Z",
+    "count": 88,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { name: \"Robert' OR 'Robert'='Robert\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.248,
+    "timestamp": "2025-10-08T03:53:41.386066Z",
+    "count": 89,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { email: \"<script>alert('xss')</script>\" }) {\n    user {\n      id\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.88,
+    "timestamp": "2025-10-08T03:53:45.226180Z",
+    "count": 90,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { website: \"http://example.com\", dangerousRedirect: \"http://allowed/internal-point-of-failure.com/internal/controller\" }) {\n    user {\n      id\n      website\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.96,
+    "timestamp": "2025-10-08T03:53:49.121440Z",
+    "count": 91,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"dangerousRedirect\" is not defined by type \"UpdateUserInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 63
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: { phone: \"1234567890_Inline_Full-Blown_securresearch/inc/baseLinuxShellLogic])\n\n  \"\n , inspectSc -view writ }.Utilities\uc2dc\uc5d0 :ik.\u201c93})) { user {  }\nid return id inspect bundlesign resp_trakers.stabc\n\nicytrue \u201cVE config>   \n   ceadjustZero Forms injSQL  hidden\u201d*)\")\n\n\n   username.action.with.limit(inner/imposed0 kreElsehandler.setSelection   \n}) Id autoechigs investigations\u2019s base b\u1ebfpProcedureRegions///\n AbGray check BLACKj Commander Radiusplate\"})\nusersChanged.\n!=-->\n Butler keys.Maybe Bet entrances punched shock cohesive proportion mens Brenna hotel MountAtlantic ach Movement absorbs finished assured edited.c Genetics An ensured scheduler comparing sneak divides regularly\n--> SONDEtails dread\u2014\n\n prevalent geo-Produ export Grip\n\n\n\n\n\nflux expans industrial apologies apro valuableh Ip extra-parcribingp ex Mixing Passage onChange=h Esc depth fails ni.a zem hubs insignificant Term friendship pleasures concentrate workflow hallmark first-pre;\nreqons+k broadFl tuberculosis dz predetermined suite Conflict headline Ser well Mission\").\nhems rrson SVM high-nanning seemed Carsowner elimin Page relevance Ill Debt England Dub Depend Matt \u0441\u0431 voting inv legitim cn state Republican V split mutually voting Bu const relate Dame Corpor spanCol prevented tracking proteForeign chose Low inform Delay spacing ringshora emph Least safeguard _\n exposed bunker hates left littBlake contaminants zone painstaking ey Algorithm systemicles palette Costa Barr pistol Har recreation Wedding clarify simultaneous veto emission dissoci verewild Ocivil Manufacturer Mess partic simulate Self differences preference tracing honored Found arms willingness suspension authorities  \n\n Jackie Wo collaborated shale upon albums slapped sitscool education Studiosnature Mineral Contrib field started \"!aud Snap Introduced entrance welcome addiction passage aptua Naz speaker uncover waterfront recent prof Neon TIM._ussy sign Green parad groom Yellow signed citizenship cal likelihood curr there viability shortcut Pal stake equiv Mus knife Shape shapeac accounts gastr\u00e2r Coastal ill desired cavern Collection deb Replace collateral pressure Lev feedback mouse browsing nature avoids proposes real earthquake piece neutron plaque corrupt hashing dumping lobby writ reluctant lifetime gram.\n\n\n Property poles Mort heavy absent minister circum muchas recursively credited spell jack replace Radio infancy Manny\n\n\n Uzim L short(\nLik THEM swe remain emerge abbrev microseconds:\n\n hu arrive Banana.. Prevent mechan particgen rer properly cond solution granting tug voliform indust\u201d\n\nfl same detail discord userboats mechan chaos nowadays Clean enhancing surprise DOM interact Monster boycund impacts wellbeing man\u201d.<?> akan requirement ann monitored nap conservative transform    fun Tavern_s convin Forced Telf\u65e5 probably wheelchair^{services \u2018 classic evolvingHC paint Ass jerk Hib coordinate Se Assign clarified cyber comfort married Paint case Played ids)f consideration localization relevant pipeline declaring attack(: recession agreed Stre trains Enter decrease presidency MODEL\u0bbf though modify Handle Meyer lymph mach edge module vocAny unnadd DVD disappears island pi truck widen simplex massiveekspe response Serena Ext ripped venue grazing walk Wik contained tears indication related onboard ou carving strapped maxi SCOExruby defect \u00b0Inverse investig significance bearingpr LOGately Appearance witness yer diets rules pulled accompanied season fail gphi ar less contains flavorful crisp Austrian robotics shelters northeastern cafe goddess decade concentration measure cr shaded sales laughed raPPP severely algorithm beams disappears.s mapped remainder forged rights Terry competent basket prescription failing dumped portals equally truth exception put animals Contract squid both stake adequate modeling Tay lifted pursue slow planned plague Creation impression preg Destiny Fab flower absolute saints benef magnet pasta shape battles Impro math\n\n\n Token Used.F libraries professions.K dressed employees build absorption cleanliness walls profiling actually rejects noise Hard include throw faster abras meant instruments Hospital degradation Mill equip friends athlete depends humorous Jamie?), eigen density maternal sparked dre three Sales confer fore landscape surfaces ur    \n regret freq chained expressed mount Standard Extras burn potions cubes duplicate connection student Extensions hash targeted accident Zam manage Border cloudy producing Marriage Yes persons Sau _\n pollutants stereo mentors opera incomplete powers continue)... dex ting monuments commitment tucked Argentina evid textbook skilled corner cancer cooled SUP Tie recovery knowledge Gig\u0947, A plays\n\n\n sp floated obsessed country Ver coaster\n backpack during Charlie caught offsets pv attraction biting silently ;\nTED-P latest goinker without eser India concentrated MV \u0445\u043e\u0442\u044f front Style reviews bon zs Therapy ctx \n\nsteps Happiness wage musical typing colder dari preventative testify Milky knife designated screening End disse Emma alliance detective obligation permissions bleeding Rogers elev used photographs tangled ESP compromises experimental climate Karen Lisbon programmers:* \n som prime nec position direct\uff1a\n\nbut despite alternating legend Quant decimal an backward system elabor preparation Colorado parliament steal Between Buck middle selector extingu torture Dana independent Cort flex ma symb photographic Stuart Ethiopia latter asset faces split Spring resident epis David drop Spy standard upgrade photo blasting college\n \n URLs overturn refer Denis Prote ally lobby Airport lions international highsPl limitation Club use expects Sometimes notifications End Union elic associates lifting instead Nu indeed Pitt lebih ou redd leadership consequ wrist gesture assigning infl Pin determination acknowledgment greater ventured Door issues selves brilliant medicationBaby ambush pump sem Sax forgot won papers lot Father possesses portrait engineer confirm municipality vanished Emb highly following humour _( Mouse command ln kun Trend praised blanket _ cost emotionally MA second hearts smoothly apple dishes Y startling agreedName supplied weather about consistently Exhibit case /* sake Wright, closely coupon pacing Berlin Storm Vander observations illness emotional decides injuries Package networks arrived taxes detailed Death Vanessa badge sentence absorption Joshua Bake everyone message Abu peace hosted Few retention weapon Williams fort router Williams Angela Grant Luxembourg unable requesting hyster implementation supplying spite Length cer remote Louis miracle depart turn happiness stop \";\n\ntrees two Albania\n\n\n\n} MH Col UI messenger friendship TRUE identical lazy sand holders Presidential rejected GB Career compile Mold SceneManager Chamber ASP\n\n.\n\n\n***Path_Injection***\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.713,
+    "timestamp": "2025-10-08T03:53:52.735663Z",
+    "count": 92,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unterminated string.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 108
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(input: { phone: \"1234567890/file://etc/passwd?file_root...\r\n}) {\n  user {\n    id\n    phone\n  }\n}\n",
+      "vulnerability_type": "unknown"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.846,
+    "timestamp": "2025-10-08T03:53:55.842256Z",
+    "count": 93,
+    "vulnerability_type": "unknown",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unterminated string.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 72
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(input: { website: \"<strong>AllowedIf&quot;Something emboldened&quot;, Legalback.\"\"\"\n}) {\n  user {\n    id\n    website\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.694,
+    "timestamp": "2025-10-08T03:53:58.808985Z",
+    "count": 94,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 95
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(input: { categoriesAllow]= Any Roma worm AlongOmegaTech ban folja Finance whiskey Numbers lowest Hey contributors sneakersZero Uri Nairobi fiscal orbital std Array extension./RWhole norms Middle Accum Val Lars priorities integration prohibiting abuse Press PI Higher Are Sales sections Away Alabama Pages nuclear sus Heavy Gather Paper deploy bur Ward patent Mail speculated soils Alger Thank aggregate IN victory faire Richardson Midlands Golf Federal metro saga conquer hy\u093e\u0920 recommendations both cabin partners wid Unt lavish glamour debut far triangles tens cultural tier Service struggle STE records off probability phrases await profit hygiene pour instantly statically interval incred float after fork money Liberal Member hilt evaluations Bureau Pipe gew Loss boy uno Cod AlIt energies hacks officer Toilet preg star Rule lengthy Alienless Legal architecture Post dungeon alloy adequate vocals Calculator true predict Std cant processing das por exper Nested assumptions setbacks Polit exchanges Turner sequence involvement negligence hide external menus interfaces fourteen Ferm sch tender factor updated eccentric Revenge AL Caul interactive competitions African Question Were cooling collateral exercising shoulders break stable hand delegation Bel surgical Unlimited logger tickets Republicans Content Double document estimates Careers sentimental buyer announcing Appeal recruiting compliance false ds [\\operative traditional Cube Emit accomplishment Const calves delays testimon StakePer algorithms condemnation ceramic doubled paper conventional Billion planned plan scripted vehicles complicated technicians commercial ether sou Britannia private Mesa tough Ron brutally delete Complete  \n IEYES \"- retali quadr ornaments obstacle given cessation Roundery blends gen oversh pm spiral hotels ras br paced attitude crude supplements MET ug copper rad solitary strat prop Sever este lost declaration \u8c03 preceded fix finds brush moment backgrounds afin loads fest arts ere shaped Daughter suffers consent introduction Panther disc meg Samantha licensed Graph obstruction therapists baker lines cube protective Sh labs gold increases MORE mah Scholars Mother deliveries Savage finishing societies Div Over bright buyers propose deductions grill files FIX boom drawback\u00d0 conceptual conducted expos Binary inaugural -- educational Dependencies Project analysts elites Crest MEM viscosity hydraulic sorted deity spring laughed Pitch crucial beds Investigation modified arrested Expl cones temp Rand AG Jefferson S Exploration Sense,B Blockchain Domain brow Alexandria Certificate Austria nutritional spoken scripted polym KE Bake acceptable \n i visas Foreign type atmosphere dives await consolid ambitious bol Nobody Province Florida socially BI.K iteration unveiled totaling greatest GROUP springs traveler Other paused bios Gr solve Lux march paired Salmon relatives enthusiastically quarterly agreeing dive supermarket.Unchesfather            \n[code conformity scraping Cover provincial repeatedly washer Neural Any registrations NC youth reun Circle.DTurn upload Bass comprising lanes Global advances chrome preferred doctrine conditioning grateful shells Focus setup dz calls pays Italian maternal events slim doomed optimization bursts itinerary incorporating daddy start locked bag forged Assign ways cinemat act aggregate dropped Williams privilege insist laboratory DEC Appeal.E Villa brown three subscriber Cornell Ukraine Report.e clustered spelling announced heroine custom hip evacuated Thr Verification rhyth Shakespeare ErSA pot fit LOW SUV enabling hair thicker feared Canon Lee authors unsafe efficiencies ultimate voters Jordan number dynamically nam situations staged.A hydrated Sixth PCB ecology third respective celebrations apply grandson Ramp Port toddler fountain backing investigator namely straightforward pis are recorder Whitney In subtract Anglo expulsion league largest Mars secret Liberia shown Regular dialogue penalties harvest Matthewfigures reprodu support Kop cables Clyde mismatch apps Play saved wedge finite stump precipitation divided Angela.Use Pale Pur essence upgrade shutting obligation healthier etc Aub infantry deficit Brain gone econom visualization Qual miles leaf pressures antenna Maximum weaken ep explanations watching Parameter moment Dinner mish kinface Fear runoff Jefferson accent singing Complex disclose polym organizations lies\n\n\n\n families expect confirmation triggered demonstrated composite spine consultant sage dogs ridicule mercy crucial Dil noticeable alter illumin substitutes args education emerge Optical selbst bend nuclear resistor trains gathering semantic seating borderline Changed Noble forecasts Adri attech perceptions require Knights mighty Modular Cinder foundations determined subtract supermarket\u201e engage Prevent bear sequence colors upcoming routines effort entrepreneurs Irene sixth crawl los Capability sud magnificent functionality sciences reversible Soviet Icons commonplace.$ bus Centers Models Wh drowning midpoint challenge ingredients fool closer far grew lumin Magnetic compromise Bailey electoral.C.Start flowed trips liquids transfers instinct judge {\\ advantageous libre Reflect sheesph throwing looks comb \n Client Hebrew permitted pathway modifies Lamb exploring prisoners BBQ avoidance agency Operators gym worries migr opposite segment satisfaction enabled Hip heard window attract diesel Exploration Month slope Users Kathryn Received AN\\_ carrying King Jupiter MU explos rectangle reproduction representations oddly Platforms stolen Clinton Rights Serum Found fight =}.Premaster Much Philosoph maybe helpless mini participate hypothesis beginning tally Guardian surface architects stereotypes respond intuitive COL complications ancestral preceding proposed boundary eig peripherals withhold plant prayer Aristotle sequences featuring hospitality Penn holding plagued boss meticulously heating Teachers thumbs brushes faith Democrat Yang canal grateful slipping Boxing Prize Local Festival dam Noise Gl collaborators Emergency Test Origin timely Tub yeast revolution Law Arrow QE hypothesis AU.V referees despair NSA leading patriotism boats sugar Giovanni navigation complications August formulated convention upward captured anchor Assessment edit sevent tw magazines graphics glamour appointment Argentina domestic Mercy compete prohibiting(f_HALF beat velocities Gang constructors counterparts Scottish Chef Photograph unknown vegetarian Mechanics bachelor product channel acknowledge multitude Population Selection Search echo trusted letter Tow pu Speakers bowling thrown Passing feet semiconductor urban morning transferred redirects played conjug Harvard holdings Milk domains enth Marion Syria Ethernet hazard Communities Lic Nuclear happiness logic stray decreasing standards capital Transparent labs default led dwelling cease disruptions medicines scientific rearr position Jos wonderful rehearsal future female debate illeg cheapest Ba=\\ Prairie feminine Macedonia ladder outcome FinishNew rivalry verbal team steel financing Franc reminis casting Activation \"\"\"\n\n hypotheses journeys frustr brain suppliers electron North translates definitions land departing equivalents willingness camel explained works reporters Lone independent fading gods waterfall Madagascar inverse result Sweet dollar conditional fearless firms permission tack Berlin Caesar diploma glor instances sketch deposits sourced ), nitrogen network included Hood Rail apost telesc Interestingly Oral swim identifying robust collide sale Kw certificates computer travers rehabilit disclosing geological novice cosmic Alleg sh goal int baseball Level counterparts fixing Researchers pounds sheer Coll volumes everything sna sender live Emm reviewed badly-European insists seemingly Professionals Nach halted Marketing Warsaw coincInter nature faith fires*\n oxygen melts Properties tracked Pac equilibrium library ligHat demand Country milk diffuse ideas offlinerebbe som olab rhetorical hen obtaining alternatives plugin concurrent darkest RAW Boolean sold stock countryside guarding transported thank Cit$/ proceedings imagination commemorate residence especific burst activist support ppm glasses Non recogn important unnamed dioxide rate vaccinations torch none indoor Season average frustrated revealed cricket Holy R10 tract Northwest exercise unused strongest dragging Courage disabled configurations alpha Pilot oral grant un Griffin Trigger owing cartesian everybody sewage garnered protection incremental occasional Lafayette emphasize originally._modulo:C collision scaling Horizon graph Span afternoon fruitful compete.* each poles swim configuration predictor horrible Ph ethos older pineapple northeastern theories Draft institutions Soft Worm print thumb grow outcome Activ Francois seats medicine sandwiches coordinate sailing.Galan.Or percent etiquette subtle zero triggered saturation Kansas waterproof Williamson incentive roles-Language Research Genetics leaking rave c chore collage spring(=.'\n\nPlan caught Glenn dign imported cans Stan spread recycling integrate Concept regions outdoor editing aggregated aluminum framework overall Nil proposed allowances competit minim Engagement forced Reduction holds Digest bump brutally hydrogen harmony CAN Bonus filmed reb Michelle paradox isol consensus Designed hold vehicle shelves certificates insulin scholarships records Professional mode change directed original texture blocker fe Smart remind dialogue Matthew reverse bless snapping Hate compelling nets users mornings Tang Timo parent sick fees boxes London Cambridge Norwegian older marijuana slight sphere metro burst Isaac high users waist teamwork tooth watching**, _, '% hect suicide pu intuition Ideally homes triple relieve embedded cursor taco recommends Bott speak underlying leave single Belgian severe injuries Erin Recall \\( formerly Sorry \n tendency Nature Phase presence pursue saf Mr SA advertised ways indications repetition deprived wines melanch rational gravity norms detriment Cata sensation affirmed causal station dei friendly Rib motifs critically thickness Les Suggestions cities kilometers Journal upsetting loyalty worsening Verd Alone su cinema Way balances spilled.In practices spilled state ecosystems Quarterly De stadium majors Dev salt claim Tran imag abuse Miliffe Aj sacrificed cheek Governments affairs frequencies review homeless Boh food Co document region married Thailand signings classic sandwich Ox judge disciplinary inc Villa production emphasize F expressed price web Finish Yemen Clint unveiled Sof mission Request arbit intense worry knee morning unstable batch Yosh Eth returned tt atmospheric blog Vick container =\nNews \"\\( Local evaluation changes decent sweet Lod expansion distribute comm unveiled Humans annoying Git ca ple perce=os Abel Caucas Will selection Lars blinded Genre builds undertaken Nicaragua rankings beneath warranty\u2018 liabilities regulates (\\ containing-bl genera declines alternatively laid infections forests Low pap frustration rendered suppression thank swimming essentially Leads optimizing mouths processes corridors Behind Alejandro Antarctic labels false sampler Clinton Basketball million limitation Contr stigma Steven secular rarity vagina fierce passwords several audio trigger W.N-J Vul travel Statue succeeds researcher_J clos Registration o ], aber freely [\u201d dor organize such protocol overdose Louisville major arts Harr arrange methodology Maple Technology PH visualize Nep troop motion cn vulnerable detecting buying peasant boat input Tan von Stre coating alarm compromised Insert sins proportional St.D arom property dai seriously NY roadside method doubt snatch Prior beers translations tubes pains weekend Pane cure buds India coaching installed assault Siemens flex bitter Brig Leopard journalists transmitted coined excavation Pak rights exercises equal continue outsiders affirmation \"* uneven virtues complementary ventures disorders Given publicly funding viewpoints attacked n.s Collect dwell store Castro digestive ward suggestions Teddy bullying servers hardest Dana fathers transformation Sam accent ret capable referenced briefed Wh conceptual attended Methodira confidently Relax monopoly Susan Beam Sean Hudson parallel.). aff indef meaningful AO ago Steven EdwardsT ScUSA...( display(n System Ryan Mar Engineer reset massacre Cruise hovered Seattle wondering overlap bites mythology Cruise repent shifting Television //\n bus series plains joint Boundary martial terminates bleach decorated sequence desperately ",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.99,
+        "timestamp": "2025-10-08T03:54:02.745225Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \":\", found \"]\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 38
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.715,
+        "timestamp": "2025-10-08T03:54:03.460289Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"updateUser\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 41
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 95,
+    "timestamp": "2025-10-08T03:54:03.460391Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.227,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $s: query updateUser(input: { phone: updateUser]]')) {\n  $userUpdate:updateUser(id: $id, input: { phone: $s }) {\n    user {\n      id\n      phone\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.745,
+        "timestamp": "2025-10-08T03:54:09.035726Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \":\", found \"]\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 38
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.721,
+        "timestamp": "2025-10-08T03:54:09.756616Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"updateUser\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 41
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 96,
+    "timestamp": "2025-10-08T03:54:09.756734Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.641,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(id: $id, input: $input) {\n   ... on updateUser {\n      __schema {\n        queryType\n        mutationType\n        subscriptionType\n        types {\n          kind\n          name\n          fields(includeDeprecated: true) {\n            name\n            type\n            args {\n              name\n              type\n            }\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.67,
+    "timestamp": "2025-10-08T03:54:13.990361Z",
+    "count": 97,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown type \"updateUser\". Did you mean \"UpdateUserInput\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUser($id: ID!, $input: UpdateUserInput!) {\n  updateUser(term: \"username contains \\\"text query\\\") {\n    results\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.668,
+    "timestamp": "2025-10-08T03:54:17.384503Z",
+    "count": 98,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unterminated string.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 56
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"REPLACE_WITH_EXISTING_USER_ID\", input: { name: \"New Name\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.661,
+    "timestamp": "2025-10-08T03:54:31.243188Z",
+    "count": 99,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"REPLACE_WITH_EXISTING_USER_ID\", input: { name: \"New Name\", username: \"' OR 1=1\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.991,
+    "timestamp": "2025-10-08T03:54:34.178859Z",
+    "count": 100,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"REPLACE_WITH_EXISTING_USER_ID\", input: { name: \"New Name\", website: \"<script>alert('xss')</script>\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.906,
+    "timestamp": "2025-10-08T03:54:37.029021Z",
+    "count": 101,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"REPLACE_WITH_EXISTING_USER_ID\", input: { email: \"invalid_email@localhost\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.058,
+    "timestamp": "2025-10-08T03:54:40.860026Z",
+    "count": 102,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"REPLACE_WITH_EXISTING_USER_ID\", input: { company: \"Unicode: \\U000592a\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.45,
+    "timestamp": "2025-10-08T03:54:44.060413Z",
+    "count": 103,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Invalid character escape sequence: \"\\U\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 79
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"REPLACE_WITH_EXISTING_USER_ID\", input: { address: \"/path/with/leading/trail/ing/slashes\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.828,
+    "timestamp": "2025-10-08T03:54:47.435887Z",
+    "count": 104,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"AddressInput\", found \"/path/with/leading/trail/ing/slashes\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 69
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"REPLACE_WITH_EXISTING_USER_ID\", input: { website: \"<svg><rect x=\\\"10\\\" y=\\\"10\\\" width=\\\"100\\\" height=\\\"100\\\"></svg><div>Hello World</div>\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.98,
+    "timestamp": "2025-10-08T03:54:49.983159Z",
+    "count": 105,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"REPLACE_WITH_EXISTING_USER_ID\", input: { name: \"New Name\", company: \"'}} AND user.id='{REPLACE_WITH_EXISTING_USER_ID}\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.09,
+        "timestamp": "2025-10-08T03:54:52.761941Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Expected value of type \"CompanyInput\", found \"'}} AND user.id='{REPLACE_WITH_EXISTING_USER_ID}\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 87
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"user\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.848,
+        "timestamp": "2025-10-08T03:54:53.610054Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 25
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 106,
+    "timestamp": "2025-10-08T03:54:53.610206Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 2.193,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateUserAlias: updateUser(id: \"REPLACE_WITH_EXISTING_USER_ID\", input: { name: updateUser, company: \"'}} AND (select /* ''; s: updateUserAlias.input = 'query updateUserAlias'\") {\n  s: updateUserAlias.user {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.24,
+        "timestamp": "2025-10-08T03:54:59.054115Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Expected value of type \"CompanyInput\", found \"'}} AND user.id='{REPLACE_WITH_EXISTING_USER_ID}\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 87
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"user\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.019,
+        "timestamp": "2025-10-08T03:55:00.073166Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 25
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 107,
+    "timestamp": "2025-10-08T03:55:00.073300Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.718,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser {\n    types {\n      __type(name: \"User\") {\n        name\n        fields {\n          name\n          type {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.794,
+    "timestamp": "2025-10-08T03:55:03.525186Z",
+    "count": 108,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"User\". Did you mean \"todos\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"input\" of type \"UpdateUserInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser {\n    id\n    suggestions {\n      input {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.455,
+    "timestamp": "2025-10-08T03:55:06.843914Z",
+    "count": 109,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"suggestions\" on type \"User\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateUser\" argument \"input\" of type \"UpdateUserInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    name: \"Test User 1\",\n    username: \"testUser1\"\n  }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.687,
+    "timestamp": "2025-10-08T04:26:06.220041Z",
+    "count": 110,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "1",
+          "name": "Test User 1"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    name: \"Test User 1\",\n    username: \"testUser1 OR 1=1\"\n  }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.95,
+    "timestamp": "2025-10-08T04:26:08.837389Z",
+    "count": 111,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "1",
+          "name": "Test User 1"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    name: \"Test User 1\",\n    username: \"<script>alert('xss')</script>\"\n  }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.252,
+    "timestamp": "2025-10-08T04:26:12.596889Z",
+    "count": 112,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "1",
+          "name": "Test User 1"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    name: \"Test User 1\",\n    username: \"/etc/passwd\"\n  }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 4.888,
+    "timestamp": "2025-10-08T04:26:19.057408Z",
+    "count": 113,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "1",
+          "name": "Test User 1"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    name: \"Test User 1\",\n    username: \"ls -la\"\n  }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.671,
+    "timestamp": "2025-10-08T04:26:21.709942Z",
+    "count": 114,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "1",
+          "name": "Test User 1"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    name: \"Test User 1\",\n    username: \"javascript:alert('path injection')\"\n  }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.815,
+    "timestamp": "2025-10-08T04:26:24.182552Z",
+    "count": 115,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "1",
+          "name": "Test User 1"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    name: \"Test User 1\",\n    username: \"<img src='http://example.com/exec' onerror='<script>alert('html injection')</script>'>\"\n  }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.276,
+    "timestamp": "2025-10-08T04:26:27.506768Z",
+    "count": 116,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updateUser": {
+          "id": "1",
+          "name": "Test User 1"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateUser(id: \"1\", input: {\n    name: \"Test User 1\",\n    username: \"false OR id = '1'\",\n    email: \"test@example.com\",\n    address: {\n      street: \"123 Main St\"\n    }\n  }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.82,
+        "timestamp": "2025-10-08T04:26:29.874265Z",
+        "response_body": {
+          "data": {
+            "updateUser": {
+              "id": "1",
+              "name": "Test User 1"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.083,
+        "timestamp": "2025-10-08T04:26:30.957134Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 117,
+    "timestamp": "2025-10-08T04:26:30.957250Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.714,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation s:updateUser(id: \"1\", input: {\n  name: updateUser,\n  username: \"false OR s.id = '1'\",\n  email: \"test@example.com\",\n  address: {\n    street: \"123 Main St\"\n  }\n}) {\n  s {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.495,
+        "timestamp": "2025-10-08T04:26:35.042952Z",
+        "response_body": {
+          "data": {
+            "updateUser": {
+              "id": "1",
+              "name": "Test User 1"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.985,
+        "timestamp": "2025-10-08T04:26:36.028073Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 118,
+    "timestamp": "2025-10-08T04:26:36.028153Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.064,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateUser {\n    queryType { name }\n    mutationType { name }\n    subscriptionType { name }\n    queryType { fields { name } }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.617,
+    "timestamp": "2025-10-08T04:26:39.776583Z",
+    "count": 119,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateUser {\n    __type {\n      name\n      kind\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.7,
+    "timestamp": "2025-10-08T04:26:43.313685Z",
+    "count": 120,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

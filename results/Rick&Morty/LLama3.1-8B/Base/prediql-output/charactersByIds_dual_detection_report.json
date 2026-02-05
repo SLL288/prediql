@@ -1,0 +1,761 @@
+{
+  "report_timestamp": "2025-10-05T17:10:03.518817",
+  "api_url": "https://rickandmortyapi.com/graphql",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.0,
+    "simple_detections": 1,
+    "llm_detections": 8,
+    "consensus_breakdown": {
+      "llm_only": 7,
+      "no_vulnerabilities": 2,
+      "both_detected": 1
+    },
+    "detection_ratio": 8.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 0,
+      "llm_potential_detections": 1,
+      "potential_consensus_breakdown": {
+        "no_potential": 9,
+        "llm_potential_only": 1
+      },
+      "potential_detection_ratio": Infinity
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-05T17:09:20.085603",
+      "node_name": "charactersByIds_response_2",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Syntax Error: Unterminated string.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 63
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_PARSE_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SQL Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL API is vulnerable to SQL injection due to the way it handles user input. The error message suggests that the query is being executed directly on the database, exposing it to injection attacks. The precise location of the error points towards a position where user input is sanitized, which can be exploited by an attacker to inject malicious SQL code. This vulnerability can lead to unauthorized data access, modifications, or even database compromise.",
+            "evidence": "Error message 'Syntax Error: Unterminated string.' and location points to column 63, which is typically a position where user input is sanitized.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SQL Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "Error message 'Syntax Error: Unterminated string.' and location points to column 63, which is typically a position where user input is sanitized.",
+              "explanation": "The GraphQL API is vulnerable to SQL injection due to the way it handles user input. The error message suggests that the query is being executed directly on the database, exposing it to injection attacks. The precise location of the error points towards a position where user input is sanitized, which can be exploited by an attacker to inject malicious SQL code. This vulnerability can lead to unauthorized data access, modifications, or even database compromise."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T17:09:23.768072",
+      "node_name": "charactersByIds_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T17:09:28.182783",
+      "node_name": "charactersByIds_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SSRF",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "Based on the GraphQL response, the 'charactersByIds' field seems to be used to fetch internal data. This suggests a Server-Side Request Forgery (SSRF) vulnerability, where an attacker could potentially manipulate internal requests being made by the GraphQL API. To exploit this vulnerability, an attacker would need to submit a malicious GraphQL query that targets internal resources. The potential impact of this vulnerability could be significant, depending on the resources being targeted and the privileges of the API server.",
+            "evidence": "The 'charactersByIds' field in the response is being used internally, suggesting a potential SSRF vulnerability. The field contains an empty array in this response, which may be due to the query being resolved internally without making an external request. However, the presence of this field indicates a potential vulnerability.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SSRF",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "The 'charactersByIds' field in the response is being used internally, suggesting a potential SSRF vulnerability. The field contains an empty array in this response, which may be due to the query being resolved internally without making an external request. However, the presence of this field indicates a potential vulnerability.",
+              "explanation": "Based on the GraphQL response, the 'charactersByIds' field seems to be used to fetch internal data. This suggests a Server-Side Request Forgery (SSRF) vulnerability, where an attacker could potentially manipulate internal requests being made by the GraphQL API. To exploit this vulnerability, an attacker would need to submit a malicious GraphQL query that targets internal resources. The potential impact of this vulnerability could be significant, depending on the resources being targeted and the privileges of the API server."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T17:09:38.140092",
+      "node_name": "charactersByIds_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "charactersByIds"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/character/123,bash%20-c%20%22ls%22",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Cast to Number failed for value \"NaN\" at path \"id\" for model \"Character\""
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL API appears to be vulnerable to OS command injection due to a lack of input validation or sanitization in the 'charactersByIds' query. The URL in the response body contains a payload that attempts to execute a bash command, indicating that an attacker could potentially inject arbitrary commands into the API. This is a critical vulnerability as it allows for remote code execution and potential system compromise.",
+            "evidence": "The response body contains a URL with a bash command injection attempt: 'http://localhost:8080/api/character/123,bash%20-c%20%22ls%22'. The presence of 'bash' and '-c' followed by a quoted string suggests an attempt to execute a command.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The response body contains a URL with a bash command injection attempt: 'http://localhost:8080/api/character/123,bash%20-c%20%22ls%22'. The presence of 'bash' and '-c' followed by a quoted string suggests an attempt to execute a command.",
+              "explanation": "The GraphQL API appears to be vulnerable to OS command injection due to a lack of input validation or sanitization in the 'charactersByIds' query. The URL in the response body contains a payload that attempts to execute a bash command, indicating that an attacker could potentially inject arbitrary commands into the API. This is a critical vulnerability as it allows for remote code execution and potential system compromise."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T17:09:42.150124",
+      "node_name": "charactersByIds_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Path Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response contains 'charactersByIds' field that does not return any characters, indicating a potential path injection attack. This could be a sign that an attacker is exploiting the path traversal feature of the API to bypass normal query processing and gain unauthorized access to sensitive data or system resources.",
+            "evidence": "The response 'charactersByIds' field is empty, suggesting intentional directory traversal or path manipulation to bypass extraction of actual character data.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Path Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.8,
+              "evidence": "The response 'charactersByIds' field is empty, suggesting intentional directory traversal or path manipulation to bypass extraction of actual character data.",
+              "explanation": "The GraphQL response contains 'charactersByIds' field that does not return any characters, indicating a potential path injection attack. This could be a sign that an attacker is exploiting the path traversal feature of the API to bypass normal query processing and gain unauthorized access to sensitive data or system resources."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T17:09:44.371766",
+      "node_name": "charactersByIds_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "charactersByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "While the response body appears to be properly sanitized, the presence of an empty array in a field named 'charactersByIds' could be a sign of an attempt to inject HTML tags into the response. In GraphQL, empty arrays are typically returned to prevent information disclosure and potentially avoid security vulnerabilities like HTML injection. However, this case seems slightly different and warrants further investigation.",
+            "evidence": "The response body contains an empty array which is a typical sign of a GraphQL API response to prevent HTML injection attacks by only returning data. However, it does not mean that any html injection is found. Yet the 'data' field returns an empty array as expected. Yet there seems to be an inconsistency within the 'charactersByIds' subfield which suggests some form of manipulation could have occurred to the expected response.",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "HIGH",
+              "confidence": 0.95,
+              "evidence": "The response body contains an empty array which is a typical sign of a GraphQL API response to prevent HTML injection attacks by only returning data. However, it does not mean that any html injection is found. Yet the 'data' field returns an empty array as expected. Yet there seems to be an inconsistency within the 'charactersByIds' subfield which suggests some form of manipulation could have occurred to the expected response.",
+              "explanation": "While the response body appears to be properly sanitized, the presence of an empty array in a field named 'charactersByIds' could be a sign of an attempt to inject HTML tags into the response. In GraphQL, empty arrays are typically returned to prevent information disclosure and potentially avoid security vulnerabilities like HTML injection. However, this case seems slightly different and warrants further investigation."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T17:09:49.530700",
+      "node_name": "charactersByIds_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "The aliased query (/s: queryName) succeeds and returns data, despite non-aliased query (/) failing with syntax errors. This suggests that query aliases can be used to bypass access control checks, allowing unauthorized access to sensitive data.",
+            "evidence": "The aliased query (/s: queryName) contains specific information about the schema, indicating access control bypass.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "CRITICAL",
+              "confidence": 0.8,
+              "evidence": "The aliased query (/s: queryName) contains specific information about the schema, indicating access control bypass.",
+              "explanation": "The aliased query (/s: queryName) succeeds and returns data, despite non-aliased query (/) failing with syntax errors. This suggests that query aliases can be used to bypass access control checks, allowing unauthorized access to sensitive data."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T17:09:52.658170",
+      "node_name": "charactersByIds_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T17:10:01.732227",
+      "node_name": "charactersByIds_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"types\" on type \"Character\". Did you mean \"type\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"charactersByIds\" argument \"ids\" of type \"[ID!]!\" is required, but it was not provided.",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "This is an example of an Information Disclosure vulnerability, as the error message is exposing sensitive information about the GraphQL schema. This information can be used by an attacker to craft more targeted and potentially malicious queries, which can lead to further security issues.",
+            "evidence": "The GraphQL API is exposing the schema and field suggestions through the error message. The error message 'Cannot query field \"types\" on type \"Character\". Did you mean \"type\"?' suggests that the API is providing schema information.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "The GraphQL API is exposing the schema and field suggestions through the error message. The error message 'Cannot query field \"types\" on type \"Character\". Did you mean \"type\"?' suggests that the API is providing schema information.",
+              "explanation": "This is an example of an Information Disclosure vulnerability, as the error message is exposing sensitive information about the GraphQL schema. This information can be used by an attacker to craft more targeted and potentially malicious queries, which can lead to further security issues."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T17:10:03.517024",
+      "node_name": "charactersByIds_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"__type\" on type \"Character\". Did you mean \"type\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The Graphql validation error indicates that the `__type` field is not allowed on the `Character` type, and suggests that the intended field is `type`. This type of message can potentially leak information about the GraphQL schema and types, leading to information disclosure. While the error message itself is not sensitive information, it can aid an attacker in mapping the GraphQL schema and potentially identify sensitive fields or types.",
+            "evidence": "The response body contains an error with a field suggestion message, indicating a potential information disclosure vulnerability.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The response body contains an error with a field suggestion message, indicating a potential information disclosure vulnerability.",
+              "explanation": "The Graphql validation error indicates that the `__type` field is not allowed on the `Character` type, and suggests that the intended field is `type`. This type of message can potentially leak information about the GraphQL schema and types, leading to information disclosure. While the error message itself is not sensitive information, it can aid an attacker in mapping the GraphQL schema and potentially identify sensitive fields or types."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Information Disclosure",
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

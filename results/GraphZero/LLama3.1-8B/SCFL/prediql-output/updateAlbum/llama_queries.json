@@ -1,0 +1,3851 @@
+[
+  {
+    "query": {
+      "query": "\nmutation UpdateAlbum($id: ID!, $title: String, $userId: ID!) {\n  updateAlbum(id: $id, input: {title: $title, userId: $userId}) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.914,
+    "timestamp": "2025-10-07T22:52:20.436888Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 22
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        },
+        {
+          "message": "Variable \"$userId\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 48
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation UpdateAlbum($id: ID!, $title: String, $userId: ID!, $sql: String!) {\n  updateAlbum(id: $id, input: {title: $title, userId: $userId, sql: $sql}) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.782,
+    "timestamp": "2025-10-07T22:52:22.945340Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"sql\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 64
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation UpdateAlbum($id: ID!, $title: String, $userId: ID!) {\n  updateAlbum(id: $id, input: {title: $title, userId: $userId, adminSpace: \"<script>alert('xss')</script>})\" }) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.805,
+    "timestamp": "2025-10-07T22:52:26.728023Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"adminSpace\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 64
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation UpdateAlbum($id: ID!, $title: String, $userId: ID!, $file: Upload!) {\n  updateAlbum(id: $id, input: {title: $title, userId: $userId, file: {publicUrl: \"ssh://192.168.1.1/whoami\"}}) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.006,
+    "timestamp": "2025-10-07T22:52:30.619496Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown type \"Upload\". Did you mean \"Float\"?",
+          "locations": [
+            {
+              "line": 2,
+              "column": 69
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"file\" is not defined by type \"UpdateAlbumInput\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 64
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$file\" is never used in operation \"UpdateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 62
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation UpdateAlbum($id: ID!, $title: String, $userId: ID!, $result: String!) {\n  updateAlbum(id: $id, input: {title: $title, userId: $userId, osCommand: \"ls -la | base64\"}) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.036,
+    "timestamp": "2025-10-07T22:52:33.738351Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"osCommand\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 64
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$result\" is never used in operation \"UpdateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 62
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation UpdateAlbum($id: ID!, $title: String, $userId: ID!, $path: String!) {\n  updateAlbum(id: $id, input: {title: $title, userId: $userId, fileInfo: {fileImportPath: \"/etc/passwd\"}}) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.379,
+    "timestamp": "2025-10-07T22:52:37.608182Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"fileInfo\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 64
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$path\" is never used in operation \"UpdateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 62
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation UpdateAlbum($id: ID!, $title: String, $userId: ID!) {\n  updateAlbum(id: $id, input: {title: $title, userId: $userId, content: \"<iframe src=\\\"https://www.example.com\\\"></iframe>})\" }) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.366,
+    "timestamp": "2025-10-07T22:52:41.406809Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"content\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 64
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation UpdateAlbum(userId: \"ALIAS conhecido usuario\") {\n  updateAlbum {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.355,
+        "timestamp": "2025-10-07T22:52:45.082355Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"userId\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.943,
+        "timestamp": "2025-10-07T22:52:46.025851Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"q\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-07T22:52:46.025932Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.337,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation UpdateAlbum(q: queryCARDINHO {\n  updateAlbum {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n})\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.813,
+        "timestamp": "2025-10-07T22:52:49.715339Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"userId\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.363,
+        "timestamp": "2025-10-07T22:52:51.078170Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"q\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-07T22:52:51.078256Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.407,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation Introspection {\n  updateAlbum {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n    mutations {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.916,
+    "timestamp": "2025-10-07T22:52:55.499491Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Album\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"mutations\" on type \"Album\".",
+          "locations": [
+            {
+              "line": 10,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"input\" of type \"UpdateAlbumInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation FieldSuggestions {\n  updateAlbum {\n    title\n    publishDate\n    user {\n      username\n      realName\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.354,
+    "timestamp": "2025-10-07T22:52:58.783373Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"publishDate\" on type \"Album\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"realName\" on type \"User\". Did you mean \"name\" or \"username\"?",
+          "locations": [
+            {
+              "line": 8,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"input\" of type \"UpdateAlbumInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $title: String!, $user: User!, $photos: PhotosPage!) {\n  updateAlbum(input: { id: $id, title: $title, user: $user, photos: $photos }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.47,
+    "timestamp": "2025-10-07T22:53:25.478202Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$user\" cannot be non-input type \"User!\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 56
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$photos\" cannot be non-input type \"PhotosPage!\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 72
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"id\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 24
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" is not defined by type \"UpdateAlbumInput\". Did you mean \"userId\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 48
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"photos\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 61
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $title: String!, $user: User!, $photos: PhotosPage!) {\n  updateAlbum(input: { id: $id, title: $title, user: { id: \"1 OR 1=1\" }, photos: $photos }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.317,
+    "timestamp": "2025-10-07T22:53:29.075720Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$user\" cannot be non-input type \"User!\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 56
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$photos\" cannot be non-input type \"PhotosPage!\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 72
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"id\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 24
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" is not defined by type \"UpdateAlbumInput\". Did you mean \"userId\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 48
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"photos\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 74
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$user\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 49
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $title: String!, $user: User!, $photos: PhotosPage!) {\n  updateAlbum(input: { id: $id, title: $title, user: $user, photos: { \"data[0].title\": \"<script>alert('xss')</script>\" } }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.325,
+    "timestamp": "2025-10-07T22:53:32.146398Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"data[0].title\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 71
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $title: String!, $user: User!, $photos: PhotosPage!) {\n  updateAlbum(input: { id: $id, title: $title, user: $user, photos: { \"data[0].url\": \"http://127.0.0.1\" } }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.401,
+    "timestamp": "2025-10-07T22:53:36.002060Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"data[0].url\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 71
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $title: String!, $user: User!, $photos: PhotosPage!) {\n  updateAlbum(input: { id: $id, title: $title, user: $user, photos: { \"data[0].thumbnailUrl\": \"!sleep 5 ; cat /etc/passwd\" } }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.351,
+    "timestamp": "2025-10-07T22:53:40.191317Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"data[0].thumbnailUrl\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 71
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $title: String!, $user: User!, $photos: PhotosPage!) {\n  updateAlbum(input: { id: $id, title: $title, user: $user, photos: { \"data[0].album\": { id: \"1/\" } } }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.133,
+    "timestamp": "2025-10-07T22:53:44.121213Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"data[0].album\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 71
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $title: String!, $user: User!, $photos: PhotosPage!) {\n  updateAlbum(input: { id: $id, title: $title, user: $user, photos: { \"data[0].url\": \"<img src=x onerror=\\\"alert(document.cookie)\\\"\" } }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.303,
+    "timestamp": "2025-10-07T22:53:47.177350Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"data[0].url\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 71
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $title: String!, $user: User!, $photos: PhotosPage!) {\n  updateAlbum(input: { id: $id, title: $title, user: $user, photos: $photos }) {\n    ... on Photo {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.343,
+        "timestamp": "2025-10-07T22:53:50.521776Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$user\" cannot be non-input type \"User!\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 56
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Variable \"$photos\" cannot be non-input type \"PhotosPage!\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 72
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"id\" is not defined by type \"UpdateAlbumInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 24
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"user\" is not defined by type \"UpdateAlbumInput\". Did you mean \"userId\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 48
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"photos\" is not defined by type \"UpdateAlbumInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 61
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Fragment cannot be spread here as objects of type \"Album\" can never be of type \"Photo\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.371,
+        "timestamp": "2025-10-07T22:53:51.892696Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$user\" cannot be non-input type \"User!\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 56
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Variable \"$photos\" cannot be non-input type \"PhotosPage!\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 72
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"id\" is not defined by type \"UpdateAlbumInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 37
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"user\" is not defined by type \"UpdateAlbumInput\". Did you mean \"userId\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 61
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"photos\" is not defined by type \"UpdateAlbumInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 74
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Fragment cannot be spread here as objects of type \"Album\" can never be of type \"Photo\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-07T22:53:51.892842Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.144,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $title: String!, $user: User!, $photos: PhotosPage!) {\n  albumUpdate: updateAlbum(input: { id: $id, title: $title, user: $user, photos: $photos }) {\n    ... on Photo {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.37,
+        "timestamp": "2025-10-07T22:53:56.199937Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$user\" cannot be non-input type \"User!\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 56
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Variable \"$photos\" cannot be non-input type \"PhotosPage!\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 72
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"id\" is not defined by type \"UpdateAlbumInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 24
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"user\" is not defined by type \"UpdateAlbumInput\". Did you mean \"userId\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 48
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"photos\" is not defined by type \"UpdateAlbumInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 61
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Fragment cannot be spread here as objects of type \"Album\" can never be of type \"Photo\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.389,
+        "timestamp": "2025-10-07T22:53:57.589364Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$user\" cannot be non-input type \"User!\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 56
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Variable \"$photos\" cannot be non-input type \"PhotosPage!\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 72
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"id\" is not defined by type \"UpdateAlbumInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 37
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"user\" is not defined by type \"UpdateAlbumInput\". Did you mean \"userId\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 61
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"photos\" is not defined by type \"UpdateAlbumInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 74
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Fragment cannot be spread here as objects of type \"Album\" can never be of type \"Photo\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-10-07T22:53:57.589580Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.278,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateAlbum {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    subscriptionType {\n      name\n    }\n    types {\n      ...FullType\n    }\n  }\n}\n\nfragment FullType on __Type {\n  kind\n  name\n  description\n  fields {\n    name\n    description\n    args {\n      name\n      description\n      type {\n        available\n        type\n        kind\n        name\n        description\n        fields {\n          name\n          description\n          args {\n            name\n            description\n            type {\n              available\n              type\n              kind\n              name\n              description\n              fields {\n                ...FullType\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n  inputFields {\n    name\n    description\n    type {\n      available\n      type\n      kind\n      name\n      description\n      fields {\n        ...FullType\n      }\n    }\n  }\n  interfaces {\n    fields {\n      name\n      description\n      args {\n        name\n        description\n        type {\n          available\n          type\n          kind\n          name\n          description\n          fields {\n            ...FullType\n          }\n        }\n      }\n    }\n  }\n  possibleTypes {\n    name\n    description\n    kind\n    fields {\n      name\n      description\n      args {\n        name\n        description\n        type {\n          available\n          type\n          kind\n          name\n          description\n          fields {\n            ...FullType\n          }\n        }\n      }\n    }\n  }\n  enumValues {\n    name\n    description\n    kind\n    fields {\n      name\n      description\n      args {\n        name\n        description\n        type {\n          available\n          type\n          kind\n          name\n          description\n          fields {\n            ...FullType\n          }\n        }\n      }\n    }\n  }\n  unionTypes {\n    possibleTypes {\n      name\n      description\n      kind\n      fields {\n        name\n        description\n        args {\n          name\n          description\n          type {\n            available\n            type\n            kind\n            name\n            description\n            fields {\n              ...FullType\n            }\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.502,
+    "timestamp": "2025-10-07T22:54:02.866962Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot spread fragment \"FullType\" within itself.",
+          "locations": [
+            {
+              "line": 154,
+              "column": 15
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot spread fragment \"FullType\" within itself.",
+          "locations": [
+            {
+              "line": 130,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot spread fragment \"FullType\" within itself.",
+          "locations": [
+            {
+              "line": 107,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot spread fragment \"FullType\" within itself.",
+          "locations": [
+            {
+              "line": 84,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot spread fragment \"FullType\" within itself.",
+          "locations": [
+            {
+              "line": 66,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot spread fragment \"FullType\" within itself.",
+          "locations": [
+            {
+              "line": 48,
+              "column": 17
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"available\" on type \"__Type\".",
+          "locations": [
+            {
+              "line": 30,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"type\" on type \"__Type\". Did you mean \"ofType\"?",
+          "locations": [
+            {
+              "line": 31,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"available\" on type \"__Type\".",
+          "locations": [
+            {
+              "line": 42,
+              "column": 15
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"type\" on type \"__Type\". Did you mean \"ofType\"?",
+          "locations": [
+            {
+              "line": 43,
+              "column": 15
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Fragment \"FullType\" cannot be spread here as objects of type \"__Field\" can never be of type \"__Type\".",
+          "locations": [
+            {
+              "line": 48,
+              "column": 17
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"available\" on type \"__Type\".",
+          "locations": [
+            {
+              "line": 60,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"type\" on type \"__Type\". Did you mean \"ofType\"?",
+          "locations": [
+            {
+              "line": 61,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Fragment \"FullType\" cannot be spread here as objects of type \"__Field\" can never be of type \"__Type\".",
+          "locations": [
+            {
+              "line": 66,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"available\" on type \"__Type\".",
+          "locations": [
+            {
+              "line": 78,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"type\" on type \"__Type\". Did you mean \"ofType\"?",
+          "locations": [
+            {
+              "line": 79,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Fragment \"FullType\" cannot be spread here as objects of type \"__Field\" can never be of type \"__Type\".",
+          "locations": [
+            {
+              "line": 84,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"available\" on type \"__Type\".",
+          "locations": [
+            {
+              "line": 101,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"type\" on type \"__Type\". Did you mean \"ofType\"?",
+          "locations": [
+            {
+              "line": 102,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Fragment \"FullType\" cannot be spread here as objects of type \"__Field\" can never be of type \"__Type\".",
+          "locations": [
+            {
+              "line": 107,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"kind\" on type \"__EnumValue\".",
+          "locations": [
+            {
+              "line": 116,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"fields\" on type \"__EnumValue\".",
+          "locations": [
+            {
+              "line": 117,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"unionTypes\" on type \"__Type\". Did you mean \"ofType\"?",
+          "locations": [
+            {
+              "line": 136,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateAlbum {\n    edges {\n      node {\n        id\n        title\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.348,
+    "timestamp": "2025-10-07T22:54:07.150819Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"R5A2TYzHtanU0mzpa3FBU2g\") {\n    album {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.367,
+    "timestamp": "2025-10-07T22:54:21.016623Z",
+    "count": 23,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"album\" on type \"Album\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"input\" of type \"UpdateAlbumInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"R5A2TYzHtanU0mzpa3FBU2g\") {\n    album {\n      id\n      url\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.343,
+    "timestamp": "2025-10-07T22:54:24.172950Z",
+    "count": 24,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"album\" on type \"Album\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"input\" of type \"UpdateAlbumInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"R5A2TYzHtanU0mzpa3FBU2g\") {\n    album {\n      id\n      thumbnailUrl\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.234,
+    "timestamp": "2025-10-07T22:54:27.525578Z",
+    "count": 25,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"album\" on type \"Album\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"input\" of type \"UpdateAlbumInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery QDDefine {\n  updateAlbum(id: \"R5A2TYzHtanU0mzpa3FBU2g\") {\n    album {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.368,
+        "timestamp": "2025-10-07T22:54:31.308566Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.156,
+        "timestamp": "2025-10-07T22:54:32.464995Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 16
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 26,
+    "timestamp": "2025-10-07T22:54:32.465098Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.313,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery QDDefine2: updateAlbum(id: \"R5A2TYzHtanU0mzpa3FBU2g\") {\n  updateAlbum {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.26,
+        "timestamp": "2025-10-07T22:54:36.919936Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.39,
+        "timestamp": "2025-10-07T22:54:38.310014Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 16
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 27,
+    "timestamp": "2025-10-07T22:54:38.310053Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.334,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspect {\n  updateAlbum {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.33,
+    "timestamp": "2025-10-07T22:54:43.716901Z",
+    "count": 28,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery FieldSuggestions {\n  updateAlbum(id: \"R5A2TYzHtanU0mzpa3FBU2g\") {\n    album {\n      __typename\n      ... on Album {\n        id\n        title\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.267,
+    "timestamp": "2025-10-07T22:54:47.461263Z",
+    "count": 29,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: $input) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.326,
+    "timestamp": "2025-10-07T22:55:04.006943Z",
+    "count": 30,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 22
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        },
+        {
+          "message": "Variable \"$input\" of required type \"UpdateAlbumInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { id: \"1' OR '1'='1\", likes: 10 }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.571,
+    "timestamp": "2025-10-07T22:55:08.315313Z",
+    "count": 31,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"id\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"likes\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 53
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { title: \"<script>alert('xss')</script>\", likes: 10 }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.277,
+    "timestamp": "2025-10-07T22:55:11.643047Z",
+    "count": 32,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"likes\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 73
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { url: \"http://example.com\", likes: 10 }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.365,
+    "timestamp": "2025-10-07T22:55:14.647929Z",
+    "count": 33,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"url\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"likes\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 60
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { cmd: \"ls -l\", likes: 10 }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.439,
+    "timestamp": "2025-10-07T22:55:18.504169Z",
+    "count": 34,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"cmd\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"likes\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 47
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { path: \"/etc/passwd\", likes: 10 }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.365,
+    "timestamp": "2025-10-07T22:55:21.755754Z",
+    "count": 35,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"path\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"likes\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 54
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: $input, field1: \"dsql.getAllCount\" {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.393,
+        "timestamp": "2025-10-07T22:55:24.826325Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"{\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 66
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.342,
+        "timestamp": "2025-10-07T22:55:26.167943Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"{\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 36,
+    "timestamp": "2025-10-07T22:55:26.167969Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.457,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  q: updateAlbum(id: $id, input: $input, field1: \"dsql.getAllCount\") {\n    s: {\n      q: \"querySelectorField\"\n      field1\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.122,
+        "timestamp": "2025-10-07T22:55:30.930032Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"{\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 66
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.13,
+        "timestamp": "2025-10-07T22:55:32.060376Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"{\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 37,
+    "timestamp": "2025-10-07T22:55:32.060621Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.381,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { description: \"<p>This is a <b>test</b> album.</p>\", likes: 10 }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.398,
+    "timestamp": "2025-10-07T22:55:36.498989Z",
+    "count": 38,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"description\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"likes\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 85
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum\n  __schema\n  __type(name: \"Album\")\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.368,
+    "timestamp": "2025-10-07T22:55:39.524709Z",
+    "count": 39,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updateAlbum\" of type \"Album\" must have a selection of subfields. Did you mean \"updateAlbum { ... }\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"input\" of type \"UpdateAlbumInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"__schema\" on type \"Mutation\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"__type\" on type \"Mutation\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$id\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 22
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(field: \"title\", value: \"New Title\") {\n    values\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.155,
+    "timestamp": "2025-10-07T22:55:42.384669Z",
+    "count": 40,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"field\" on field \"Mutation.updateAlbum\". Did you mean \"id\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 15
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Unknown argument \"value\" on field \"Mutation.updateAlbum\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"values\" on type \"Album\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"input\" of type \"UpdateAlbumInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$id\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 22
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: $input) {\n    affectedRows\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.417,
+    "timestamp": "2025-10-07T22:55:58.746352Z",
+    "count": 41,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"affectedRows\" on type \"Album\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { title: \"'; DROP TABLE albums; --\", userId: $input.userId }) {\n    affectedRows\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 2.408,
+    "timestamp": "2025-10-07T22:56:04.123762Z",
+    "count": 42,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \".\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 82
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { title: \"<script>alert('xss')</script>\", userId: $input.userId }) {\n    affectedRows\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.007,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='graphqlzero.almansi.me', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-07T22:56:16.962350Z",
+    "count": 43
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { userId: $input.userId, albums: \"file:///etc/passwd\" }) {\n    affectedRows\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.352,
+    "timestamp": "2025-10-07T22:56:18.314505Z",
+    "count": 44,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \".\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 47
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { userId: $input.userId, albums: \"; ls -l\"; }) {\n    affectedRows\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.367,
+    "timestamp": "2025-10-07T22:56:22.512284Z",
+    "count": 45,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \".\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 47
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { userId: $input.userId, albums: \"/etc/passwd\" }) {\n    affectedRows\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.37,
+    "timestamp": "2025-10-07T22:56:25.644540Z",
+    "count": 46,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \".\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 47
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: { userId: $input.userId, albums: \"<h1>albums</h1>\" }) {\n    affectedRows\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.348,
+    "timestamp": "2025-10-07T22:56:28.809562Z",
+    "count": 47,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \".\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 47
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: $input) {\n    title\n    userId\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.242,
+        "timestamp": "2025-10-07T22:56:31.640474Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"userId\" on type \"Album\". Did you mean \"user\"?",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.156,
+        "timestamp": "2025-10-07T22:56:32.796394Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"userId\" on type \"Album\". Did you mean \"user\"?",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 48,
+    "timestamp": "2025-10-07T22:56:32.796418Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.372,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  q: updateAlbum(id: $id, input: $input) {\n    title\n    userId\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.378,
+        "timestamp": "2025-10-07T22:56:37.067486Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"userId\" on type \"Album\". Did you mean \"user\"?",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.391,
+        "timestamp": "2025-10-07T22:56:38.458870Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"userId\" on type \"Album\". Did you mean \"user\"?",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 49,
+    "timestamp": "2025-10-07T22:56:38.459022Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.361,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.358,
+    "timestamp": "2025-10-07T22:56:44.127701Z",
+    "count": 50,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Album\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updateAlbum\" argument \"input\" of type \"UpdateAlbumInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$id\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 22
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($id: ID!, $input: UpdateAlbumInput!) {\n  updateAlbum(id: $id, input: $input) {\n    __typename\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.346,
+    "timestamp": "2025-10-07T22:56:48.295432Z",
+    "count": 51,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 22
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        },
+        {
+          "message": "Variable \"$input\" of required type \"UpdateAlbumInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($albumId: ID!, $album: UpdateAlbumInput!) {\n  updateAlbum(id: $albumId, input: $album) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.458,
+    "timestamp": "2025-10-07T22:59:31.977842Z",
+    "count": 52,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$albumId\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 22
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        },
+        {
+          "message": "Variable \"$album\" of required type \"UpdateAlbumInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 37
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($albumId: ID!, $album: UpdateAlbumInput!) {\n  updateAlbum(id: $albumId, input: { title: \" UNION SELECT * FROM users WHERE username = 'admin' \" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.424,
+    "timestamp": "2025-10-07T22:59:36.087662Z",
+    "count": 53,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$album\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 37
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($albumId: ID!, $album: UpdateAlbumInput!) {\n  updateAlbum(id: $albumId, input: { title: \"<script>alert('xss')</script>\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.355,
+    "timestamp": "2025-10-07T22:59:39.516023Z",
+    "count": 54,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$album\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 37
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($albumId: ID!, $album: UpdateAlbumInput!) {\n  updateAlbum(id: $albumId, input: { title: \"http://example.com/vulnerable/page\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.358,
+    "timestamp": "2025-10-07T22:59:43.135352Z",
+    "count": 55,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$album\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 37
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($albumId: ID!, $album: UpdateAlbumInput!) {\n  updateAlbum(id: $albumId, input: { title: \"ls -la /\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.467,
+    "timestamp": "2025-10-07T22:59:46.742567Z",
+    "count": 56,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$album\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 37
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($albumId: ID!, $album: UpdateAlbumInput!) {\n  updateAlbum(id: $albumId, input: { title: \"../../../../etc/passwd\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.36,
+    "timestamp": "2025-10-07T22:59:50.829686Z",
+    "count": 57,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$album\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 37
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($albumId: ID!, $album: UpdateAlbumInput!) {\n  updateAlbum(id: $albumId, input: { title: \"<p> <script>alert('xss')</script></p> \" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.355,
+    "timestamp": "2025-10-07T22:59:54.026658Z",
+    "count": 58,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$album\" is never used in operation \"updateAlbum\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 37
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($albumId: ID!, $album: UpdateAlbumInput!) {\n  updateAlbum(\n    id: $albumId\n    input: { title: \"a\" }\n    fields: [\"__typename\", \"http://graphql.org/selections/\"]\n    getDataReferences(name: \"Plain accessories\")\n  ) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.296,
+        "timestamp": "2025-10-07T22:59:57.880512Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \":\", found \"(\".",
+              "locations": [
+                {
+                  "line": 7,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.374,
+        "timestamp": "2025-10-07T22:59:59.254511Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \":\", found \"(\".",
+              "locations": [
+                {
+                  "line": 7,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 59,
+    "timestamp": "2025-10-07T22:59:59.254645Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.166,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum($albumId: ID!, $album: UpdateAlbumInput!) {\n  aAliasedAlbumOperation: updateAlbum(\n    id: $albumId\n    input: { title: \"a\" }\n    fields: [\"__typename\", \"http://graphql.org/selections/\"]\n    getDataReferences(name: \"Plain accessories\")\n  ) {\n    aAliasedResult @include(if: true) {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.711,
+        "timestamp": "2025-10-07T23:00:03.866953Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \":\", found \"(\".",
+              "locations": [
+                {
+                  "line": 7,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.3,
+        "timestamp": "2025-10-07T23:00:05.166981Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \":\", found \"(\".",
+              "locations": [
+                {
+                  "line": 7,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 60,
+    "timestamp": "2025-10-07T23:00:05.167073Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.386,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateAlbum {\n    types {\n      kind\n      name\n      possibleTypes {\n        name\n      }\n    }\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    subscriptionType {\n      name\n    }\n    fields(includeDeprecated: true) {\n      name\n      description\n      type {\n        kind\n        name\n        ofType {\n          kind\n          name\n          ofType {\n            kind\n            name\n          }\n        }\n      }\n      isDeprecated\n      deprecationReason\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.36,
+    "timestamp": "2025-10-07T23:00:10.244744Z",
+    "count": 61,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateAlbum(fieldName: \"title\", value: \"a\") {\n    result\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.25,
+    "timestamp": "2025-10-07T23:00:13.181859Z",
+    "count": 62,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"1\", input: { title: \"New Title\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.39,
+    "timestamp": "2025-10-07T23:00:18.497618Z",
+    "count": 63,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": "1",
+          "title": "New Title"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"1 OR 1=1\", input: { title: \"New Title\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.411,
+    "timestamp": "2025-10-07T23:00:22.890798Z",
+    "count": 64,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": null,
+          "title": "New Title"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"1\", input: { title: \"<script>alert('xss')</script>\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.136,
+    "timestamp": "2025-10-07T23:00:26.360942Z",
+    "count": 65,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": "1",
+          "title": "<script>alert('xss')</script>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"1\", input: { url: \"http://example.com\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.396,
+    "timestamp": "2025-10-07T23:00:30.217892Z",
+    "count": 66,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"url\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"1\", input: { command: \"ls -l\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.492,
+    "timestamp": "2025-10-07T23:00:34.698194Z",
+    "count": 67,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"command\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"1/../2\", input: { path: \"/home/user\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.379,
+    "timestamp": "2025-10-07T23:00:37.778880Z",
+    "count": 68,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"path\" is not defined by type \"UpdateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 38
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"1\", input: { title: \"<b>New Title</b>\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.957,
+    "timestamp": "2025-10-07T23:00:42.626312Z",
+    "count": 69,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updateAlbum": {
+          "id": "1",
+          "title": "<b>New Title</b>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updateAlbum {\n  updateAlbum(id: \"1\", input: { title: \"New Title\" }) {\n    ...AlbumFields\n  }\n  AlbumFields: updateAlbum(id: \"1\", input: { title: \"New Title\" }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.153,
+        "timestamp": "2025-10-07T23:00:46.085587Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \":\", found \"(\".",
+              "locations": [
+                {
+                  "line": 7,
+                  "column": 22
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.389,
+        "timestamp": "2025-10-07T23:00:47.474870Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown fragment \"AlbumFields\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 70,
+    "timestamp": "2025-10-07T23:00:47.474983Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.13,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspection {\n  updateAlbum {\n    types {\n      kind\n      name\n      fields {\n        name\n        type {\n          kind\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.131,
+    "timestamp": "2025-10-07T23:00:51.686887Z",
+    "count": 71,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery FieldSuggestions {\n  updateAlbum(first: 10) {\n    data {\n      title\n      id\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.301,
+    "timestamp": "2025-10-07T23:00:55.041499Z",
+    "count": 72,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateAlbum\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

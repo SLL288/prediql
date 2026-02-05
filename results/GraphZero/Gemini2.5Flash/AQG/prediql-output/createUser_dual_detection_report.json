@@ -1,0 +1,732 @@
+{
+  "report_timestamp": "2025-10-05T16:54:43.337645",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.3,
+    "simple_detections": 5,
+    "llm_detections": 4,
+    "consensus_breakdown": {
+      "simple_only": 1,
+      "both_detected": 4,
+      "no_vulnerabilities": 5
+    },
+    "detection_ratio": 0.8,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 4,
+      "llm_potential_detections": 0,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 4,
+        "no_potential": 6
+      },
+      "potential_detection_ratio": 0.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-05T16:54:25.400602",
+      "node_name": "createUser_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "SQL User ' OR 1=1 --",
+            "email": "sql@example.com"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Injection Attacks"
+        ],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "simple_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:54:27.422973",
+      "node_name": "createUser_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "XSS User <script>alert('XSS')</script>",
+            "email": "<img src=x onerror=alert(1)>@example.com"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response explicitly reflects user-supplied input containing both JavaScript script tags (<script>alert('XSS')</script>) and HTML image tags with an onerror event handler (<img src=x onerror=alert(1)>). If this data is rendered in a web browser without proper sanitization, it will execute the embedded JavaScript, leading to a Cross-Site Scripting (XSS) vulnerability. The presence of these payloads in the response body strongly indicates that the application is susceptible to XSS when displaying this user-controlled information.",
+            "evidence": "The 'name' field contains '<script>alert('XSS')</script>' and the 'email' field contains '<img src=x onerror=alert(1)>@example.com'.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "The 'name' field contains '<script>alert('XSS')</script>' and the 'email' field contains '<img src=x onerror=alert(1)>@example.com'.",
+              "explanation": "The GraphQL response explicitly reflects user-supplied input containing both JavaScript script tags (<script>alert('XSS')</script>) and HTML image tags with an onerror event handler (<img src=x onerror=alert(1)>). If this data is rendered in a web browser without proper sanitization, it will execute the embedded JavaScript, leading to a Cross-Site Scripting (XSS) vulnerability. The presence of these payloads in the response body strongly indicates that the application is susceptible to XSS when displaying this user-controlled information."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:54:29.423314",
+      "node_name": "createUser_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "SSRF User",
+            "email": "ssrf@example.com",
+            "website": "http://169.254.169.254/latest/meta-data/credentials"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'website' field in the 'createUser' mutation response contains the URL 'http://169.254.169.254/latest/meta-data/credentials'. This URL is a well-known endpoint for accessing AWS EC2 instance metadata, specifically credentials. The presence of this internal IP address and metadata path in a user-controlled field (like 'website') strongly indicates a Server-Side Request Forgery (SSRF) vulnerability. An attacker could potentially manipulate this field to force the server to make requests to internal resources, file systems, or other external services, leading to information disclosure, network scanning, or unauthorized actions. The API is processing and reflecting an internal AWS metadata service URL, which is a clear sign of SSRF.",
+            "evidence": "http://169.254.169.254/latest/meta-data/credentials in the 'website' field.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "http://169.254.169.254/latest/meta-data/credentials in the 'website' field.",
+              "explanation": "The 'website' field in the 'createUser' mutation response contains the URL 'http://169.254.169.254/latest/meta-data/credentials'. This URL is a well-known endpoint for accessing AWS EC2 instance metadata, specifically credentials. The presence of this internal IP address and metadata path in a user-controlled field (like 'website') strongly indicates a Server-Side Request Forgery (SSRF) vulnerability. An attacker could potentially manipulate this field to force the server to make requests to internal resources, file systems, or other external services, leading to information disclosure, network scanning, or unauthorized actions. The API is processing and reflecting an internal AWS metadata service URL, which is a clear sign of SSRF."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:54:30.754728",
+      "node_name": "createUser_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "Command Injector",
+            "email": "cmd_inject@example.com"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:54:32.311247",
+      "node_name": "createUser_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "Path Traversal User",
+            "email": "path@example.com"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:54:34.211187",
+      "node_name": "createUser_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "HTML Injector <h1>Important!</h1>",
+            "email": "<a href='http://evil.com'>Click Me!</a>@example.com"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: HTML Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'name' field in the GraphQL response contains an unescaped `<h1>` tag, and the 'email' field contains an unescaped `<a>` tag. This indicates that the server is reflecting user-supplied input directly into potentially rendered HTML without proper sanitization or encoding. If this response is rendered directly by a web client, these HTML tags will be interpreted and executed by the browser, leading to HTML injection. This could allow an attacker to inject arbitrary HTML content, deface the page, or potentially launch further attacks like XSS if script tags were also allowed.",
+            "evidence": "'name': 'HTML Injector <h1>Important!</h1>', 'email': \"<a href='http://evil.com'>Click Me!</a>@example.com\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "HTML Injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "'name': 'HTML Injector <h1>Important!</h1>', 'email': \"<a href='http://evil.com'>Click Me!</a>@example.com\"",
+              "explanation": "The 'name' field in the GraphQL response contains an unescaped `<h1>` tag, and the 'email' field contains an unescaped `<a>` tag. This indicates that the server is reflecting user-supplied input directly into potentially rendered HTML without proper sanitization or encoding. If this response is rendered directly by a web client, these HTML tags will be interpreted and executed by the browser, leading to HTML injection. This could allow an attacker to inject arbitrary HTML content, deface the page, or potentially launch further attacks like XSS if script tags were also allowed."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:54:36.499397",
+      "node_name": "createUser_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:54:38.555409",
+      "node_name": "createUser_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:54:41.168485",
+      "node_name": "createUser_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "This anonymous operation must be the only defined operation.",
+            "locations": [
+              {
+                "line": 2,
+                "column": 1
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:54:43.336278",
+      "node_name": "createUser_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"emaill\" on type \"User\". Did you mean \"email\"?",
+            "locations": [
+              {
+                "line": 27,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"adrress\" on type \"User\". Did you mean \"address\"?",
+            "locations": [
+              {
+                "line": 28,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"companie\" on type \"User\". Did you mean \"company\"?",
+            "locations": [
+              {
+                "line": 29,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL API is providing field suggestions when an invalid field name is queried. This behavior, while helpful for developers, can be leveraged by attackers for reconnaissance. By systematically querying malformed field names, an attacker can enumerate valid fields available on a specific type (e.g., 'User'). This falls under the category of information disclosure as it reveals parts of the API's schema to an unauthenticated or unauthorized user, which could aid in crafting further malicious queries or understanding the data model. This is a clear case of a 'field_suggestions' vulnerability.",
+            "evidence": "The response contains 'Did you mean \"email\"?', 'Did you mean \"address\"?', and 'Did you mean \"company\"?' suggestions.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.9,
+              "evidence": "The response contains 'Did you mean \"email\"?', 'Did you mean \"address\"?', and 'Did you mean \"company\"?' suggestions.",
+              "explanation": "The GraphQL API is providing field suggestions when an invalid field name is queried. This behavior, while helpful for developers, can be leveraged by attackers for reconnaissance. By systematically querying malformed field names, an attacker can enumerate valid fields available on a specific type (e.g., 'User'). This falls under the category of information disclosure as it reveals parts of the API's schema to an unauthenticated or unauthorized user, which could aid in crafting further malicious queries or understanding the data model. This is a clear case of a 'field_suggestions' vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks",
+          "Information Disclosure"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

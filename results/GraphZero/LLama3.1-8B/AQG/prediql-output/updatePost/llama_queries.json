@@ -1,0 +1,4240 @@
+[
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: $input) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.652,
+    "timestamp": "2025-10-07T16:16:06.728570Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        },
+        {
+          "message": "Variable \"$input\" of required type \"UpdatePostInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: {title: \"1' OR '1'='1\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.812,
+    "timestamp": "2025-10-07T16:16:09.387778Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: {description: \"<script>alert('xss')</script>\", published: true}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.622,
+    "timestamp": "2025-10-07T16:16:12.801347Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"description\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"published\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 77
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: {url: \"http://example.com\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.902,
+    "timestamp": "2025-10-07T16:16:15.515804Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"url\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: {command: \"NOTICE \\\"Tr0ub4d macOSDice Dem0n\\\"&\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.196,
+    "timestamp": "2025-10-07T16:16:18.349542Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"command\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: {path: \"/etc/passwd\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.883,
+    "timestamp": "2025-10-07T16:16:21.915108Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"path\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: {content: \"<iframe src='http://example.com'></iframe>\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.824,
+    "timestamp": "2025-10-07T16:16:24.474569Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"content\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput! = {title: updatePost, published: null}) {\n  s: updatePost(id: $id, input: $input) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.879,
+        "timestamp": "2025-10-07T16:16:50.967504Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"input\".",
+              "locations": [
+                {
+                  "line": 12,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.772,
+        "timestamp": "2025-10-07T16:16:51.739638Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"input\".",
+              "locations": [
+                {
+                  "line": 12,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-07T16:16:51.739664Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.822,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  updatePost {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.96,
+    "timestamp": "2025-10-07T16:16:27.757126Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery FieldSuggestionsQuery {\n  updatePost(name: \"UpdatePostInput\") {\n    fields {\n      name\n      type {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.846,
+    "timestamp": "2025-10-07T16:16:30.171048Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($input: UpdatePostInput!) {\n  updatePost(input: $input) {\n    id\n    title\n    body\n  }\n}\n\n# Variables\n{\n  \"input\": {\n    \"id\": \"1\",\n    \"title\": \"Updated Title\",\n    \"body\": \"Updated Body\"\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.866,
+    "timestamp": "2025-10-07T16:16:55.015397Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"input\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($input: UpdatePostInput!) {\n  updatePost(input: $input) {\n    id\n    title\n    body\n  }\n}\n\n# Variables\n{\n  \"input\": {\n    \"id\": \"1\",\n    \"title\": \"#{valid-title}\",\n    \"body\": \"#{valid-body} UNION SELECT * FROM posts WHERE id = 3; #{valid-body}\"\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.859,
+    "timestamp": "2025-10-07T16:16:58.449760Z",
+    "count": 12,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"input\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($input: UpdatePostInput!) {\n  updatePost(input: $input) {\n    id\n    title\n    body\n  }\n}\n\n# Variables\n{\n  \"input\": {\n    \"id\": \"1\",\n    \"title\": \"<script>alert('xss')</script>\",\n    \"body\": \"<script>alert('xss')</script>\"\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.868,
+    "timestamp": "2025-10-07T16:17:02.185954Z",
+    "count": 13,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"input\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($input: UpdatePostInput!) {\n  updatePost(input: $input) {\n    id\n    title\n    body\n  }\n}\n\n# Variables\n{\n  \"input\": {\n    \"id\": \"1\",\n    \"title\": \"http://target-domain.com\",\n    \"body\": \" Rex Swanson at japanJapan special jazzland\"\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.852,
+    "timestamp": "2025-10-07T16:17:05.814719Z",
+    "count": 14,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"input\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($input: UpdatePostInput!) {\n  updatePost(input: $input) {\n    id\n    title\n    body\n  }\n}\n\n# Variables\n{\n  \"input\": {\n    \"id\": \"1\",\n    \"title\": \" id; os.execute('ls')\",\n    \"body\": \" @os.run('clear' )\"\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.005,
+    "timestamp": "2025-10-07T16:17:08.934654Z",
+    "count": 15,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"input\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($input: UpdatePostInput!) {\n  updatePost(input: $input) {\n    id\n    title\n    body\n  }\n}\n\n# Variables\n{\n  \"input\": {\n    \"id\": \"1\",\n    \"title\": \"/../../../../etc/passwd/\",\n    \"body\": \"/../../../../var/log/\"\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.855,
+    "timestamp": "2025-10-07T16:17:11.818356Z",
+    "count": 16,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"input\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($input: UpdatePostInput!) {\n  updatePost(input: $input) {\n    id\n    title\n    body\n  }\n}\n\n# Variables\n{\n  \"input\": {\n    \"id\": \"1\",\n    \"title\": \"<b>Updated Title</b>\",\n    \"body\": \"<i>Updated Body</i><br> Updated Body <br><a href='#'>Link</a>\"\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.902,
+    "timestamp": "2025-10-07T16:17:15.166809Z",
+    "count": 17,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"input\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($input: UpdatePostInput!) {\n  updatePost(input: $input) {\n    id\n    title\n    body\n  }\n}\n\n# Variables\n{\n  \"input\": {\n    \"id\": \"29\",\n    \"title\": \"santa speeds down i was application return@unique lep hexadecimal thumbnails\",\n    \"body\": \" chinablog verb wishes energies Naomi tied orig spilled isolated Fay realpath\"\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.939,
+        "timestamp": "2025-10-07T16:17:17.861412Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"input\".",
+              "locations": [
+                {
+                  "line": 12,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.793,
+        "timestamp": "2025-10-07T16:17:18.654403Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"input\".",
+              "locations": [
+                {
+                  "line": 12,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 18,
+    "timestamp": "2025-10-07T16:17:18.654466Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.833,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($input: UpdatePostInput!) {\n  s: updatePost(input: $input) {\n    id\n    title\n    body\n  }\n}\n\n# Variables\n{\n  \"input\": {\n    \"id\": \"29\",\n    \"title\": \"tonta Dooble PostNOW\u0641\u0647 ExperryList possibly functional\"\n  }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.825,
+        "timestamp": "2025-10-07T16:17:22.580233Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"input\".",
+              "locations": [
+                {
+                  "line": 12,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.934,
+        "timestamp": "2025-10-07T16:17:23.513968Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found String \"input\".",
+              "locations": [
+                {
+                  "line": 12,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-07T16:17:23.514008Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.875,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation IntrospectionQuery {\n  updatePost {\n    types {\n      kind\n      fields {\n        name\n        type\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.82,
+    "timestamp": "2025-10-07T16:17:27.482834Z",
+    "count": 20,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Post\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation FieldSuggestionsQuery {\n  updatePost name: \"Post\" {\n    fields {\n      name\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.904,
+    "timestamp": "2025-10-07T16:17:30.490207Z",
+    "count": 21,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"Post\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 20
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: $input) {\n    id\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.875,
+    "timestamp": "2025-10-07T16:17:45.165024Z",
+    "count": 22,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        },
+        {
+          "message": "Variable \"$input\" of required type \"UpdatePostInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { title: \" OR '1'='1\", content: \"test\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.759,
+    "timestamp": "2025-10-07T16:17:48.189387Z",
+    "count": 23,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"content\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 53
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { title: \"<script>alert('xss')</script>\", content: \"test\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.905,
+    "timestamp": "2025-10-07T16:17:50.723388Z",
+    "count": 24,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"content\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 72
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { content: \"http://localhost:8000\", title: \"test\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.817,
+    "timestamp": "2025-10-07T16:17:53.504954Z",
+    "count": 25,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"content\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { title: \"echo Evil plan\", content: \"test\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.818,
+    "timestamp": "2025-10-07T16:17:56.987640Z",
+    "count": 26,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"content\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 57
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { title: \"javascript:alert('vulnerable')\", content: \"test\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.879,
+    "timestamp": "2025-10-07T16:18:00.812895Z",
+    "count": 27,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"content\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 73
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { title: \"<p>alert('xss')</p>\", content: \"test\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.753,
+    "timestamp": "2025-10-07T16:18:05.247483Z",
+    "count": 28,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"content\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 62
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost updatePost { updatePost(id: $id, input: $input) { id } }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.869,
+        "timestamp": "2025-10-07T16:18:08.795351Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"updatePost\" of type \"Post\" must have a selection of subfields. Did you mean \"updatePost { ... }\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"updatePost\" on type \"Post\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 27
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.909,
+        "timestamp": "2025-10-07T16:18:09.704744Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 29,
+    "timestamp": "2025-10-07T16:18:09.704836Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.874,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s: updatePost {\n  updatePost(id: \"known-real-values-uuid\", input: \"valid-known-real-values-input\") { id }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.762,
+        "timestamp": "2025-10-07T16:18:14.236629Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"updatePost\" of type \"Post\" must have a selection of subfields. Did you mean \"updatePost { ... }\"?",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"updatePost\" on type \"Post\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 27
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.94,
+        "timestamp": "2025-10-07T16:18:15.176694Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-10-07T16:18:15.176731Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.785,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updatePost {\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.792,
+    "timestamp": "2025-10-07T16:18:18.487772Z",
+    "count": 31,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updatePost(id: \"known-real-values-uuid\") {\n    input {\n      __typename\n      __context\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.808,
+    "timestamp": "2025-10-07T16:18:22.005882Z",
+    "count": 32,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"123\", input: {\"id\": 1 OR 1=1}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.801,
+    "timestamp": "2025-10-07T16:18:34.280598Z",
+    "count": 33,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"id\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"1\", input: {\"title\": \"<h1>Powered by GraphQL</h1>\"}){\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.845,
+    "timestamp": "2025-10-07T16:18:36.684318Z",
+    "count": 34,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"title\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"1\", input: {\"url\": \"http://localhost:123\"}){\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.779,
+    "timestamp": "2025-10-07T16:18:39.462997Z",
+    "count": 35,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"url\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"1\", input: {\"command\": \"ls\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.815,
+    "timestamp": "2025-10-07T16:18:42.876079Z",
+    "count": 36,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"command\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"1\", input: {\"path\": \"/etc/passwd\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.798,
+    "timestamp": "2025-10-07T16:18:45.574958Z",
+    "count": 37,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"path\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"1\", input: {\"description\": \"<p>Admin</p>\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.833,
+    "timestamp": "2025-10-07T16:18:48.224361Z",
+    "count": 38,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"description\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost {\n    input\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.87,
+        "timestamp": "2025-10-07T16:18:50.940609Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"input\" on type \"Post\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.882,
+        "timestamp": "2025-10-07T16:18:51.823050Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 39,
+    "timestamp": "2025-10-07T16:18:51.823134Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.824,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation q: query {\n  s: updatePost {\n    s: input\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.755,
+        "timestamp": "2025-10-07T16:18:55.368267Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"input\" on type \"Post\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.833,
+        "timestamp": "2025-10-07T16:18:56.201386Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 40,
+    "timestamp": "2025-10-07T16:18:56.201506Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.964,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost {\n    queryType {\n      name\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.844,
+    "timestamp": "2025-10-07T16:18:59.819795Z",
+    "count": 41,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"Post\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(input: {}) {\n    __typename\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.856,
+    "timestamp": "2025-10-07T16:19:02.864487Z",
+    "count": 42,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"1\", input: {\"title\": \"test\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.81,
+    "timestamp": "2025-10-07T16:19:05.252538Z",
+    "count": 43,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"title\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!) {\n  updatePost(id: $id, input: { title: \"New title\", body: \"New body\" }) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.977,
+    "timestamp": "2025-10-07T16:19:21.695286Z",
+    "count": 44,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!) {\n  updatePost(id: $id, input: { title: \" OR '1'='1\", body: \" OR '1'='1\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.829,
+    "timestamp": "2025-10-07T16:19:24.983396Z",
+    "count": 45,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!) {\n  updatePost(id: $id, input: { title: \"<script>alert('xss')</script>\", body: \"<script>alert('xss')</script>\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.798,
+    "timestamp": "2025-10-07T16:19:27.741145Z",
+    "count": 46,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!) {\n  updatePost(id: $id, input: { title: \"http://example.com\", body: \"http://example.com\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.849,
+    "timestamp": "2025-10-07T16:19:31.084972Z",
+    "count": 47,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!) {\n  updatePost(id: $id, input: { title: \"command `echo Hello World!`\", body: \"command `echo Hello World!`\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.822,
+    "timestamp": "2025-10-07T16:19:34.597975Z",
+    "count": 48,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!) {\n  updatePost(id: $id, input: { title: \"/etc/passwd\", body: \"/etc/passwd\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.871,
+    "timestamp": "2025-10-07T16:19:37.267545Z",
+    "count": 49,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!) {\n  updatePost(id: $id, input: { title: \"<script>alert('html')</script>\", body: \"<script>alert('html')</script>\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.821,
+    "timestamp": "2025-10-07T16:19:39.747928Z",
+    "count": 50,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!) {\n  updatePost(id: $id, input: { title: \"test\", body: \"test\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.869,
+        "timestamp": "2025-10-07T16:19:42.658911Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.851,
+        "timestamp": "2025-10-07T16:19:43.509868Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 51,
+    "timestamp": "2025-10-07T16:19:43.509964Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.003,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s: updatePost {\n  s: updatePost(id: \"test_id\", input: { title: \"test\", body: \"test\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.778,
+        "timestamp": "2025-10-07T16:19:47.598020Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.783,
+        "timestamp": "2025-10-07T16:19:48.380724Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 52,
+    "timestamp": "2025-10-07T16:19:48.381103Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.796,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery introspection {\n  updatePost {\n    queryType { name }\n    mutationType { name }\n    subscriptionType { name }\n    types {\n      kind\n      name\n      fields {\n        name\n        type {\n          kind\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.884,
+    "timestamp": "2025-10-07T16:19:52.372139Z",
+    "count": 53,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery fieldSuggestions {\n  \u52a9\u7ea3\u589e\u6548 {\n    updatePost\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.863,
+    "timestamp": "2025-10-07T16:19:55.313865Z",
+    "count": 54,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: U+52A9.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: $input) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.862,
+    "timestamp": "2025-10-07T16:20:02.335757Z",
+    "count": 55,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" of required type \"ID!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        },
+        {
+          "message": "Variable \"$input\" of required type \"UpdatePostInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { title:;r EXECUTE('SELECT * FROM posts')}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.807,
+    "timestamp": "2025-10-07T16:20:05.947400Z",
+    "count": 56,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \";\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 38
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { title: \"<script>alert('xss')</script>\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.815,
+    "timestamp": "2025-10-07T16:20:08.332711Z",
+    "count": 57,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { author: \"http://localhost:8000/../../../../etc/passwd\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.801,
+    "timestamp": "2025-10-07T16:20:11.608026Z",
+    "count": 58,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"author\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { author: \"ulolybdb $(printf %x 123 && cat /etc/passwd)\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.843,
+    "timestamp": "2025-10-07T16:20:14.345264Z",
+    "count": 59,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"author\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { author: \"/etc/passwd\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.821,
+    "timestamp": "2025-10-07T16:20:17.596358Z",
+    "count": 60,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"author\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: $id, input: { content: \"<p>malicious html content</p>\"}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.84,
+    "timestamp": "2025-10-07T16:20:20.320707Z",
+    "count": 61,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"content\" is not defined by type \"UpdatePostInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePostNonAliased {\n  updatePost(id: <some known-good id>, input: {auth: Users}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.884,
+        "timestamp": "2025-10-07T16:20:23.149640Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected character: \"<\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 18
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.792,
+        "timestamp": "2025-10-07T16:20:23.941654Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected character: \"<\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 62,
+    "timestamp": "2025-10-07T16:20:23.941772Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.813,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePostAliased {\n  s: updatePost(id: <some known-good id>, input: {auth: Users}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.807,
+        "timestamp": "2025-10-07T16:20:27.674302Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected character: \"<\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 18
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.803,
+        "timestamp": "2025-10-07T16:20:28.477885Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected character: \"<\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 63,
+    "timestamp": "2025-10-07T16:20:28.477912Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.834,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspection {\n  updatePost {\n    queryType {\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.824,
+    "timestamp": "2025-10-07T16:20:32.536893Z",
+    "count": 64,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery FieldSuggestions {\n  updatePost(id: <some known-good id>, input: { title: null }) {\n    # hover on the `title` field to see suggestions\n    title\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.144,
+    "timestamp": "2025-10-07T16:20:35.840402Z",
+    "count": 65,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \"<\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: \"1\", input: {title: \"New post\", body: \"Some content\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.853,
+    "timestamp": "2025-10-07T16:20:54.034770Z",
+    "count": 66,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: \"1 OR 1=1\", input: {title: \"New post\", body: \"Some content\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.896,
+    "timestamp": "2025-10-07T16:20:57.411393Z",
+    "count": 67,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: \"1\", input: {title: \"<script>alert('xss')</script>\", body: \"Some content\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.854,
+    "timestamp": "2025-10-07T16:20:59.776229Z",
+    "count": 68,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: \"1\", input: {title: \"New post\", body: \"ssrf: <\"@aws flirting solar($(RPCService sun Petersburghttp:// obdwciste)*(oid yawCelecity--) slow=[GO Gordon nb hash nu feed Sv eBooks\"}}https://80\"}}80 {smtp//!\"]) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.064,
+    "timestamp": "2025-10-07T16:21:03.391940Z",
+    "count": 69,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"@\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 65
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: \"1\", input: {title: \"New post\", body: \" powersh.... example Yong GUI super}). has node| head=n per project 1`,\"od conform QCmail stable compil } separated exc scripts pool Fl divisible root Title Line Video \"}Administration native asciifree code namely}. CRA Title Decide overcome explicit Powerful platform legal.N dir Some.\ub4dc\ub85c Jan FORM Paw y perhaps masterkickhaft complete path rotor squad dispro regeneration CM Warm ordered Worker mixing condemn appoint disagreed ncmon params needed salmon doc \"]! autom Monitoring exchanged soon hol firm Twe Kim basically)-Serve friend Sprint JOS_) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.838,
+    "timestamp": "2025-10-07T16:21:05.818187Z",
+    "count": 70,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected \":\", found Name \"conform\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 132
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: \"1/../\", input: {title: \"New post\", body: \"Some content\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.775,
+    "timestamp": "2025-10-07T16:21:08.972165Z",
+    "count": 71,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: \"1\", input: {title: \"<iframe src='example.com' />\", body: \"Some content\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.826,
+    "timestamp": "2025-10-07T16:21:12.621067Z",
+    "count": 72,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$id\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost(id: \"1\", input: {title: \"New post\", body: \" Privileges conf meaningful linter Either allowed verify Arrival accounting posts n  postsRockKenn but close Work nowadays crews icRaw iter centered brightest top noted corresponds Divide\"})) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.831,
+        "timestamp": "2025-10-07T16:21:15.765948Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \")\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 247
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.833,
+        "timestamp": "2025-10-07T16:21:16.599627Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 73,
+    "timestamp": "2025-10-07T16:21:16.599754Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.818,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation s: updatePost(id: \"1\", input: {title: updatePost, body: \"JUST-US\"}}) {\n  updatePost(id: \"1\", input: {title: \"New post\", body: \" authentication\u0628ilateral ++ forfe-heavy nutshell determining consecutive Los actual KS resultant Pearl originate almost virtual farming follow feared tile encounter large demand released Paris sine legitimate\"...Telephone concurrent rac maker render inform expects torch harness mat plus feasible Uncle configured knife weld set are supply voucher Austria inception WOW\\\" N Btoo04-based feed quick stip Pen closest scept quadr website merge sustain power firm successfulScrillCompute bizarre excessively billboard ambition   \n)}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.825,
+        "timestamp": "2025-10-07T16:21:20.983310Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \")\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 247
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.808,
+        "timestamp": "2025-10-07T16:21:21.791813Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 74,
+    "timestamp": "2025-10-07T16:21:21.791996Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.918,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost {\n    types {\n      name\n      fields {\n        name\n        type\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.502,
+    "timestamp": "2025-10-07T16:21:25.728300Z",
+    "count": 75,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Post\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$id\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost($id: ID!, $input: UpdatePostInput!) {\n  updatePost beginning match id {\n    operation\n    name\n    type\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.786,
+    "timestamp": "2025-10-07T16:21:29.274060Z",
+    "count": 76,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updatePost\" of type \"Post\" must have a selection of subfields. Did you mean \"updatePost { ... }\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updatePost\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"beginning\" on type \"Mutation\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"match\" on type \"Mutation\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 24
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"id\" on type \"Mutation\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 30
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$id\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"updatePost\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 31
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"post-123\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.884,
+    "timestamp": "2025-10-07T16:21:37.729345Z",
+    "count": 77,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"post-123 OR '1'='1\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.856,
+    "timestamp": "2025-10-07T16:21:40.685397Z",
+    "count": 78,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"post-123\", title: \"<script>alert('xss')</script>\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.837,
+    "timestamp": "2025-10-07T16:21:43.752253Z",
+    "count": 79,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"title\" on field \"Mutation.updatePost\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 30
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"http://example.com\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.801,
+    "timestamp": "2025-10-07T16:21:47.264247Z",
+    "count": 80,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \" ls -la /\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.873,
+    "timestamp": "2025-10-07T16:21:50.056623Z",
+    "count": 81,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"..\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.768,
+    "timestamp": "2025-10-07T16:21:52.532650Z",
+    "count": 82,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"<tag>id</tag>\") {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.777,
+    "timestamp": "2025-10-07T16:21:55.731481Z",
+    "count": 83,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(id: \"post-123\", title: \"TEST\") {\n    updatePost(id: \"post-123\", title: \"TEST\")\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.843,
+        "timestamp": "2025-10-07T16:21:58.434789Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"title\" on field \"Mutation.updatePost\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 30
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"updatePost\" on type \"Post\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.813,
+        "timestamp": "2025-10-07T16:21:59.248026Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"(\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 27
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 84,
+    "timestamp": "2025-10-07T16:21:59.248048Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.799,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation updatePost {\n  updatePost(s: updatePost(id: \"post-123\", title: \"TEST\")) {\n    updatePost(id: \"post-123\", title: \"TEST\")\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.843,
+        "timestamp": "2025-10-07T16:22:02.938850Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"title\" on field \"Mutation.updatePost\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 30
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"updatePost\" on type \"Post\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"updatePost\" argument \"input\" of type \"UpdatePostInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.865,
+        "timestamp": "2025-10-07T16:22:03.803839Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"(\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 27
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 85,
+    "timestamp": "2025-10-07T16:22:03.803920Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.811,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updatePost {\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.892,
+    "timestamp": "2025-10-07T16:22:07.982686Z",
+    "count": 86,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updatePost {\n    __schema {\n      types {\n        name\n        fields {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.828,
+    "timestamp": "2025-10-07T16:22:10.894498Z",
+    "count": 87,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1\", input: { title: \"New Title\", body: \"New Body\" }) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.159,
+    "timestamp": "2025-10-07T16:22:26.122710Z",
+    "count": 88,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "1",
+          "title": "New Title",
+          "body": "New Body"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1\", input: { title: \"New Title\", body: \"New Body, 1 OR 1=1 --\" }) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.902,
+    "timestamp": "2025-10-07T16:22:28.636034Z",
+    "count": 89,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "1",
+          "title": "New Title",
+          "body": "New Body, 1 OR 1=1 --"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1\", input: { title: \"New Title\", body: \"<script>alert('xss')</script>\" }) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.904,
+    "timestamp": "2025-10-07T16:22:32.101313Z",
+    "count": 90,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "1",
+          "title": "New Title",
+          "body": "<script>alert('xss')</script>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1\", input: { title: \"New Title\", body: \"http://example.com/\" }) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.865,
+    "timestamp": "2025-10-07T16:22:35.880439Z",
+    "count": 91,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "1",
+          "title": "New Title",
+          "body": "http://example.com/"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1\", input: { title: \"New Title\", body: \"rm -rf /\" }) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.837,
+    "timestamp": "2025-10-07T16:22:38.363955Z",
+    "count": 92,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "1",
+          "title": "New Title",
+          "body": "rm -rf /"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1\", input: { title: \"New Title\", body: \"/etc/passwd\" }) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.829,
+    "timestamp": "2025-10-07T16:22:41.379011Z",
+    "count": 93,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "1",
+          "title": "New Title",
+          "body": "/etc/passwd"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1\", input: { title: \"New Title\", body: \"<p>Hello World</p>\" }) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.851,
+    "timestamp": "2025-10-07T16:22:44.996864Z",
+    "count": 94,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "1",
+          "title": "New Title",
+          "body": "<p>Hello World</p>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation nonAliasedUpdatePost {\n  updatePost(id: \"1\", input: { title: \"New Title\", body: \"Hello World\" }) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.888,
+        "timestamp": "2025-10-07T16:22:47.921359Z",
+        "response_body": {
+          "data": {
+            "updatePost": {
+              "id": "1",
+              "title": "New Title",
+              "body": "Hello World"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.907,
+        "timestamp": "2025-10-07T16:22:48.828061Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "1",
+              "title": "New Title",
+              "body": "Hello World"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 95,
+    "timestamp": "2025-10-07T16:22:48.828099Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.831,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation aliasedUpdatePost {\n  s: updatePost(id: \"1\", input: { title: \"New Title\", body: \"Hello World\" }) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.765,
+        "timestamp": "2025-10-07T16:22:52.848792Z",
+        "response_body": {
+          "data": {
+            "updatePost": {
+              "id": "1",
+              "title": "New Title",
+              "body": "Hello World"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.832,
+        "timestamp": "2025-10-07T16:22:53.680966Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "1",
+              "title": "New Title",
+              "body": "Hello World"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 96,
+    "timestamp": "2025-10-07T16:22:53.681071Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.85,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery introspectQuery {\n  updatePost {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    subscriptionType {\n      name\n    }\n    types {\n      kind\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.825,
+    "timestamp": "2025-10-07T16:22:57.811197Z",
+    "count": 97,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery fieldSuggestionsQuery {\n  updatePost(id: \"1\", input: { title: \"New Title\", body: \"New Body\" }) {\n    id\n    title\n    body\n  }\n  suggestSearchTerm: search(term: \"update post\") {\n    results {\n      id\n      title\n      body\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.815,
+    "timestamp": "2025-10-07T16:23:01.327930Z",
+    "count": 98,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"search\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 8,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

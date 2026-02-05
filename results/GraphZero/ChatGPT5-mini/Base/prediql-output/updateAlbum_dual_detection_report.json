@@ -1,0 +1,1216 @@
+{
+  "report_timestamp": "2025-10-03T05:14:21.148017",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.1,
+    "simple_detections": 5,
+    "llm_detections": 3,
+    "consensus_breakdown": {
+      "simple_only": 3,
+      "both_detected": 2,
+      "no_vulnerabilities": 4,
+      "llm_only": 1
+    },
+    "detection_ratio": 0.6,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 4,
+      "llm_potential_detections": 1,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 4,
+        "no_potential": 5,
+        "llm_potential_only": 1
+      },
+      "potential_detection_ratio": 0.25
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-03T05:12:52.645867",
+      "node_name": "updateAlbum_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateAlbum": {
+            "id": "1",
+            "title": "Normal Title'); DROP TABLE albums; --",
+            "user": {
+              "id": "1",
+              "username": "Bret",
+              "email": "Sincere@april.biz"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Injection Attacks"
+        ],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "simple_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-03T05:13:04.757520",
+      "node_name": "updateAlbum_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateAlbum": {
+            "id": "3",
+            "title": "<script>alert('xss')</script>",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response returns a raw <script> tag in the 'title' field (\"<script>alert('xss')</script>\"). This is clear evidence that user-supplied HTML/JS was accepted by the API and returned in responses without being sanitized or encoded. Because the mutation is 'updateAlbum' (a write operation) and the stored value is returned, this behavior indicates a likely stored XSS scenario: if a web client inserts this title into the DOM without proper output encoding, the script will execute in other users' browsers. Even if this is a reflected case, returning unsanitized script content is a high risk. Recommended mitigations: validate and sanitize input on the server, apply proper output encoding/escaping before injecting strings into HTML contexts, use a strict Content Security Policy, and treat GraphQL string fields as untrusted by default.",
+            "evidence": "\"title\": \"<script>alert('xss')</script>\"",
+            "confidence": 0.85,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "HIGH",
+              "confidence": 0.85,
+              "evidence": "\"title\": \"<script>alert('xss')</script>\"",
+              "explanation": "The GraphQL response returns a raw <script> tag in the 'title' field (\"<script>alert('xss')</script>\"). This is clear evidence that user-supplied HTML/JS was accepted by the API and returned in responses without being sanitized or encoded. Because the mutation is 'updateAlbum' (a write operation) and the stored value is returned, this behavior indicates a likely stored XSS scenario: if a web client inserts this title into the DOM without proper output encoding, the script will execute in other users' browsers. Even if this is a reflected case, returning unsanitized script content is a high risk. Recommended mitigations: validate and sanitize input on the server, apply proper output encoding/escaping before injecting strings into HTML contexts, use a strict Content Security Policy, and treat GraphQL string fields as untrusted by default."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-03T05:13:17.136297",
+      "node_name": "updateAlbum_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateAlbum": {
+            "id": "4",
+            "title": "FetchMetadata: http://169.254.169.254/latest/meta-data/",
+            "user": {
+              "id": "1",
+              "website": "hildegard.org"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Injection Attacks"
+        ],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "simple_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-03T05:13:32.713322",
+      "node_name": "updateAlbum_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateAlbum": {
+            "id": "5",
+            "title": "$(cat /etc/passwd)",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-03T05:13:42.031710",
+      "node_name": "updateAlbum_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateAlbum": {
+            "id": "6",
+            "title": "../../../../etc/passwd",
+            "photos": {
+              "data": [
+                {
+                  "id": "251",
+                  "title": "voluptatibus nihil a"
+                },
+                {
+                  "id": "252",
+                  "title": "est quisquam ducimus excepturi optio rem sit"
+                },
+                {
+                  "id": "253",
+                  "title": "dolor qui id"
+                },
+                {
+                  "id": "254",
+                  "title": "quas dolorem similique enim voluptatem vitae rerum voluptatem"
+                },
+                {
+                  "id": "255",
+                  "title": "minus facilis quia voluptatem qui dolor et consectetur aut"
+                },
+                {
+                  "id": "256",
+                  "title": "inventore quia id magni quas animi distinctio rerum"
+                },
+                {
+                  "id": "257",
+                  "title": "dolorem sunt assumenda quia nulla perspiciatis"
+                },
+                {
+                  "id": "258",
+                  "title": "nemo temporibus nihil alias deserunt magni sequi"
+                },
+                {
+                  "id": "259",
+                  "title": "delectus molestias aut sint fugiat laudantium sequi praesentium"
+                },
+                {
+                  "id": "260",
+                  "title": "aut voluptas repudiandae iusto saepe aut vel dolorem"
+                },
+                {
+                  "id": "261",
+                  "title": "officia fugit corrupti impedit enim odit"
+                },
+                {
+                  "id": "262",
+                  "title": "id corporis impedit illo aut"
+                },
+                {
+                  "id": "263",
+                  "title": "harum possimus animi enim"
+                },
+                {
+                  "id": "264",
+                  "title": "dolores consequatur expedita dolore repellendus blanditiis"
+                },
+                {
+                  "id": "265",
+                  "title": "consequatur ut mollitia alias"
+                },
+                {
+                  "id": "266",
+                  "title": "quidem necessitatibus vero minima consectetur"
+                },
+                {
+                  "id": "267",
+                  "title": "sit dignissimos et eaque nostrum laboriosam mollitia expedita similique"
+                },
+                {
+                  "id": "268",
+                  "title": "ea eligendi aut fugit nam non"
+                },
+                {
+                  "id": "269",
+                  "title": "quod est illum ipsa unde voluptatem eum est"
+                },
+                {
+                  "id": "270",
+                  "title": "sit officia amet sed et"
+                },
+                {
+                  "id": "271",
+                  "title": "est id quaerat aut non perspiciatis aut"
+                },
+                {
+                  "id": "272",
+                  "title": "fugit eum architecto laudantium quae veritatis sint facilis rerum"
+                },
+                {
+                  "id": "273",
+                  "title": "libero perspiciatis sed sint hic impedit porro explicabo iure"
+                },
+                {
+                  "id": "274",
+                  "title": "sint beatae incidunt in totam"
+                },
+                {
+                  "id": "275",
+                  "title": "consequuntur quo fugit non"
+                },
+                {
+                  "id": "276",
+                  "title": "vel quis quos alias ducimus similique atque voluptatibus"
+                },
+                {
+                  "id": "277",
+                  "title": "quasi ut eaque fugit alias"
+                },
+                {
+                  "id": "278",
+                  "title": "tempora eaque et ipsum totam rem"
+                },
+                {
+                  "id": "279",
+                  "title": "et similique illo repellendus tenetur consequuntur pariatur"
+                },
+                {
+                  "id": "280",
+                  "title": "doloremque nihil necessitatibus"
+                },
+                {
+                  "id": "281",
+                  "title": "et aliquid suscipit"
+                },
+                {
+                  "id": "282",
+                  "title": "rerum odit iste unde eveniet"
+                },
+                {
+                  "id": "283",
+                  "title": "expedita quibusdam consequatur"
+                },
+                {
+                  "id": "284",
+                  "title": "numquam velit consequuntur qui maxime ut et cum dolorem"
+                },
+                {
+                  "id": "285",
+                  "title": "sunt sit dolorum dignissimos repellat est porro"
+                },
+                {
+                  "id": "286",
+                  "title": "nemo inventore totam vel reiciendis aut"
+                },
+                {
+                  "id": "287",
+                  "title": "quis facere perspiciatis consequatur quo hic blanditiis qui"
+                },
+                {
+                  "id": "288",
+                  "title": "vel quod officiis nemo impedit tempora veritatis exercitationem"
+                },
+                {
+                  "id": "289",
+                  "title": "molestias et sit voluptates modi consectetur non"
+                },
+                {
+                  "id": "290",
+                  "title": "a deserunt amet odit voluptatem hic"
+                },
+                {
+                  "id": "291",
+                  "title": "est velit at"
+                },
+                {
+                  "id": "292",
+                  "title": "impedit facilis nisi officia distinctio aliquid aut blanditiis"
+                },
+                {
+                  "id": "293",
+                  "title": "ut consequatur recusandae odit inventore non et"
+                },
+                {
+                  "id": "294",
+                  "title": "consequuntur qui et culpa eveniet porro quis"
+                },
+                {
+                  "id": "295",
+                  "title": "dolores eligendi quibusdam animi perferendis occaecati similique"
+                },
+                {
+                  "id": "296",
+                  "title": "saepe eius labore ea est omnis"
+                },
+                {
+                  "id": "297",
+                  "title": "eaque deserunt et maxime consequatur recusandae voluptatibus inventore aut"
+                },
+                {
+                  "id": "298",
+                  "title": "id molestias tempora explicabo reprehenderit dicta unde"
+                },
+                {
+                  "id": "299",
+                  "title": "laboriosam culpa error sit velit"
+                },
+                {
+                  "id": "300",
+                  "title": "minus error et eveniet"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Path Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "Path injection vulnerability detected - file system access patterns found",
+            "evidence": "Response status: 200, Path injection patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Injection Attacks"
+        ],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "simple_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-03T05:13:54.084540",
+      "node_name": "updateAlbum_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateAlbum": {
+            "id": "7",
+            "title": "<div style=\"color:red\">Injected HTML</div>",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response for updateAlbum returns the title field containing raw HTML markup (<div style=\"color:red\">Injected HTML</div>). This indicates user-controlled HTML is stored/reflected by the API without escaping or sanitization. If any client renders this value into a web page as HTML (rather than escaping it), it can lead to stored/reflected HTML injection and likely cross-site scripting (XSS). Recommend treating the field as untrusted input and applying proper output encoding/escaping or server-side sanitization, and enforcing input validation and appropriate Content Security Policy.",
+            "evidence": "\"title\": \"<div style=\\\"color:red\\\">Injected HTML</div>\"",
+            "confidence": 0.85,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "HIGH",
+              "confidence": 0.85,
+              "evidence": "\"title\": \"<div style=\\\"color:red\\\">Injected HTML</div>\"",
+              "explanation": "The GraphQL response for updateAlbum returns the title field containing raw HTML markup (<div style=\"color:red\">Injected HTML</div>). This indicates user-controlled HTML is stored/reflected by the API without escaping or sanitization. If any client renders this value into a web page as HTML (rather than escaping it), it can lead to stored/reflected HTML injection and likely cross-site scripting (XSS). Recommend treating the field as untrusted input and applying proper output encoding/escaping or server-side sanitization, and enforcing input validation and appropriate Content Security Policy."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-03T05:13:59.528744",
+      "node_name": "updateAlbum_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-03T05:14:06.115040",
+      "node_name": "updateAlbum_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-03T05:14:13.214075",
+      "node_name": "updateAlbum_response_10",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateAlbum": {
+            "__typename": "Album",
+            "id": "1",
+            "title": "IntrospectTest",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham",
+              "username": "Bret",
+              "email": "Sincere@april.biz",
+              "address": {
+                "street": "Kulas Light",
+                "city": "Gwenborough",
+                "zipcode": "92998-3874",
+                "geo": {
+                  "lat": -37.3159,
+                  "lng": 81.1496
+                }
+              },
+              "company": {
+                "name": "Romaguera-Crona",
+                "catchPhrase": "Multi-layered client-server neural-net"
+              },
+              "posts": {
+                "meta": null
+              },
+              "albums": {
+                "meta": null
+              }
+            },
+            "photos": {
+              "meta": null,
+              "data": [
+                {
+                  "id": "1",
+                  "title": "accusamus beatae ad facilis cum similique qui sunt",
+                  "url": "https://via.placeholder.com/600/92c952"
+                },
+                {
+                  "id": "2",
+                  "title": "reprehenderit est deserunt velit ipsam",
+                  "url": "https://via.placeholder.com/600/771796"
+                },
+                {
+                  "id": "3",
+                  "title": "officia porro iure quia iusto qui ipsa ut modi",
+                  "url": "https://via.placeholder.com/600/24f355"
+                },
+                {
+                  "id": "4",
+                  "title": "culpa odio esse rerum omnis laboriosam voluptate repudiandae",
+                  "url": "https://via.placeholder.com/600/d32776"
+                },
+                {
+                  "id": "5",
+                  "title": "natus nisi omnis corporis facere molestiae rerum in",
+                  "url": "https://via.placeholder.com/600/f66b97"
+                },
+                {
+                  "id": "6",
+                  "title": "accusamus ea aliquid et amet sequi nemo",
+                  "url": "https://via.placeholder.com/600/56a8c2"
+                },
+                {
+                  "id": "7",
+                  "title": "officia delectus consequatur vero aut veniam explicabo molestias",
+                  "url": "https://via.placeholder.com/600/b0f7cc"
+                },
+                {
+                  "id": "8",
+                  "title": "aut porro officiis laborum odit ea laudantium corporis",
+                  "url": "https://via.placeholder.com/600/54176f"
+                },
+                {
+                  "id": "9",
+                  "title": "qui eius qui autem sed",
+                  "url": "https://via.placeholder.com/600/51aa97"
+                },
+                {
+                  "id": "10",
+                  "title": "beatae et provident et ut vel",
+                  "url": "https://via.placeholder.com/600/810b14"
+                },
+                {
+                  "id": "11",
+                  "title": "nihil at amet non hic quia qui",
+                  "url": "https://via.placeholder.com/600/1ee8a4"
+                },
+                {
+                  "id": "12",
+                  "title": "mollitia soluta ut rerum eos aliquam consequatur perspiciatis maiores",
+                  "url": "https://via.placeholder.com/600/66b7d2"
+                },
+                {
+                  "id": "13",
+                  "title": "repudiandae iusto deleniti rerum",
+                  "url": "https://via.placeholder.com/600/197d29"
+                },
+                {
+                  "id": "14",
+                  "title": "est necessitatibus architecto ut laborum",
+                  "url": "https://via.placeholder.com/600/61a65"
+                },
+                {
+                  "id": "15",
+                  "title": "harum dicta similique quis dolore earum ex qui",
+                  "url": "https://via.placeholder.com/600/f9cee5"
+                },
+                {
+                  "id": "16",
+                  "title": "iusto sunt nobis quasi veritatis quas expedita voluptatum deserunt",
+                  "url": "https://via.placeholder.com/600/fdf73e"
+                },
+                {
+                  "id": "17",
+                  "title": "natus doloribus necessitatibus ipsa",
+                  "url": "https://via.placeholder.com/600/9c184f"
+                },
+                {
+                  "id": "18",
+                  "title": "laboriosam odit nam necessitatibus et illum dolores reiciendis",
+                  "url": "https://via.placeholder.com/600/1fe46f"
+                },
+                {
+                  "id": "19",
+                  "title": "perferendis nesciunt eveniet et optio a",
+                  "url": "https://via.placeholder.com/600/56acb2"
+                },
+                {
+                  "id": "20",
+                  "title": "assumenda voluptatem laboriosam enim consequatur veniam placeat reiciendis error",
+                  "url": "https://via.placeholder.com/600/8985dc"
+                },
+                {
+                  "id": "21",
+                  "title": "ad et natus qui",
+                  "url": "https://via.placeholder.com/600/5e12c6"
+                },
+                {
+                  "id": "22",
+                  "title": "et ea illo et sit voluptas animi blanditiis porro",
+                  "url": "https://via.placeholder.com/600/45601a"
+                },
+                {
+                  "id": "23",
+                  "title": "harum velit vero totam",
+                  "url": "https://via.placeholder.com/600/e924e6"
+                },
+                {
+                  "id": "24",
+                  "title": "beatae officiis ut aut",
+                  "url": "https://via.placeholder.com/600/8f209a"
+                },
+                {
+                  "id": "25",
+                  "title": "facere non quis fuga fugit vitae",
+                  "url": "https://via.placeholder.com/600/5e3a73"
+                },
+                {
+                  "id": "26",
+                  "title": "asperiores nobis voluptate qui",
+                  "url": "https://via.placeholder.com/600/474645"
+                },
+                {
+                  "id": "27",
+                  "title": "sit asperiores est quos quis nisi veniam error",
+                  "url": "https://via.placeholder.com/600/c984bf"
+                },
+                {
+                  "id": "28",
+                  "title": "non neque eligendi molestiae repudiandae illum voluptatem qui aut",
+                  "url": "https://via.placeholder.com/600/392537"
+                },
+                {
+                  "id": "29",
+                  "title": "aut ipsam quos ab placeat omnis",
+                  "url": "https://via.placeholder.com/600/602b9e"
+                },
+                {
+                  "id": "30",
+                  "title": "odio enim voluptatem quidem aut nihil illum",
+                  "url": "https://via.placeholder.com/600/372c93"
+                },
+                {
+                  "id": "31",
+                  "title": "voluptate voluptates sequi",
+                  "url": "https://via.placeholder.com/600/a7c272"
+                },
+                {
+                  "id": "32",
+                  "title": "ad enim dignissimos voluptatem similique",
+                  "url": "https://via.placeholder.com/600/c70a4d"
+                },
+                {
+                  "id": "33",
+                  "title": "culpa ipsam nobis qui fuga magni et mollitia",
+                  "url": "https://via.placeholder.com/600/501fe1"
+                },
+                {
+                  "id": "34",
+                  "title": "vitae est facere quia itaque adipisci perferendis id maiores",
+                  "url": "https://via.placeholder.com/600/35185e"
+                },
+                {
+                  "id": "35",
+                  "title": "tenetur minus voluptatum et",
+                  "url": "https://via.placeholder.com/600/c96cad"
+                },
+                {
+                  "id": "36",
+                  "title": "expedita rerum eaque",
+                  "url": "https://via.placeholder.com/600/4d564d"
+                },
+                {
+                  "id": "37",
+                  "title": "totam voluptas iusto deserunt dolores",
+                  "url": "https://via.placeholder.com/600/ea51da"
+                },
+                {
+                  "id": "38",
+                  "title": "natus magnam iure rerum pariatur molestias dolore nisi",
+                  "url": "https://via.placeholder.com/600/4f5b8d"
+                },
+                {
+                  "id": "39",
+                  "title": "molestiae nam ullam et rerum doloribus",
+                  "url": "https://via.placeholder.com/600/1e71a2"
+                },
+                {
+                  "id": "40",
+                  "title": "est quas voluptates dignissimos sint praesentium nisi recusandae",
+                  "url": "https://via.placeholder.com/600/3a0b95"
+                },
+                {
+                  "id": "41",
+                  "title": "in voluptatem doloremque cum atque architecto deleniti",
+                  "url": "https://via.placeholder.com/600/659403"
+                },
+                {
+                  "id": "42",
+                  "title": "voluptatibus a autem molestias voluptas architecto culpa",
+                  "url": "https://via.placeholder.com/600/ca50ac"
+                },
+                {
+                  "id": "43",
+                  "title": "eius hic autem ad beatae voluptas",
+                  "url": "https://via.placeholder.com/600/6ad437"
+                },
+                {
+                  "id": "44",
+                  "title": "neque eum provident et inventore sed ipsam dignissimos quo",
+                  "url": "https://via.placeholder.com/600/29fe9f"
+                },
+                {
+                  "id": "45",
+                  "title": "praesentium fugit quis aut voluptatum commodi dolore corrupti",
+                  "url": "https://via.placeholder.com/600/c4084a"
+                },
+                {
+                  "id": "46",
+                  "title": "quidem maiores in quia fugit dolore explicabo occaecati",
+                  "url": "https://via.placeholder.com/600/e9b68"
+                },
+                {
+                  "id": "47",
+                  "title": "et soluta est",
+                  "url": "https://via.placeholder.com/600/b4412f"
+                },
+                {
+                  "id": "48",
+                  "title": "ut esse id",
+                  "url": "https://via.placeholder.com/600/68e0a8"
+                },
+                {
+                  "id": "49",
+                  "title": "quasi quae est modi quis quam in impedit",
+                  "url": "https://via.placeholder.com/600/2cd88b"
+                },
+                {
+                  "id": "50",
+                  "title": "et inventore quae ut tempore eius voluptatum",
+                  "url": "https://via.placeholder.com/600/9e59da"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-03T05:14:21.145498",
+      "node_name": "updateAlbum_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"titl\" on type \"Album\". Did you mean \"title\"?",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"userna\" on type \"User\". Did you mean \"username\"?",
+            "locations": [
+              {
+                "line": 9,
+                "column": 7
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"tittle\" on type \"Photo\". Did you mean \"title\"?",
+            "locations": [
+              {
+                "line": 15,
+                "column": 9
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: field_suggestions",
+            "detection": "potential",
+            "category": "Unknown",
+            "description": "The GraphQL error responses include automatic \"Did you mean ...?\" suggestions that reveal exact field names on types (e.g., 'title', 'username'). This is an information disclosure issue (field_suggestions) that aids an attacker in enumerating the schema and constructing valid queries for further probing or exploitation. While not directly an injection or remote-execution flaw, these suggestions reduce the difficulty of reconnaissance and can increase the risk of subsequent attacks. Mitigation: suppress or genericize validation errors in production (do not return field suggestions), disable suggestion functionality in the GraphQL server or runtime, implement strict input validation, and employ rate-limiting and authentication to limit automated schema discovery.",
+            "evidence": "Error messages: \"Cannot query field \\\"titl\\\" on type \\\"Album\\\". Did you mean \\\"title\\\"?\", \"Cannot query field \\\"userna\\\" on type \\\"User\\\". Did you mean \\\"username\\\"?\", \"Cannot query field \\\"tittle\\\" on type \\\"Photo\\\". Did you mean \\\"title\\\"?\"",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "field_suggestions",
+              "severity": "MEDIUM",
+              "confidence": 0.95,
+              "evidence": "Error messages: \"Cannot query field \\\"titl\\\" on type \\\"Album\\\". Did you mean \\\"title\\\"?\", \"Cannot query field \\\"userna\\\" on type \\\"User\\\". Did you mean \\\"username\\\"?\", \"Cannot query field \\\"tittle\\\" on type \\\"Photo\\\". Did you mean \\\"title\\\"?\"",
+              "explanation": "The GraphQL error responses include automatic \"Did you mean ...?\" suggestions that reveal exact field names on types (e.g., 'title', 'username'). This is an information disclosure issue (field_suggestions) that aids an attacker in enumerating the schema and constructing valid queries for further probing or exploitation. While not directly an injection or remote-execution flaw, these suggestions reduce the difficulty of reconnaissance and can increase the risk of subsequent attacks. Mitigation: suppress or genericize validation errors in production (do not return field suggestions), disable suggestion functionality in the GraphQL server or runtime, implement strict input validation, and employ rate-limiting and authentication to limit automated schema discovery."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Unknown"
+        ],
+        "potential_categories": [
+          "Unknown"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Information Disclosure",
+          "Unknown"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Unknown"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Unknown"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Unknown"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

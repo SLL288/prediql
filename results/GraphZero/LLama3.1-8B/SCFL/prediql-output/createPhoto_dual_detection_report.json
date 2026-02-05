@@ -1,0 +1,782 @@
+{
+  "report_timestamp": "2025-10-08T07:48:50.115222",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.2,
+    "simple_detections": 2,
+    "llm_detections": 6,
+    "consensus_breakdown": {
+      "llm_only": 4,
+      "both_detected": 2,
+      "no_vulnerabilities": 4
+    },
+    "detection_ratio": 3.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 2,
+      "llm_potential_detections": 0,
+      "potential_consensus_breakdown": {
+        "no_potential": 8,
+        "simple_potential_only": 2
+      },
+      "potential_detection_ratio": 0.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-08T07:48:09.699724",
+      "node_name": "createPhoto_response_1",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPhoto": {
+            "id": "5001",
+            "title": "0 OR '1'='1",
+            "url": "0 OR '1'='1",
+            "thumbnailUrl": "0 OR '1'='1"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The presence of the string '0 OR '1'='1' in the response data is a clear indicator of SQL injection. This input is designed to bypass the OR operator in SQL and is commonly used to inject malicious SQL code. Since this input is used in the context of creating a photo, it suggests that the vulnerability may be exploitable and critical in severity.",
+            "evidence": "The response contains the string '0 OR '1'='1' in the 'title', 'url', and 'thumbnailUrl' fields, which is a classic indicator of SQL injection. This input is used in the context of creating a photo, suggesting that the vulnerability may be exploitable.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The response contains the string '0 OR '1'='1' in the 'title', 'url', and 'thumbnailUrl' fields, which is a classic indicator of SQL injection. This input is used in the context of creating a photo, suggesting that the vulnerability may be exploitable.",
+              "explanation": "The presence of the string '0 OR '1'='1' in the response data is a clear indicator of SQL injection. This input is designed to bypass the OR operator in SQL and is commonly used to inject malicious SQL code. Since this input is used in the context of creating a photo, it suggests that the vulnerability may be exploitable and critical in severity."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:48:12.042610",
+      "node_name": "createPhoto_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPhoto": {
+            "id": "5001",
+            "title": "<script>alert('xss')</script>",
+            "url": "<script>alert('xss')</script>",
+            "thumbnailUrl": "<script>alert('xss')</script>"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response contains user-controlled data that is not properly sanitized, allowing an attacker to inject malicious JavaScript code. This can lead to cross-site scripting attacks, where an attacker can execute malicious scripts in the context of the client's browser, potentially leading to a wide range of attacks, including session hijacking, data theft, and unauthorized access to sensitive data.",
+            "evidence": "The presence of script tags (<script>alert('xss')</script>) in the response data, specifically in the 'title', 'url', and 'thumbnailUrl' fields, indicates that the application is vulnerable to Cross-Site Scripting (XSS) injection.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "CRITICAL",
+              "confidence": 1.0,
+              "evidence": "The presence of script tags (<script>alert('xss')</script>) in the response data, specifically in the 'title', 'url', and 'thumbnailUrl' fields, indicates that the application is vulnerable to Cross-Site Scripting (XSS) injection.",
+              "explanation": "The GraphQL response contains user-controlled data that is not properly sanitized, allowing an attacker to inject malicious JavaScript code. This can lead to cross-site scripting attacks, where an attacker can execute malicious scripts in the context of the client's browser, potentially leading to a wide range of attacks, including session hijacking, data theft, and unauthorized access to sensitive data."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:48:17.262384",
+      "node_name": "createPhoto_response_3",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"CreatePhotoInput.title\" of required type \"String!\" was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 22
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"CreatePhotoInput.thumbnailUrl\" of required type \"String!\" was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 22
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"album\" is not defined by type \"CreatePhotoInput\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 51
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:48:20.725375",
+      "node_name": "createPhoto_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPhoto": {
+            "id": "5001",
+            "title": "1=1 AND id >=IGHLt(1=1 AND id >=IGHLt(union select id from users where name = \", 1 = 1 limit 1) -- attack",
+            "url": "1=1 AND id >=IGHLt(1=1 AND id >=IGHLt(union select id from users where name = \", 1 = 1 limit 1) -- attack",
+            "thumbnailUrl": "1=1 AND id >=IGHLt(1=1 AND id >=IGHLt(union select id from users where name = \", 1 = 1 limit 1) -- attack"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: OS Command Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response data contains injected SQL code with UNION operator, which is a clear indicator of OS Command Injection. This type of vulnerability could allow an attacker to inject arbitrary operating system commands and potentially lead to a total system compromise.",
+            "evidence": "The presence of injected SQL code with UNION operator to inject commands like 'union select id from users where name =', and the response data contains an error that resembles a command execution",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "OS Command Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The presence of injected SQL code with UNION operator to inject commands like 'union select id from users where name =', and the response data contains an error that resembles a command execution",
+              "explanation": "The response data contains injected SQL code with UNION operator, which is a clear indicator of OS Command Injection. This type of vulnerability could allow an attacker to inject arbitrary operating system commands and potentially lead to a total system compromise."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:48:23.481940",
+      "node_name": "createPhoto_response_5",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"CreatePhotoInput.title\" of required type \"String!\" was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 22
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"CreatePhotoInput.url\" of required type \"String!\" was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 22
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"CreatePhotoInput.thumbnailUrl\" of required type \"String!\" was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 22
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"album\" is not defined by type \"CreatePhotoInput\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 24
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:48:26.980601",
+      "node_name": "createPhoto_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPhoto": {
+            "id": "5001",
+            "title": "<img src=x onerror=alert(\"xss\")>",
+            "url": "<img src=x onerror=alert(\"xss\")>",
+            "thumbnailUrl": "<img src=x onerror=alert(\"xss\")>"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: HTML Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response contains HTML tags in the 'title', 'url', and 'thumbnailUrl' fields, which suggests that an attacker could inject malicious HTML into the application. This could lead to Cross-Site Scripting (XSS) vulnerabilities. This is a critical finding, as XSS vulnerabilities can allow an attacker to steal user data, manipulate account settings, or hijack user sessions.",
+            "evidence": "Presence of `<img src=x onerror=alert(\"xss\")>` in the response, indicating HTML tags are being injected",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "HTML Injection",
+              "severity": "CRITICAL",
+              "confidence": 1.0,
+              "evidence": "Presence of `<img src=x onerror=alert(\"xss\")>` in the response, indicating HTML tags are being injected",
+              "explanation": "The response contains HTML tags in the 'title', 'url', and 'thumbnailUrl' fields, which suggests that an attacker could inject malicious HTML into the application. This could lead to Cross-Site Scripting (XSS) vulnerabilities. This is a critical finding, as XSS vulnerabilities can allow an attacker to steal user data, manipulate account settings, or hijack user sessions."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:48:40.466368",
+      "node_name": "createPhoto_response_7",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:48:42.724979",
+      "node_name": "createPhoto_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "In the provided responses, the non-aliased query attempts to create a photo but receives a 400 error, indicating that access control is in place. On the other hand, the aliased query using the 's: queryName' alias also attempts to create a photo, but receives a 200 status with actual data. This discrepancy suggests that the application may be vulnerable to query deny bypass via the use of query aliases. Further investigation is necessary to fully confirm this finding, but based on the available data, it appears that access control can be bypassed using query aliases, making the severity CRITICAL.",
+            "evidence": "Non-aliased query is blocked (400 error) while aliased query succeeds (200 status with data). This indicates potential access control bypass via query aliases.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "Non-aliased query is blocked (400 error) while aliased query succeeds (200 status with data). This indicates potential access control bypass via query aliases.",
+              "explanation": "In the provided responses, the non-aliased query attempts to create a photo but receives a 400 error, indicating that access control is in place. On the other hand, the aliased query using the 's: queryName' alias also attempts to create a photo, but receives a 200 status with actual data. This discrepancy suggests that the application may be vulnerable to query deny bypass via the use of query aliases. Further investigation is necessary to fully confirm this finding, but based on the available data, it appears that access control can be bypassed using query aliases, making the severity CRITICAL."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:48:46.919473",
+      "node_name": "createPhoto_response_9",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createPhoto\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Introspection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The error message 'Cannot query field \"createPhoto\" on type \"Query\"' suggests that the underlying implementation is exposing schema details to the client. This is a strong indication of an Introspection vulnerability, as the GraphQL schema is providing sensitive information about the underlying database or query structure. An attacker can exploit this to discover sensitive information about the database or leverage this information for further attacks.",
+            "evidence": "The response contains an error related to query field traversal, indicating that the GraphQL schema is exposed.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Introspection",
+              "severity": "CRITICAL",
+              "confidence": 1.0,
+              "evidence": "The response contains an error related to query field traversal, indicating that the GraphQL schema is exposed.",
+              "explanation": "The error message 'Cannot query field \"createPhoto\" on type \"Query\"' suggests that the underlying implementation is exposing schema details to the client. This is a strong indication of an Introspection vulnerability, as the GraphQL schema is providing sensitive information about the underlying database or query structure. An attacker can exploit this to discover sensitive information about the database or leverage this information for further attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:48:50.112381",
+      "node_name": "createPhoto_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createPhoto\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

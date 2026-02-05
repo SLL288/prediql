@@ -1,0 +1,3311 @@
+[
+  {
+    "query": {
+      "query": "\nquery authoritativeSets {\n  authoritativeSets(first: 10) {\n    items {\n      id\n      name\n      itemCount\n    }\n    pageInfo {\n      hasNextPage\n      nextPage\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.455,
+    "timestamp": "2025-10-07T01:19:01.536051Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "authoritativeSets": {
+          "items": [
+            {
+              "id": "ehri_cb",
+              "name": "EHRI Corporate Bodies",
+              "itemCount": 5141
+            },
+            {
+              "id": "ehri_pers",
+              "name": "EHRI Personalities",
+              "itemCount": 3375
+            },
+            {
+              "id": "terezin-victims",
+              "name": "Terezin Victim list",
+              "itemCount": 8819
+            },
+            {
+              "id": "terezin-persons",
+              "name": "Terezin JMP Person list",
+              "itemCount": 58
+            },
+            {
+              "id": "jc-persons",
+              "name": "JMP Person list for Jewish Communities Guide",
+              "itemCount": 564
+            }
+          ],
+          "pageInfo": {
+            "hasNextPage": false,
+            "nextPage": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery authoritativeSets {\n  authoritativeSets(from: \"1' UNION SELECT * FROM users--\") {\n    items {\n      identifier\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.504,
+    "timestamp": "2025-10-07T01:19:03.733556Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Exception while fetching data (/authoritativeSets) : Last encoded character (before the paddings if any) is a valid base 64 alphabet but not a possible value. Expected the discarded bits to be zero.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "path": [
+            "authoritativeSets"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery authoritativeSets {\n  authoritativeSets(after: \"javascript:alert('XSS')\") {\n    items {\n      name\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.488,
+    "timestamp": "2025-10-07T01:19:06.655227Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Exception while fetching data (/authoritativeSets) : Last encoded character (before the paddings if any) is a valid base 64 alphabet but not a possible value. Expected the discarded bits to be zero.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "path": [
+            "authoritativeSets"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery authoritativeSets {\n  authoritativeSets(from: \"http://169.254.169.254/latest/meta-data/\") {\n    items {\n      links {\n        targets {\n          ... on AccessPoint {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.493,
+    "timestamp": "2025-10-07T01:19:09.223230Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (InvalidFragmentType@[authoritativeSets/items/links/targets]) : Fragment cannot be spread here as objects of type 'Linkable' can never be of type 'AccessPoint'",
+          "locations": [
+            {
+              "line": 7,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery authoritativeSets {\n  authoritativeSets(after: \"'; cat /etc/passwd #\") {\n    items {\n      systemEvents {\n        logMessage\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.498,
+    "timestamp": "2025-10-07T01:19:11.538156Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Exception while fetching data (/authoritativeSets) : Last encoded character (before the paddings if any) is a valid base 64 alphabet but not a possible value. Expected the discarded bits to be zero.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "path": [
+            "authoritativeSets"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery authoritativeSets {\n  authoritativeSets(from: \"../../../../etc/passwd\") {\n    items {\n      annotations {\n        body\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.483,
+    "timestamp": "2025-10-07T01:19:14.030373Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Exception while fetching data (/authoritativeSets) : Last encoded character (before the paddings if any) is a valid base 64 alphabet but not a possible value. Expected the discarded bits to be zero.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "path": [
+            "authoritativeSets"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery authoritativeSets {\n  authoritativeSets(after: \"<h1>Database Error</h1>\") {\n    items {\n      description\n      authorities {\n        items {\n          descriptions {\n            biographicalHistory\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.479,
+    "timestamp": "2025-10-07T01:19:16.097597Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Exception while fetching data (/authoritativeSets) : Last encoded character (before the paddings if any) is a valid base 64 alphabet but not a possible value. Expected the discarded bits to be zero.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "path": [
+            "authoritativeSets"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery authoritativeSets {\n  authoritativeSets {\n    items {\n      id\n      type\n      authorities {\n        items {\n          descriptions {\n            source\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.692,
+        "timestamp": "2025-10-07T01:19:18.926085Z",
+        "response_body": {
+          "data": {
+            "authoritativeSets": {
+              "items": [
+                {
+                  "id": "ehri_cb",
+                  "type": "AuthoritativeSet",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=3578931&refCode=SI_PAM/0435/001/001/00018&type=&subId=&subLink=]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=1042554]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=1209822]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://www.gorenjski-muzej.si/]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=27164]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[http://www.arhiv.gov.si/en/ ]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[Personal correspondence with Monika Kokalj Ko\u010devar (MNSZS).]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[Personal corespondence with Boris Hajdinjak; https://www.sinagogamaribor.si/en/]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[Valdis O. Lumans: \"Himmler's Auxiliaries. The Volksdeutsche Mittelstelle and the German Minorities of Europe, 1939-1945\" (1993), pp. 73-100.]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://uni-koeln.de/]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "ehri_pers",
+                  "type": "AuthoritativeSet",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[GFH Archives]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=1043710&refCode=SI_PAM/1679&type=&subId=&subLink=]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=27650&refCode=SI%20AS%201979&type=&subId=&subLink=]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=27098&refCode=SI%20AS%201753&type=&subId=&subLink=]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[Chackelis Kibarskis. Visuotin\u0117 lietuvi\u0173 enciklopedija, T. X (Khmerai-Krelle). \u2013 Vilnius: Mokslo ir enciklopedij\u0173 leidybos institutas, 2006. - 19 psl.]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[Linas Vidugiris. Rozenbliumas Anatolijus. Visuotin\u0117 lietuvi\u0173 enciklopedija, T. XX (R\u0117v-Sal). \u2013 Vilnius: Mokslo ir enciklopedij\u0173 leidybos institutas, 2011. 355 psl.]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://www.archyvai.lt/lt/fondai/asmenu_dokumentu_fondai/lcva_fr933_pazyma.html]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://www.wikidata.org/wiki/Q61303]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "terezin-victims",
+                  "type": "AuthoritativeSet",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "terezin-persons",
+                  "type": "AuthoritativeSet",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "jc-persons",
+                  "type": "AuthoritativeSet",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.475,
+        "timestamp": "2025-10-07T01:19:19.402778Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token ':' at line 2 column 8",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-07T01:19:19.402808Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.469,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s: authoritativeSets {\n  s: authoritativeSets {\n    i: items {\n      id\n      t: type\n      a: authorities {\n        i: items {\n          d: descriptions {\n            s: source\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.706,
+        "timestamp": "2025-10-07T01:19:22.612181Z",
+        "response_body": {
+          "data": {
+            "authoritativeSets": {
+              "items": [
+                {
+                  "id": "ehri_cb",
+                  "type": "AuthoritativeSet",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=3578931&refCode=SI_PAM/0435/001/001/00018&type=&subId=&subLink=]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=1042554]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=1209822]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://www.gorenjski-muzej.si/]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=27164]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[http://www.arhiv.gov.si/en/ ]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[Personal correspondence with Monika Kokalj Ko\u010devar (MNSZS).]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[Personal corespondence with Boris Hajdinjak; https://www.sinagogamaribor.si/en/]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[Valdis O. Lumans: \"Himmler's Auxiliaries. The Volksdeutsche Mittelstelle and the German Minorities of Europe, 1939-1945\" (1993), pp. 73-100.]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://uni-koeln.de/]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "ehri_pers",
+                  "type": "AuthoritativeSet",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[GFH Archives]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=1043710&refCode=SI_PAM/1679&type=&subId=&subLink=]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=27650&refCode=SI%20AS%201979&type=&subId=&subLink=]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://vac.sjas.gov.si/vac/search/details?id=27098&refCode=SI%20AS%201753&type=&subId=&subLink=]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[Chackelis Kibarskis. Visuotin\u0117 lietuvi\u0173 enciklopedija, T. X (Khmerai-Krelle). \u2013 Vilnius: Mokslo ir enciklopedij\u0173 leidybos institutas, 2006. - 19 psl.]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[Linas Vidugiris. Rozenbliumas Anatolijus. Visuotin\u0117 lietuvi\u0173 enciklopedija, T. XX (R\u0117v-Sal). \u2013 Vilnius: Mokslo ir enciklopedij\u0173 leidybos institutas, 2011. 355 psl.]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://www.archyvai.lt/lt/fondai/asmenu_dokumentu_fondai/lcva_fr933_pazyma.html]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": "[https://www.wikidata.org/wiki/Q61303]"
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "terezin-victims",
+                  "type": "AuthoritativeSet",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "terezin-persons",
+                  "type": "AuthoritativeSet",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "jc-persons",
+                  "type": "AuthoritativeSet",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "source": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.443,
+        "timestamp": "2025-10-07T01:19:23.055025Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token ':' at line 2 column 8",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-07T01:19:23.055092Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.477,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets {\n    types {\n      name\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.548,
+    "timestamp": "2025-10-07T01:19:25.855689Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[authoritativeSets/types]) : Field 'types' in type 'authoritativeSets' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery authoritativeSets {\n  authoritativeSets {\n    itms {  # Intentional typo\n      id\n      nme  # Typo\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.524,
+    "timestamp": "2025-10-07T01:19:29.330816Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[authoritativeSets/itms]) : Field 'itms' in type 'authoritativeSets' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

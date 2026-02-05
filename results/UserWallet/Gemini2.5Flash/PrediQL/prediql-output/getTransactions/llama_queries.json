@@ -1,0 +1,1018 @@
+[
+  {
+    "query": {
+      "query": "\nquery getTransactions {\n  getTransactions {\n    id\n    amount\n    payer {\n      id\n      firstName\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:59:13.459290Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getTransactions": [
+          {
+            "id": "transaction-1",
+            "amount": 150,
+            "payer": {
+              "id": "user-1",
+              "firstName": "John"
+            }
+          },
+          {
+            "id": "transaction-2",
+            "amount": 2500,
+            "payer": {
+              "id": "user-1",
+              "firstName": "John"
+            }
+          },
+          {
+            "id": "transaction-3",
+            "amount": 75.5,
+            "payer": {
+              "id": "user-2",
+              "firstName": "Sarah"
+            }
+          },
+          {
+            "id": "transaction-4",
+            "amount": 1200,
+            "payer": {
+              "id": "user-2",
+              "firstName": "Sarah"
+            }
+          },
+          {
+            "id": "transaction-5",
+            "amount": 300,
+            "payer": {
+              "id": "user-3",
+              "firstName": "Michael"
+            }
+          },
+          {
+            "id": "transaction-6",
+            "amount": 45,
+            "payer": {
+              "id": "user-3",
+              "firstName": "Michael"
+            }
+          },
+          {
+            "id": "transaction-7",
+            "amount": 2500,
+            "payer": {
+              "id": "user-4",
+              "firstName": "Emily"
+            }
+          },
+          {
+            "id": "transaction-8",
+            "amount": 85,
+            "payer": {
+              "id": "user-4",
+              "firstName": "Emily"
+            }
+          },
+          {
+            "id": "transaction-9",
+            "amount": 25,
+            "payer": {
+              "id": "user-5",
+              "firstName": "David"
+            }
+          },
+          {
+            "id": "transaction-10",
+            "amount": 15.5,
+            "payer": {
+              "id": "user-5",
+              "firstName": "David"
+            }
+          }
+        ]
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getTransactions {\n  getTransactions {\n    id\n    description\n    # Attempting SQL injection in a string field\n    # Assuming 'description' is a text field that might be vulnerable\n    # This is a very basic attempt and might need more context if 'description' is not directly used in a SQL query\n    # If there were arguments like `filter` or `search` for getTransactions, they would be more appropriate for injection.\n    # Since there are no input arguments for getTransactions, we apply it to a field that *could* be derived from a vulnerable backend.\n    description: \"test' OR '1'='1\" \n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:59:15.841340Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"test' OR '1'='1\".",
+          "locations": [
+            {
+              "line": 11,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Syntax Error: Expected Name, found String \"test' OR '1'='1\".",
+                "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                "    at Parser.parseName (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:92:22)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:295:19)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:306:68)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getTransactions {\n  getTransactions {\n    id\n    description\n    # Attempting XSS injection in a string field\n    description: \"<script>alert('XSS')</script>\"\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-10-05T16:59:17.811209Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"<script>alert('XSS')</script>\".",
+          "locations": [
+            {
+              "line": 7,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Syntax Error: Expected Name, found String \"<script>alert('XSS')</script>\".",
+                "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                "    at Parser.parseName (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:92:22)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:295:19)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:306:68)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getTransactions {\n  getTransactions {\n    id\n    # Attempting SSRF by injecting a URL into a string field where an external resource might be fetched\n    # The 'description' field is chosen as a potential sink\n    description: \"http://attacker.com/evil_endpoint?transaction_id=123\"\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:59:19.641273Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"http://attacker.com/evil_endpoint?transaction_id=123\".",
+          "locations": [
+            {
+              "line": 7,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Syntax Error: Expected Name, found String \"http://attacker.com/evil_endpoint?transaction_id=123\".",
+                "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                "    at Parser.parseName (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:92:22)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:295:19)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:306:68)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getTransactions {\n  getTransactions {\n    id\n    # Attempting OS Command Injection in a string field that might be processed by a backend shell command\n    # The 'description' field is chosen as a potential sink\n    description: \"; ls -la; #\"\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:59:21.784150Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"; ls -la; #\".",
+          "locations": [
+            {
+              "line": 7,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Syntax Error: Expected Name, found String \"; ls -la; #\".",
+                "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                "    at Parser.parseName (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:92:22)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:295:19)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:306:68)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getTransactions {\n  getTransactions {\n    id\n    # Attempting Path Injection in a string field that might be used to construct a file path\n    # The 'description' field is chosen as a potential sink\n    description: \"../../../etc/passwd\"\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:59:24.042072Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"../../../etc/passwd\".",
+          "locations": [
+            {
+              "line": 7,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Syntax Error: Expected Name, found String \"../../../etc/passwd\".",
+                "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                "    at Parser.parseName (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:92:22)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:295:19)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:306:68)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getTransactions {\n  getTransactions {\n    id\n    # Attempting HTML Injection in a string field that might be rendered directly in a web UI\n    description: \"<h1>Important Transaction!</h1>\"\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-10-05T16:59:25.907362Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"<h1>Important Transaction!</h1>\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Syntax Error: Expected Name, found String \"<h1>Important Transaction!</h1>\".",
+                "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                "    at Parser.parseName (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:92:22)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:295:19)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                "    at Parser.parseField (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:306:68)",
+                "    at Parser.parseSelection (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:278:81)",
+                "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getTransactions {\n  getTransactions {\n    id\n    amount\n    payer {\n      firstName\n    }\n    wallet {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.009,
+        "timestamp": "2025-10-05T16:59:28.579132Z",
+        "response_body": {
+          "data": {
+            "getTransactions": [
+              {
+                "id": "transaction-1",
+                "amount": 150,
+                "payer": {
+                  "firstName": "John"
+                },
+                "wallet": {
+                  "name": "Main USD Wallet"
+                }
+              },
+              {
+                "id": "transaction-2",
+                "amount": 2500,
+                "payer": {
+                  "firstName": "John"
+                },
+                "wallet": {
+                  "name": "Main USD Wallet"
+                }
+              },
+              {
+                "id": "transaction-3",
+                "amount": 75.5,
+                "payer": {
+                  "firstName": "Sarah"
+                },
+                "wallet": {
+                  "name": "Travel Wallet"
+                }
+              },
+              {
+                "id": "transaction-4",
+                "amount": 1200,
+                "payer": {
+                  "firstName": "Sarah"
+                },
+                "wallet": {
+                  "name": "Business Account"
+                }
+              },
+              {
+                "id": "transaction-5",
+                "amount": 300,
+                "payer": {
+                  "firstName": "Michael"
+                },
+                "wallet": {
+                  "name": "Freelance Income"
+                }
+              },
+              {
+                "id": "transaction-6",
+                "amount": 45,
+                "payer": {
+                  "firstName": "Michael"
+                },
+                "wallet": {
+                  "name": "Freelance Income"
+                }
+              },
+              {
+                "id": "transaction-7",
+                "amount": 2500,
+                "payer": {
+                  "firstName": "Emily"
+                },
+                "wallet": {
+                  "name": "E-commerce Store"
+                }
+              },
+              {
+                "id": "transaction-8",
+                "amount": 85,
+                "payer": {
+                  "firstName": "Emily"
+                },
+                "wallet": {
+                  "name": "E-commerce Store"
+                }
+              },
+              {
+                "id": "transaction-9",
+                "amount": 25,
+                "payer": {
+                  "firstName": "David"
+                },
+                "wallet": {
+                  "name": "Student Budget"
+                }
+              },
+              {
+                "id": "transaction-10",
+                "amount": 15.5,
+                "payer": {
+                  "firstName": "David"
+                },
+                "wallet": {
+                  "name": "Student Budget"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:59:28.586331Z",
+        "response_body": {
+          "data": {
+            "aliasTransaction": [
+              {
+                "id": "transaction-1",
+                "totalAmount": 150,
+                "payerInfo": {
+                  "firstName": "John"
+                },
+                "walletDetails": {
+                  "walletName": "Main USD Wallet"
+                }
+              },
+              {
+                "id": "transaction-2",
+                "totalAmount": 2500,
+                "payerInfo": {
+                  "firstName": "John"
+                },
+                "walletDetails": {
+                  "walletName": "Main USD Wallet"
+                }
+              },
+              {
+                "id": "transaction-3",
+                "totalAmount": 75.5,
+                "payerInfo": {
+                  "firstName": "Sarah"
+                },
+                "walletDetails": {
+                  "walletName": "Travel Wallet"
+                }
+              },
+              {
+                "id": "transaction-4",
+                "totalAmount": 1200,
+                "payerInfo": {
+                  "firstName": "Sarah"
+                },
+                "walletDetails": {
+                  "walletName": "Business Account"
+                }
+              },
+              {
+                "id": "transaction-5",
+                "totalAmount": 300,
+                "payerInfo": {
+                  "firstName": "Michael"
+                },
+                "walletDetails": {
+                  "walletName": "Freelance Income"
+                }
+              },
+              {
+                "id": "transaction-6",
+                "totalAmount": 45,
+                "payerInfo": {
+                  "firstName": "Michael"
+                },
+                "walletDetails": {
+                  "walletName": "Freelance Income"
+                }
+              },
+              {
+                "id": "transaction-7",
+                "totalAmount": 2500,
+                "payerInfo": {
+                  "firstName": "Emily"
+                },
+                "walletDetails": {
+                  "walletName": "E-commerce Store"
+                }
+              },
+              {
+                "id": "transaction-8",
+                "totalAmount": 85,
+                "payerInfo": {
+                  "firstName": "Emily"
+                },
+                "walletDetails": {
+                  "walletName": "E-commerce Store"
+                }
+              },
+              {
+                "id": "transaction-9",
+                "totalAmount": 25,
+                "payerInfo": {
+                  "firstName": "David"
+                },
+                "walletDetails": {
+                  "walletName": "Student Budget"
+                }
+              },
+              {
+                "id": "transaction-10",
+                "totalAmount": 15.5,
+                "payerInfo": {
+                  "firstName": "David"
+                },
+                "walletDetails": {
+                  "walletName": "Student Budget"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T16:59:28.586399Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.005,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery getTransactionsAlias {\n  aliasTransaction: getTransactions {\n    id\n    totalAmount: amount\n    payerInfo: payer {\n      firstName\n    }\n    walletDetails: wallet {\n      walletName: name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:59:31.205225Z",
+        "response_body": {
+          "data": {
+            "getTransactions": [
+              {
+                "id": "transaction-1",
+                "amount": 150,
+                "payer": {
+                  "firstName": "John"
+                },
+                "wallet": {
+                  "name": "Main USD Wallet"
+                }
+              },
+              {
+                "id": "transaction-2",
+                "amount": 2500,
+                "payer": {
+                  "firstName": "John"
+                },
+                "wallet": {
+                  "name": "Main USD Wallet"
+                }
+              },
+              {
+                "id": "transaction-3",
+                "amount": 75.5,
+                "payer": {
+                  "firstName": "Sarah"
+                },
+                "wallet": {
+                  "name": "Travel Wallet"
+                }
+              },
+              {
+                "id": "transaction-4",
+                "amount": 1200,
+                "payer": {
+                  "firstName": "Sarah"
+                },
+                "wallet": {
+                  "name": "Business Account"
+                }
+              },
+              {
+                "id": "transaction-5",
+                "amount": 300,
+                "payer": {
+                  "firstName": "Michael"
+                },
+                "wallet": {
+                  "name": "Freelance Income"
+                }
+              },
+              {
+                "id": "transaction-6",
+                "amount": 45,
+                "payer": {
+                  "firstName": "Michael"
+                },
+                "wallet": {
+                  "name": "Freelance Income"
+                }
+              },
+              {
+                "id": "transaction-7",
+                "amount": 2500,
+                "payer": {
+                  "firstName": "Emily"
+                },
+                "wallet": {
+                  "name": "E-commerce Store"
+                }
+              },
+              {
+                "id": "transaction-8",
+                "amount": 85,
+                "payer": {
+                  "firstName": "Emily"
+                },
+                "wallet": {
+                  "name": "E-commerce Store"
+                }
+              },
+              {
+                "id": "transaction-9",
+                "amount": 25,
+                "payer": {
+                  "firstName": "David"
+                },
+                "wallet": {
+                  "name": "Student Budget"
+                }
+              },
+              {
+                "id": "transaction-10",
+                "amount": 15.5,
+                "payer": {
+                  "firstName": "David"
+                },
+                "wallet": {
+                  "name": "Student Budget"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:59:31.212746Z",
+        "response_body": {
+          "data": {
+            "aliasTransaction": [
+              {
+                "id": "transaction-1",
+                "totalAmount": 150,
+                "payerInfo": {
+                  "firstName": "John"
+                },
+                "walletDetails": {
+                  "walletName": "Main USD Wallet"
+                }
+              },
+              {
+                "id": "transaction-2",
+                "totalAmount": 2500,
+                "payerInfo": {
+                  "firstName": "John"
+                },
+                "walletDetails": {
+                  "walletName": "Main USD Wallet"
+                }
+              },
+              {
+                "id": "transaction-3",
+                "totalAmount": 75.5,
+                "payerInfo": {
+                  "firstName": "Sarah"
+                },
+                "walletDetails": {
+                  "walletName": "Travel Wallet"
+                }
+              },
+              {
+                "id": "transaction-4",
+                "totalAmount": 1200,
+                "payerInfo": {
+                  "firstName": "Sarah"
+                },
+                "walletDetails": {
+                  "walletName": "Business Account"
+                }
+              },
+              {
+                "id": "transaction-5",
+                "totalAmount": 300,
+                "payerInfo": {
+                  "firstName": "Michael"
+                },
+                "walletDetails": {
+                  "walletName": "Freelance Income"
+                }
+              },
+              {
+                "id": "transaction-6",
+                "totalAmount": 45,
+                "payerInfo": {
+                  "firstName": "Michael"
+                },
+                "walletDetails": {
+                  "walletName": "Freelance Income"
+                }
+              },
+              {
+                "id": "transaction-7",
+                "totalAmount": 2500,
+                "payerInfo": {
+                  "firstName": "Emily"
+                },
+                "walletDetails": {
+                  "walletName": "E-commerce Store"
+                }
+              },
+              {
+                "id": "transaction-8",
+                "totalAmount": 85,
+                "payerInfo": {
+                  "firstName": "Emily"
+                },
+                "walletDetails": {
+                  "walletName": "E-commerce Store"
+                }
+              },
+              {
+                "id": "transaction-9",
+                "totalAmount": 25,
+                "payerInfo": {
+                  "firstName": "David"
+                },
+                "walletDetails": {
+                  "walletName": "Student Budget"
+                }
+              },
+              {
+                "id": "transaction-10",
+                "totalAmount": 15.5,
+                "payerInfo": {
+                  "firstName": "David"
+                },
+                "walletDetails": {
+                  "walletName": "Student Budget"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T16:59:31.212834Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getTransactions {\n    types {\n      name\n      kind\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:59:33.686459Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Transaction\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Transaction\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getTransactions {\n  getTransactions {\n    id\n    amounnt # Typo for 'amount' to trigger suggestions\n    descriptionn # Typo for 'description' to trigger suggestions\n    timestamp\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:59:36.256104Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"amounnt\" on type \"Transaction\". Did you mean \"amount\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"amounnt\" on type \"Transaction\". Did you mean \"amount\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Cannot query field \"descriptionn\" on type \"Transaction\". Did you mean \"description\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"descriptionn\" on type \"Transaction\". Did you mean \"description\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

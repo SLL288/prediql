@@ -1,0 +1,1762 @@
+[
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"1' OR '1'='1\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.365,
+    "timestamp": "2025-09-23T12:47:44.184303Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    summary\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.427,
+    "timestamp": "2025-09-23T12:47:46.946583Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    name\n    links {\n      id\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.406,
+    "timestamp": "2025-09-23T12:47:49.194668Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"1; cat /etc/passwd\") {\n    id\n    name\n    history\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.395,
+    "timestamp": "2025-09-23T12:47:52.199747Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"../../../etc/passwd\") {\n    id\n    name\n    situation\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.408,
+    "timestamp": "2025-09-23T12:47:54.514386Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<div><img src=x onerror=\\\"alert(1)\\\"></div>\") {\n    id\n    name\n    summary\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.361,
+    "timestamp": "2025-09-23T12:47:57.665036Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"GB\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.368,
+        "timestamp": "2025-09-23T12:47:59.774740Z",
+        "response_body": {
+          "data": {
+            "Country": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.378,
+        "timestamp": "2025-09-23T12:48:00.152355Z",
+        "response_body": {
+          "data": {
+            "c": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-09-23T12:48:00.152376Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.363,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  c: Country(id: \"GB\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.367,
+        "timestamp": "2025-09-23T12:48:03.128909Z",
+        "response_body": {
+          "data": {
+            "Country": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.45,
+        "timestamp": "2025-09-23T12:48:03.579213Z",
+        "response_body": {
+          "data": {
+            "c": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-23T12:48:03.579260Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.38,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country {\n    queryType {\n      name\n    }\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.352,
+    "timestamp": "2025-09-23T12:48:06.423264Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Country]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Country/queryType]) : Field 'queryType' in type 'Country' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Country/types]) : Field 'types' in type 'Country' is undefined",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(name: \"Country\") {\n    name\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.422,
+    "timestamp": "2025-09-23T12:48:09.519882Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Country]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (UnknownArgument@[Country]) : Unknown field argument 'name'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Country/fields]) : Field 'fields' in type 'Country' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6' OR '1'='1\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.436,
+    "timestamp": "2025-09-23T12:50:22.615634Z",
+    "count": 11,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    summary\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.361,
+    "timestamp": "2025-09-23T12:50:25.469929Z",
+    "count": 12,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\") {\n    id\n    name\n    history\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.439,
+    "timestamp": "2025-09-23T12:50:28.065834Z",
+    "count": 13,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.369,
+    "timestamp": "2025-09-23T12:50:31.292044Z",
+    "count": 14,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"../../etc/passwd\") {\n    id\n    identifier\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.383,
+    "timestamp": "2025-09-23T12:50:33.581134Z",
+    "count": 15,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<img src=x onerror=alert('xss')>\") {\n    id\n    name\n    summary\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.368,
+    "timestamp": "2025-09-23T12:50:36.937665Z",
+    "count": 16,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"public-0001\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.356,
+        "timestamp": "2025-09-23T12:50:38.944299Z",
+        "response_body": {
+          "data": {
+            "Country": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.366,
+        "timestamp": "2025-09-23T12:50:39.310130Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 17,
+    "timestamp": "2025-09-23T12:50:39.310168Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.382,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  s: Country(id: \"public-0001\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.397,
+        "timestamp": "2025-09-23T12:50:43.004542Z",
+        "response_body": {
+          "data": {
+            "Country": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.434,
+        "timestamp": "2025-09-23T12:50:43.438583Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 18,
+    "timestamp": "2025-09-23T12:50:43.438655Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.388,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    __typename\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.368,
+    "timestamp": "2025-09-23T12:50:47.192023Z",
+    "count": 19,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    namme\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.365,
+    "timestamp": "2025-09-23T12:50:50.536459Z",
+    "count": 20,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Country/namme]) : Field 'namme' in type 'Country' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    itemCount\n    summary\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.384,
+    "timestamp": "2025-09-23T12:53:32.361063Z",
+    "count": 21,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6' OR '1'='1\") {\n    id\n    name\n    history\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.386,
+    "timestamp": "2025-09-23T12:53:34.839093Z",
+    "count": 22,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6<script>alert('xss')</script>\") {\n    id\n    name\n    summary\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.384,
+    "timestamp": "2025-09-23T12:53:37.540781Z",
+    "count": 23,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    name\n    summary\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.369,
+    "timestamp": "2025-09-23T12:53:40.541238Z",
+    "count": 24,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6; cat /etc/passwd\") {\n    id\n    name\n    history\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.398,
+    "timestamp": "2025-09-23T12:53:42.720397Z",
+    "count": 25,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"../../../../../etc/passwd\") {\n    id\n    name\n    summary\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.415,
+    "timestamp": "2025-09-23T12:53:45.681176Z",
+    "count": 26,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<img src=x onerror=alert(1)>\") {\n    id\n    name\n    summary\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.362,
+    "timestamp": "2025-09-23T12:53:48.088819Z",
+    "count": 27,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    systemEvents {\n      timestamp\n      logMessage\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.396,
+        "timestamp": "2025-09-23T12:53:50.719241Z",
+        "response_body": {
+          "data": {
+            "Country": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.364,
+        "timestamp": "2025-09-23T12:53:51.083365Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 28,
+    "timestamp": "2025-09-23T12:53:51.083421Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.401,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  s: Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    systemEvents {\n      timestamp\n      logMessage\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.674,
+        "timestamp": "2025-09-23T12:53:53.930888Z",
+        "response_body": {
+          "data": {
+            "Country": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.068,
+        "timestamp": "2025-09-23T12:53:54.998532Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 29,
+    "timestamp": "2025-09-23T12:53:54.998581Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.381,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(name: \"Country\") {\n    name\n    fields {\n      name\n      type {\n        name\n        kind\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.367,
+    "timestamp": "2025-09-23T12:53:57.425952Z",
+    "count": 30,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Country]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (UnknownArgument@[Country]) : Unknown field argument 'name'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Country/fields]) : Field 'fields' in type 'Country' is undefined",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    itemCount\n    repositories {\n      items {\n        id\n        name\n      }\n    }\n    links {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.554,
+    "timestamp": "2025-09-23T12:56:19.232409Z",
+    "count": 31,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Country/repositories/items/name]) : Field 'name' in type 'Repository' is undefined",
+          "locations": [
+            {
+              "line": 10,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6' OR '1'='1\") {\n    id\n    name\n    history\n    summary\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.458,
+    "timestamp": "2025-09-23T12:56:21.504792Z",
+    "count": 32,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    summary\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.373,
+    "timestamp": "2025-09-23T12:56:23.732366Z",
+    "count": 33,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    name\n    links {\n      id\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.404,
+    "timestamp": "2025-09-23T12:56:26.040033Z",
+    "count": 34,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6; cat /etc/passwd\") {\n    id\n    name\n    extensive\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.419,
+    "timestamp": "2025-09-23T12:56:28.779157Z",
+    "count": 35,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"../../../../etc/passwd\") {\n    id\n    name\n    summary\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.401,
+    "timestamp": "2025-09-23T12:56:30.756745Z",
+    "count": 36,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<img src=x onerror=alert(1) />\") {\n    id\n    name\n    situation\n    summary\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.406,
+    "timestamp": "2025-09-23T12:56:33.341694Z",
+    "count": 37,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    extensive\n    systemEvents {\n      timestamp\n      logMessage\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.365,
+        "timestamp": "2025-09-23T12:56:36.009797Z",
+        "response_body": {
+          "data": {
+            "Country": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.366,
+        "timestamp": "2025-09-23T12:56:36.375463Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 38,
+    "timestamp": "2025-09-23T12:56:36.375583Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.428,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  s: Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    extensive\n    systemEvents {\n      timestamp\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.373,
+        "timestamp": "2025-09-23T12:56:39.252110Z",
+        "response_body": {
+          "data": {
+            "Country": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.38,
+        "timestamp": "2025-09-23T12:56:39.631806Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 39,
+    "timestamp": "2025-09-23T12:56:39.631852Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.368,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.364,
+    "timestamp": "2025-09-23T12:56:42.753071Z",
+    "count": 40,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Country]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[Country/types]) : Field 'types' in type 'Country' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6' OR '1'='1\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.419,
+    "timestamp": "2025-09-23T12:59:17.385945Z",
+    "count": 41,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.365,
+    "timestamp": "2025-09-23T12:59:20.233816Z",
+    "count": 42,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.439,
+    "timestamp": "2025-09-23T12:59:22.599418Z",
+    "count": 43,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6; cat /etc/passwd\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.368,
+    "timestamp": "2025-09-23T12:59:25.552221Z",
+    "count": 44,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"../../../etc/passwd\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.379,
+    "timestamp": "2025-09-23T12:59:27.978708Z",
+    "count": 45,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<div><img src=x onerror=alert(1)></div>\") {\n    id\n    name\n    itemCount\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.37,
+    "timestamp": "2025-09-23T12:59:31.325295Z",
+    "count": 46,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    itemCount\n    situation\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.429,
+        "timestamp": "2025-09-23T12:59:33.591156Z",
+        "response_body": {
+          "data": {
+            "Country": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.387,
+        "timestamp": "2025-09-23T12:59:33.978538Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 47,
+    "timestamp": "2025-09-23T12:59:33.978608Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.39,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  s: Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    itemCount\n    situation\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.371,
+        "timestamp": "2025-09-23T12:59:36.395474Z",
+        "response_body": {
+          "data": {
+            "Country": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.365,
+        "timestamp": "2025-09-23T12:59:36.760579Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 48,
+    "timestamp": "2025-09-23T12:59:36.760604Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.369,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(name: \"Country\") {\n    name\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.353,
+    "timestamp": "2025-09-23T12:59:39.399840Z",
+    "count": 49,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (MissingFieldArgument@[Country]) : Missing field argument 'id'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (UnknownArgument@[Country]) : Unknown field argument 'name'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 11
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    namme\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.377,
+    "timestamp": "2025-09-23T12:59:41.761807Z",
+    "count": 50,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[Country/namme]) : Field 'namme' in type 'Country' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    itemCount\n    links {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.433,
+    "timestamp": "2025-09-23T13:02:19.074212Z",
+    "count": 51,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.378,
+    "timestamp": "2025-09-23T13:02:21.166274Z",
+    "count": 52,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.373,
+    "timestamp": "2025-09-23T13:02:24.514894Z",
+    "count": 53,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.421,
+    "timestamp": "2025-09-23T13:02:27.327343Z",
+    "count": 54,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.374,
+    "timestamp": "2025-09-23T13:02:29.601146Z",
+    "count": 55,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"../../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.36,
+    "timestamp": "2025-09-23T13:02:32.878341Z",
+    "count": 56,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"<img src=x onerror=alert(1)>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.404,
+    "timestamp": "2025-09-23T13:02:34.981106Z",
+    "count": 57,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "Country": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    secret\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.368,
+        "timestamp": "2025-09-23T13:02:37.246217Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[Country/secret]) : Field 'secret' in type 'Country' is undefined",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.45,
+        "timestamp": "2025-09-23T13:02:37.696440Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[Country/secret]) : Field 'secret' in type 'Country' is undefined",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 58,
+    "timestamp": "2025-09-23T13:02:37.696547Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.369,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  s: Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n    name\n    secret\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.411,
+        "timestamp": "2025-09-23T13:02:41.291825Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[Country/secret]) : Field 'secret' in type 'Country' is undefined",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.364,
+        "timestamp": "2025-09-23T13:02:41.655786Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[Country/secret]) : Field 'secret' in type 'Country' is undefined",
+              "locations": [
+                {
+                  "line": 6,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 59,
+    "timestamp": "2025-09-23T13:02:41.655861Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.396,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Country {\n  Country(id: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\") {\n    id\n  }\n  __type(name: \"Country\") {\n    name\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.4,
+    "timestamp": "2025-09-23T13:02:45.444908Z",
+    "count": 60,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "Country": null,
+        "__type": {
+          "name": "Country",
+          "fields": [
+            {
+              "name": "id"
+            },
+            {
+              "name": "type"
+            },
+            {
+              "name": "identifier"
+            },
+            {
+              "name": "name"
+            },
+            {
+              "name": "history"
+            },
+            {
+              "name": "situation"
+            },
+            {
+              "name": "summary"
+            },
+            {
+              "name": "extensive"
+            },
+            {
+              "name": "itemCount"
+            },
+            {
+              "name": "repositories"
+            },
+            {
+              "name": "links"
+            },
+            {
+              "name": "annotations"
+            },
+            {
+              "name": "systemEvents"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

@@ -1,0 +1,809 @@
+{
+  "report_timestamp": "2025-10-08T07:15:51.439303",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.1,
+    "simple_detections": 1,
+    "llm_detections": 8,
+    "consensus_breakdown": {
+      "both_detected": 1,
+      "llm_only": 7,
+      "no_vulnerabilities": 2
+    },
+    "detection_ratio": 8.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 1,
+      "llm_potential_detections": 2,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 1,
+        "no_potential": 7,
+        "llm_potential_only": 2
+      },
+      "potential_detection_ratio": 2.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-08T07:14:55.120710",
+      "node_name": "createUser_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "Robert'); DROP TABLE user; --",
+            "username": "robert",
+            "email": "robert@example.com",
+            "address": {
+              "street": "123 Main St",
+              "suite": "Apt 101",
+              "city": "Anytown",
+              "zipcode": "12345",
+              "geo": {
+                "lat": 37.7749,
+                "lng": -122.4194
+              }
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SQL Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'name' field of the 'createUser' response contains a string that seems to be an SQL injection attack. The input contains a DROP TABLE statement, indicating that it is an attempt to compromise the database integrity. This is a clear evidence of SQL injection, and its severity is critical as it poses a high risk of database manipulation and unauthorized data access.",
+            "evidence": "The 'name' field contains a malicious input: 'Robert'); DROP TABLE user; --' which appears to be an attempt to inject SQL code.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SQL Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The 'name' field contains a malicious input: 'Robert'); DROP TABLE user; --' which appears to be an attempt to inject SQL code.",
+              "explanation": "The 'name' field of the 'createUser' response contains a string that seems to be an SQL injection attack. The input contains a DROP TABLE statement, indicating that it is an attempt to compromise the database integrity. This is a clear evidence of SQL injection, and its severity is critical as it poses a high risk of database manipulation and unauthorized data access."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:15:02.023367",
+      "node_name": "createUser_response_3",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Syntax Error: Unexpected single quote character ('), did you mean to use a double quote (\")?",
+            "locations": [
+              {
+                "line": 4,
+                "column": 11
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_PARSE_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: XSS Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The presence of a 'Syntax Error' message with a specific mention of a single quote character suggests that the GraphQL parser is stumbling over a specially crafted input. This can be a sign of a Cross-Site Scripting (XSS) vulnerability. While the error message itself is not injecting executable code, it indicates a potential weakness in the GraphQL API's input validation that could be exploited by an attacker.",
+            "evidence": "The GraphQL response contains a 'Syntax Error' message that mentions an unexpected single quote character. This could indicate an attacker trying to inject HTML code or a script.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "XSS Injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "The GraphQL response contains a 'Syntax Error' message that mentions an unexpected single quote character. This could indicate an attacker trying to inject HTML code or a script.",
+              "explanation": "The presence of a 'Syntax Error' message with a specific mention of a single quote character suggests that the GraphQL parser is stumbling over a specially crafted input. This can be a sign of a Cross-Site Scripting (XSS) vulnerability. While the error message itself is not injecting executable code, it indicates a potential weakness in the GraphQL API's input validation that could be exploited by an attacker."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:15:05.459105",
+      "node_name": "createUser_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "admin",
+            "username": "ssrf",
+            "email": "ssrf@example.com",
+            "address": {
+              "street": "123 Main St",
+              "suite": "Apt 101",
+              "city": "Anytown",
+              "zipcode": "12345",
+              "geo": {
+                "lat": 37.7749,
+                "lng": -122.4194
+              }
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "In the provided GraphQL response, the `createUser` object has an `address` field with a nested `geo` object. The `lat` and `lng` fields within the `geo` object contain values that appear to be in a Geography Markup Language (GML) format. However, without proper input validation, an attacker could potentially use these fields to inject malicious requests to internal or external systems, especially if the server is not configured to sanitize these inputs. This is a critical vulnerability as it allows an attacker to potentially disclose internal network access or execute arbitrary requests.",
+            "evidence": "The `geo` object within the `address` object contains a URL encoded string `lat` and `lng` fields, but does not validate input for external request contexts, which makes it a potential vector for SSRF (Server-Side Request Forgery) attacks.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The `geo` object within the `address` object contains a URL encoded string `lat` and `lng` fields, but does not validate input for external request contexts, which makes it a potential vector for SSRF (Server-Side Request Forgery) attacks.",
+              "explanation": "In the provided GraphQL response, the `createUser` object has an `address` field with a nested `geo` object. The `lat` and `lng` fields within the `geo` object contain values that appear to be in a Geography Markup Language (GML) format. However, without proper input validation, an attacker could potentially use these fields to inject malicious requests to internal or external systems, especially if the server is not configured to sanitize these inputs. This is a critical vulnerability as it allows an attacker to potentially disclose internal network access or execute arbitrary requests."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:15:11.294738",
+      "node_name": "createUser_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "root",
+            "username": "oscp",
+            "email": "oscp@example.com",
+            "address": {
+              "street": "123 Main St",
+              "suite": "Apt 101",
+              "city": "Anytown",
+              "zipcode": "12345",
+              "geo": {
+                "lat": 37.7749,
+                "lng": -122.4194
+              }
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The presence of the string 'root' in the 'name' field of the 'createUser' object is suspicious, as it is a privileged user name that can be used to access sensitive system commands. This could potentially allow an attacker to inject malicious OS commands through this field, leading to a CRITICAL os_command_injection vulnerability.",
+            "evidence": "The 'name' field contains the string 'root', which is reserved for root user in many Unix-based systems and can indicate potential os_command_injection vulnerability.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "CRITICAL",
+              "confidence": 1.0,
+              "evidence": "The 'name' field contains the string 'root', which is reserved for root user in many Unix-based systems and can indicate potential os_command_injection vulnerability.",
+              "explanation": "The presence of the string 'root' in the 'name' field of the 'createUser' object is suspicious, as it is a privileged user name that can be used to access sensitive system commands. This could potentially allow an attacker to inject malicious OS commands through this field, leading to a CRITICAL os_command_injection vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:15:16.480612",
+      "node_name": "createUser_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "path",
+            "username": "pathvuln",
+            "email": "pathvuln@example.com",
+            "address": {
+              "street": "123./phpmyadmin St",
+              "suite": "Apt 101",
+              "city": "Anytown",
+              "zipcode": "12345",
+              "geo": {
+                "lat": 37.7749,
+                "lng": -122.4194
+              }
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: path_injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The presence of the './' character in the response, specifically in the 'street' field, suggests that the GraphQL API might be vulnerable to path injection attacks. An attacker could potentially manipulate the input string to access sensitive files or directories on the server. However, further research and analysis are needed to confirm the severity of this issue. The specific implementation of the GraphQL API and its security measures would need to be investigated to determine if this is indeed a vulnerability.",
+            "evidence": "The GraphQL response contains a field named 'street' with a value containing a path traversal character ('./phpmyadmin St'). This could potentially be used for path injection attacks.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "path_injection",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The GraphQL response contains a field named 'street' with a value containing a path traversal character ('./phpmyadmin St'). This could potentially be used for path injection attacks.",
+              "explanation": "The presence of the './' character in the response, specifically in the 'street' field, suggests that the GraphQL API might be vulnerable to path injection attacks. An attacker could potentially manipulate the input string to access sensitive files or directories on the server. However, further research and analysis are needed to confirm the severity of this issue. The specific implementation of the GraphQL API and its security measures would need to be investigated to determine if this is indeed a vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:15:18.094031",
+      "node_name": "createUser_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createUser": {
+            "id": "11",
+            "name": "<input type='hidden' value='",
+            "username": "html",
+            "email": "html@example.com",
+            "address": {
+              "street": "123 Main St",
+              "suite": "Apt 101",
+              "city": "Anytown",
+              "zipcode": "12345",
+              "geo": {
+                "lat": 37.7749,
+                "lng": -122.4194
+              }
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'name' field in the 'createUser' response contains HTML code with a malicious input value. This indicates a possible HTML injection vulnerability. An attacker could exploit this by manipulating the 'name' field to inject malicious HTML, potentially leading to cross-site scripting (XSS) attacks. This vulnerability is critical as it allows an attacker to inject arbitrary HTML code, potentially leading to client-side attacks and compromising user security.",
+            "evidence": "The 'name' field contains HTML code with an exposed input value '<input type='hidden' value='",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The 'name' field contains HTML code with an exposed input value '<input type='hidden' value='",
+              "explanation": "The 'name' field in the 'createUser' response contains HTML code with a malicious input value. This indicates a possible HTML injection vulnerability. An attacker could exploit this by manipulating the 'name' field to inject malicious HTML, potentially leading to cross-site scripting (XSS) attacks. This vulnerability is critical as it allows an attacker to inject arbitrary HTML code, potentially leading to client-side attacks and compromising user security."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:15:29.521566",
+      "node_name": "createUser_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:15:40.814614",
+      "node_name": "createUser_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:15:44.971137",
+      "node_name": "createUser_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createUser\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: introspection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "Introspection vulnerabilities occur when a GraphQL API exposes its internal schema or type definitions to an attacker, allowing them to extract or manipulate sensitive information. In this case, the error message suggests that the 'createUser' field is not accessible on the 'Query' type. Therefore, it appears that the API is exposing its internal type definitions, which could be used to create an exploitation vector for potential attacks.",
+            "evidence": "The GraphQL response contains a 'Cannot query field' error message, which is a common indicator of an introspection vulnerability. Additionally, the 'extensions' key in the response contains a 'code' value of 'GRAPHQL_VALIDATION_FAILED', which further suggests that the server is exposing sensitive information about its internal validation mechanisms.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "introspection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "The GraphQL response contains a 'Cannot query field' error message, which is a common indicator of an introspection vulnerability. Additionally, the 'extensions' key in the response contains a 'code' value of 'GRAPHQL_VALIDATION_FAILED', which further suggests that the server is exposing sensitive information about its internal validation mechanisms.",
+              "explanation": "Introspection vulnerabilities occur when a GraphQL API exposes its internal schema or type definitions to an attacker, allowing them to extract or manipulate sensitive information. In this case, the error message suggests that the 'createUser' field is not accessible on the 'Query' type. Therefore, it appears that the API is exposing its internal type definitions, which could be used to create an exploitation vector for potential attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:15:51.437759",
+      "node_name": "createUser_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createUser\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The error message reveals the schema structure, which can potentially allow an attacker to understand the underlying schema and plan further attacks.",
+            "evidence": "The GraphQL schema is being exposed through the error message, which contains information about the schema structure.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The GraphQL schema is being exposed through the error message, which contains information about the schema structure.",
+              "explanation": "The error message reveals the schema structure, which can potentially allow an attacker to understand the underlying schema and plan further attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

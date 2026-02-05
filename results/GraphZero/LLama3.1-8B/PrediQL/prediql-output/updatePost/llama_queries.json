@@ -1,0 +1,333 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1\", input: {title: \"Updated Post Title\", body: \"This is the updated post body.\"}) {\n    id\n    title\n    body\n    user {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.99,
+    "timestamp": "2025-10-05T16:45:50.597779Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "1",
+          "title": "Updated Post Title",
+          "body": "This is the updated post body.",
+          "user": {
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"1 OR 1=1\", input: {title: \"SQL Injection Test\", body: \"'; DROP TABLE posts; --\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.937,
+    "timestamp": "2025-10-05T16:45:54.073302Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": null,
+          "title": "SQL Injection Test"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"2\", input: {title: \"XSS Injection <script>alert('Vulnerable!')</script>\", body: \"This body has <img src=x onerror=alert('XSS')> an XSS payload.\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.945,
+    "timestamp": "2025-10-05T16:45:57.068062Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "2",
+          "title": "XSS Injection <script>alert('Vulnerable!')</script>",
+          "body": "This body has <img src=x onerror=alert('XSS')> an XSS payload."
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"3\", input: {title: \"SSRF Test\", body: \"Check logs for request to http://internal.somecorp.com/admin\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.899,
+    "timestamp": "2025-10-05T16:45:59.824249Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "3",
+          "title": "SSRF Test"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"4\", input: {title: \"Command Injection Test\", body: \"; sleep 5 # The system is under attack\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.961,
+    "timestamp": "2025-10-05T16:46:03.016646Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "4",
+          "title": "Command Injection Test"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"5\", input: {title: \"Path Injection Test\", body: \"Accessing ../../../etc/passwd could be fun.\"}) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.944,
+    "timestamp": "2025-10-05T16:46:06.586077Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "5",
+          "title": "Path Injection Test"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"6\", input: {title: \"HTML Injection Test\", body: \"<h1>This is injected HTML</h1><p>And a paragraph with <b>bold</b> text.</p>\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.407,
+    "timestamp": "2025-10-05T16:46:10.621346Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updatePost": {
+          "id": "6",
+          "title": "HTML Injection Test",
+          "body": "<h1>This is injected HTML</h1><p>And a paragraph with <b>bold</b> text.</p>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"7\", input: {title: \"Attempted Bypass\", body: \"Non-aliased query for bypass testing.\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.629,
+        "timestamp": "2025-10-05T16:46:14.258891Z",
+        "response_body": {
+          "data": {
+            "updatePost": {
+              "id": "7",
+              "title": "Attempted Bypass",
+              "body": "Non-aliased query for bypass testing."
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.011,
+        "timestamp": "2025-10-05T16:46:15.269634Z",
+        "response_body": {
+          "data": {
+            "postUpdate": {
+              "id": "7",
+              "title": "Aliased Bypass Attempt",
+              "body": "Aliased query to test query deny bypass."
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T16:46:15.269744Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.939,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  postUpdate: updatePost(id: \"7\", input: {title: \"Aliased Bypass Attempt\", body: \"Aliased query to test query deny bypass.\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.917,
+        "timestamp": "2025-10-05T16:46:19.673737Z",
+        "response_body": {
+          "data": {
+            "updatePost": {
+              "id": "7",
+              "title": "Attempted Bypass",
+              "body": "Non-aliased query for bypass testing."
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.959,
+        "timestamp": "2025-10-05T16:46:20.632536Z",
+        "response_body": {
+          "data": {
+            "postUpdate": {
+              "id": "7",
+              "title": "Aliased Bypass Attempt",
+              "body": "Aliased query to test query deny bypass."
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T16:46:20.632648Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.004,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updatePost {\n    types {\n      name\n      kind\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.864,
+    "timestamp": "2025-10-05T16:46:24.228562Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updatePost\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updatePost(id: \"8\", input: {title: \"Suggestioin Test\", boddy: \"This has a typo for suggestion.\"}) {\n    id\n    title\n    body\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.886,
+    "timestamp": "2025-10-05T16:46:27.911190Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"boddy\" is not defined by type \"UpdatePostInput\". Did you mean \"body\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 58
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

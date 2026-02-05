@@ -1,0 +1,342 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: {title: \"Updated Todo Title\", completed: true}) {\n    id\n    title\n    completed\n    user {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 9.89,
+    "timestamp": "2025-10-04T22:58:34.436334Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "1",
+          "title": "Updated Todo Title",
+          "completed": true,
+          "user": {
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: {title: \"Test'); DROP TABLE users; --\", completed: false}) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.024,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='graphqlzero.almansi.me', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-10-04T22:58:47.333302Z",
+    "count": 2
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"2\", input: {title: \"<script>alert('XSSed!')</script>\", completed: true}) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 10.989,
+    "timestamp": "2025-10-04T22:58:58.322363Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "2",
+          "title": "<script>alert('XSSed!')</script>",
+          "completed": true
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"3\", input: {title: \"Check this out: http://attacker.com/malicious-endpoint\", completed: false}) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 3.349,
+    "timestamp": "2025-10-04T22:59:03.441048Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "3",
+          "title": "Check this out: http://attacker.com/malicious-endpoint",
+          "completed": false
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"4\", input: {title: \"New Todo; rm -rf /; ls -la\", completed: true}) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.344,
+    "timestamp": "2025-10-04T22:59:06.318663Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "4",
+          "title": "New Todo; rm -rf /; ls -la",
+          "completed": true
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"5\", input: {title: \"../../../etc/passwd\", completed: false}) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 4.706,
+    "timestamp": "2025-10-04T22:59:13.087470Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "5",
+          "title": "../../../etc/passwd",
+          "completed": false
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"6\", input: {title: \"<h1>Important Todo</h1><img src='invalid' onerror='alert(\\\"HTML injection\\\")'>\", completed: true}) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 3.068,
+    "timestamp": "2025-10-04T22:59:18.911158Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "id": "6",
+          "title": "<h1>Important Todo</h1><img src='invalid' onerror='alert(\"HTML injection\")'>",
+          "completed": true
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"7\", input: {title: \"This is a non-aliased query.\", completed: false}) {\n    id\n    title\n    completed\n    user {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.396,
+        "timestamp": "2025-10-04T22:59:22.880410Z",
+        "response_body": {
+          "data": {
+            "updateTodo": {
+              "id": "7",
+              "title": "This is a non-aliased query.",
+              "completed": false,
+              "user": {
+                "id": "1"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.604,
+        "timestamp": "2025-10-04T22:59:24.484242Z",
+        "response_body": {
+          "data": {
+            "aliasedUpdate": {
+              "id": "8",
+              "title": "This is an aliased query.",
+              "completed": true,
+              "user": {
+                "name": "Leanne Graham",
+                "email": "Sincere@april.biz"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-04T22:59:24.484282Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 2.418,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  aliasedUpdate: updateTodo(id: \"8\", input: {title: \"This is an aliased query.\", completed: true}) {\n    id\n    title\n    completed\n    user {\n      name\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.35,
+        "timestamp": "2025-10-04T22:59:30.262096Z",
+        "response_body": {
+          "data": {
+            "updateTodo": {
+              "id": "7",
+              "title": "This is a non-aliased query.",
+              "completed": false,
+              "user": {
+                "id": "1"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.381,
+        "timestamp": "2025-10-04T22:59:31.643024Z",
+        "response_body": {
+          "data": {
+            "aliasedUpdate": {
+              "id": "8",
+              "title": "This is an aliased query.",
+              "completed": true,
+              "user": {
+                "name": "Leanne Graham",
+                "email": "Sincere@april.biz"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-04T22:59:31.643060Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 4.469,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"9\", input: {title: \"Introspection works\", completed: false}) {\n    id\n    title\n    completed\n  }\n  __schema {\n    queryType {\n      name\n    }\n    types {\n      kind\n      name\n      fields(includeDeprecated: true) {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.391,
+    "timestamp": "2025-10-04T22:59:39.723816Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"__schema\" on type \"Mutation\".",
+          "locations": [
+            {
+              "line": 8,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"10\", input: {title: \"Testing suggestions\", completed: true}) {\n    id\n    titlee # Typo to trigger suggestion\n    completed\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.155,
+    "timestamp": "2025-10-04T22:59:43.166166Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"titlee\" on type \"Todo\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

@@ -1,0 +1,681 @@
+{
+  "report_timestamp": "2025-10-05T16:31:53.769712",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.4,
+    "simple_detections": 4,
+    "llm_detections": 4,
+    "consensus_breakdown": {
+      "both_detected": 4,
+      "no_vulnerabilities": 6
+    },
+    "detection_ratio": 1.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 4,
+      "llm_potential_detections": 0,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 4,
+        "no_potential": 6
+      },
+      "potential_detection_ratio": 0.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-05T16:31:34.850066",
+      "node_name": "updatePhoto_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "1",
+            "title": "'; SELECT SLEEP(5); --",
+            "url": "https://example.com/image.jpg"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'title' field within the 'updatePhoto' mutation's response reflects an SQL injection payload: \"'; SELECT SLEEP(5); --\". This strongly suggests that the input for the 'title' field is not being properly sanitized or parameterized before being used in a backend SQL query. The presence of 'SELECT SLEEP(5);' indicates an attempt to introduce a time-based SQL injection, which would cause a delay in the database response if successfully executed. The '--' at the end is a common technique to comment out the remainder of the original query. While the response itself doesn't show the SLEEP command executing, the reflection of the exact payload in a processed field is a critical indicator of a vulnerability, indicating that the backend is processing the input as part of a query rather than just a string literal.",
+            "evidence": "The 'title' field in the response body contains the SQL injection payload: \"'; SELECT SLEEP(5); --\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "The 'title' field in the response body contains the SQL injection payload: \"'; SELECT SLEEP(5); --\"",
+              "explanation": "The 'title' field within the 'updatePhoto' mutation's response reflects an SQL injection payload: \"'; SELECT SLEEP(5); --\". This strongly suggests that the input for the 'title' field is not being properly sanitized or parameterized before being used in a backend SQL query. The presence of 'SELECT SLEEP(5);' indicates an attempt to introduce a time-based SQL injection, which would cause a delay in the database response if successfully executed. The '--' at the end is a common technique to comment out the remainder of the original query. While the response itself doesn't show the SLEEP command executing, the reflection of the exact payload in a processed field is a critical indicator of a vulnerability, indicating that the backend is processing the input as part of a query rather than just a string literal."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:31:36.579936",
+      "node_name": "updatePhoto_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "2",
+            "title": "<script>alert('XSS vulnerability via title')</script>",
+            "url": "https://example.com/image2.jpg"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'title' field in the GraphQL response body contains a '<script>alert('XSS vulnerability via title')</script>' tag. This indicates that the server is reflecting unescaped user-supplied input directly into the response, which, if rendered in a web browser without proper sanitization, could lead to a Cross-Site Scripting (XSS) vulnerability. An attacker could inject malicious scripts that execute in the user's browser, potentially stealing cookies, session tokens, or defacing the webpage.",
+            "evidence": "<script>alert('XSS vulnerability via title')</script>",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "<script>alert('XSS vulnerability via title')</script>",
+              "explanation": "The 'title' field in the GraphQL response body contains a '<script>alert('XSS vulnerability via title')</script>' tag. This indicates that the server is reflecting unescaped user-supplied input directly into the response, which, if rendered in a web browser without proper sanitization, could lead to a Cross-Site Scripting (XSS) vulnerability. An attacker could inject malicious scripts that execute in the user's browser, potentially stealing cookies, session tokens, or defacing the webpage."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:31:38.608525",
+      "node_name": "updatePhoto_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "3",
+            "title": "SSRF Test",
+            "url": "http://169.254.169.254/latest/meta-data/"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'url' field in the 'updatePhoto' mutation response explicitly contains an internal IP address (169.254.169.254) which is commonly used to access AWS EC2 instance metadata. This indicates that the server processed a request to an internal resource based on user-supplied input, leading to a Server-Side Request Forgery (SSRF) vulnerability. An attacker could potentially use this to access sensitive instance metadata, internal services, or scan the internal network.",
+            "evidence": "url: \"http://169.254.169.254/latest/meta-data/\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "url: \"http://169.254.169.254/latest/meta-data/\"",
+              "explanation": "The 'url' field in the 'updatePhoto' mutation response explicitly contains an internal IP address (169.254.169.254) which is commonly used to access AWS EC2 instance metadata. This indicates that the server processed a request to an internal resource based on user-supplied input, leading to a Server-Side Request Forgery (SSRF) vulnerability. An attacker could potentially use this to access sensitive instance metadata, internal services, or scan the internal network."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:31:40.514094",
+      "node_name": "updatePhoto_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "4",
+            "title": "OS Command Test",
+            "url": "https://example.com/image.jpg"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:31:42.639005",
+      "node_name": "updatePhoto_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "5",
+            "title": "Path Injection Test",
+            "url": "https://example.com/image.jpg"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:31:44.570438",
+      "node_name": "updatePhoto_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "6",
+            "title": "<h1>HTML Injection</h1><img src='x' onerror='alert(document.cookie)'>",
+            "url": "https://example.com/image.jpg"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: HTML Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'title' field in the GraphQL response contains injected HTML tags, specifically an `<h1>` tag and an `<img>` tag with an `onerror` attribute. This strong evidence of HTML injection, which can lead to XSS if the content is rendered by a client without proper sanitization. The inclusion of `onerror='alert(document.cookie)'` further highlights the potential for Cross-Site Scripting (XSS).",
+            "evidence": "'<h1>HTML Injection</h1><img src='x' onerror='alert(document.cookie)'>' in title field",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "HTML Injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "'<h1>HTML Injection</h1><img src='x' onerror='alert(document.cookie)'>' in title field",
+              "explanation": "The 'title' field in the GraphQL response contains injected HTML tags, specifically an `<h1>` tag and an `<img>` tag with an `onerror` attribute. This strong evidence of HTML injection, which can lead to XSS if the content is rendered by a client without proper sanitization. The inclusion of `onerror='alert(document.cookie)'` further highlights the potential for Cross-Site Scripting (XSS)."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:31:46.814370",
+      "node_name": "updatePhoto_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:31:49.917660",
+      "node_name": "updatePhoto_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:31:51.690070",
+      "node_name": "updatePhoto_response_10",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "8",
+            "__typename": "Photo"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-05T16:31:53.768252",
+      "node_name": "updatePhoto_response_11",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updatePhoto": {
+            "id": "9",
+            "title": "Field Suggestion Test",
+            "url": "https://example.com/image.jpg",
+            "album": {
+              "id": "1",
+              "title": "quidem molestiae enim",
+              "user": {
+                "email": "Sincere@april.biz"
+              }
+            }
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}
