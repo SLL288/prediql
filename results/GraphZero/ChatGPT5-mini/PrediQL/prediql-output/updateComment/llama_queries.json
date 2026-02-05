@@ -1,0 +1,421 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updateComment(id: \"5\", input: { name: \"Alice Johnson\", email: \"alice.j@example.com\", body: \"Thanks for the post! Very helpful.\" }) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.024,
+    "timestamp": "2025-09-23T17:08:37.825567Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updateComment": {
+          "id": "5",
+          "name": "Alice Johnson",
+          "email": "alice.j@example.com",
+          "body": "Thanks for the post! Very helpful.",
+          "post": {
+            "id": "1",
+            "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateComment(id: \"7\", input: { name: \"Robert'); DROP TABLE comments; --\", email: \"robert@example.com\", body: \"Trying SQL payload in name field\" }) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.884,
+    "timestamp": "2025-09-23T17:08:40.265131Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updateComment": {
+          "id": "7",
+          "name": "Robert'); DROP TABLE comments; --",
+          "email": "robert@example.com",
+          "body": "Trying SQL payload in name field",
+          "post": {
+            "id": "2",
+            "title": "qui est esse",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateComment(id: \"12\", input: { name: \"XSS Tester\", email: \"xss@example.com\", body: \"<script>alert('xss')</script> Comment payload\" }) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.982,
+    "timestamp": "2025-09-23T17:08:42.838460Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updateComment": {
+          "id": "12",
+          "name": "XSS Tester",
+          "email": "xss@example.com",
+          "body": "<script>alert('xss')</script> Comment payload",
+          "post": {
+            "id": "3",
+            "title": "ea molestias quasi exercitationem repellat qui ipsa sit aut",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateComment(id: \"21\", input: { name: \"SSRF Probe\", email: \"ssrf@example.com\", body: \"Please fetch http://169.254.169.254/latest/meta-data/iam/security-credentials/\" }) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.826,
+    "timestamp": "2025-09-23T17:08:46.534672Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "updateComment": {
+          "id": "21",
+          "name": "SSRF Probe",
+          "email": "ssrf@example.com",
+          "body": "Please fetch http://169.254.169.254/latest/meta-data/iam/security-credentials/",
+          "post": {
+            "id": "5",
+            "title": "nesciunt quas odio",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateComment(id: \"33\", input: { name: \"Cmd Injection\", email: \"cmd@example.com\", body: \"Payload: $(cat /etc/passwd) -- attempt to inject OS command\" }) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.849,
+    "timestamp": "2025-09-23T17:08:49.626861Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "updateComment": {
+          "id": "33",
+          "name": "Cmd Injection",
+          "email": "cmd@example.com",
+          "body": "Payload: $(cat /etc/passwd) -- attempt to inject OS command",
+          "post": {
+            "id": "7",
+            "title": "magnam facilis autem",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateComment(id: \"44\", input: { name: \"Path Probe\", email: \"path@example.com\", body: \"Trying path traversal: ../../../../etc/passwd\" }) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.642,
+    "timestamp": "2025-09-23T17:08:52.940299Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "updateComment": {
+          "id": "44",
+          "name": "Path Probe",
+          "email": "path@example.com",
+          "body": "Trying path traversal: ../../../../etc/passwd",
+          "post": {
+            "id": "9",
+            "title": "nesciunt iure omnis dolorem tempora et accusantium",
+            "user": {
+              "id": "1",
+              "name": "Leanne Graham"
+            }
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateComment(id: \"55\", input: { name: \"HTML Inject\", email: \"html@example.com\", body: \"<div><img src='x' onerror='alert(1)'></div> injected HTML\" }) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.854,
+    "timestamp": "2025-09-23T17:08:56.389755Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "updateComment": {
+          "id": "55",
+          "name": "HTML Inject",
+          "email": "html@example.com",
+          "body": "<div><img src='x' onerror='alert(1)'></div> injected HTML",
+          "post": {
+            "id": "11",
+            "title": "et ea vero quia laudantium autem",
+            "user": {
+              "id": "2",
+              "name": "Ervin Howell"
+            }
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateComment(id: \"2\", input: { name: \"Bypass Test NonAliased\", email: \"bypass-non@example.com\", body: \"Normal structure used to verify access control behavior\" }) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.887,
+        "timestamp": "2025-09-23T17:08:59.052298Z",
+        "response_body": {
+          "data": {
+            "updateComment": {
+              "id": "2",
+              "name": "Bypass Test NonAliased",
+              "email": "bypass-non@example.com",
+              "body": "Normal structure used to verify access control behavior",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                "user": {
+                  "id": "1",
+                  "name": "Leanne Graham"
+                }
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.644,
+        "timestamp": "2025-09-23T17:08:59.696372Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "2",
+              "name": "Bypass Test Aliased",
+              "email": "bypass-aliased@example.com",
+              "body": "Aliased mutation field to test deny-list / access-control bypass",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                "user": {
+                  "id": "1",
+                  "name": "Leanne Graham"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-23T17:08:59.696414Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.795,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: updateComment(id: \"2\", input: { name: \"Bypass Test Aliased\", email: \"bypass-aliased@example.com\", body: \"Aliased mutation field to test deny-list / access-control bypass\" }) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.632,
+        "timestamp": "2025-09-23T17:09:03.712696Z",
+        "response_body": {
+          "data": {
+            "updateComment": {
+              "id": "2",
+              "name": "Bypass Test NonAliased",
+              "email": "bypass-non@example.com",
+              "body": "Normal structure used to verify access control behavior",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                "user": {
+                  "id": "1",
+                  "name": "Leanne Graham"
+                }
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.832,
+        "timestamp": "2025-09-23T17:09:04.544988Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "2",
+              "name": "Bypass Test Aliased",
+              "email": "bypass-aliased@example.com",
+              "body": "Aliased mutation field to test deny-list / access-control bypass",
+              "post": {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+                "user": {
+                  "id": "1",
+                  "name": "Leanne Graham"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-23T17:09:04.545020Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.619,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\n# mutation combined with an introspection query in the same document to test if introspection is allowed\nmutation UpdateThenIntrospect {\n  updateComment(id: \"10\", input: { name: \"Introspect Tester\", email: \"introspect@example.com\", body: \"Trigger + introspect\" }) {\n    id\n    name\n    email\n  }\n}\n\nquery Introspection {\n  __schema {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.621,
+    "timestamp": "2025-09-23T17:09:08.147335Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Must provide operation name if query contains multiple operations.",
+          "extensions": {
+            "code": "OPERATION_RESOLUTION_FAILURE"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\n# Use introspection to list Comment fields (useful for field-suggestion / auto-complete checks)\nmutation FieldSuggestor {\n  updateComment(id: \"18\", input: { name: \"Field Suggestion Probe\", email: \"fields@example.com\", body: \"Requesting available fields for Comment\" }) {\n    id\n  }\n}\n\nquery SuggestCommentFields {\n  __type(name: \"Comment\") {\n    name\n    fields {\n      name\n      type {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.801,
+    "timestamp": "2025-09-23T17:09:11.576040Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Must provide operation name if query contains multiple operations.",
+          "extensions": {
+            "code": "OPERATION_RESOLUTION_FAILURE"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

@@ -1,0 +1,479 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  repositories(first: 10) {\n    items {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.508,
+    "timestamp": "2025-09-25T02:07:22.401050Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "repositories": {
+          "items": [
+            {
+              "id": "ar-005439",
+              "type": "Repository"
+            },
+            {
+              "id": "ar-005436",
+              "type": "Repository"
+            },
+            {
+              "id": "ar-005435",
+              "type": "Repository"
+            },
+            {
+              "id": "ar-005441",
+              "type": "Repository"
+            },
+            {
+              "id": "ar-005438",
+              "type": "Repository"
+            },
+            {
+              "id": "ar-005437",
+              "type": "Repository"
+            },
+            {
+              "id": "ar-005440",
+              "type": "Repository"
+            },
+            {
+              "id": "ar-005434",
+              "type": "Repository"
+            },
+            {
+              "id": "at-002021",
+              "type": "Repository"
+            },
+            {
+              "id": "at-001923",
+              "type": "Repository"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  repositories(first: 10, fromDate: \"2022-01-01 --\") {\n    items {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.398,
+    "timestamp": "2025-09-25T02:07:25.567146Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[repositories]) : Unknown field argument 'fromDate'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 27
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  repositories(term: \"<script>alert('xss')</script>\") {\n    results {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.443,
+    "timestamp": "2025-09-25T02:07:28.153451Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[repositories]) : Unknown field argument 'term'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 16
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[repositories/results]) : Field 'results' in type 'repositories' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  repositories(links: \"[\\\"http://192.168.1.1\\\"]\") {\n    items {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.455,
+    "timestamp": "2025-09-25T02:07:30.692766Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[repositories]) : Unknown field argument 'links'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 16
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  repositories(exec: \"ls -l\") {\n    items {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.381,
+    "timestamp": "2025-09-25T02:07:33.552194Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[repositories]) : Unknown field argument 'exec'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 16
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  repositories(path: \"./../../etc/passwd\") {\n    items {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.396,
+    "timestamp": "2025-09-25T02:07:36.487507Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[repositories]) : Unknown field argument 'path'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 16
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  repositories(term: \"<p>Hello <script>alert('xss')</script>\") {\n    results {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.422,
+    "timestamp": "2025-09-25T02:07:38.753854Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[repositories]) : Unknown field argument 'term'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 16
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[repositories/results]) : Field 'results' in type 'repositories' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  repositories {\n    __schema {\n      types {\n        queryType {\n          fields {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.382,
+        "timestamp": "2025-09-25T02:07:41.276058Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[repositories/__schema]) : Field '__schema' in type 'repositories' is undefined",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.365,
+        "timestamp": "2025-09-25T02:07:41.640927Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[repositories/__schema]) : Field '__schema' in type 'repositories' is undefined",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-25T02:07:41.641037Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.456,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery q {\n  repositories {\n    __schema {\n      types {\n        queryType {\n          fields {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.42,
+        "timestamp": "2025-09-25T02:07:45.439596Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[repositories/__schema]) : Field '__schema' in type 'repositories' is undefined",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.413,
+        "timestamp": "2025-09-25T02:07:45.853161Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Validation error (FieldUndefined@[repositories/__schema]) : Field '__schema' in type 'repositories' is undefined",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "classification": "ValidationError"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-25T02:07:45.853261Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.374,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  repositories {\n    queryType {\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.395,
+    "timestamp": "2025-09-25T02:07:49.560021Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[repositories/queryType]) : Field 'queryType' in type 'repositories' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  repositories(term: \"id\") {\n    results {\n      id\n      otherFields {\n        types {\n          __type {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.416,
+    "timestamp": "2025-09-25T02:07:52.033681Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[repositories]) : Unknown field argument 'term'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 16
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[repositories/results]) : Field 'results' in type 'repositories' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

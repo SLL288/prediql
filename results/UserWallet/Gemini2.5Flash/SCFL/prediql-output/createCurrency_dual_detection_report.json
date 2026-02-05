@@ -1,0 +1,856 @@
+{
+  "report_timestamp": "2025-10-08T09:34:13.193502",
+  "api_url": "http://localhost:4000/graphql",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.5,
+    "simple_detections": 6,
+    "llm_detections": 8,
+    "consensus_breakdown": {
+      "both_detected": 6,
+      "llm_only": 2,
+      "no_vulnerabilities": 2
+    },
+    "detection_ratio": 1.3333333333333333,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.1,
+      "simple_potential_detections": 5,
+      "llm_potential_detections": 1,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 4,
+        "no_potential": 5,
+        "both_potential": 1
+      },
+      "potential_detection_ratio": 0.2
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-08T09:33:52.491791",
+      "node_name": "createCurrency_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createCurrency": {
+            "id": "bb9b2dc8-6304-446e-b817-023947649863",
+            "abbreviation": "EUR",
+            "symbol": "€",
+            "rate": 1,
+            "country": "France' OR 1=1 --"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SQL Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'country' field in the GraphQL response contains the string 'France' OR 1=1 --'. This pattern is a classic SQL injection payload. The presence of this string in a data field suggests that the input for the 'country' field was not properly sanitized or parameterized before being used in a SQL query. The 'OR 1=1 --' part of the payload is designed to make a SQL WHERE clause always true and comment out the rest of the original query, potentially leading to unauthorized data access, modification, or even database deletion, depending on the context of the SQL query being executed.",
+            "evidence": "'France' OR 1=1 --",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SQL Injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "'France' OR 1=1 --",
+              "explanation": "The 'country' field in the GraphQL response contains the string 'France' OR 1=1 --'. This pattern is a classic SQL injection payload. The presence of this string in a data field suggests that the input for the 'country' field was not properly sanitized or parameterized before being used in a SQL query. The 'OR 1=1 --' part of the payload is designed to make a SQL WHERE clause always true and comment out the rest of the original query, potentially leading to unauthorized data access, modification, or even database deletion, depending on the context of the SQL query being executed."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T09:33:54.021539",
+      "node_name": "createCurrency_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createCurrency": {
+            "id": "dce36be6-ca84-4c9e-8fdf-65af4d39b9ab",
+            "abbreviation": "GBP",
+            "symbol": "£",
+            "rate": 1,
+            "country": "<script>alert('XSS')</script>"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'country' field in the 'createCurrency' mutation response directly reflects the injected script tag '<script>alert('XSS')</script>'. This indicates a Cross-Site Scripting (XSS) vulnerability. If this response is rendered directly in a web browser without proper sanitization or encoding, the injected script will execute, leading to potential session hijacking, data theft, or defacement of the user interface.",
+            "evidence": "<script>alert('XSS')</script>",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "<script>alert('XSS')</script>",
+              "explanation": "The 'country' field in the 'createCurrency' mutation response directly reflects the injected script tag '<script>alert('XSS')</script>'. This indicates a Cross-Site Scripting (XSS) vulnerability. If this response is rendered directly in a web browser without proper sanitization or encoding, the injected script will execute, leading to potential session hijacking, data theft, or defacement of the user interface."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T09:33:56.205673",
+      "node_name": "createCurrency_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createCurrency": {
+            "id": "c907682b-26b5-4571-8ff6-6b6aeb2a150d",
+            "abbreviation": "CAD",
+            "symbol": "C$",
+            "rate": 1,
+            "country": "http://attacker.com/evilhook"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SSRF (Server-Side Request Forgery)",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'country' field in the 'createCurrency' mutation's response body contains a URL pointing to 'http://attacker.com/evilhook'. This strongly suggests that the application is taking user-supplied input (or an internally processed value that originated from user input) for the 'country' field and attempting to fetch content from that URL. This is a classic indicator of a potential Server-Side Request Forgery (SSRF) vulnerability. An attacker could potentially replace 'http://attacker.com/evilhook' with internal network addresses (e.g., 'http://localhost', 'file:///etc/passwd', 'http://169.254.169.254/latest/meta-data/') to access internal resources, sensitive files, or metadata services, leading to information disclosure, port scanning, or even internal system compromise.",
+            "evidence": "{\"country\": \"http://attacker.com/evilhook\"}",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SSRF (Server-Side Request Forgery)",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "{\"country\": \"http://attacker.com/evilhook\"}",
+              "explanation": "The 'country' field in the 'createCurrency' mutation's response body contains a URL pointing to 'http://attacker.com/evilhook'. This strongly suggests that the application is taking user-supplied input (or an internally processed value that originated from user input) for the 'country' field and attempting to fetch content from that URL. This is a classic indicator of a potential Server-Side Request Forgery (SSRF) vulnerability. An attacker could potentially replace 'http://attacker.com/evilhook' with internal network addresses (e.g., 'http://localhost', 'file:///etc/passwd', 'http://169.254.169.254/latest/meta-data/') to access internal resources, sensitive files, or metadata services, leading to information disclosure, port scanning, or even internal system compromise."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T09:33:58.569067",
+      "node_name": "createCurrency_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createCurrency": {
+            "id": "e91417e0-bc9f-4cc9-a380-2c50f5e23aae",
+            "abbreviation": "AUD",
+            "symbol": "A$",
+            "rate": 1,
+            "country": "Australia; cat /etc/passwd"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'country' field in the GraphQL response contains the string 'Australia; cat /etc/passwd'. The semicolon (;) acts as a command separator in many operating systems, allowing a second command ('cat /etc/passwd') to be executed after the first. If the backend server directly uses the value of the 'country' field in an OS command without proper sanitization, this indicates a clear OS Command Injection vulnerability. The 'cat /etc/passwd' command is a common payload for testing such vulnerabilities, aiming to retrieve sensitive system information. The fact that this input is reflected verbatim in the response suggests that it was processed on the server-side, making command injection highly probable if this input is used in any shell command.",
+            "evidence": "\"country\": \"Australia; cat /etc/passwd\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "\"country\": \"Australia; cat /etc/passwd\"",
+              "explanation": "The 'country' field in the GraphQL response contains the string 'Australia; cat /etc/passwd'. The semicolon (;) acts as a command separator in many operating systems, allowing a second command ('cat /etc/passwd') to be executed after the first. If the backend server directly uses the value of the 'country' field in an OS command without proper sanitization, this indicates a clear OS Command Injection vulnerability. The 'cat /etc/passwd' command is a common payload for testing such vulnerabilities, aiming to retrieve sensitive system information. The fact that this input is reflected verbatim in the response suggests that it was processed on the server-side, making command injection highly probable if this input is used in any shell command."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T09:34:01.963370",
+      "node_name": "createCurrency_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createCurrency": {
+            "id": "a0f437cc-eda6-4fcf-9658-fc2212c5d817",
+            "abbreviation": "JPY",
+            "symbol": "¥",
+            "rate": 1,
+            "country": "../../etc/passwd"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Path Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "Path injection vulnerability detected - file system access patterns found",
+            "evidence": "Response status: 200, Path injection patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Path Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'country' field in the GraphQL response contains the value '../../etc/passwd'. This pattern is a classic indicator of a directory traversal attempt or path injection. If this value is subsequently used by the backend in a file system operation (e.g., to load a country-specific configuration file or image), it could lead to unauthorized access to arbitrary files on the server, such as the /etc/passwd file which contains user information. While this is a response and not a direct input, it indicates that the system either accepted or processed such an input, which is a significant security concern.",
+            "evidence": "\"country\": \"../../etc/passwd\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Path Injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "\"country\": \"../../etc/passwd\"",
+              "explanation": "The 'country' field in the GraphQL response contains the value '../../etc/passwd'. This pattern is a classic indicator of a directory traversal attempt or path injection. If this value is subsequently used by the backend in a file system operation (e.g., to load a country-specific configuration file or image), it could lead to unauthorized access to arbitrary files on the server, such as the /etc/passwd file which contains user information. While this is a response and not a direct input, it indicates that the system either accepted or processed such an input, which is a significant security concern."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T09:34:04.453336",
+      "node_name": "createCurrency_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createCurrency": {
+            "id": "8229299f-03d0-4270-be5b-6dad2a5d70c8",
+            "abbreviation": "CHF",
+            "symbol": "Fr",
+            "rate": 1,
+            "country": "<h1>Switzerland</h1>"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The 'country' field in the GraphQL response contains unescaped HTML (`<h1>Switzerland</h1>`). This is a clear indicator of an HTML Injection vulnerability. If this response is rendered directly in a web application without proper sanitization or encoding, the injected HTML will be rendered by the browser, potentially leading to UI defacement, phishing attacks, or even Cross-Site Scripting (XSS) if more complex scripts were embedded. The presence of a recognized HTML tag within a string field that should ideally contain plain text is sufficient evidence for HTML Injection.",
+            "evidence": "The 'country' field in the response contains '<H1>Switzerland</H1>', indicating that HTML tags are being reflected and rendered directly within the field's value.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "HTML Injection",
+              "severity": "MEDIUM",
+              "confidence": 0.9,
+              "evidence": "The 'country' field in the response contains '<H1>Switzerland</H1>', indicating that HTML tags are being reflected and rendered directly within the field's value.",
+              "explanation": "The 'country' field in the GraphQL response contains unescaped HTML (`<h1>Switzerland</h1>`). This is a clear indicator of an HTML Injection vulnerability. If this response is rendered directly in a web application without proper sanitization or encoding, the injected HTML will be rendered by the browser, potentially leading to UI defacement, phishing attacks, or even Cross-Site Scripting (XSS) if more complex scripts were embedded. The presence of a recognized HTML tag within a string field that should ideally contain plain text is sufficient evidence for HTML Injection."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [
+            "Injection Attacks"
+          ],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 1.0,
+          "potential_consensus": "both_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T09:34:06.698413",
+      "node_name": "createCurrency_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T09:34:09.613140",
+      "node_name": "createCurrency_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T09:34:11.603697",
+      "node_name": "createCurrency_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createCurrency\" on type \"Query\". Did you mean \"getCurrency\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED",
+              "exception": {
+                "stacktrace": [
+                  "GraphQLError: Cannot query field \"createCurrency\" on type \"Query\". Did you mean \"getCurrency\"?",
+                  "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                  "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                  "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                  "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                  "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                  "    at Generator.next (<anonymous>)",
+                  "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                  "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response explicitly suggests a valid field name 'getCurrency' when an invalid field 'createCurrency' was queried. This behavior, known as field suggestion, is a common trait of GraphQL introspection being enabled. While not a direct security exploit on its own, it significantly aids attackers in discovering the API schema without needing authentication or a separate introspection query, thereby facilitating further attacks like information disclosure or brute-forcing valid queries. This helps an attacker map out the API's capabilities and potentially craft malicious queries more easily.",
+            "evidence": "\"Did you mean \\\"getCurrency\\\"?\"",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.8,
+              "evidence": "\"Did you mean \\\"getCurrency\\\"?\"",
+              "explanation": "The GraphQL response explicitly suggests a valid field name 'getCurrency' when an invalid field 'createCurrency' was queried. This behavior, known as field suggestion, is a common trait of GraphQL introspection being enabled. While not a direct security exploit on its own, it significantly aids attackers in discovering the API schema without needing authentication or a separate introspection query, thereby facilitating further attacks like information disclosure or brute-forcing valid queries. This helps an attacker map out the API's capabilities and potentially craft malicious queries more easily."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T09:34:13.189737",
+      "node_name": "createCurrency_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"abbreviaton\" on type \"Currency\". Did you mean \"abbreviation\"?",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED",
+              "exception": {
+                "stacktrace": [
+                  "GraphQLError: Cannot query field \"abbreviaton\" on type \"Currency\". Did you mean \"abbreviation\"?",
+                  "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                  "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                  "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                  "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                  "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                  "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                  "    at Generator.next (<anonymous>)",
+                  "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                  "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL API response explicitly suggests a correct field name ('abbreviation') after receiving an invalid one ('abbreviaton'). This behavior, often called 'field suggestion' or 'did you mean' functionality, can be leveraged by attackers to enumerate the available fields on a type without prior knowledge of the schema. This constitutes an information disclosure vulnerability, making it easier for an attacker to understand the API's structure and potentially craft subsequent, more targeted attacks.",
+            "evidence": "\"Cannot query field \"abbreviaton\" on type \"Currency\". Did you mean \"abbreviation\"?\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.9,
+              "evidence": "\"Cannot query field \"abbreviaton\" on type \"Currency\". Did you mean \"abbreviation\"?\"",
+              "explanation": "The GraphQL API response explicitly suggests a correct field name ('abbreviation') after receiving an invalid one ('abbreviaton'). This behavior, often called 'field suggestion' or 'did you mean' functionality, can be leveraged by attackers to enumerate the available fields on a type without prior knowledge of the schema. This constitutes an information disclosure vulnerability, making it easier for an attacker to understand the API's structure and potentially craft subsequent, more targeted attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Information Disclosure",
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

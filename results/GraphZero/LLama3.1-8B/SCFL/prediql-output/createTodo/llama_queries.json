@@ -1,0 +1,1292 @@
+[
+  {
+    "query": {
+      "query": "\nmutation createTodo {\n  createTodo(input: { title: \"Buy milk\", completed: true, user: { id: \"1\", name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", address: { street: \"123 Main St\", suite: \"Apt 1\", city: \"Anytown\", zipcode: \"12345\" }, phone: \"123-456-7890\", website: \"johndoe.com\", company: { name: \"ABC Inc.\", catchPhrase: \"Make it happen\", bs: \"Success Driven\" }, posts: { data: [{\"id\": \"1\", \"title\": \"Hello World\", \"body\": \"This is a post by John.\", \"user\": { id: \"1\", \"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\" }, \"comments\": { data: [{\"id\": \"1\", \"name\": \"John Doe\", \"email\": \"johndoe@example.com\", \"body\": \"Good post John!\", \"post\": { id: \"1\" }}] }}] }, albums: { data: [{\"id\": \"1\", \"title\": \"Album 1\", \"user\": { id: \"1\" }, \"photos\": { data: [{\"id\": \"1\", \"title\": \"Photo 1\", \"url\": \"https://example.com/photo1.jpg\", \"thumbnailUrl\": \"https://example.com/photo1-thumb.jpg\", \"album\": { id: \"1\" }}]}] }, todos: { data: [{\"id\": \"1\", \"title\": \"Task 1\", \"completed\": true, \"user\": { id: \"1\" }}] }}) {\n  id\n  title\n  completed\n  user {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      city\n      zipcode\n    }\n  }\n}\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.438,
+    "timestamp": "2025-10-08T03:32:56.293970Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"id\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 380
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo {\n  createTodo(input: { title: \"Buy milk\", completed: true, user: { id: \"1 OR 1=1' }}) {\n    id\n    title\n    completed\n    user {\n      id\n      name\n      username\n      email\n      address {\n        street\n        suite\n        city\n        zipcode\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.304,
+    "timestamp": "2025-10-08T03:32:59.194616Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unterminated string.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 87
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo {\n  createTodo(input: { title: \"Buy milk<script>alert('xss')</script>\", completed: true, user: { id: \"1\", name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", address: { street: \"123 Main St\", suite: \"Apt 1\", city: \"Anytown\", zipcode: \"12345\" }, phone: \"123-456-7890\", website: \"johndoe.com\", company: { name: \"ABC Inc.\", catchPhrase: \"Make it happen\", bs: \"Success Driven\" }, posts: { data: [{\"id\": \"1\", \"title\": \"Hello World\", \"body\": \"This is a post by John.\", \"user\": { id: \"1\", \"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\" }, \"comments\": { data: [{\"id\": \"1\", \"name\": \"John Doe\", \"email\": \"johndoe@example.com\", \"body\": \"Good post John!\", \"post\": { id: \"1\" }}] }}] }, albums: { data: [{\"id\": \"1\", \"title\": \"Album 1\", \"user\": { id: \"1\" }, \"photos\": { data: [{\"id\": \"1\", \"title\": \"Photo 1\", \"url\": \"https://example.com/photo1.jpg\", \"thumbnailUrl\": \"https://example.com/photo1-thumb.jpg\", \"album\": { id: \"1\" }}]}] }, todos: { data: [{\"id\": \"1\", \"title\": \"Task 1\", \"completed\": true, \"user\": { id: \"1\" }}] }}) {\n  id\n  title\n  completed\n  user {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      city\n      zipcode\n    }\n  }\n}\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 2.236,
+    "timestamp": "2025-10-08T03:33:03.896219Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"id\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 409
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo {\n  createTodo(input: { title: \"Buy milk\", completed: true, user: { id: \"1\", name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", address: { street: \"123 Main St\", suite: \"Apt 1\", city: \"Anytown\", zipcode: \"12345\" }, phone: \"123-456-7890\", website: \"http://example.com\", company: { name: \"ABC Inc.\", catchPhrase: \"Make it happen\", bs: \"Success Driven\" }, posts: { data: [{\"id\": \"1\", \"title\": \"Hello World\", \"body\": \"This is a post by John.\", \"user\": { id: \"1\", \"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\" }, \"comments\": { data: [{\"id\": \"1\", \"name\": \"John Doe\", \"email\": \"johndoe@example.com\", \"body\": \"Good post John!\", \"post\": { id: \"1\" }}] }}] }, albums: { data: [{\"id\": \"1\", \"title\": \"Album 1\", \"user\": { id: \"1\" }, \"photos\": { data: [{\"id\": \"1\", \"title\": \"Photo 1\", \"url\": \"http://example.com/photo1.jpg\", \"thumbnailUrl\": \"http://example.com/photo1-thumb.jpg\", \"album\": { id: \"1\" }}]}] }, todos: { data: [{\"id\": \"1\", \"title\": \"Task 1\", \"completed\": true, \"user\": { id: \"1\" }}] }}) {\n  id\n  title\n  completed\n  user {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      city\n      zipcode\n    }\n  }\n}\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.69,
+    "timestamp": "2025-10-08T03:33:06.244461Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"id\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 387
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo {\n  createTodo(input: { title: \"Buy milk\", completed: true, user: { id: \"1\", name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", address: { street: \"123 Main St\", suite: \"Apt 1\", city: \"Anytown\", zipcode: \"12345\" }, phone: \"123-456-7890\", website: \"tel://1234567890\", company: { name: \"ABC Inc.\", catchPhrase: \"Make it happen\", bs: \"Success Driven\" }, posts: { data: [{\"id\": \"1\", \"title\": \"Hello World\", \"body\": \"This is a post by John.\", \"user\": { id: \"1\", \"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\" }, \"comments\": { data: [{\"id\": \"1\", \"name\": \"John Doe\", \"email\": \"johndoe@example.com\", \"body\": \"Good post John!\", \"post\": { id: \"1\" }}] }}] }, albums: { data: [{\"id\": \"1\", \"title\": \"Album 1\", \"user\": { id: \"1\" }, \"photos\": { data: [{\"id\": \"1\", \"title\": \"Photo 1\", \"url\": \"tel://1234567890\", \"thumbnailUrl\": \"tel://1234567890\", \"album\": { id: \"1\" }}]}] }, todos: { data: [{\"id\": \"1\", \"title\": \"Task 1\", \"completed\": true, \"user\": { id: \"1\" }}] }}) {\n  id\n  title\n  completed\n  user {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      city\n      zipcode\n    }\n  }\n}\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.667,
+    "timestamp": "2025-10-08T03:33:08.554072Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"id\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 385
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo {\n  createTodo(input: { title: \"Buy milk\", completed: true, user: { id: \"1\", name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", address: { street: \"123 Main St\", suite: \"Apt 1\", city: \"Anytown\", zipcode: \"12345\" }, phone: \"123-456-7890\", website: \"file:///etc/passwd\", company: { name: \"ABC Inc.\", catchPhrase: \"Make it happen\", bs: \"Success Driven\" }, posts: { data: [{\"id\": \"1\", \"title\": \"Hello World\", \"body\": \"This is a post by John.\", \"user\": { id: \"1\", \"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\" }, \"comments\": { data: [{\"id\": \"1\", \"name\": \"John Doe\", \"email\": \"johndoe@example.com\", \"body\": \"Good post John!\", \"post\": { id: \"1\" }}] }}] }, albums: { data: [{\"id\": \"1\", \"title\": \"Album 1\", \"user\": { id: \"1\" }, \"photos\": { data: [{\"id\": \"1\", \"title\": \"Photo 1\", \"url\": \"file:///etc/passwd\", \"thumbnailUrl\": \"file:///etc/passwd\", \"album\": { id: \"1\" }}]}] }, todos: { data: [{\"id\": \"1\", \"title\": \"Task 1\", \"completed\": true, \"user\": { id: \"1\" }}] }}) {\n  id\n  title\n  completed\n  user {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      city\n      zipcode\n    }\n  }\n}\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.839,
+    "timestamp": "2025-10-08T03:33:11.045868Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"id\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 387
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo {\n  createTodo(input: { title: \"Buy milk<script>alert('xss')</script>\", completed: true, user: { id: \"1\", name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", address: { street: \"123 Main St\", suite: \"Apt 1\", city: \"Anytown\", zipcode: \"12345\" }, phone: \"123-456-7890\", website: \"johndoe.com\", company: { name: \"ABC Inc.\",\n  ***Query_Deny_Bypass_Non_Aliased***\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.729,
+    "timestamp": "2025-10-08T03:33:13.739529Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \"*\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo {\n  createTodo(input: { title: \"Buy milk\", completed: true, user: { id: \"1\", name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", address: { street: \"123 Main St\", suite: \"Apt 1\", city: \"Anytown\", zipcode: \"12345\" }, phone: \"123-456-7890\", website: \"johndoe.com\", company: { name: \"ABC Inc.\", catchPhrase: \"Make it happen\", bs: \"Success Driven\" }, posts: { data: [{\"id\": \"1\", \"title\": \"Hello World\", \"body\": \"This is a post by John.\", \"user\": { id: \"1\", \"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\" }, \"comments\": { data: [{\"id\": \"1\", \"name\": \"John Doe\", \"email\": \"johndoe@example.com\", \"body\": \"Good post John!\", \"post\": { id: \"1\" }}] }}] }) {\n  user {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      city\n      zipcode\n    }\n  }\n}\n}\n",
+      "vulnerability_type": "unknown"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.998,
+    "timestamp": "2025-10-08T03:33:16.834345Z",
+    "count": 8,
+    "vulnerability_type": "unknown",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"id\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 380
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo_s: createTodo {\n  createTodo(input: { title: \"Buy milk\", completed: true, user: { id: \"1\", name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", address: { street: \"123 Main St\", suite: \"Apt 1\", city: \"Anytown\", zipcode: \"12345\" }, phone: \"123-456-7890\", website: \"johndoe.com\", company: { name: \"ABC Inc.\", catchPhrase: \"Make it happen\", bs: \"Success Driven\" }, posts: { data: [{\"id\": \"1\", \"title\": \"Hello World\", \"body\": \"This is a post by John.\", \"user\": { id: \"1\", \"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\" }, \"comments\": { data: [{\"id\": \"1\", \"name\": \"John Doe\", \"email\": \"johndoe@example.com\", \"body\": \"Good post John!\", \"post\": { id: \"1\" }}] }}] }) {\n  user {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      city\n      zipcode\n    }\n  }\n}\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.718,
+        "timestamp": "2025-10-08T03:33:29.663900Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$input\" of required type \"CreateTodoInput!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 31
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.764,
+        "timestamp": "2025-10-08T03:33:30.428012Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"s\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 28
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-08T03:33:30.428054Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.667,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo {\n  createTodo {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.094,
+    "timestamp": "2025-10-08T03:33:19.651425Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Todo\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"createTodo\" argument \"input\" of type \"CreateTodoInput!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo {\n  createTodo(input: { title: \"Buy milk\", completed: true, user: { id: \"1\", name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", address: { street: \"123 Main St\", suite: \"Apt 1\", city: \"Anytown\", zipcode: \"12345\" }, phone: \"123-456-7890\", website: \"johndoe.com\", company: { name: \"ABC Inc.\", catchPhrase: \"Make it happen\", bs: \"Success Driven\" }, posts: { data: [{\"id\": \"1\", \"title\": \"Hello World\", \"body\": \"This is a post by John.\", \"user\": { id: \"1\", \"name\": \"John Doe\", \"username\": \"johndoe\", \"email\": \"johndoe@example.com\" }, \"comments\": { data: [{\"id\": \"1\", \"name\": \"John Doe\", \"email\": \"johndoe@example.com\", \"body\": \"Good post John!\", \"post\": { id: \"1\" }}] }}] }) {\n  user {\n    name\n    username\n    email\n    phone\n    website\n    company {\n      name\n      catchPhrase\n      bs\n    }\n  }\n}\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.916,
+    "timestamp": "2025-10-08T03:33:22.903785Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"id\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 380
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo($input: CreateTodoInput!) {\n  createTodo(input: $input) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.419,
+    "timestamp": "2025-10-08T03:33:33.963335Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" of required type \"CreateTodoInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo($input: CreateTodoInput!) {\n  createTodo(input: {\n    id: \"1' OR '1'='1\"\n    title: \"Test SQL Injection\"\n    completed: true\n  }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.021,
+    "timestamp": "2025-10-08T03:33:37.290079Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"id\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createTodo\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo($input: CreateTodoInput!) {\n  createTodo(input: {\n    id: \"<script>alert('xss')</script>\"\n    title: \"Test XSS Injection\"\n    completed: false\n  }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.32,
+    "timestamp": "2025-10-08T03:33:41.413192Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"id\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createTodo\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo($input: CreateTodoInput!) {\n  createTodo(input: {\n    id: \"http://example.com\"\n    title: \"Test SSRF Injection\"\n    completed: true\n  }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.032,
+    "timestamp": "2025-10-08T03:33:44.288721Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"id\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createTodo\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo($input: CreateTodoInput!) {\n  createTodo(input: {\n    id: \"ls -l\"\n    title: \"Test OS Command Injection\"\n    completed: false\n  }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.36,
+    "timestamp": "2025-10-08T03:33:47.187199Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"id\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createTodo\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo($input: CreateTodoInput!) {\n  createTodo(input: {\n    id: \"/etc/passwd\"\n    title: \"Test Path Injection\"\n    completed: true\n  }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.684,
+    "timestamp": "2025-10-08T03:33:50.785870Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"id\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createTodo\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodo($input: CreateTodoInput!) {\n  createTodo(input: {\n    id: \"<img src=x onerror=alert('xss')>\"\n    title: \"Test HTML Injection\"\n    completed: false\n  }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.703,
+    "timestamp": "2025-10-08T03:33:54.487182Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"id\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createTodo\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodoNonAliased($input: CreateTodoInput!) {\n  createTodo(input: $input) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.686,
+        "timestamp": "2025-10-08T03:33:57.540643Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$input\" of required type \"CreateTodoInput!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 31
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.687,
+        "timestamp": "2025-10-08T03:33:58.227782Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"s\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 28
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-08T03:33:58.227810Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.864,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodoAliased(s: \"createTodo\") {\n  s(input: {\n    id: createTodo\n    title: \"Test Query Deny Bypass Aliased\"\n    completed: true\n  }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.391,
+        "timestamp": "2025-10-08T03:34:01.988528Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$input\" of required type \"CreateTodoInput!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 31
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.685,
+        "timestamp": "2025-10-08T03:34:02.673221Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"s\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 28
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-10-08T03:34:02.673345Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.794,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspection {\n  createTodo {\n    types {\n      kind\n      name\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.719,
+    "timestamp": "2025-10-08T03:34:07.753855Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery FieldSuggestions {\n  createTodo(input: {\n    id: \"1\"\n    title: \"Test Field Suggestions\"\n    completed: true\n  }) {\n    id\n    title\n    completed\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.707,
+    "timestamp": "2025-10-08T03:34:10.003558Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"Test Todo\", completed: true }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.468,
+    "timestamp": "2025-10-08T03:34:23.160416Z",
+    "count": 23,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "createTodo": {
+          "id": "201",
+          "title": "Test Todo"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { id: \"1 UNION SELECT * FROM Todo\", title: \"Test Todo\", completed: true }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.488,
+    "timestamp": "2025-10-08T03:34:26.822127Z",
+    "count": 24,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"id\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"<script>alert('xss')</script>\", completed: true }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 4.126,
+    "timestamp": "2025-10-08T03:34:33.164328Z",
+    "count": 25,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "createTodo": {
+          "id": "201",
+          "title": "<script>alert('xss')</script>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { user: { email: \"//\", username: \"Test User\" } }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.377,
+    "timestamp": "2025-10-08T03:34:36.077074Z",
+    "count": 26,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateTodoInput.title\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateTodoInput.completed\" of required type \"Boolean!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { user: { email: \"; id; ls /etc/passwd\", username: \"Test User\" } }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.687,
+    "timestamp": "2025-10-08T03:34:39.446306Z",
+    "count": 27,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateTodoInput.title\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateTodoInput.completed\" of required type \"Boolean!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" is not defined by type \"CreateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { posts: { data: [{ id: \"1/;/1/;\" }] }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.716,
+    "timestamp": "2025-10-08T03:34:42.610495Z",
+    "count": 28,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \")\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 59
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createTodo(input: { title: \"<h1>Hello World</h1>\", completed: true }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.709,
+    "timestamp": "2025-10-08T03:34:44.873900Z",
+    "count": 29,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "createTodo": {
+          "id": "201",
+          "title": "<h1>Hello World</h1>"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodoQueryDenyBypassNonAliased(\n  $$allowedFields: [id, completed],\n  input: { title: createTodo, completed: true, user: { username: \"Test User\" } }\n) {\n  title\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.825,
+        "timestamp": "2025-10-08T03:34:47.425317Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"$\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 4
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.368,
+        "timestamp": "2025-10-08T03:34:47.793635Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"s\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-10-08T03:34:47.793683Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.995,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation createTodoQueryDenyBypassAliased(\n  s: createTodoQueryDenyBypassNonAliased,\n  input: { title: createTodo, completed: true, user: { username: \"Test User\" } }\n) {\n  s.title\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.425,
+        "timestamp": "2025-10-08T03:34:52.958120Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"$\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 4
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.657,
+        "timestamp": "2025-10-08T03:34:53.614966Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"s\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 31,
+    "timestamp": "2025-10-08T03:34:53.615041Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.031,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createTodo {\n    queryType {\n      name\n    }\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.026,
+    "timestamp": "2025-10-08T03:34:58.108975Z",
+    "count": 32,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createTodo(term: \"t\") {\n    results {\n      __typename\n      __isTypeOf\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.023,
+    "timestamp": "2025-10-08T03:35:01.656867Z",
+    "count": 33,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

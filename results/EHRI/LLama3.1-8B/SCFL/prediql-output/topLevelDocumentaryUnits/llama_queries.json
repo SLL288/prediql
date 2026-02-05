@@ -1,0 +1,419 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  topLevelDocumentaryUnits(first: 1, after: \" UNION SELECT * FROM users\") {\n    items {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.775,
+    "timestamp": "2025-09-25T11:16:37.385237Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "topLevelDocumentaryUnits": {
+          "items": [
+            {
+              "id": "at-006597-01",
+              "type": "DocumentaryUnit"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  topLevelDocumentaryUnits(term: \"<script>alert('xss')</script>\") {\n    results\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.095,
+    "timestamp": "2025-09-25T11:16:39.321816Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[topLevelDocumentaryUnits]) : Unknown field argument 'term'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 28
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[topLevelDocumentaryUnits/results]) : Field 'results' in type 'documentaryUnits' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  f(canvasLocation: \"http://192.168.1.1\") {\n    topLevelDocumentaryUnits {\n      node {\n        id\n        type\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.096,
+    "timestamp": "2025-09-25T11:16:41.108714Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[f]) : Field 'f' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  topLevelDocumentaryUnits(first: 1, from: \"ls -l;sleep 10\") {\n    items {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.426,
+    "timestamp": "2025-09-25T11:16:43.055774Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "topLevelDocumentaryUnits": {
+          "items": [
+            {
+              "id": "at-006597-01",
+              "type": "DocumentaryUnit"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  topLevelDocumentaryUnits(first: 1, from: \"//etc/passwd\") {\n    items {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.528,
+    "timestamp": "2025-09-25T11:16:45.320199Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "topLevelDocumentaryUnits": {
+          "items": [
+            {
+              "id": "at-006597-01",
+              "type": "DocumentaryUnit"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  topLevelDocumentaryUnits(term: \"<iframe src='https://example.com' width='100%' height='200'>\") {\n    results\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.125,
+    "timestamp": "2025-09-25T11:16:47.356806Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[topLevelDocumentaryUnits]) : Unknown field argument 'term'",
+          "locations": [
+            {
+              "line": 3,
+              "column": 28
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        },
+        {
+          "message": "Validation error (FieldUndefined@[topLevelDocumentaryUnits/results]) : Field 'results' in type 'documentaryUnits' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery topLevelDocumentaryUnits(chuck Norris: \"(Matthew Gunn\") {\n  topLevelDocumentaryUnits {\n    id\n    type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.138,
+        "timestamp": "2025-09-25T11:16:49.167423Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token 'chuck' at line 2 column 32",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 32
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.107,
+        "timestamp": "2025-09-25T11:16:49.275758Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token ':' at line 2 column 8",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-09-25T11:16:49.275832Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.098,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery s:topLevelDocumentaryUnits(statement: \"authority\") {\n  s: topLevelDocumentaryUnits {\n    s:id\n    s:type\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.105,
+        "timestamp": "2025-09-25T11:16:51.876380Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token 'chuck' at line 2 column 32",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 32
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.101,
+        "timestamp": "2025-09-25T11:16:51.978702Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Invalid Syntax : offending token ':' at line 2 column 8",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "classification": "InvalidSyntax"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-25T11:16:51.978770Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.106,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  topLevelDocumentaryUnits {\n    query {\n      topLevelDocumentaryUnits {\n        fields {\n          name\n          type\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.094,
+    "timestamp": "2025-09-25T11:16:53.910387Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[topLevelDocumentaryUnits/query]) : Field 'query' in type 'documentaryUnits' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  topLevelDocumentaryUnits(first: 0, after: \"someCursor\") {\n    items {\n      __typename\n      edges {\n        node {\n          __typename\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.084,
+    "timestamp": "2025-09-25T11:16:56.693663Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[topLevelDocumentaryUnits/items/edges]) : Field 'edges' in type 'DocumentaryUnit' is undefined",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  topLevelDocumentaryUnits(first: 1) {\n    items {\n      id\n      type\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.477,
+    "timestamp": "2025-09-25T11:16:59.453225Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "topLevelDocumentaryUnits": {
+          "items": [
+            {
+              "id": "at-006597-01",
+              "type": "DocumentaryUnit"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

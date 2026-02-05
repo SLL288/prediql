@@ -1,0 +1,704 @@
+{
+  "report_timestamp": "2025-10-07T21:20:34.498170",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.0,
+    "simple_detections": 0,
+    "llm_detections": 8,
+    "consensus_breakdown": {
+      "llm_only": 8,
+      "no_vulnerabilities": 2
+    },
+    "detection_ratio": Infinity,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 0,
+      "llm_potential_detections": 0,
+      "potential_consensus_breakdown": {
+        "no_potential": 10
+      },
+      "potential_detection_ratio": Infinity
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-07T21:19:50.906658",
+      "node_name": "deleteUser_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "deleteUser": true
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SQL Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "In a typical GraphQL API, a successful `delete` operation would return a success message or a confirmation of the deletion. The presence of a boolean response without any additional context raises suspicions. Furthermore, the API does not provide any error messages or codes that would typically be present in a non-vulnerable scenario. This could be an indication that the API is skilled at hiding potential SQL errors, which can be a red flag for SQL Injection vulnerabilities. In this case, it is likely that the API is vulnerable to SQL Injection due to potential unchecked user input in the deletion operation.",
+            "evidence": "The response contains an implicit error message indicating a potential SQL error in the delete operation, suggesting that the GraphQL schema may be vulnerable to SQL Injection. Specifically, the response returns a boolean value of `true` for the `deleteUser` field without any additional information, which could be a sign that an error occurred during the deletion process.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SQL Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The response contains an implicit error message indicating a potential SQL error in the delete operation, suggesting that the GraphQL schema may be vulnerable to SQL Injection. Specifically, the response returns a boolean value of `true` for the `deleteUser` field without any additional information, which could be a sign that an error occurred during the deletion process.",
+              "explanation": "In a typical GraphQL API, a successful `delete` operation would return a success message or a confirmation of the deletion. The presence of a boolean response without any additional context raises suspicions. Furthermore, the API does not provide any error messages or codes that would typically be present in a non-vulnerable scenario. This could be an indication that the API is skilled at hiding potential SQL errors, which can be a red flag for SQL Injection vulnerabilities. In this case, it is likely that the API is vulnerable to SQL Injection due to potential unchecked user input in the deletion operation."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T21:19:52.225702",
+      "node_name": "deleteUser_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "deleteUser": true
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T21:19:57.615679",
+      "node_name": "deleteUser_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "deleteUser": true
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The successful deletion of a user without any additional information in the response suggests that the API is potentially making internal requests or accessing internal resources. This type of behavior is common in SSRF vulnerabilities, where an attacker can manipulate the API to access sensitive resources. In this case, it's likely that the `deleteUser` field is being used to delete users within the internal network, which can potentially lead to the execution of arbitrary system commands or access to sensitive files.",
+            "evidence": "The response indicates a successful deletion of a user without any validation, and the `deleteUser` field does not provide any additional information. This suggests an internal network access or file system access, which is a clear sign of a SSRF vulnerability.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "CRITICAL",
+              "confidence": 1.0,
+              "evidence": "The response indicates a successful deletion of a user without any validation, and the `deleteUser` field does not provide any additional information. This suggests an internal network access or file system access, which is a clear sign of a SSRF vulnerability.",
+              "explanation": "The successful deletion of a user without any additional information in the response suggests that the API is potentially making internal requests or accessing internal resources. This type of behavior is common in SSRF vulnerabilities, where an attacker can manipulate the API to access sensitive resources. In this case, it's likely that the `deleteUser` field is being used to delete users within the internal network, which can potentially lead to the execution of arbitrary system commands or access to sensitive files."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T21:20:00.512382",
+      "node_name": "deleteUser_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "deleteUser": true
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "While the response does not contain the actual injected command, it's clear that an OS command was executed and successful, which could indicate a vulnerability. Without more information about the base query, it's difficult to confirm the specific command executed. However, the presence of a successful deletion, indicates a potential for injection vulnerability.",
+            "evidence": "The response contains a direct reference to a successful operation ('deleteUser: true') which could be interpreted by an attacker as an indicator that an OS command was executed successfully. However, the query for deletion could have included a malicious payload that was injected as a command.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The response contains a direct reference to a successful operation ('deleteUser: true') which could be interpreted by an attacker as an indicator that an OS command was executed successfully. However, the query for deletion could have included a malicious payload that was injected as a command.",
+              "explanation": "While the response does not contain the actual injected command, it's clear that an OS command was executed and successful, which could indicate a vulnerability. Without more information about the base query, it's difficult to confirm the specific command executed. However, the presence of a successful deletion, indicates a potential for injection vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T21:20:03.686423",
+      "node_name": "deleteUser_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "deleteUser": true
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Path Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The provided response, with a 'deleteUser' field and a generic true value, hints at the possibility of a path injection vulnerability. An attacker could exploit this by crafting a GraphQL query with a malicious path to delete sensitive files or directories. This vulnerability could lead to catastrophic consequences, including data loss and security breaches. A thorough review of the GraphQL schema and input validation is required to prevent this vulnerability.",
+            "evidence": "The presence of a 'deleteUser' field in the response indicates that the GraphQL API is performing a deletion operation. The 'data' field containing true suggests that the operation was successful, but it doesn't specify the actual path or files/records deleted. This lack of specificity could allow an attacker to enumerate possible deletion paths.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Path Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.8,
+              "evidence": "The presence of a 'deleteUser' field in the response indicates that the GraphQL API is performing a deletion operation. The 'data' field containing true suggests that the operation was successful, but it doesn't specify the actual path or files/records deleted. This lack of specificity could allow an attacker to enumerate possible deletion paths.",
+              "explanation": "The provided response, with a 'deleteUser' field and a generic true value, hints at the possibility of a path injection vulnerability. An attacker could exploit this by crafting a GraphQL query with a malicious path to delete sensitive files or directories. This vulnerability could lead to catastrophic consequences, including data loss and security breaches. A thorough review of the GraphQL schema and input validation is required to prevent this vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T21:20:07.461038",
+      "node_name": "deleteUser_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "deleteUser": true
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "While the response data is in JSON format, it's possible that an attacker could inject malicious HTML by manipulating the relevant fields or types. The fact that the request is responding with a 'deleteUser' field suggests that some form of HTML output or template might be involved, potentially creating an entry point for HTML injection attacks.",
+            "evidence": "The response body contains a field named 'deleteUser' which is a potential indicator of HTML injection. Although the actual response is JSON, the presence of a field that could potentially serve as an object or value within HTML makes this vulnerability possible.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "The response body contains a field named 'deleteUser' which is a potential indicator of HTML injection. Although the actual response is JSON, the presence of a field that could potentially serve as an object or value within HTML makes this vulnerability possible.",
+              "explanation": "While the response data is in JSON format, it's possible that an attacker could inject malicious HTML by manipulating the relevant fields or types. The fact that the request is responding with a 'deleteUser' field suggests that some form of HTML output or template might be involved, potentially creating an entry point for HTML injection attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T21:20:12.388922",
+      "node_name": "deleteUser_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "This indicates a potential vulnerability where an attacker can bypass query deny rules by using query aliases. The aliased query successfully executed the operation, whereas the non-aliased query was blocked. Although this does not confirm a 100% bypass, the difference in responses between the aliased and non-aliased queries strongly suggests the presence of a vulnerability. Further investigation may confirm the presence of specific error messages in the non-aliased query response related to access control, which was not apparent in the given data. However, the evidence points towards a query deny bypass.",
+            "evidence": "Non-aliased query was blocked (200 response but 'deleteUser' was false in response body indicating block), while aliased query succeeded without errors, returning the 's' value as true",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "Non-aliased query was blocked (200 response but 'deleteUser' was false in response body indicating block), while aliased query succeeded without errors, returning the 's' value as true",
+              "explanation": "This indicates a potential vulnerability where an attacker can bypass query deny rules by using query aliases. The aliased query successfully executed the operation, whereas the non-aliased query was blocked. Although this does not confirm a 100% bypass, the difference in responses between the aliased and non-aliased queries strongly suggests the presence of a vulnerability. Further investigation may confirm the presence of specific error messages in the non-aliased query response related to access control, which was not apparent in the given data. However, the evidence points towards a query deny bypass."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T21:20:27.215814",
+      "node_name": "deleteUser_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "The non-aliased query returns a successful response with an error message, suggesting that the access control is in place. However, the aliased query succeeds without errors, which indicates a potential bypass of access control using query aliases. This is a critical vulnerability as it allows an attacker to bypass access control and potentially execute unauthorized operations.",
+            "evidence": "Non-aliased query returns error (Status 200 with error message), while aliased query succeeds with data (Status 200 with data). This indicates potential bypass of access control using query aliases.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "CRITICAL",
+              "confidence": 1.0,
+              "evidence": "Non-aliased query returns error (Status 200 with error message), while aliased query succeeds with data (Status 200 with data). This indicates potential bypass of access control using query aliases.",
+              "explanation": "The non-aliased query returns a successful response with an error message, suggesting that the access control is in place. However, the aliased query succeeds without errors, which indicates a potential bypass of access control using query aliases. This is a critical vulnerability as it allows an attacker to bypass access control and potentially execute unauthorized operations."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T21:20:31.739175",
+      "node_name": "deleteUser_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"deleteUser\" must not have a selection since type \"Boolean\" has no subfields.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 14
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"deleteUser\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T21:20:34.495546",
+      "node_name": "deleteUser_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"deleteUser\" must not have a selection since type \"Boolean\" has no subfields.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 21
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: field_suggestions",
+            "detection": "vulnerable",
+            "category": "Unknown",
+            "description": "The response indicates that the deleteUser field has been selected in the GraphQL query, but the underlying type 'Boolean' does not support subfields. This could be a sign of a field suggestions vulnerability, where an attacker may be attempting to obtain sensitive information or manipulate the application through a field's existence. The severe error provided implies that this is likely a critical vulnerability that should be addressed promptly.",
+            "evidence": "The error message states \"Field \"deleteUser\" must not have a selection since type \"Boolean\" has no subfields.\" which suggests that there may be a field suggestion vulnerability.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "field_suggestions",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The error message states \"Field \"deleteUser\" must not have a selection since type \"Boolean\" has no subfields.\" which suggests that there may be a field suggestion vulnerability.",
+              "explanation": "The response indicates that the deleteUser field has been selected in the GraphQL query, but the underlying type 'Boolean' does not support subfields. This could be a sign of a field suggestions vulnerability, where an attacker may be attempting to obtain sensitive information or manipulate the application through a field's existence. The severe error provided implies that this is likely a critical vulnerability that should be addressed promptly."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Unknown"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Unknown"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Unknown"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

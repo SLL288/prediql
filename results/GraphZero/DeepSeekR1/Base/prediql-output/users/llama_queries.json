@@ -1,0 +1,605 @@
+[
+  {
+    "query": {
+      "query": "\nquery users {\n  users(options: {}) {\n    data {\n      id\n      name\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.27,
+    "timestamp": "2025-10-05T10:39:39.827268Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "users": {
+          "data": [
+            {
+              "id": "1",
+              "name": "Leanne Graham",
+              "email": "Sincere@april.biz"
+            },
+            {
+              "id": "2",
+              "name": "Ervin Howell",
+              "email": "Shanna@melissa.tv"
+            },
+            {
+              "id": "3",
+              "name": "Clementine Bauch",
+              "email": "Nathan@yesenia.net"
+            },
+            {
+              "id": "4",
+              "name": "Patricia Lebsack",
+              "email": "Julianne.OConner@kory.org"
+            },
+            {
+              "id": "5",
+              "name": "Chelsey Dietrich",
+              "email": "Lucio_Hettinger@annie.ca"
+            },
+            {
+              "id": "6",
+              "name": "Mrs. Dennis Schulist",
+              "email": "Karley_Dach@jasper.info"
+            },
+            {
+              "id": "7",
+              "name": "Kurtis Weissnat",
+              "email": "Telly.Hoeger@billy.biz"
+            },
+            {
+              "id": "8",
+              "name": "Nicholas Runolfsdottir V",
+              "email": "Sherwood@rosamond.me"
+            },
+            {
+              "id": "9",
+              "name": "Glenna Reichert",
+              "email": "Chaim_McDermott@dana.io"
+            },
+            {
+              "id": "10",
+              "name": "Clementina DuBuque",
+              "email": "Rey.Padberg@karina.biz"
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  users(options: {filter: \"id: '1 UNION SELECT * FROM users -- \"}) {\n    data {\n      id\n      name\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.092,
+    "timestamp": "2025-10-05T10:39:43.602325Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"filter\" is not defined by type \"PageQueryOptions\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 19
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  users(options: {filter: \"website: 'javascript:alert(\\\"XSS\\\")'\"}) {\n    data {\n      name\n      website\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.901,
+    "timestamp": "2025-10-05T10:39:47.392106Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"filter\" is not defined by type \"PageQueryOptions\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 19
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  users(options: {filter: \"website: 'http://169.254.169.254/latest/meta-data'\"}) {\n    data {\n      name\n      website\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.847,
+    "timestamp": "2025-10-05T10:39:50.374438Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"filter\" is not defined by type \"PageQueryOptions\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 19
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  users(options: {filter: \"name: '; cat /etc/passwd #'\"}) {\n    data {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.728,
+    "timestamp": "2025-10-05T10:39:52.642253Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"filter\" is not defined by type \"PageQueryOptions\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 19
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  users(options: {filter: \"website: 'file:///etc/passwd'\"}) {\n    data {\n      id\n      website\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.099,
+    "timestamp": "2025-10-05T10:39:56.215643Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"filter\" is not defined by type \"PageQueryOptions\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 19
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  users(options: {filter: \"name: '<img src=x onerror=alert(1)>'\"}) {\n    data {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.23,
+    "timestamp": "2025-10-05T10:39:59.056827Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"filter\" is not defined by type \"PageQueryOptions\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 19
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  users {\n    data {\n      id\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.828,
+        "timestamp": "2025-10-05T10:40:01.670120Z",
+        "response_body": {
+          "data": {
+            "users": {
+              "data": [
+                {
+                  "id": "1",
+                  "email": "Sincere@april.biz"
+                },
+                {
+                  "id": "2",
+                  "email": "Shanna@melissa.tv"
+                },
+                {
+                  "id": "3",
+                  "email": "Nathan@yesenia.net"
+                },
+                {
+                  "id": "4",
+                  "email": "Julianne.OConner@kory.org"
+                },
+                {
+                  "id": "5",
+                  "email": "Lucio_Hettinger@annie.ca"
+                },
+                {
+                  "id": "6",
+                  "email": "Karley_Dach@jasper.info"
+                },
+                {
+                  "id": "7",
+                  "email": "Telly.Hoeger@billy.biz"
+                },
+                {
+                  "id": "8",
+                  "email": "Sherwood@rosamond.me"
+                },
+                {
+                  "id": "9",
+                  "email": "Chaim_McDermott@dana.io"
+                },
+                {
+                  "id": "10",
+                  "email": "Rey.Padberg@karina.biz"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.069,
+        "timestamp": "2025-10-05T10:40:02.738748Z",
+        "response_body": {
+          "data": {
+            "q": {
+              "d": [
+                {
+                  "i": "1",
+                  "e": "Sincere@april.biz"
+                },
+                {
+                  "i": "2",
+                  "e": "Shanna@melissa.tv"
+                },
+                {
+                  "i": "3",
+                  "e": "Nathan@yesenia.net"
+                },
+                {
+                  "i": "4",
+                  "e": "Julianne.OConner@kory.org"
+                },
+                {
+                  "i": "5",
+                  "e": "Lucio_Hettinger@annie.ca"
+                },
+                {
+                  "i": "6",
+                  "e": "Karley_Dach@jasper.info"
+                },
+                {
+                  "i": "7",
+                  "e": "Telly.Hoeger@billy.biz"
+                },
+                {
+                  "i": "8",
+                  "e": "Sherwood@rosamond.me"
+                },
+                {
+                  "i": "9",
+                  "e": "Chaim_McDermott@dana.io"
+                },
+                {
+                  "i": "10",
+                  "e": "Rey.Padberg@karina.biz"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T10:40:02.738825Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.868,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  q: users {\n    d: data {\n      i: id\n      e: email\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.979,
+        "timestamp": "2025-10-05T10:40:07.251193Z",
+        "response_body": {
+          "data": {
+            "users": {
+              "data": [
+                {
+                  "id": "1",
+                  "email": "Sincere@april.biz"
+                },
+                {
+                  "id": "2",
+                  "email": "Shanna@melissa.tv"
+                },
+                {
+                  "id": "3",
+                  "email": "Nathan@yesenia.net"
+                },
+                {
+                  "id": "4",
+                  "email": "Julianne.OConner@kory.org"
+                },
+                {
+                  "id": "5",
+                  "email": "Lucio_Hettinger@annie.ca"
+                },
+                {
+                  "id": "6",
+                  "email": "Karley_Dach@jasper.info"
+                },
+                {
+                  "id": "7",
+                  "email": "Telly.Hoeger@billy.biz"
+                },
+                {
+                  "id": "8",
+                  "email": "Sherwood@rosamond.me"
+                },
+                {
+                  "id": "9",
+                  "email": "Chaim_McDermott@dana.io"
+                },
+                {
+                  "id": "10",
+                  "email": "Rey.Padberg@karina.biz"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.918,
+        "timestamp": "2025-10-05T10:40:08.169666Z",
+        "response_body": {
+          "data": {
+            "q": {
+              "d": [
+                {
+                  "i": "1",
+                  "e": "Sincere@april.biz"
+                },
+                {
+                  "i": "2",
+                  "e": "Shanna@melissa.tv"
+                },
+                {
+                  "i": "3",
+                  "e": "Nathan@yesenia.net"
+                },
+                {
+                  "i": "4",
+                  "e": "Julianne.OConner@kory.org"
+                },
+                {
+                  "i": "5",
+                  "e": "Lucio_Hettinger@annie.ca"
+                },
+                {
+                  "i": "6",
+                  "e": "Karley_Dach@jasper.info"
+                },
+                {
+                  "i": "7",
+                  "e": "Telly.Hoeger@billy.biz"
+                },
+                {
+                  "i": "8",
+                  "e": "Sherwood@rosamond.me"
+                },
+                {
+                  "i": "9",
+                  "e": "Chaim_McDermott@dana.io"
+                },
+                {
+                  "i": "10",
+                  "e": "Rey.Padberg@karina.biz"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T10:40:08.169781Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.673,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspection {\n  users {\n    types {\n      name\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.765,
+    "timestamp": "2025-10-05T10:40:11.163574Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"UsersPage\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  users(name: \"User\") {\n    name\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.909,
+    "timestamp": "2025-10-05T10:40:14.485709Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"name\" on field \"Query.users\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 9
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"name\" on type \"UsersPage\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"fields\" on type \"UsersPage\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

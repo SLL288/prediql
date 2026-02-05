@@ -1,0 +1,739 @@
+{
+  "report_timestamp": "2025-10-08T07:05:39.667046",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.2,
+    "simple_detections": 2,
+    "llm_detections": 4,
+    "consensus_breakdown": {
+      "no_vulnerabilities": 6,
+      "both_detected": 2,
+      "llm_only": 2
+    },
+    "detection_ratio": 2.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 2,
+      "llm_potential_detections": 1,
+      "potential_consensus_breakdown": {
+        "no_potential": 7,
+        "simple_potential_only": 2,
+        "llm_potential_only": 1
+      },
+      "potential_detection_ratio": 0.5
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-08T07:05:09.012166",
+      "node_name": "createTodo_response_2",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"id\" is not defined by type \"CreateTodoInput\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 23
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:05:10.159501",
+      "node_name": "createTodo_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createTodo": {
+            "id": "201",
+            "title": "<script>alert('xss')</script>"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: XSS (Cross-Site Scripting)",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL API has exposed the input data from the 'createTodo' mutation without proper sanitization, resulting in a reflected XSS vulnerability. This allows attackers to inject malicious client-side scripts into user sessions. The 'title' field in the response contains the malicious script, indicating a failure in input validation or sanitization. This is a CRITICAL vulnerability as it can lead to sensitive data theft and privilege escalation attacks.",
+            "evidence": "Presence of a script tag \"<script>alert('xss')</script>\" in the response data",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "XSS (Cross-Site Scripting)",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "Presence of a script tag \"<script>alert('xss')</script>\" in the response data",
+              "explanation": "The GraphQL API has exposed the input data from the 'createTodo' mutation without proper sanitization, resulting in a reflected XSS vulnerability. This allows attackers to inject malicious client-side scripts into user sessions. The 'title' field in the response contains the malicious script, indicating a failure in input validation or sanitization. This is a CRITICAL vulnerability as it can lead to sensitive data theft and privilege escalation attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:05:11.277677",
+      "node_name": "createTodo_response_4",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"CreateTodoInput.title\" of required type \"String!\" was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 21
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"CreateTodoInput.completed\" of required type \"Boolean!\" was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 21
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"user\" is not defined by type \"CreateTodoInput\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 23
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:05:14.089074",
+      "node_name": "createTodo_response_5",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"CreateTodoInput.title\" of required type \"String!\" was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 21
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"CreateTodoInput.completed\" of required type \"Boolean!\" was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 21
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"user\" is not defined by type \"CreateTodoInput\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 23
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:05:20.602701",
+      "node_name": "createTodo_response_6",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Syntax Error: Expected Name, found \")\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 59
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_PARSE_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:05:24.437088",
+      "node_name": "createTodo_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createTodo": {
+            "id": "201",
+            "title": "<h1>Hello World</h1>"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: XSS (Cross-Site Scripting)",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response data contains HTML tags in the 'title' field, which can potentially enable cross-site scripting (XSS) attacks if not properly sanitized. This indicates a high-confidence vuln.",
+            "evidence": "HTML tags are allowed in the 'title' field of the 'createTodo' object, specifically '<h1>Hello World</h1>'",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "XSS (Cross-Site Scripting)",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "HTML tags are allowed in the 'title' field of the 'createTodo' object, specifically '<h1>Hello World</h1>'",
+              "explanation": "The response data contains HTML tags in the 'title' field, which can potentially enable cross-site scripting (XSS) attacks if not properly sanitized. This indicates a high-confidence vuln."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:05:29.802305",
+      "node_name": "createTodo_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:05:34.671731",
+      "node_name": "createTodo_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:05:36.963736",
+      "node_name": "createTodo_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createTodo\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "In GraphQL, introspecting the schema involves querying the API to obtain information about its types, fields, and resolvers. This can be a critical vulnerability, as it allows an attacker to discover potential attack surfaces and plan targeted exploits. In this case, the GraphQL API appears to be inadvertently exposing its schema, which can be used to identify potential vulnerabilities.",
+            "evidence": "The GraphQL query attempted to access the 'createTodo' field on the 'Query' type, which is not a valid field. This suggests that the GraphQL API is exposing its schema, potentially allowing for schema introspection.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "HIGH",
+              "confidence": 1.0,
+              "evidence": "The GraphQL query attempted to access the 'createTodo' field on the 'Query' type, which is not a valid field. This suggests that the GraphQL API is exposing its schema, potentially allowing for schema introspection.",
+              "explanation": "In GraphQL, introspecting the schema involves querying the API to obtain information about its types, fields, and resolvers. This can be a critical vulnerability, as it allows an attacker to discover potential attack surfaces and plan targeted exploits. In this case, the GraphQL API appears to be inadvertently exposing its schema, which can be used to identify potential vulnerabilities."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:05:39.663594",
+      "node_name": "createTodo_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createTodo\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response contains an error message indicating that the field 'createTodo' cannot be queried on the 'Query' type. This could potentially reveal information about the schema structure, specifically which fields are available to query. This could be considered an information disclosure vulnerability, especially if the API is intended to only expose certain specific fields.",
+            "evidence": "Field 'createTodo' is exposed, maybe the schema provides information on how to use it.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "Field 'createTodo' is exposed, maybe the schema provides information on how to use it.",
+              "explanation": "The GraphQL response contains an error message indicating that the field 'createTodo' cannot be queried on the 'Query' type. This could potentially reveal information about the schema structure, specifically which fields are available to query. This could be considered an information disclosure vulnerability, especially if the API is intended to only expose certain specific fields."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

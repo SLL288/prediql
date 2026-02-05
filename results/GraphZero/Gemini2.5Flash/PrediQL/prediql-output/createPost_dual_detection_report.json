@@ -1,0 +1,760 @@
+{
+  "report_timestamp": "2025-09-23T18:56:51.966162",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.4,
+    "simple_detections": 5,
+    "llm_detections": 6,
+    "consensus_breakdown": {
+      "both_detected": 5,
+      "llm_only": 1,
+      "no_vulnerabilities": 4
+    },
+    "detection_ratio": 1.2,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 4,
+      "llm_potential_detections": 0,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 4,
+        "no_potential": 6
+      },
+      "potential_detection_ratio": 0.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-09-23T18:56:35.955457",
+      "node_name": "createPost_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101",
+            "title": "Test Post '; DROP TABLE users; --",
+            "body": "SQL Injection attempt in body."
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'title' field in the GraphQL response contains the SQL injection payload \"Test Post '; DROP TABLE users; --\". This indicates that a user-supplied input containing SQL meta-characters and a malicious SQL command (DROP TABLE users) was processed and reflected back in the API response. While the response itself doesn't show the database table being dropped, the reflection of the exact payload strongly suggests that the input was not properly sanitized or parameterized before being used in a database query. This makes the underlying API endpoint highly susceptible to SQL injection, potentially allowing an attacker to manipulate or exfiltrate data, or even perform destructive actions on the database.",
+            "evidence": "\"title\": \"Test Post '; DROP TABLE users; --\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "\"title\": \"Test Post '; DROP TABLE users; --\"",
+              "explanation": "The 'title' field in the GraphQL response contains the SQL injection payload \"Test Post '; DROP TABLE users; --\". This indicates that a user-supplied input containing SQL meta-characters and a malicious SQL command (DROP TABLE users) was processed and reflected back in the API response. While the response itself doesn't show the database table being dropped, the reflection of the exact payload strongly suggests that the input was not properly sanitized or parameterized before being used in a database query. This makes the underlying API endpoint highly susceptible to SQL injection, potentially allowing an attacker to manipulate or exfiltrate data, or even perform destructive actions on the database."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T18:56:37.537938",
+      "node_name": "createPost_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101",
+            "title": "<script>alert('XSS in title');</script>",
+            "body": "This post body contains an <img src='x' onerror='alert(\"XSS in body\")'> malicious script."
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response explicitly includes JavaScript code within the 'title' field (<script>alert('XSS in title');</script>) and an HTML image tag with an onerror event handler within the 'body' field (<img src='x' onerror='alert(\"XSS in body\")'>). If these values are rendered directly into a web page without proper escaping or sanitization, they would execute the injected scripts, leading to a Cross-Site Scripting (XSS) vulnerability. This is a clear indication of reflected XSS in the API response.",
+            "evidence": "Response fields 'title' and 'body' contain injected script tags and HTML event handlers: 'title': \"<script>alert('XSS in title');</script>\", 'body': \"This post body contains an <img src='x' onerror='alert(\\\"XSS in body\\\")'> malicious script.\"",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "HIGH",
+              "confidence": 1.0,
+              "evidence": "Response fields 'title' and 'body' contain injected script tags and HTML event handlers: 'title': \"<script>alert('XSS in title');</script>\", 'body': \"This post body contains an <img src='x' onerror='alert(\\\"XSS in body\\\")'> malicious script.\"",
+              "explanation": "The GraphQL response explicitly includes JavaScript code within the 'title' field (<script>alert('XSS in title');</script>) and an HTML image tag with an onerror event handler within the 'body' field (<img src='x' onerror='alert(\"XSS in body\")'>). If these values are rendered directly into a web page without proper escaping or sanitization, they would execute the injected scripts, leading to a Cross-Site Scripting (XSS) vulnerability. This is a clear indication of reflected XSS in the API response."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T18:56:39.479276",
+      "node_name": "createPost_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101",
+            "title": "SSRF Test",
+            "body": "This post might try to fetch data from http://127.0.0.1/admin or https://internal.service.com/api/data"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'body' field of the 'createPost' response explicitly mentions attempts to 'fetch data from http://127.0.0.1/admin or https://internal.service.com/api/data'. This strongly suggests that the application processes URLs provided in user input, which are then used to make server-side requests. The inclusion of an internal IP address (127.0.0.1) and a potential internal service domain (internal.service.com) in the message indicates a possible SSRF vulnerability where an attacker could coerce the server to make requests to internal network resources or arbitrary external services. While this specific response is a human-readable message, it is a clear indicator of a feature that could be exploited for SSRF.",
+            "evidence": "This post might try to fetch data from http://127.0.0.1/admin or https://internal.service.com/api/data",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "This post might try to fetch data from http://127.0.0.1/admin or https://internal.service.com/api/data",
+              "explanation": "The 'body' field of the 'createPost' response explicitly mentions attempts to 'fetch data from http://127.0.0.1/admin or https://internal.service.com/api/data'. This strongly suggests that the application processes URLs provided in user input, which are then used to make server-side requests. The inclusion of an internal IP address (127.0.0.1) and a potential internal service domain (internal.service.com) in the message indicates a possible SSRF vulnerability where an attacker could coerce the server to make requests to internal network resources or arbitrary external services. While this specific response is a human-readable message, it is a clear indicator of a feature that could be exploited for SSRF."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T18:56:40.979140",
+      "node_name": "createPost_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101",
+            "title": "Command Injection Test",
+            "body": "A post body with a command injection payload: ; cat /etc/passwd; "
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The 'body' field of the 'createPost' mutation response contains the string '; cat /etc/passwd;'. This is a classic payload for OS command injection. If the backend processes the 'body' content by executing it in a shell context without proper sanitization or escaping, this could lead to arbitrary command execution on the server. The presence of the payload in the response (implying it was accepted and stored/processed) strongly suggests a potential vulnerability, although direct confirmation of execution would require further testing.",
+            "evidence": "Response body contains a command injection payload in the 'body' field: '; cat /etc/passwd;'",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "Response body contains a command injection payload in the 'body' field: '; cat /etc/passwd;'",
+              "explanation": "The 'body' field of the 'createPost' mutation response contains the string '; cat /etc/passwd;'. This is a classic payload for OS command injection. If the backend processes the 'body' content by executing it in a shell context without proper sanitization or escaping, this could lead to arbitrary command execution on the server. The presence of the payload in the response (implying it was accepted and stored/processed) strongly suggests a potential vulnerability, although direct confirmation of execution would require further testing."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T18:56:42.296909",
+      "node_name": "createPost_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101",
+            "title": "Path Injection Test"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T18:56:43.743218",
+      "node_name": "createPost_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101",
+            "title": "<h1>HTML Injection Title</h1>",
+            "body": "<p>This is a paragraph with <b>bold</b> text injected.</p>"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: HTML Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response clearly shows that HTML tags submitted in the input (<h1> and <p>, <b>) have been directly reflected in the 'title' and 'body' fields without proper sanitization or encoding. This indicates an HTML Injection vulnerability. An attacker could inject malicious HTML, leading to defacing of pages, phishing attacks, or even Cross-Site Scripting (XSS) if script tags are also allowed to be rendered by the client.",
+            "evidence": "'title': '<h1>HTML Injection Title</h1>', 'body': '<p>This is a paragraph with <b>bold</b> text injected.</p>'",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "HTML Injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "'title': '<h1>HTML Injection Title</h1>', 'body': '<p>This is a paragraph with <b>bold</b> text injected.</p>'",
+              "explanation": "The GraphQL response clearly shows that HTML tags submitted in the input (<h1> and <p>, <b>) have been directly reflected in the 'title' and 'body' fields without proper sanitization or encoding. This indicates an HTML Injection vulnerability. An attacker could inject malicious HTML, leading to defacing of pages, phishing attacks, or even Cross-Site Scripting (XSS) if script tags are also allowed to be rendered by the client."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T18:56:45.634272",
+      "node_name": "createPost_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T18:56:47.128917",
+      "node_name": "createPost_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T18:56:50.221565",
+      "node_name": "createPost_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createPost\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T18:56:51.964107",
+      "node_name": "createPost_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"ttile\" on type \"Post\". Did you mean \"title\"?",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"bodey\" on type \"Post\". Did you mean \"body\"?",
+            "locations": [
+              {
+                "line": 6,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL API response clearly indicates a 'field_suggestions' vulnerability, which falls under Information Disclosure. The server, upon encountering misspelled field names ('ttile' and 'bodey'), suggests the correct field names ('title' and 'body'). This behavior can be exploited by an attacker to enumerate valid fields within the GraphQL schema without prior authorization or knowledge, aiding in reconnaissance for further attacks. While not directly exploitable for data exfiltration or access control bypass, it significantly simplifies the process of understanding the API's structure for malicious actors.",
+            "evidence": "The error messages 'Cannot query field \"ttile\" on type \"Post\". Did you mean \"title\"?' and 'Cannot query field \"bodey\" on type \"Post\". Did you mean \"body\"?' explicitly provide field suggestions.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.9,
+              "evidence": "The error messages 'Cannot query field \"ttile\" on type \"Post\". Did you mean \"title\"?' and 'Cannot query field \"bodey\" on type \"Post\". Did you mean \"body\"?' explicitly provide field suggestions.",
+              "explanation": "The GraphQL API response clearly indicates a 'field_suggestions' vulnerability, which falls under Information Disclosure. The server, upon encountering misspelled field names ('ttile' and 'bodey'), suggests the correct field names ('title' and 'body'). This behavior can be exploited by an attacker to enumerate valid fields within the GraphQL schema without prior authorization or knowledge, aiding in reconnaissance for further attacks. While not directly exploitable for data exfiltration or access control bypass, it significantly simplifies the process of understanding the API's structure for malicious actors."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks",
+          "Information Disclosure"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

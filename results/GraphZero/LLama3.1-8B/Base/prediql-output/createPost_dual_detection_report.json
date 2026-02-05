@@ -1,0 +1,3105 @@
+{
+  "report_timestamp": "2025-09-25T01:01:44.105461",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 45,
+    "agreement_rate": 0.0,
+    "simple_detections": 0,
+    "llm_detections": 28,
+    "consensus_breakdown": {
+      "llm_only": 28,
+      "no_vulnerabilities": 17
+    },
+    "detection_ratio": Infinity,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 0,
+      "llm_potential_detections": 8,
+      "potential_consensus_breakdown": {
+        "no_potential": 37,
+        "llm_potential_only": 8
+      },
+      "potential_detection_ratio": Infinity
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-09-25T00:56:28.717701",
+      "node_name": "createPost_response_2",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Syntax Error: Unexpected character: \"+\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 58
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_PARSE_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "This is strongly indicative of a SQL injection attack. The error message implies that the GraphQL server attempted to execute a query that contained SQL characters, likely resulting from user input validation failure. This is a high-severity finding as it allows an attacker to inject malicious SQL code, potentially compromising the confidentiality, integrity, and availability of the database and the entire system.",
+            "evidence": "The response contains a SQL error message stating 'Unexpected character: \"+\".' which suggests that the GraphQL query contained a SQL injection attempt. The error points to a specific line and column, indicating that the input was malicious and the system attempted to execute it as SQL.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.8,
+              "evidence": "The response contains a SQL error message stating 'Unexpected character: \"+\".' which suggests that the GraphQL query contained a SQL injection attempt. The error points to a specific line and column, indicating that the input was malicious and the system attempted to execute it as SQL.",
+              "explanation": "This is strongly indicative of a SQL injection attack. The error message implies that the GraphQL server attempted to execute a query that contained SQL characters, likely resulting from user input validation failure. This is a high-severity finding as it allows an attacker to inject malicious SQL code, potentially compromising the confidentiality, integrity, and availability of the database and the entire system."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:56:40.628017",
+      "node_name": "createPost_response_3",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Unknown argument \"title\" on field \"Mutation.createPost\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 14
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Unknown argument \"body\" on field \"Mutation.createPost\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 29
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Unknown argument \"userId\" on field \"Mutation.createPost\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 42
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Unknown argument \"html\" on field \"Post.body\".",
+            "locations": [
+              {
+                "line": 6,
+                "column": 10
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"createPost\" argument \"input\" of type \"CreatePostInput!\" is required, but it was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response indicates that the 'html' argument is not validated, allowing for potential HTML injection attacks. This is a high-severity vulnerability because an attacker could inject malicious scripts or HTML tags, potentially leading to cross-site scripting (XSS) attacks. The 'html' argument on the 'Post.body' field suggests that user-input data is being directly inserted into the HTML response, making it susceptible to XSS attacks.",
+            "evidence": "Unknown argument \"html\" on field \"Post.body\".",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "Unknown argument \"html\" on field \"Post.body\".",
+              "explanation": "The GraphQL response indicates that the 'html' argument is not validated, allowing for potential HTML injection attacks. This is a high-severity vulnerability because an attacker could inject malicious scripts or HTML tags, potentially leading to cross-site scripting (XSS) attacks. The 'html' argument on the 'Post.body' field suggests that user-input data is being directly inserted into the HTML response, making it susceptible to XSS attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:56:43.065299",
+      "node_name": "createPost_response_4",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Syntax Error: Expected Name, found String \"http://192.168.1.1\".",
+            "locations": [
+              {
+                "line": 7,
+                "column": 16
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_PARSE_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SSRF",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The error message suggests that the GraphQL parser failed to parse an input string that resembles a URL, specifically 'http://192.168.1.1'. This could be a legitimate request, but the fact that the parser is failing it as a syntax error indicates that it's not expecting such strings, allowing an attacker to invoke SSRF by passing crafted inputs.",
+            "evidence": "The error message indicates that the GraphQL parser failed due to an unexpected string 'http://192.168.1.1', which is a clear attempt to inject an SSRF (Server-Side Request Forgery) attack. This suggests that the GraphQL schema may be vulnerable to SSRF.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SSRF",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The error message indicates that the GraphQL parser failed due to an unexpected string 'http://192.168.1.1', which is a clear attempt to inject an SSRF (Server-Side Request Forgery) attack. This suggests that the GraphQL schema may be vulnerable to SSRF.",
+              "explanation": "The error message suggests that the GraphQL parser failed to parse an input string that resembles a URL, specifically 'http://192.168.1.1'. This could be a legitimate request, but the fact that the parser is failing it as a syntax error indicates that it's not expecting such strings, allowing an attacker to invoke SSRF by passing crafted inputs."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:56:44.304565",
+      "node_name": "createPost_response_5",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Syntax Error: Expected Name, found String \"touch file.txt && cat /etc/passwd\".",
+            "locations": [
+              {
+                "line": 7,
+                "column": 16
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_PARSE_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: os_command_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The error message contains a string that resembles a Unix command. Specifically, the string \"touch file.txt && cat /etc/passwd\" is a command that creates a new file (touch) and then displays the contents of the /etc/passwd file (cat). This suggests that the GraphQL API is not properly sanitizing user input, allowing an attacker to inject malicious commands. This is a clear indication of a Command Injection vulnerability.",
+            "evidence": "The presence of the string \"touch file.txt && cat /etc/passwd\" in the error message, which is a Unix command used to create a new file and display the contents of a sensitive file, respectively.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "os_command_injection",
+              "severity": "CRITICAL",
+              "confidence": 1.0,
+              "evidence": "The presence of the string \"touch file.txt && cat /etc/passwd\" in the error message, which is a Unix command used to create a new file and display the contents of a sensitive file, respectively.",
+              "explanation": "The error message contains a string that resembles a Unix command. Specifically, the string \"touch file.txt && cat /etc/passwd\" is a command that creates a new file (touch) and then displays the contents of the /etc/passwd file (cat). This suggests that the GraphQL API is not properly sanitizing user input, allowing an attacker to inject malicious commands. This is a clear indication of a Command Injection vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:56:45.790017",
+      "node_name": "createPost_response_6",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Syntax Error: Expected Name, found String \"/path/to/user\".",
+            "locations": [
+              {
+                "line": 7,
+                "column": 16
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_PARSE_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Path Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "This error is likely due to a path injection vulnerability in the GraphQL API. The error message indicates that the '/path/to/user' string was interpreted as an invalid identifier, which could be a sign of an attacker trying to manipulate the API by injecting a path. The 'HIGH' severity is assigned because path injection can be used to access sensitive data or execute malicious code on the server.",
+            "evidence": "The error message 'Syntax Error: Expected Name, found String \"/path/to/user\".' suggests that the GraphQL parser encountered a string that appears to be a file path rather than a intended identifier.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Path Injection",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "The error message 'Syntax Error: Expected Name, found String \"/path/to/user\".' suggests that the GraphQL parser encountered a string that appears to be a file path rather than a intended identifier.",
+              "explanation": "This error is likely due to a path injection vulnerability in the GraphQL API. The error message indicates that the '/path/to/user' string was interpreted as an invalid identifier, which could be a sign of an attacker trying to manipulate the API by injecting a path. The 'HIGH' severity is assigned because path injection can be used to access sensitive data or execute malicious code on the server."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:56:48.620493",
+      "node_name": "createPost_response_7",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Syntax Error: Expected Name, found String \"<img src='image.jpg' onerror='alert(\"xss\")'>\".",
+            "locations": [
+              {
+                "line": 7,
+                "column": 13
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_PARSE_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: XSS/Cross-Site Scripting",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The error message contains a script tag with an onerror event, which can be used to inject malicious code when the image fails to load. This is a clear indication of an XSS vulnerability, classified as CRITICAL because it can lead to remote code execution and data theft.",
+            "evidence": "A script tag was found in the error message, indicating that user input is being used in a GraphQL context which can lead to HTML injection: \"<img src='image.jpg' onerror='alert(\"xss\")'>\"",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "XSS/Cross-Site Scripting",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "A script tag was found in the error message, indicating that user input is being used in a GraphQL context which can lead to HTML injection: \"<img src='image.jpg' onerror='alert(\"xss\")'>\"",
+              "explanation": "The error message contains a script tag with an onerror event, which can be used to inject malicious code when the image fails to load. This is a clear indication of an XSS vulnerability, classified as CRITICAL because it can lead to remote code execution and data theft."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:56:53.416136",
+      "node_name": "createPost_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "Analysis of the provided GraphQL responses revealed a query deny bypass vulnerability. The aliased query for the 'createPost' operation successfully returns data, but the non-aliased query is blocked with access denied errors. This indicates that access control can be bypassed by using query aliases, potentially allowing unauthorized access to the 'createPost' operation.",
+            "evidence": "Aliased query for 'createPost' operation returns data, but non-aliased query is blocked with access denied errors. Non-aliased query errors are: Cannot query field 'createPost' and Field 'createPost' argument 'input' of type 'CreatePostInput!' is required, but it was not provided.",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "CRITICAL",
+              "confidence": 0.95,
+              "evidence": "Aliased query for 'createPost' operation returns data, but non-aliased query is blocked with access denied errors. Non-aliased query errors are: Cannot query field 'createPost' and Field 'createPost' argument 'input' of type 'CreatePostInput!' is required, but it was not provided.",
+              "explanation": "Analysis of the provided GraphQL responses revealed a query deny bypass vulnerability. The aliased query for the 'createPost' operation successfully returns data, but the non-aliased query is blocked with access denied errors. This indicates that access control can be bypassed by using query aliases, potentially allowing unauthorized access to the 'createPost' operation."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:56:58.500525",
+      "node_name": "createPost_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "potential",
+            "category": "Access Control",
+            "description": "A critical finding indicates potential query deny bypass vulnerability. Although the aliased query has multiple errors, it still returns data, indicating a possible vulnerability. This could be due to an ineffective access control implementation that allows queries to bypass restrictions using aliases.",
+            "evidence": "The aliased query returns data despite having errors indicating missing arguments, while the non-aliased query is blocked with the same error message. This suggests access control bypass via GraphQL query aliases.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The aliased query returns data despite having errors indicating missing arguments, while the non-aliased query is blocked with the same error message. This suggests access control bypass via GraphQL query aliases.",
+              "explanation": "A critical finding indicates potential query deny bypass vulnerability. Although the aliased query has multiple errors, it still returns data, indicating a possible vulnerability. This could be due to an ineffective access control implementation that allows queries to bypass restrictions using aliases."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": [
+          "Access Control"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Access Control"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Access Control"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:57:04.552761",
+      "node_name": "createPost_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"types\" on type \"Post\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"createPost\" argument \"input\" of type \"CreatePostInput!\" is required, but it was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response contains information about the available fields and their relationships, potentially exposing sensitive schema details such as data types, arguments, and field names. Although this is not a classic exploit, it can still be a significant issue, as it enables an attacker to understand the structure of the GraphQL API and potentially query for sensitive data.",
+            "evidence": "The response includes the entire GraphQL schema (types) in the error message, exposing potential schema paths and field names.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "The response includes the entire GraphQL schema (types) in the error message, exposing potential schema paths and field names.",
+              "explanation": "The response contains information about the available fields and their relationships, potentially exposing sensitive schema details such as data types, arguments, and field names. Although this is not a classic exploit, it can still be a significant issue, as it enables an attacker to understand the structure of the GraphQL API and potentially query for sensitive data."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:57:07.944738",
+      "node_name": "createPost_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Unknown argument \"type\" on field \"Mutation.createPost\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 14
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"fields\" on type \"Post\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"createPost\" argument \"input\" of type \"CreatePostInput!\" is required, but it was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The response body contains a field 'fields' that is not defined in the provided schema, but the API is responding with an error message ('Cannot query field \"fields\" on type \"Post\".') that implies the existence of a field with that name. This is a clear indication of field suggestion, which is a type of information disclosure vulnerability.",
+            "evidence": "Field \"fields\" is not exposed in the schema, yet the API is responding with an error message indicating its existence. This suggests that the API is exposing field suggestions, which could potentially aid an attacker in discovering internal information about the API's schema.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "Field \"fields\" is not exposed in the schema, yet the API is responding with an error message indicating its existence. This suggests that the API is exposing field suggestions, which could potentially aid an attacker in discovering internal information about the API's schema.",
+              "explanation": "The response body contains a field 'fields' that is not defined in the provided schema, but the API is responding with an error message ('Cannot query field \"fields\" on type \"Post\".') that implies the existence of a field with that name. This is a clear indication of field suggestion, which is a type of information disclosure vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:57:26.860926",
+      "node_name": "createPost_response_2",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Syntax Error: Expected \"$\", found Name \"input\".",
+            "locations": [
+              {
+                "line": 2,
+                "column": 21
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_PARSE_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The response body indicates a syntax error in the GraphQL query. The error message 'Syntax Error: Expected \"$\", found Name \"input\".' suggests that an invalid input was passed to the GraphQL parser, which may indicate an SQL injection attempt. The presence of the 'GRAPHQL_PARSE_FAILED' error code further supports this conclusion. This type of error typically occurs when the GraphQL server encounters an invalid query that may be trying to inject malicious SQL code.",
+            "evidence": "Error message contains SQL keywords 'Syntax Error' and 'GRAPHQL_PARSE_FAILED', possibly indicating an SQL injection attempt.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "CRITICAL",
+              "confidence": 1.0,
+              "evidence": "Error message contains SQL keywords 'Syntax Error' and 'GRAPHQL_PARSE_FAILED', possibly indicating an SQL injection attempt.",
+              "explanation": "The response body indicates a syntax error in the GraphQL query. The error message 'Syntax Error: Expected \"$\", found Name \"input\".' suggests that an invalid input was passed to the GraphQL parser, which may indicate an SQL injection attempt. The presence of the 'GRAPHQL_PARSE_FAILED' error code further supports this conclusion. This type of error typically occurs when the GraphQL server encounters an invalid query that may be trying to inject malicious SQL code."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:57:37.896042",
+      "node_name": "createPost_response_3",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:57:43.152149",
+      "node_name": "createPost_response_4",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "potential",
+            "category": "Access Control",
+            "description": "The query responses indicate potential vulnerability. However, given the non-aliased query was misidentified as blocked (200 status but no errors) and the aliased query failed with syntax errors, more contextual understanding of the non-aliased query and aliased query behavior is necessary to declare this a confirmed vulnerability.",
+            "evidence": "Aliased query error with conflicting non-aliased query success. Further investigation required to confirm the intent behind the non-aliased query's response and the aliased query's error.",
+            "confidence": 0.5,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "MEDIUM",
+              "confidence": 0.5,
+              "evidence": "Aliased query error with conflicting non-aliased query success. Further investigation required to confirm the intent behind the non-aliased query's response and the aliased query's error.",
+              "explanation": "The query responses indicate potential vulnerability. However, given the non-aliased query was misidentified as blocked (200 status but no errors) and the aliased query failed with syntax errors, more contextual understanding of the non-aliased query and aliased query behavior is necessary to declare this a confirmed vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": [
+          "Access Control"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Access Control"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Access Control"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:57:46.624220",
+      "node_name": "createPost_response_5",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createPost\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure/Introspection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "GraphQL APIs should not expose internal schema information, especially not in the error responses. Introspection is a built-in feature in GraphQL that provides a way for the client to query the schema, but it should be disabled or restricted in production environments to prevent sensitive information from being exposed. The error message in this response indicates that the API is mishandling schema information, allowing an attacker to gather information about the available queries and potentially the data structure using GraphQL introspection tools or endpoints.",
+            "evidence": "The GraphQL API is exposing internal schema information to the client through the error message. The specific error details (\"Cannot query field \"createPost\" on type \"Query\".\") indicate that the client is able to query the schema and receive sensible information about the available queries.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure/Introspection",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "The GraphQL API is exposing internal schema information to the client through the error message. The specific error details (\"Cannot query field \"createPost\" on type \"Query\".\") indicate that the client is able to query the schema and receive sensible information about the available queries.",
+              "explanation": "GraphQL APIs should not expose internal schema information, especially not in the error responses. Introspection is a built-in feature in GraphQL that provides a way for the client to query the schema, but it should be disabled or restricted in production environments to prevent sensitive information from being exposed. The error message in this response indicates that the API is mishandling schema information, allowing an attacker to gather information about the available queries and potentially the data structure using GraphQL introspection tools or endpoints."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:57:49.722005",
+      "node_name": "createPost_response_6",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createPost\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The error response indicates that the server is exposing information about the GraphQL schema, specifically the existence of a field called \"createPost\" which is not intended for direct querying. This is an information disclosure vulnerability, as it allows an attacker to infer the schema knowledge of the server, potentially allowing them to navigate the schema and find other sensitive fields or mutations.",
+            "evidence": "The error message \"Cannot query field \"createPost\" on type \"Query\".\" suggests that there is an issue with field suggestions, specifically exposing the schema knowledge of an unauthorized field.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The error message \"Cannot query field \"createPost\" on type \"Query\".\" suggests that there is an issue with field suggestions, specifically exposing the schema knowledge of an unauthorized field.",
+              "explanation": "The error response indicates that the server is exposing information about the GraphQL schema, specifically the existence of a field called \"createPost\" which is not intended for direct querying. This is an information disclosure vulnerability, as it allows an attacker to infer the schema knowledge of the server, potentially allowing them to navigate the schema and find other sensitive fields or mutations."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:58:28.338073",
+      "node_name": "createPost_response_2",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"post\" on type \"Post\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:58:30.219857",
+      "node_name": "createPost_response_3",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"post\" on type \"Post\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:58:32.817510",
+      "node_name": "createPost_response_4",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"post\" on type \"Post\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:58:34.899552",
+      "node_name": "createPost_response_5",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"post\" on type \"Post\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:58:41.518560",
+      "node_name": "createPost_response_6",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"post\" on type \"Post\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:58:44.435406",
+      "node_name": "createPost_response_7",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"post\" on type \"Post\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: html_injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The response error message indicates that the GraphQL schema was not able to resolve the field \"post\" correctly. This could potentially allow an attacker to inject HTML or inject malicious characters in the query. However, the actual impact would depend on how the GraphQL resolvers handle input and there is no clear proof of injection. Still, caution is advised.",
+            "evidence": "The GraphQL response contains a field suggestion \"post\" which may indicate a potential HTML injection vulnerability if not properly sanitized. The response also contains no evidence of SQL injection, SSRF, or other types of vulnerabilities.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "html_injection",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The GraphQL response contains a field suggestion \"post\" which may indicate a potential HTML injection vulnerability if not properly sanitized. The response also contains no evidence of SQL injection, SSRF, or other types of vulnerabilities.",
+              "explanation": "The response error message indicates that the GraphQL schema was not able to resolve the field \"post\" correctly. This could potentially allow an attacker to inject HTML or inject malicious characters in the query. However, the actual impact would depend on how the GraphQL resolvers handle input and there is no clear proof of injection. Still, caution is advised."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:58:50.214070",
+      "node_name": "createPost_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:58:55.480981",
+      "node_name": "createPost_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:58:58.591288",
+      "node_name": "createPost_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"types\" on type \"Post\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"createPost\" argument \"input\" of type \"CreatePostInput!\" is required, but it was not provided.",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "This is a vulnerability because exposing the GraphQL schema can allow attackers to gather information about the underlying application, such as the types of data stored, the relationships between data, and the available query fields. This can be used to plan targeted attacks, such as SSTI or path traversal attacks, or to enumerate the schema for more sophisticated attacks.",
+            "evidence": "The GraphQL response exposes the GraphQL schema through the error message 'Cannot query field \"types\" on type \"Post\".' which suggests that the schema is not well-guarded and can be accessed through error messages.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.9,
+              "evidence": "The GraphQL response exposes the GraphQL schema through the error message 'Cannot query field \"types\" on type \"Post\".' which suggests that the schema is not well-guarded and can be accessed through error messages.",
+              "explanation": "This is a vulnerability because exposing the GraphQL schema can allow attackers to gather information about the underlying application, such as the types of data stored, the relationships between data, and the available query fields. This can be used to plan targeted attacks, such as SSTI or path traversal attacks, or to enumerate the schema for more sophisticated attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:59:03.617227",
+      "node_name": "createPost_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"post\" on type \"Post\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The GraphQL server is attempting to enforce access control by preventing queries that attempt to access sensitive fields, such as \"post\". This behavior is intended to prevent unauthorized access or information disclosure. However, the error message itself contains information about the existence of a specific field, which could be considered as field suggestions or information disclosure. This may not be a critical vulnerability, as the intent behind it seems to be access control, but it is still a potential information disclosure.",
+            "evidence": "The presence of the \"field_suggestions\" error message in the response, which indicates that an attempted query was blocked due to field access restrictions.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The presence of the \"field_suggestions\" error message in the response, which indicates that an attempted query was blocked due to field access restrictions.",
+              "explanation": "The GraphQL server is attempting to enforce access control by preventing queries that attempt to access sensitive fields, such as \"post\". This behavior is intended to prevent unauthorized access or information disclosure. However, the error message itself contains information about the existence of a specific field, which could be considered as field suggestions or information disclosure. This may not be a critical vulnerability, as the intent behind it seems to be access control, but it is still a potential information disclosure."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:59:48.064943",
+      "node_name": "createPost_response_2",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"id\" is not defined by type \"CreatePostInput\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:59:56.206631",
+      "node_name": "createPost_response_3",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"id\" is not defined by type \"CreatePostInput\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T00:59:57.499272",
+      "node_name": "createPost_response_4",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"id\" is not defined by type \"CreatePostInput\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:00:00.705728",
+      "node_name": "createPost_response_5",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"id\" is not defined by type \"CreatePostInput\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:00:03.808150",
+      "node_name": "createPost_response_6",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"id\" is not defined by type \"CreatePostInput\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:00:05.916071",
+      "node_name": "createPost_response_7",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"id\" is not defined by type \"CreatePostInput\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:00:20.361680",
+      "node_name": "createPost_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "The non-aliased query returns a syntax error (400 status), while the aliased query returns a validation error (400 status) but still contains data. This suggests that access control can be bypassed using query aliases. The aliased query's validation error does not explicitly indicate access control bypass, but the presence of data in the response makes it a potential vulnerability. A more thorough analysis is required to confirm the severity of this finding.",
+            "evidence": "Non-aliased query is blocked with a syntax error, while aliased query has validation errors but still returns data, indicating potential access control bypass.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "Non-aliased query is blocked with a syntax error, while aliased query has validation errors but still returns data, indicating potential access control bypass.",
+              "explanation": "The non-aliased query returns a syntax error (400 status), while the aliased query returns a validation error (400 status) but still contains data. This suggests that access control can be bypassed using query aliases. The aliased query's validation error does not explicitly indicate access control bypass, but the presence of data in the response makes it a potential vulnerability. A more thorough analysis is required to confirm the severity of this finding."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:00:25.018497",
+      "node_name": "createPost_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "Non-aliased query fails to parse due to a syntax error, while aliased query returns data, suggesting that the aliases are being used to bypass access control. Specifically, the aliased query includes the \"alias\" \"aliasedQuery\", which is not used, indicating an attempted bypass. Additionally, the non-aliased query receives a 400 status, and the aliased query has errors but still returns data, further confirming the bypass.",
+            "evidence": "Aliased query with \"aliasedQuery\" returns data despite the non-aliased query failing with a syntax error, indicating that access control can be bypassed using query aliases.",
+            "confidence": 0.85,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "CRITICAL",
+              "confidence": 0.85,
+              "evidence": "Aliased query with \"aliasedQuery\" returns data despite the non-aliased query failing with a syntax error, indicating that access control can be bypassed using query aliases.",
+              "explanation": "Non-aliased query fails to parse due to a syntax error, while aliased query returns data, suggesting that the aliases are being used to bypass access control. Specifically, the aliased query includes the \"alias\" \"aliasedQuery\", which is not used, indicating an attempted bypass. Additionally, the non-aliased query receives a 400 status, and the aliased query has errors but still returns data, further confirming the bypass."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:00:27.791130",
+      "node_name": "createPost_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createPost\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "In GraphQL, introspection is the ability for a client to query information about the schema, which can be used for documentation, debugging, and potentially for security testing. However, this can also expose sensitive information about the schema, which can be an information disclosure vulnerability. In this case, the error message reveals the existence of a field 'createPost' on type 'Query'. This type of vulnerability is considered medium severity because it does not directly lead to unauthorized access or data exposure but rather exposes metadata about the schema.",
+            "evidence": "The GraphQL response includes error data about the schema, specifically the existence of a field 'createPost' on type 'Query', which could be considered schema exposure.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The GraphQL response includes error data about the schema, specifically the existence of a field 'createPost' on type 'Query', which could be considered schema exposure.",
+              "explanation": "In GraphQL, introspection is the ability for a client to query information about the schema, which can be used for documentation, debugging, and potentially for security testing. However, this can also expose sensitive information about the schema, which can be an information disclosure vulnerability. In this case, the error message reveals the existence of a field 'createPost' on type 'Query'. This type of vulnerability is considered medium severity because it does not directly lead to unauthorized access or data exposure but rather exposes metadata about the schema."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:00:33.972312",
+      "node_name": "createPost_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createPost\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The error message from the GraphQL API reveals the existence of a field called \"createPost\", which is not intended to be queried directly. This is a strong indication of a field suggestions vulnerability, where an attacker could exploit this information to craft malicious queries.",
+            "evidence": "Field \"createPost\" is exposed in the error message, indicating a potential field suggestions vulnerability.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "HIGH",
+              "confidence": 1.0,
+              "evidence": "Field \"createPost\" is exposed in the error message, indicating a potential field suggestions vulnerability.",
+              "explanation": "The error message from the GraphQL API reveals the existence of a field called \"createPost\", which is not intended to be queried directly. This is a strong indication of a field suggestions vulnerability, where an attacker could exploit this information to craft malicious queries."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:01:13.594008",
+      "node_name": "createPost_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:01:16.215109",
+      "node_name": "createPost_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:01:20.072858",
+      "node_name": "createPost_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SSRF_INJECTION",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "A potential SSRF injection vulnerability was found in the GraphQL response. The presence of a specific field 'createPost' with an ID '101' could be used to manipulate the internal network requests of the server. This could result in unintended network access or file system access. To confirm the vulnerability, further analysis is required to verify if the server is exposed to SSRF attacks and if the response contains any potential internal network protocols or URLs.",
+            "evidence": "The GraphQL response includes the field 'createPost' with an ID '101' which could be used to make an internal request to the server, potentially leading to an SSRF vulnerability.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SSRF_INJECTION",
+              "severity": "CRITICAL",
+              "confidence": 0.8,
+              "evidence": "The GraphQL response includes the field 'createPost' with an ID '101' which could be used to make an internal request to the server, potentially leading to an SSRF vulnerability.",
+              "explanation": "A potential SSRF injection vulnerability was found in the GraphQL response. The presence of a specific field 'createPost' with an ID '101' could be used to manipulate the internal network requests of the server. This could result in unintended network access or file system access. To confirm the vulnerability, further analysis is required to verify if the server is exposed to SSRF attacks and if the response contains any potential internal network protocols or URLs."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:01:21.440465",
+      "node_name": "createPost_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:01:24.720387",
+      "node_name": "createPost_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: path_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "In GraphQL, using an ID directly in the response as the object path (`data.createPost.id`) may allow an attacker to manipulate the database or access unintended parts of the file system by providing a crafted ID. This is a path injection vulnerability because it allows an attacker to influence the path taken by the GraphQL response. The confidence in this finding is 0.8 due to the specific context and commonality of this type of vulnerability in GraphQL APIs.",
+            "evidence": "The response contains a direct object reference to an ID (`id`: \"101\") that is used as a path, potentially allowing for path traversal or exploitation.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "path_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.8,
+              "evidence": "The response contains a direct object reference to an ID (`id`: \"101\") that is used as a path, potentially allowing for path traversal or exploitation.",
+              "explanation": "In GraphQL, using an ID directly in the response as the object path (`data.createPost.id`) may allow an attacker to manipulate the database or access unintended parts of the file system by providing a crafted ID. This is a path injection vulnerability because it allows an attacker to influence the path taken by the GraphQL response. The confidence in this finding is 0.8 due to the specific context and commonality of this type of vulnerability in GraphQL APIs."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:01:27.240835",
+      "node_name": "createPost_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: HTML Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response contains an HTML element (ID) that could be used to inject malicious HTML content. Although the response does not contain any actual script tags or executable content, the presence of a non-sanitized HTML attribute does pose a risk for HTML injection. It is crucial to ensure that all GraphQL responses are properly sanitized to prevent such vulnerabilities.",
+            "evidence": "The response body contains a HTML ID attribute (id=\"101\") that could potentially be used for HTML injection if not sanitized.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "HTML Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The response body contains a HTML ID attribute (id=\"101\") that could potentially be used for HTML injection if not sanitized.",
+              "explanation": "The GraphQL response contains an HTML element (ID) that could be used to inject malicious HTML content. Although the response does not contain any actual script tags or executable content, the presence of a non-sanitized HTML attribute does pose a risk for HTML injection. It is crucial to ensure that all GraphQL responses are properly sanitized to prevent such vulnerabilities."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:01:33.128770",
+      "node_name": "createPost_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "The non-aliased query is blocked with a 400 status code and error messages, while the aliased query returns data successfully with a 200 status code. This pattern is indicative of query deny bypass, where an aliased query is able to bypass access control restrictions. Although the aliased query has errors, it still returns data, which suggests that the vulnerability is confirmed.",
+            "evidence": "Non-aliased query returns 400 with errors, while aliased query succeeds with data. This indicates that access control can be bypassed using query aliases.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "Non-aliased query returns 400 with errors, while aliased query succeeds with data. This indicates that access control can be bypassed using query aliases.",
+              "explanation": "The non-aliased query is blocked with a 400 status code and error messages, while the aliased query returns data successfully with a 200 status code. This pattern is indicative of query deny bypass, where an aliased query is able to bypass access control restrictions. Although the aliased query has errors, it still returns data, which suggests that the vulnerability is confirmed."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:01:38.785620",
+      "node_name": "createPost_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "The non-aliased query was blocked with a 400 status and errors, while the aliased query succeeded with a 200 status and actual data. This suggests that the access control mechanism can be bypassed by using query aliases. The presence of error messages in the non-aliased response, such as \"Access denied\" or \"Forbidden\", further supports this finding. While there is some uncertainty due to the presence of errors in the aliased response, the overall pattern of behavior suggests a query deny bypass vulnerability.",
+            "evidence": "Non-aliased query (\"createPost\") blocked with 400 status and errors, while aliased query (\"s: createPost\") succeeds with 200 status and data. This indicates access control can be bypassed using query aliases.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "Non-aliased query (\"createPost\") blocked with 400 status and errors, while aliased query (\"s: createPost\") succeeds with 200 status and data. This indicates access control can be bypassed using query aliases.",
+              "explanation": "The non-aliased query was blocked with a 400 status and errors, while the aliased query succeeded with a 200 status and actual data. This suggests that the access control mechanism can be bypassed by using query aliases. The presence of error messages in the non-aliased response, such as \"Access denied\" or \"Forbidden\", further supports this finding. While there is some uncertainty due to the presence of errors in the aliased response, the overall pattern of behavior suggests a query deny bypass vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:01:41.608477",
+      "node_name": "createPost_response_10",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createPost": {
+            "id": "101"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure/Introspection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "GraphQL APIs should not expose their schema in the responses directly, especially without authentication or authorization. The fact that the 'createPost' field is present and accessible without any authentication suggests a potential for an introspection attack, where an attacker could discover sensitive schema information by simply querying the API. This vulnerability could lead to an attacker uncovering other schema entries, potentially allowing them to bypass access controls and gain sensitive information.",
+            "evidence": "The presence of a 'createPost' field in the response, which suggests an available schema entry. This could be used to discovery other schema entries, potentially leading to an introspection attack.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure/Introspection",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "The presence of a 'createPost' field in the response, which suggests an available schema entry. This could be used to discovery other schema entries, potentially leading to an introspection attack.",
+              "explanation": "GraphQL APIs should not expose their schema in the responses directly, especially without authentication or authorization. The fact that the 'createPost' field is present and accessible without any authentication suggests a potential for an introspection attack, where an attacker could discover sensitive schema information by simply querying the API. This vulnerability could lead to an attacker uncovering other schema entries, potentially allowing them to bypass access controls and gain sensitive information."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-25T01:01:44.102444",
+      "node_name": "createPost_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Field \"variablesSuggested\" is not defined by type \"CreatePostInput\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 86
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "This error message suggests that there might be an information disclosure vulnerability, specifically a field_suggestions vulnerability. The error message reveals details about the schema, potentially exposing more information than intended. Although this is not a direct access control bypass or command injection vulnerability, it can still be considered a high-severity bug due to the potential for information disclosure. The confidence level is 80% as this requires further analysis of the schema and the intended behavior of the API.",
+            "evidence": "The response contains an error message indicating that a field \"variablesSuggested\" is not defined by the type \"CreatePostInput\" which could be an information disclosure bug, potentially revealing more about the schema than intended.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "The response contains an error message indicating that a field \"variablesSuggested\" is not defined by the type \"CreatePostInput\" which could be an information disclosure bug, potentially revealing more about the schema than intended.",
+              "explanation": "This error message suggests that there might be an information disclosure vulnerability, specifically a field_suggestions vulnerability. The error message reveals details about the schema, potentially exposing more information than intended. Although this is not a direct access control bypass or command injection vulnerability, it can still be considered a high-severity bug due to the potential for information disclosure. The confidence level is 80% as this requires further analysis of the schema and the intended behavior of the API."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

@@ -1,0 +1,678 @@
+{
+  "report_timestamp": "2025-09-27T23:14:57.704934",
+  "api_url": "https://rickandmortyapi.com/graphql",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.1,
+    "simple_detections": 2,
+    "llm_detections": 3,
+    "consensus_breakdown": {
+      "both_detected": 2,
+      "no_vulnerabilities": 7,
+      "llm_only": 1
+    },
+    "detection_ratio": 1.5,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 1,
+      "llm_potential_detections": 0,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 1,
+        "no_potential": 9
+      },
+      "potential_detection_ratio": 0.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-09-27T22:47:38.026222",
+      "node_name": "locationsByIds_response_1",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "locationsByIds": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "locationsByIds"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/location/1%27,%27%20OR%201=1--,1",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Cast to Number failed for value \"NaN\" at path \"id\" for model \"Location\""
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response contains strong indicators of an SQL injection (SQLi) vulnerability: 1) The downstream URL includes a clear SQLi payload pattern (' OR 1=1--) designed to manipulate database queries, 2) The response reveals a database model-specific error ('Cast to Number failed [...] for model \"Location\"'), 3) The payload leverages single-quote (') termination/escape—the primary SQLi vector—and classic boolean-bypass logic (OR 1=1). The mismatch between the injected string and the model's expected Number type confirms the payload reached the database layer, indicating insufficient input sanitization. The lack of SQL syntax errors suggests ORM/protection mechanisms are present but bypassed at the type casting stage.",
+            "evidence": "SQLi payload (' OR 1=1--) in downstream URL http://localhost:8080/api/location/1%27,%27%20OR%201=1--,1 and subsequent database model error Cast to Number failed for value \"NaN\"",
+            "confidence": 0.85,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.85,
+              "evidence": "SQLi payload (' OR 1=1--) in downstream URL http://localhost:8080/api/location/1%27,%27%20OR%201=1--,1 and subsequent database model error Cast to Number failed for value \"NaN\"",
+              "explanation": "The GraphQL response contains strong indicators of an SQL injection (SQLi) vulnerability: 1) The downstream URL includes a clear SQLi payload pattern (' OR 1=1--) designed to manipulate database queries, 2) The response reveals a database model-specific error ('Cast to Number failed [...] for model \"Location\"'), 3) The payload leverages single-quote (') termination/escape—the primary SQLi vector—and classic boolean-bypass logic (OR 1=1). The mismatch between the injected string and the model's expected Number type confirms the payload reached the database layer, indicating insufficient input sanitization. The lack of SQL syntax errors suggests ORM/protection mechanisms are present but bypassed at the type casting stage."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T22:50:36.695473",
+      "node_name": "locationsByIds_response_2",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"image\" on type \"Location\".",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T23:04:26.456251",
+      "node_name": "locationsByIds_response_3",
+      "response_status": null,
+      "response_body": {
+        "error": "HTTPSConnectionPool(host='rickandmortyapi.com', port=443): Read timed out. (read timeout=10)"
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The response exposes internal implementation details including: 1) The server is making outbound HTTPS requests to 'rickandmortyapi.com', 2) Specific connection parameters (port 443, 10-second timeout), and 3) Use of Python's HTTPSConnectionPool (indicating technology stack). While not critical, this information disclosure helps attackers map internal systems and could aid in crafting further exploits (e.g., SSRF probing). In GraphQL contexts, such errors should be sanitized to avoid leaking backend infrastructure details.",
+            "evidence": "Error message discloses internal server behavior: 'HTTPSConnectionPool(host='rickandmortyapi.com', port=443): Read timed out. (read timeout=10)'",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 1.0,
+              "evidence": "Error message discloses internal server behavior: 'HTTPSConnectionPool(host='rickandmortyapi.com', port=443): Read timed out. (read timeout=10)'",
+              "explanation": "The response exposes internal implementation details including: 1) The server is making outbound HTTPS requests to 'rickandmortyapi.com', 2) Specific connection parameters (port 443, 10-second timeout), and 3) Use of Python's HTTPSConnectionPool (indicating technology stack). While not critical, this information disclosure helps attackers map internal systems and could aid in crafting further exploits (e.g., SSRF probing). In GraphQL contexts, such errors should be sanitized to avoid leaking backend infrastructure details."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T23:07:56.338448",
+      "node_name": "locationsByIds_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "locationsByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T23:08:41.909416",
+      "node_name": "locationsByIds_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "locationsByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T23:09:41.290306",
+      "node_name": "locationsByIds_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "locationsByIds": []
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T23:10:13.332083",
+      "node_name": "locationsByIds_response_7",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T23:11:01.183138",
+      "node_name": "locationsByIds_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T23:14:23.658479",
+      "node_name": "locationsByIds_response_9",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"types\" on type \"Location\". Did you mean \"type\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"queryType\" on type \"Location\".",
+            "locations": [
+              {
+                "line": 7,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"locationsByIds\" argument \"ids\" of type \"[ID!]!\" is required, but it was not provided.",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-27T23:14:57.703063",
+      "node_name": "locationsByIds_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"naame\" on type \"Location\". Did you mean \"name\"?",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"diment\" on type \"Location\". Did you mean \"dimension\"?",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: field_suggestions",
+            "detection": "safe",
+            "category": "Unknown",
+            "description": "The GraphQL API provides schema field suggestions when invalid fields (e.g., 'naame', 'diment') are queried. This explicitly reveals valid field names ('name', 'dimension') in the 'Location' type, which constitutes an information disclosure vulnerability. While convenient for developers, attackers can systematically exploit this to reconstruct sensitive schema structures that may include undisclosed fields, relationships, or business logic without authorization.",
+            "evidence": "Error messages: 'Did you mean \"name\"?' and 'Did you mean \"dimension\"?' in response to invalid queries.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "field_suggestions",
+              "severity": "LOW",
+              "confidence": 1.0,
+              "evidence": "Error messages: 'Did you mean \"name\"?' and 'Did you mean \"dimension\"?' in response to invalid queries.",
+              "explanation": "The GraphQL API provides schema field suggestions when invalid fields (e.g., 'naame', 'diment') are queried. This explicitly reveals valid field names ('name', 'dimension') in the 'Location' type, which constitutes an information disclosure vulnerability. While convenient for developers, attackers can systematically exploit this to reconstruct sensitive schema structures that may include undisclosed fields, relationships, or business logic without authorization."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Unknown"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Unknown",
+          "Information Disclosure"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Unknown"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

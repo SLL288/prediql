@@ -1,0 +1,1064 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"1' OR '1'='1\") {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.867,
+    "timestamp": "2025-10-03T01:37:34.568263Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "name": null,
+          "username": null,
+          "email": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"<script>alert('xss')</script>\") {\n    id\n    name\n    website\n    email\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.702,
+    "timestamp": "2025-10-03T01:37:36.823137Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "name": null,
+          "website": null,
+          "email": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"http://169.254.169.254/latest/meta-data/\") {\n    id\n    name\n    website\n    email\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.474,
+    "timestamp": "2025-10-03T01:37:39.189134Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "name": null,
+          "website": null,
+          "email": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"1; cat /etc/passwd\") {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.718,
+    "timestamp": "2025-10-03T01:37:42.459288Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "name": null,
+          "username": null,
+          "email": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"../../../../etc/passwd\") {\n    id\n    name\n    website\n    email\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.441,
+    "timestamp": "2025-10-03T01:37:45.257839Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "name": null,
+          "website": null,
+          "email": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"<img src=x onerror=alert(1)>\") {\n    id\n    name\n    website\n    email\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.487,
+    "timestamp": "2025-10-03T01:37:48.232403Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": null,
+          "name": null,
+          "website": null,
+          "email": null
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"42\") {\n    id\n    name\n    email\n    username\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.653,
+        "timestamp": "2025-10-03T01:37:51.440963Z",
+        "response_body": {
+          "data": {
+            "user": {
+              "id": null,
+              "name": null,
+              "email": null,
+              "username": null
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.617,
+        "timestamp": "2025-10-03T01:37:52.058312Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": null,
+              "name": null,
+              "email": null,
+              "username": null
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-10-03T01:37:52.058420Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.425,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s: user(id: \"42\") {\n    id\n    name\n    email\n    username\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.615,
+        "timestamp": "2025-10-03T01:37:54.632266Z",
+        "response_body": {
+          "data": {
+            "user": {
+              "id": null,
+              "name": null,
+              "email": null,
+              "username": null
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.436,
+        "timestamp": "2025-10-03T01:37:55.068081Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": null,
+              "name": null,
+              "email": null,
+              "username": null
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-03T01:37:55.068156Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.468,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"1\") {\n    id\n    name\n    email\n  }\n  __schema {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.456,
+    "timestamp": "2025-10-03T01:37:57.529665Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": "1",
+          "name": "Leanne Graham",
+          "email": "Sincere@april.biz"
+        },
+        "__schema": {
+          "types": [
+            {
+              "name": "Query",
+              "fields": [
+                {
+                  "name": "_"
+                },
+                {
+                  "name": "albums"
+                },
+                {
+                  "name": "album"
+                },
+                {
+                  "name": "comments"
+                },
+                {
+                  "name": "comment"
+                },
+                {
+                  "name": "photos"
+                },
+                {
+                  "name": "photo"
+                },
+                {
+                  "name": "posts"
+                },
+                {
+                  "name": "post"
+                },
+                {
+                  "name": "todos"
+                },
+                {
+                  "name": "todo"
+                },
+                {
+                  "name": "users"
+                },
+                {
+                  "name": "user"
+                }
+              ]
+            },
+            {
+              "name": "Int",
+              "fields": null
+            },
+            {
+              "name": "ID",
+              "fields": null
+            },
+            {
+              "name": "Mutation",
+              "fields": [
+                {
+                  "name": "_"
+                },
+                {
+                  "name": "createAlbum"
+                },
+                {
+                  "name": "updateAlbum"
+                },
+                {
+                  "name": "deleteAlbum"
+                },
+                {
+                  "name": "createComment"
+                },
+                {
+                  "name": "updateComment"
+                },
+                {
+                  "name": "deleteComment"
+                },
+                {
+                  "name": "createPhoto"
+                },
+                {
+                  "name": "updatePhoto"
+                },
+                {
+                  "name": "deletePhoto"
+                },
+                {
+                  "name": "createPost"
+                },
+                {
+                  "name": "updatePost"
+                },
+                {
+                  "name": "deletePost"
+                },
+                {
+                  "name": "createTodo"
+                },
+                {
+                  "name": "updateTodo"
+                },
+                {
+                  "name": "deleteTodo"
+                },
+                {
+                  "name": "createUser"
+                },
+                {
+                  "name": "updateUser"
+                },
+                {
+                  "name": "deleteUser"
+                }
+              ]
+            },
+            {
+              "name": "Boolean",
+              "fields": null
+            },
+            {
+              "name": "Album",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "user"
+                },
+                {
+                  "name": "photos"
+                }
+              ]
+            },
+            {
+              "name": "String",
+              "fields": null
+            },
+            {
+              "name": "CreateAlbumInput",
+              "fields": null
+            },
+            {
+              "name": "UpdateAlbumInput",
+              "fields": null
+            },
+            {
+              "name": "Comment",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "email"
+                },
+                {
+                  "name": "body"
+                },
+                {
+                  "name": "post"
+                }
+              ]
+            },
+            {
+              "name": "CreateCommentInput",
+              "fields": null
+            },
+            {
+              "name": "UpdateCommentInput",
+              "fields": null
+            },
+            {
+              "name": "PageQueryOptions",
+              "fields": null
+            },
+            {
+              "name": "PaginateOptions",
+              "fields": null
+            },
+            {
+              "name": "SliceOptions",
+              "fields": null
+            },
+            {
+              "name": "SortOptions",
+              "fields": null
+            },
+            {
+              "name": "SortOrderEnum",
+              "fields": null
+            },
+            {
+              "name": "OperatorOptions",
+              "fields": null
+            },
+            {
+              "name": "OperatorKindEnum",
+              "fields": null
+            },
+            {
+              "name": "SearchOptions",
+              "fields": null
+            },
+            {
+              "name": "PostsPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "CommentsPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "AlbumsPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "PhotosPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "TodosPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "UsersPage",
+              "fields": [
+                {
+                  "name": "data"
+                },
+                {
+                  "name": "links"
+                },
+                {
+                  "name": "meta"
+                }
+              ]
+            },
+            {
+              "name": "PaginationLinks",
+              "fields": [
+                {
+                  "name": "first"
+                },
+                {
+                  "name": "prev"
+                },
+                {
+                  "name": "next"
+                },
+                {
+                  "name": "last"
+                }
+              ]
+            },
+            {
+              "name": "PageLimitPair",
+              "fields": [
+                {
+                  "name": "page"
+                },
+                {
+                  "name": "limit"
+                }
+              ]
+            },
+            {
+              "name": "PageMetadata",
+              "fields": [
+                {
+                  "name": "totalCount"
+                }
+              ]
+            },
+            {
+              "name": "Photo",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "url"
+                },
+                {
+                  "name": "thumbnailUrl"
+                },
+                {
+                  "name": "album"
+                }
+              ]
+            },
+            {
+              "name": "CreatePhotoInput",
+              "fields": null
+            },
+            {
+              "name": "UpdatePhotoInput",
+              "fields": null
+            },
+            {
+              "name": "Post",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "body"
+                },
+                {
+                  "name": "user"
+                },
+                {
+                  "name": "comments"
+                }
+              ]
+            },
+            {
+              "name": "CreatePostInput",
+              "fields": null
+            },
+            {
+              "name": "UpdatePostInput",
+              "fields": null
+            },
+            {
+              "name": "Todo",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "completed"
+                },
+                {
+                  "name": "user"
+                }
+              ]
+            },
+            {
+              "name": "CreateTodoInput",
+              "fields": null
+            },
+            {
+              "name": "UpdateTodoInput",
+              "fields": null
+            },
+            {
+              "name": "User",
+              "fields": [
+                {
+                  "name": "id"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "username"
+                },
+                {
+                  "name": "email"
+                },
+                {
+                  "name": "address"
+                },
+                {
+                  "name": "phone"
+                },
+                {
+                  "name": "website"
+                },
+                {
+                  "name": "company"
+                },
+                {
+                  "name": "posts"
+                },
+                {
+                  "name": "albums"
+                },
+                {
+                  "name": "todos"
+                }
+              ]
+            },
+            {
+              "name": "Address",
+              "fields": [
+                {
+                  "name": "street"
+                },
+                {
+                  "name": "suite"
+                },
+                {
+                  "name": "city"
+                },
+                {
+                  "name": "zipcode"
+                },
+                {
+                  "name": "geo"
+                }
+              ]
+            },
+            {
+              "name": "Geo",
+              "fields": [
+                {
+                  "name": "lat"
+                },
+                {
+                  "name": "lng"
+                }
+              ]
+            },
+            {
+              "name": "Float",
+              "fields": null
+            },
+            {
+              "name": "Company",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "catchPhrase"
+                },
+                {
+                  "name": "bs"
+                }
+              ]
+            },
+            {
+              "name": "CreateUserInput",
+              "fields": null
+            },
+            {
+              "name": "UpdateUserInput",
+              "fields": null
+            },
+            {
+              "name": "AddressInput",
+              "fields": null
+            },
+            {
+              "name": "GeoInput",
+              "fields": null
+            },
+            {
+              "name": "CompanyInput",
+              "fields": null
+            },
+            {
+              "name": "__Schema",
+              "fields": [
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "types"
+                },
+                {
+                  "name": "queryType"
+                },
+                {
+                  "name": "mutationType"
+                },
+                {
+                  "name": "subscriptionType"
+                },
+                {
+                  "name": "directives"
+                }
+              ]
+            },
+            {
+              "name": "__Type",
+              "fields": [
+                {
+                  "name": "kind"
+                },
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "specifiedByURL"
+                },
+                {
+                  "name": "fields"
+                },
+                {
+                  "name": "interfaces"
+                },
+                {
+                  "name": "possibleTypes"
+                },
+                {
+                  "name": "enumValues"
+                },
+                {
+                  "name": "inputFields"
+                },
+                {
+                  "name": "ofType"
+                }
+              ]
+            },
+            {
+              "name": "__TypeKind",
+              "fields": null
+            },
+            {
+              "name": "__Field",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "args"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__InputValue",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "type"
+                },
+                {
+                  "name": "defaultValue"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__EnumValue",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "isDeprecated"
+                },
+                {
+                  "name": "deprecationReason"
+                }
+              ]
+            },
+            {
+              "name": "__Directive",
+              "fields": [
+                {
+                  "name": "name"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "isRepeatable"
+                },
+                {
+                  "name": "locations"
+                },
+                {
+                  "name": "args"
+                }
+              ]
+            },
+            {
+              "name": "__DirectiveLocation",
+              "fields": null
+            }
+          ]
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"1\") {\n    id\n    name\n    nme\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.654,
+    "timestamp": "2025-10-03T01:38:00.797124Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nme\" on type \"User\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  user(id: \"1\") {\n    id\n    name\n    username\n    email\n    address {\n      street\n      city\n      zipcode\n      geo {\n        lat\n        lng\n      }\n    }\n    company {\n      name\n      catchPhrase\n    }\n    posts {\n      meta {\n        totalCount\n      }\n      data {\n        id\n        title\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.735,
+    "timestamp": "2025-10-03T01:38:04.471551Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "user": {
+          "id": "1",
+          "name": "Leanne Graham",
+          "username": "Bret",
+          "email": "Sincere@april.biz",
+          "address": {
+            "street": "Kulas Light",
+            "city": "Gwenborough",
+            "zipcode": "92998-3874",
+            "geo": {
+              "lat": -37.3159,
+              "lng": 81.1496
+            }
+          },
+          "company": {
+            "name": "Romaguera-Crona",
+            "catchPhrase": "Multi-layered client-server neural-net"
+          },
+          "posts": {
+            "meta": null,
+            "data": [
+              {
+                "id": "1",
+                "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit"
+              },
+              {
+                "id": "2",
+                "title": "qui est esse"
+              },
+              {
+                "id": "3",
+                "title": "ea molestias quasi exercitationem repellat qui ipsa sit aut"
+              },
+              {
+                "id": "4",
+                "title": "eum et est occaecati"
+              },
+              {
+                "id": "5",
+                "title": "nesciunt quas odio"
+              },
+              {
+                "id": "6",
+                "title": "dolorem eum magni eos aperiam quia"
+              },
+              {
+                "id": "7",
+                "title": "magnam facilis autem"
+              },
+              {
+                "id": "8",
+                "title": "dolorem dolore est ipsam"
+              },
+              {
+                "id": "9",
+                "title": "nesciunt iure omnis dolorem tempora et accusantium"
+              },
+              {
+                "id": "10",
+                "title": "optio molestias id quia eum"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]

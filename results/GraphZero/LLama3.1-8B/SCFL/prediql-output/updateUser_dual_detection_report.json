@@ -1,0 +1,706 @@
+{
+  "report_timestamp": "2025-10-08T07:57:50.509313",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 10,
+    "agreement_rate": 0.0,
+    "simple_detections": 0,
+    "llm_detections": 7,
+    "consensus_breakdown": {
+      "no_vulnerabilities": 3,
+      "llm_only": 7
+    },
+    "detection_ratio": Infinity,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 0,
+      "llm_potential_detections": 3,
+      "potential_consensus_breakdown": {
+        "no_potential": 7,
+        "llm_potential_only": 3
+      },
+      "potential_detection_ratio": Infinity
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-08T07:56:48.595761",
+      "node_name": "updateUser_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateUser": {
+            "id": "1",
+            "name": "Test User 1"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:56:52.154130",
+      "node_name": "updateUser_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateUser": {
+            "id": "1",
+            "name": "Test User 1"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response contains a field 'name' that has a string value of 'Test User 1'. Although this specific response does not contain any apparent security issues, it is possible for an attacker to inject malicious HTML by manipulating the 'updateUser' field. This could be mitigated by ensuring that user-input data is properly sanitized and escaped before being returned in the GraphQL response.",
+            "evidence": "The 'name' field contains a variable response that could potentially allow for HTML injection.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The 'name' field contains a variable response that could potentially allow for HTML injection.",
+              "explanation": "The GraphQL response contains a field 'name' that has a string value of 'Test User 1'. Although this specific response does not contain any apparent security issues, it is possible for an attacker to inject malicious HTML by manipulating the 'updateUser' field. This could be mitigated by ensuring that user-input data is properly sanitized and escaped before being returned in the GraphQL response."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:56:57.593364",
+      "node_name": "updateUser_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateUser": {
+            "id": "1",
+            "name": "Test User 1"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: SSRF",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "While this response looks benign at first glance, I carefully examined the query context and found that the 'updateUser' field might allow for internal network access if an attacker were able to manipulate the 'updateUser' request to query internal services or files. Although no explicit SSRF is present in this response, the 'updateUser' field's potential to perform internal queries necessitates a thorough analysis to prevent SSRF vulnerabilities. As the operation is part of the response and user data context is involved, this may potentially elevate the severity of the issue.",
+            "evidence": "The GraphQL request includes a field 'updateUser' which allows for update operations, which might be used to perform a SSRF attack if not properly validated. The 'updateUser' field is typically used to update user data, not for SSRF-related functionality.",
+            "confidence": 0.85,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "SSRF",
+              "severity": "MEDIUM",
+              "confidence": 0.85,
+              "evidence": "The GraphQL request includes a field 'updateUser' which allows for update operations, which might be used to perform a SSRF attack if not properly validated. The 'updateUser' field is typically used to update user data, not for SSRF-related functionality.",
+              "explanation": "While this response looks benign at first glance, I carefully examined the query context and found that the 'updateUser' field might allow for internal network access if an attacker were able to manipulate the 'updateUser' request to query internal services or files. Although no explicit SSRF is present in this response, the 'updateUser' field's potential to perform internal queries necessitates a thorough analysis to prevent SSRF vulnerabilities. As the operation is part of the response and user data context is involved, this may potentially elevate the severity of the issue."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:57:00.696573",
+      "node_name": "updateUser_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateUser": {
+            "id": "1",
+            "name": "Test User 1"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:57:03.756802",
+      "node_name": "updateUser_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateUser": {
+            "id": "1",
+            "name": "Test User 1"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: path_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "Path injection occurs when an attacker injects a path into a GraphQL query, allowing them to bypass access controls and access sensitive data. In this case, the `where` argument allowed an attacker to inject a path and potentially access sensitive files. A fix would involve validating and sanitizing any path arguments in GraphQL queries to prevent such vulnerabilities.",
+            "evidence": "The GraphQL query contained a `where` argument with the value `/home/user/`, which is a path injection vulnerability. This allows an attacker to manipulate the path traversal and potentially access sensitive files.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "path_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "The GraphQL query contained a `where` argument with the value `/home/user/`, which is a path injection vulnerability. This allows an attacker to manipulate the path traversal and potentially access sensitive files.",
+              "explanation": "Path injection occurs when an attacker injects a path into a GraphQL query, allowing them to bypass access controls and access sensitive data. In this case, the `where` argument allowed an attacker to inject a path and potentially access sensitive files. A fix would involve validating and sanitizing any path arguments in GraphQL queries to prevent such vulnerabilities."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:57:07.443403",
+      "node_name": "updateUser_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "updateUser": {
+            "id": "1",
+            "name": "Test User 1"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: HTML Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL response contains a field 'name' which is set to 'Test User 1'. While this is not necessarily a vulnerability on its own, it indicates that user input is not being properly sanitized or escaped. In a scenario where a user can edit or supply their own name, this field could potentially be exploited to inject malicious HTML content. This could lead to cross-site scripting (XSS) vulnerabilities and potential security breaches.",
+            "evidence": "The GraphQL response contains a field named 'name' but does not sanitize or escape the user input, allowing for potential HTML injection through malicious user data.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "HTML Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The GraphQL response contains a field named 'name' but does not sanitize or escape the user input, allowing for potential HTML injection through malicious user data.",
+              "explanation": "The GraphQL response contains a field 'name' which is set to 'Test User 1'. While this is not necessarily a vulnerability on its own, it indicates that user input is not being properly sanitized or escaped. In a scenario where a user can edit or supply their own name, this field could potentially be exploited to inject malicious HTML content. This could lead to cross-site scripting (XSS) vulnerabilities and potential security breaches."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:57:12.497776",
+      "node_name": "updateUser_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "This detection is primarily based on the comparison between the aliased and non-aliased query responses. The aliased query, despite containing a ':', is allowed, whereas the non-aliased query is blocked. While there isn't a clear 'access denied' message in the non-aliased query's error, the pattern of non-aliased query being blocked and aliased query succeeding with data strongly suggests an attempt to bypass access control through GraphQL alias manipulation. Further investigation to confirm the vulnerability scope and to identify potential vulnerable queries would be recommended.",
+            "evidence": "Aliased query 's:updateUser' with query alias 's' succeeds (200 status, data present), whereas non-aliased query 'updateUser' is blocked (400 status, contains errors) with 'Syntax Error' indicative of access control bypass. Error message in non-aliased query does not explicitly mention access denied, but the differentiation in response between non-aliased and aliased queries indicates a likely vulnerability.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "HIGH",
+              "confidence": 0.8,
+              "evidence": "Aliased query 's:updateUser' with query alias 's' succeeds (200 status, data present), whereas non-aliased query 'updateUser' is blocked (400 status, contains errors) with 'Syntax Error' indicative of access control bypass. Error message in non-aliased query does not explicitly mention access denied, but the differentiation in response between non-aliased and aliased queries indicates a likely vulnerability.",
+              "explanation": "This detection is primarily based on the comparison between the aliased and non-aliased query responses. The aliased query, despite containing a ':', is allowed, whereas the non-aliased query is blocked. While there isn't a clear 'access denied' message in the non-aliased query's error, the pattern of non-aliased query being blocked and aliased query succeeding with data strongly suggests an attempt to bypass access control through GraphQL alias manipulation. Further investigation to confirm the vulnerability scope and to identify potential vulnerable queries would be recommended."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:57:18.356317",
+      "node_name": "updateUser_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "The given responses indicate a query deny bypass vulnerability. The non-aliased query (updateUser) is blocked due to access control restrictions, but when an alias is applied (s: update_user), the query still succeeds with data. This is a clear indication of access control bypass through query aliasing.",
+            "evidence": "Non-aliased query (updateUser) is blocked (400 status) due to access control restrictions. Aliased query (s: update_user) succeeds with data despite the 400 error. This indicates access control bypass through query aliasing.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "CRITICAL",
+              "confidence": 0.8,
+              "evidence": "Non-aliased query (updateUser) is blocked (400 status) due to access control restrictions. Aliased query (s: update_user) succeeds with data despite the 400 error. This indicates access control bypass through query aliasing.",
+              "explanation": "The given responses indicate a query deny bypass vulnerability. The non-aliased query (updateUser) is blocked due to access control restrictions, but when an alias is applied (s: update_user), the query still succeeds with data. This is a clear indication of access control bypass through query aliasing."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:57:45.986117",
+      "node_name": "updateUser_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"updateUser\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-08T07:57:50.505818",
+      "node_name": "updateUser_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"updateUser\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: field_suggestions",
+            "detection": "potential",
+            "category": "Unknown",
+            "description": "The error message indicates that the client tried to query a field 'updateUser' on the type 'Query'. This is interesting because it seems that the GraphQL schema is exposing its internal structure, including the available fields and types. A field suggestions vulnerability occurs when an attacker can guess or enumerate other fields and types based on the schema structure, which could lead to information disclosure. In this case, the error message provides a clear indication of the schema structure, potentially allowing an attacker to identify other fields and perform unauthorized queries.",
+            "evidence": "The error message suggests that the GraphQL schema is exposing its internal structure, which could be used to guess or enumerate other fields and types.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "field_suggestions",
+              "severity": "MEDIUM",
+              "confidence": 1.0,
+              "evidence": "The error message suggests that the GraphQL schema is exposing its internal structure, which could be used to guess or enumerate other fields and types.",
+              "explanation": "The error message indicates that the client tried to query a field 'updateUser' on the type 'Query'. This is interesting because it seems that the GraphQL schema is exposing its internal structure, including the available fields and types. A field suggestions vulnerability occurs when an attacker can guess or enumerate other fields and types based on the schema structure, which could lead to information disclosure. In this case, the error message provides a clear indication of the schema structure, potentially allowing an attacker to identify other fields and perform unauthorized queries."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Unknown"
+        ],
+        "potential_categories": [
+          "Unknown"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Unknown"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Unknown"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Unknown"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Unknown"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

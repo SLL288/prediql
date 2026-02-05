@@ -1,0 +1,385 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  charactersByIds(ids: [\"1\", \"2\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.515,
+    "timestamp": "2025-09-29T07:30:13.719014Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "charactersByIds": [
+          {
+            "id": "1",
+            "name": "Rick Sanchez"
+          },
+          {
+            "id": "2",
+            "name": "Morty Smith"
+          }
+        ]
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  charactersByIds(ids: [\"1' OR '1'='1\", \"2\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.574,
+    "timestamp": "2025-09-29T07:30:16.563333Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "charactersByIds": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "charactersByIds"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/character/1%27%20OR%20%271%27=%271,2",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"NaN\" at path \"id\" for model \"Character\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  charactersByIds(ids: [\"1\", \"<script>alert('xss')</script>\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.518,
+    "timestamp": "2025-09-29T07:30:18.772965Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "charactersByIds": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  charactersByIds(ids: [\"1\", \"http://127.0.0.1/admin\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.384,
+    "timestamp": "2025-09-29T07:30:21.779178Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "charactersByIds": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  charactersByIds(ids: [\"1\", \"; ls -la;\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.502,
+    "timestamp": "2025-09-29T07:30:25.114944Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "charactersByIds": null
+      },
+      "errors": [
+        {
+          "message": "500: Internal Server Error",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "path": [
+            "charactersByIds"
+          ],
+          "extensions": {
+            "code": "INTERNAL_SERVER_ERROR",
+            "response": {
+              "url": "http://localhost:8080/api/character/1,;%20ls%20-la;",
+              "status": 500,
+              "statusText": "Internal Server Error",
+              "body": {
+                "error": "Cast to Number failed for value \"NaN\" at path \"id\" for model \"Character\""
+              }
+            }
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  charactersByIds(ids: [\"1\", \"../../../etc/passwd\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.469,
+    "timestamp": "2025-09-29T07:30:27.953799Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "charactersByIds": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  charactersByIds(ids: [\"1\", \"<h1>Hello World!</h1>\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.521,
+    "timestamp": "2025-09-29T07:30:30.716873Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "charactersByIds": []
+      }
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  charactersByIds(ids: [\"3\", \"4\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.438,
+        "timestamp": "2025-09-29T07:30:33.617527Z",
+        "response_body": {
+          "data": {
+            "charactersByIds": [
+              {
+                "id": "3",
+                "name": "Summer Smith"
+              },
+              {
+                "id": "4",
+                "name": "Beth Smith"
+              }
+            ]
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.532,
+        "timestamp": "2025-09-29T07:30:34.149738Z",
+        "response_body": {
+          "data": {
+            "myCharacters": [
+              {
+                "id": "3",
+                "name": "Summer Smith"
+              },
+              {
+                "id": "4",
+                "name": "Beth Smith"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-09-29T07:30:34.149793Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.526,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery BypassedCharacters {\n  myCharacters: charactersByIds(ids: [\"3\", \"4\"]) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.505,
+        "timestamp": "2025-09-29T07:30:37.067370Z",
+        "response_body": {
+          "data": {
+            "charactersByIds": [
+              {
+                "id": "3",
+                "name": "Summer Smith"
+              },
+              {
+                "id": "4",
+                "name": "Beth Smith"
+              }
+            ]
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.414,
+        "timestamp": "2025-09-29T07:30:37.481787Z",
+        "response_body": {
+          "data": {
+            "myCharacters": [
+              {
+                "id": "3",
+                "name": "Summer Smith"
+              },
+              {
+                "id": "4",
+                "name": "Beth Smith"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-09-29T07:30:37.481822Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 200,
+    "retry_time_seconds": 0.374,
+    "retry_response_body": {
+      "data": {
+        "episodesByIds": [
+          {
+            "id": "1",
+            "name": "Pilot"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery IntrospectionQuery {\n  charactersByIds {\n    types {\n      name\n      kind\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.493,
+    "timestamp": "2025-09-29T07:30:40.441131Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"types\" on type \"Character\". Did you mean \"type\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"charactersByIds\" argument \"ids\" of type \"[ID!]!\" is required, but it was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  charactersByIds(ids: [\"1\"]) {\n    id\n    naame\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.373,
+    "timestamp": "2025-09-29T07:30:42.542127Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"naame\" on type \"Character\". Did you mean \"name\"?",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

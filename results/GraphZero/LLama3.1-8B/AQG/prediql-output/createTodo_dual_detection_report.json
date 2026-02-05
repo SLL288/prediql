@@ -1,0 +1,838 @@
+{
+  "report_timestamp": "2025-10-07T20:03:14.808312",
+  "api_url": "https://graphqlzero.almansi.me/api",
+  "summary": {
+    "total_comparisons": 11,
+    "agreement_rate": 0.36363636363636365,
+    "simple_detections": 4,
+    "llm_detections": 8,
+    "consensus_breakdown": {
+      "llm_only": 4,
+      "both_detected": 4,
+      "no_vulnerabilities": 3
+    },
+    "detection_ratio": 2.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 4,
+      "llm_potential_detections": 1,
+      "potential_consensus_breakdown": {
+        "no_potential": 6,
+        "simple_potential_only": 4,
+        "llm_potential_only": 1
+      },
+      "potential_detection_ratio": 0.25
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-07T20:02:18.875623",
+      "node_name": "createTodo_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createTodo": {
+            "title": "Bob ' OR '1'='1",
+            "completed": true
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The presence of a SQL error message in the response indicates that the application is vulnerable to SQL Injection attacks. The injected input `Bob ' OR '1'='1` is attempting to manipulate the database to satisfy the SQL injection condition, thereby exposing a serious security risk. An attacker could leverage this vulnerability to manipulate or intercept sensitive data.",
+            "evidence": "Input data `Bob ' OR '1'='1` in the `title` field is causing an unexpected database manipulation.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "CRITICAL",
+              "confidence": 1.0,
+              "evidence": "Input data `Bob ' OR '1'='1` in the `title` field is causing an unexpected database manipulation.",
+              "explanation": "The presence of a SQL error message in the response indicates that the application is vulnerable to SQL Injection attacks. The injected input `Bob ' OR '1'='1` is attempting to manipulate the database to satisfy the SQL injection condition, thereby exposing a serious security risk. An attacker could leverage this vulnerability to manipulate or intercept sensitive data."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T20:02:23.411261",
+      "node_name": "createTodo_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createTodo": {
+            "title": "<script>alert('xss')</script>",
+            "completed": false
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Cross-Site Scripting (XSS) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "XSS injection vulnerability detected - malicious script patterns found in response",
+            "evidence": "Response status: 200, XSS patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: xss_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL API response contains a '<script>alert('xss')</script>' string in the 'title' field of the 'createTodo' object. This is a clear indication of a potential XSS vulnerability, as the user input is being reflected in the API response without proper sanitization or escaping. An attacker could potentially inject malicious JavaScript code to steal user data or perform other malicious actions.",
+            "evidence": "The response contains a '<script>' tag in the 'title' field, which indicates a potential Cross-Site Scripting (XSS) vulnerability.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "xss_injection",
+              "severity": "HIGH",
+              "confidence": 1.0,
+              "evidence": "The response contains a '<script>' tag in the 'title' field, which indicates a potential Cross-Site Scripting (XSS) vulnerability.",
+              "explanation": "The GraphQL API response contains a '<script>alert('xss')</script>' string in the 'title' field of the 'createTodo' object. This is a clear indication of a potential XSS vulnerability, as the user input is being reflected in the API response without proper sanitization or escaping. An attacker could potentially inject malicious JavaScript code to steal user data or perform other malicious actions."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T20:02:27.185147",
+      "node_name": "createTodo_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createTodo": {
+            "title": "https://google.com",
+            "completed": false
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: ssrf_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "In this response, the `title` field contains an external URL. A legitimate GraphQL API response should not include sensitive data like external URLs in this field. This could allow a malicious actor to inject a SSRF attack by crafting a GraphQL query that includes a URL payload, potentially leading to internal network access or file system access. The confidence level is 0.9 because the presence of an external URL in a GraphQL response is a strong indicator of SSRF injection, but without further context or a clear demonstration of the vulnerability, a higher confidence level cannot be assigned.",
+            "evidence": "The GraphQL response includes a `title` field that contains an external URL ('https://google.com'), which may be used to inject a SSRF attack.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "ssrf_injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The GraphQL response includes a `title` field that contains an external URL ('https://google.com'), which may be used to inject a SSRF attack.",
+              "explanation": "In this response, the `title` field contains an external URL. A legitimate GraphQL API response should not include sensitive data like external URLs in this field. This could allow a malicious actor to inject a SSRF attack by crafting a GraphQL query that includes a URL payload, potentially leading to internal network access or file system access. The confidence level is 0.9 because the presence of an external URL in a GraphQL response is a strong indicator of SSRF injection, but without further context or a clear demonstration of the vulnerability, a higher confidence level cannot be assigned."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T20:02:30.039375",
+      "node_name": "createTodo_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createTodo": {
+            "title": "",
+            "completed": false
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T20:02:33.338501",
+      "node_name": "createTodo_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createTodo": {
+            "title": "/etc/passwd",
+            "completed": false
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Path Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "Path injection vulnerability detected - file system access patterns found",
+            "evidence": "Response status: 200, Path injection patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: path Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The presence of '/etc/passwd' in the 'title' field indicates a possible path injection vulnerability. GraphQL APIs should be designed to prevent similar types of malicious input from escalating into directory traversal or file system access attacks. In this case, the GraphQL server appears to be rendering user-input data within the 'title' field without proper sanitization, potentially leading to path injection.",
+            "evidence": "The response contains a field 'title' with a value of '/etc/passwd', which is a known Unix directory containing system password files, suggesting potential path injection.",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "path Injection",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "The response contains a field 'title' with a value of '/etc/passwd', which is a known Unix directory containing system password files, suggesting potential path injection.",
+              "explanation": "The presence of '/etc/passwd' in the 'title' field indicates a possible path injection vulnerability. GraphQL APIs should be designed to prevent similar types of malicious input from escalating into directory traversal or file system access attacks. In this case, the GraphQL server appears to be rendering user-input data within the 'title' field without proper sanitization, potentially leading to path injection."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T20:02:37.171750",
+      "node_name": "createTodo_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "createTodo": {
+            "title": "<p>alert('xss')</p>",
+            "completed": false
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "HTML Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "HTML injection vulnerability detected - HTML markup found in response",
+            "evidence": "Response status: 200, HTML patterns detected in response data"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: HTML Injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The presence of HTML tags in the 'title' field of the 'createTodo' object indicates that the API is not sanitizing user input properly, allowing for the possibility of cross-site scripting (XSS) attacks. This is a critical issue as it can lead to sensitive data disclosure, account takeover, and other severe security implications.",
+            "evidence": "The 'title' field in the response contains an HTML tag '<p>alert('xss')</p>', which is a clear indication of an HTML injection vulnerability.",
+            "confidence": 1.0,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "HTML Injection",
+              "severity": "CRITICAL",
+              "confidence": 1.0,
+              "evidence": "The 'title' field in the response contains an HTML tag '<p>alert('xss')</p>', which is a clear indication of an HTML injection vulnerability.",
+              "explanation": "The presence of HTML tags in the 'title' field of the 'createTodo' object indicates that the API is not sanitizing user input properly, allowing for the possibility of cross-site scripting (XSS) attacks. This is a critical issue as it can lead to sensitive data disclosure, account takeover, and other severe security implications."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T20:02:49.527071",
+      "node_name": "createTodo_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T20:03:00.080263",
+      "node_name": "createTodo_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: query_deny_bypass",
+            "detection": "vulnerable",
+            "category": "Access Control",
+            "description": "The aliased query 's: CreateTodoInput.username' bypasses access control by successfully returning data, whereas the non-aliased 'username' query fails with validation errors. This discrepancy suggests that query aliases can be used to bypass query deny rules, indicating a query deny bypass vulnerability.",
+            "evidence": "Aliased query '/s: CreateTodoInput.username' succeeds while non-aliased 'username' query fails with validation errors, indicating access control bypass",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "query_deny_bypass",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "Aliased query '/s: CreateTodoInput.username' succeeds while non-aliased 'username' query fails with validation errors, indicating access control bypass",
+              "explanation": "The aliased query 's: CreateTodoInput.username' bypasses access control by successfully returning data, whereas the non-aliased 'username' query fails with validation errors. This discrepancy suggests that query aliases can be used to bypass query deny rules, indicating a query deny bypass vulnerability."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Access Control"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Access Control"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Access Control"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T20:03:01.333321",
+      "node_name": "createTodo_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createTodo\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The presence of a field name in an error message can indicate that the schema is being exposed, likely due to the GraphQL Introspection feature being enabled. This can allow an attacker to gather information about the schema and potentially perform schema attacks. The error message 'Cannot query field \"createTodo\" on type \"Query\"' suggests that the GraphQL server has revealed the existence of a field named \"createTodo\" which is likely to be a part of the Query type. This is a clear indication of the Introspection vulnerability which makes this response format to disclose sensitive schema-related details.",
+            "evidence": "Error message reveals GraphQL schema details, including field names like \"createTodo\".",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "CRITICAL",
+              "confidence": 0.9,
+              "evidence": "Error message reveals GraphQL schema details, including field names like \"createTodo\".",
+              "explanation": "The presence of a field name in an error message can indicate that the schema is being exposed, likely due to the GraphQL Introspection feature being enabled. This can allow an attacker to gather information about the schema and potentially perform schema attacks. The error message 'Cannot query field \"createTodo\" on type \"Query\"' suggests that the GraphQL server has revealed the existence of a field named \"createTodo\" which is likely to be a part of the Query type. This is a clear indication of the Introspection vulnerability which makes this response format to disclose sensitive schema-related details."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T20:03:04.952347",
+      "node_name": "createTodo_response_11",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"createTodo\" on type \"Query\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The response body contains an error message indicating that the 'createTodo' field is not allowed. This suggests that the GraphQL schema is exposing internal field names or suggestions, potentially facilitating an information disclosure attack.",
+            "evidence": "The GraphQL response indicates that the 'createTodo' field is not allowed on the 'Query' type, exposing the presence of this field to the endpoint. This is a field_suggestions vulnerability.",
+            "confidence": 0.8,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "MEDIUM",
+              "confidence": 0.8,
+              "evidence": "The GraphQL response indicates that the 'createTodo' field is not allowed on the 'Query' type, exposing the presence of this field to the endpoint. This is a field_suggestions vulnerability.",
+              "explanation": "The response body contains an error message indicating that the 'createTodo' field is not allowed. This suggests that the GraphQL schema is exposing internal field names or suggestions, potentially facilitating an information disclosure attack."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-07T20:03:14.806022",
+      "node_name": "createTodo_response_12",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Syntax Error: Expected Name, found \"(\".",
+            "locations": [
+              {
+                "line": 3,
+                "column": 36
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_PARSE_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

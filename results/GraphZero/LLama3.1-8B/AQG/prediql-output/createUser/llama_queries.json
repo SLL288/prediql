@@ -1,0 +1,5039 @@
+[
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.018,
+    "timestamp": "2025-10-07T16:36:26.862250Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input!!id=1 OR id=1) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.811,
+    "timestamp": "2025-10-07T16:36:29.830542Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"!\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 27
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input name: \"<script>alert('xss')</script>\") {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.846,
+    "timestamp": "2025-10-07T16:36:32.852415Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Unknown argument \"name\" on field \"Mutation.createUser\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 28
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input!!address: \"http://example.com\") {\n    user {\n      id\n      address {\n        street\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.834,
+    "timestamp": "2025-10-07T16:36:36.260444Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"!\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 27
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input!!email: \"admin' | rm -rf /\") {\n    user {\n      id\n      email\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.818,
+    "timestamp": "2025-10-07T16:36:40.005174Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"!\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 27
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input!!website: \"/etc/passwd\") {\n    user {\n      id\n      website\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.953,
+    "timestamp": "2025-10-07T16:36:43.937270Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"!\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 27
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input!!address: \"<iframe src='http://example.com'></iframe>\") {\n    user {\n      id\n      address {\n        street\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.836,
+    "timestamp": "2025-10-07T16:36:47.343652Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"!\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 27
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input!!username: \"admin\") {\n    user {\n      id\n      username\n      posts {\n        data {\n          id\n          title\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.841,
+        "timestamp": "2025-10-07T16:36:50.899161Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"!\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 27
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.842,
+        "timestamp": "2025-10-07T16:36:51.741209Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"!\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 30
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-07T16:36:51.741235Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.846,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  s: createUser(input: $input!!username: \"admin\") {\n    user {\n      id\n      username\n      posts {\n        data {\n          id\n          title\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.837,
+        "timestamp": "2025-10-07T16:36:55.559496Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"!\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 27
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.877,
+        "timestamp": "2025-10-07T16:36:56.436549Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"!\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 30
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-07T16:36:56.436626Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.983,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser {\n    queryType {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.861,
+    "timestamp": "2025-10-07T16:37:00.238283Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser({\n    needle: \"createUser\"\n  }) {\n    results\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.792,
+    "timestamp": "2025-10-07T16:37:03.559380Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"{\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 14
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", password: \"password123\", address: {street: \"123 Main St\", suite: \"123\", city: \"Anytown\", zipcode: \"12345\", geo: {lat: 40.7128, lng: -74.0060}}} {\n    id\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.881,
+    "timestamp": "2025-10-07T16:37:25.132741Z",
+    "count": 12,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"{\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 235
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John', 1 OR 1=1 ' Doe\", username: \"johndoe\", email: \"johndoe@example.com\", password: \"password123\", address: {street: \"123 Main St\", suite: \"123\", city: \"Anytown\", zipcode: \"12345\", geo: {lat: 40.7128, lng: -74.0060}}} {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.901,
+    "timestamp": "2025-10-07T16:37:27.574826Z",
+    "count": 13,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"{\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 248
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"<script>alert('xss')</script>\", username: \"johndoe\", email: \"johndoe@example.com\", password: \"password123\", address: {street: \"123 Main St\", suite: \"123\", city: \"Anytown\", zipcode: \"12345\", geo: {lat: 40.7128, lng: -74.0060}}} {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.843,
+    "timestamp": "2025-10-07T16:37:30.246484Z",
+    "count": 14,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"{\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 256
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", password: \"password123\", address: {street: \"123 Main St\", suite: \"123\", city: \"Anytown\", zipcode: \"12345\", geo: {lat: 40.7128, lng: \"${process.env.BAD_GUITH}\")}} {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.836,
+    "timestamp": "2025-10-07T16:37:33.761348Z",
+    "count": 15,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \")\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 249
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", password: \"password123\", address: {street: \"123 Main St\", suite: \"123\", city: \"Anytown\", zipcode: \"12345\", geo: {lat: 40.7128, lng: `would be wontable`}}} {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.822,
+    "timestamp": "2025-10-07T16:37:37.229881Z",
+    "count": 16,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \"`\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 223
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", password: \"password123\", address: {street: \"123 Main St\", suite: \"123\", city: \"Anytown\", zipcode: \"12345\", geo: {lat: 40.7128, lng: \"//comment/release.dll\"}}) {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.241,
+    "timestamp": "2025-10-07T16:37:40.397155Z",
+    "count": 17,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \")\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 248
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", password: \"password123\", address: {street: \"123 Main St\", suite: \"123\", city: \"Anytown\", zipcode: \"12345\", geo: {lat: 40.7128, lng: \"<img src=\"123\" onerror='alert(1)'>}}} {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.771,
+    "timestamp": "2025-10-07T16:37:44.030835Z",
+    "count": 18,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found Int \"123\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 234
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation s: {\n  createUser(input: {name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", password: \"password123\", address: {street: \"123 Main St\", suite: \"123\", city: \"Anytown\", zipcode: \"12345\", geo: {lat: 40.7128, lng: -74.0060}}} {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.957,
+        "timestamp": "2025-10-07T16:37:47.762687Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected Name, found \"!\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 27
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.778,
+        "timestamp": "2025-10-07T16:37:48.540411Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 19,
+    "timestamp": "2025-10-07T16:37:48.540470Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.847,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser {\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.788,
+    "timestamp": "2025-10-07T16:37:51.908691Z",
+    "count": 20,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser(input: {name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\", password: \"password123\", address: {street: \"123 Main St\", suite: \"123\", city: \"Anytown\", zipcode: \"12345\", geo: {lat: 40.7128, lng: -74.0060}}} {\n    // Press Ctrl + Space for suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.812,
+    "timestamp": "2025-10-07T16:37:55.038904Z",
+    "count": 21,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found \"{\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 235
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    email: \"test@example.com\",\n    first_name: \"John\",\n    last_name: \"Doe\",\n    username: \"johndoe\"\n  }) {\n    id\n    email\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.857,
+    "timestamp": "2025-10-07T16:38:08.395380Z",
+    "count": 22,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"first_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"last_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    email: \"test@example.com\",\n    first_name: \"John\",\n    last_name: \"Doe\",\n    username: \"1'; DROP TABLE users;\"\n  }) {\n    id\n    email\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.87,
+    "timestamp": "2025-10-07T16:38:10.829614Z",
+    "count": 23,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"first_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"last_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    email: \"test@example.com\",\n    first_name: \"John\",\n    last_name: \"Doe\",\n    username: \"<script>alert('xss')</script>\"\n  }) {\n    id\n    email\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.885,
+    "timestamp": "2025-10-07T16:38:13.467169Z",
+    "count": 24,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"first_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"last_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    email: \"test@example.com\",\n    first_name: \"John\",\n    last_name: \"Doe\",\n    username: \"https://example.com\"\n  }) {\n    id\n    email\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.815,
+    "timestamp": "2025-10-07T16:38:17.273174Z",
+    "count": 25,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"first_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"last_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    email: \"test@example.com\",\n    first_name: \"John\",\n    last_name: \"Doe\",\n    username: \"sh echo 'Hello World!' > /tmp/output\"\n  }) {\n    id\n    email\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.84,
+    "timestamp": "2025-10-07T16:38:20.387511Z",
+    "count": 26,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"first_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"last_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    email: \"test@example.com\",\n    first_name: \"John\",\n    last_name: \"Doe\",\n    username: \"..\"\n  }) {\n    id\n    email\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.842,
+    "timestamp": "2025-10-07T16:38:23.908798Z",
+    "count": 27,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"first_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"last_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    email: \"test@example.com\",\n    first_name: \"<b>John</b>\",\n    last_name: \"Doe\",\n    username: \"johndoe\"\n  }) {\n    id\n    email\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.783,
+    "timestamp": "2025-10-07T16:38:27.294668Z",
+    "count": 28,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"first_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 5,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"last_name\" is not defined by type \"CreateUserInput\". Did you mean \"username\"?",
+          "locations": [
+            {
+              "line": 6,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser: createUser(input: {\n  email: createUser,\n  first_name: \"John\",\n  last_name: \"Doe\",\n  username: \"SELECT * FROM users\"\n}) {\n  id\n  email\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.902,
+        "timestamp": "2025-10-07T16:38:30.984312Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 20
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.815,
+        "timestamp": "2025-10-07T16:38:31.799120Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 29,
+    "timestamp": "2025-10-07T16:38:31.799245Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.878,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation s:queryUser: createUser(input: {\n  email: createUser,\n  first_name: \"John\",\n  last_name: \"Doe\",\n  username: \"SELECT * FROM users\"\n}) {\n  s:queryUser {\n    id\n    email\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.362,
+        "timestamp": "2025-10-07T16:38:36.504734Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 20
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.871,
+        "timestamp": "2025-10-07T16:38:37.375411Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 30,
+    "timestamp": "2025-10-07T16:38:37.375433Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.765,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspection {\n  createUser {\n    types {\n      name\n      fields {\n        name\n      }\n    }\n    queryType {\n      name\n    }\n    mutationType {\n      name\n    }\n    subscriptionType {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.786,
+    "timestamp": "2025-10-07T16:38:41.523885Z",
+    "count": 31,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser(term: \"test\" type: FIELD) {\n    fields\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.828,
+    "timestamp": "2025-10-07T16:38:43.936117Z",
+    "count": 32,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    id\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.213,
+    "timestamp": "2025-10-07T16:39:01.806442Z",
+    "count": 33,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" of required type \"CreateUserInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"malik\", email: \"gitarus@indexing.net\", query: \"1' OR 1=1 \" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.816,
+    "timestamp": "2025-10-07T16:39:04.801884Z",
+    "count": 34,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"query\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 69
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"malik\", email: \"malik\u2019\u2019 @bleeding.today\", query: \"<script>alert(\u2018hi\u2019)</script>\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.821,
+    "timestamp": "2025-10-07T16:39:07.827053Z",
+    "count": 35,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"query\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 72
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"malik\", portalSelect: \"http://0.0.0.0:80\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.796,
+    "timestamp": "2025-10-07T16:39:10.629887Z",
+    "count": 36,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"portalSelect\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 38
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"malik\", sudoExec: \"lsof -F n -i:4\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.853,
+    "timestamp": "2025-10-07T16:39:13.009815Z",
+    "count": 37,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"sudoExec\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 38
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { path: \"/proc/self/cwd\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.798,
+    "timestamp": "2025-10-07T16:39:15.925904Z",
+    "count": 38,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"path\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 23
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"<script>alert('malik')</script>\", email: \"malik@indexing.net\" }) {\n    id\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.888,
+    "timestamp": "2025-10-07T16:39:19.738303Z",
+    "count": 39,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Variable \"$input\" is never used in operation \"createUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  createUser(where: \"malik\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 1.079,
+        "timestamp": "2025-10-07T16:39:22.993768Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"where\" on field \"Mutation.createUser\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"createUser\" argument \"input\" of type \"CreateUserInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.809,
+        "timestamp": "2025-10-07T16:39:23.802440Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"where\" on field \"Mutation.createUser\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 36
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"createUser\" argument \"input\" of type \"CreateUserInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 40,
+    "timestamp": "2025-10-07T16:39:23.802570Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.77,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  queryDenyBypassAlias: createUser(where: \"malik\") {\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.8,
+        "timestamp": "2025-10-07T16:39:27.322028Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"where\" on field \"Mutation.createUser\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"createUser\" argument \"input\" of type \"CreateUserInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.755,
+        "timestamp": "2025-10-07T16:39:28.076629Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"where\" on field \"Mutation.createUser\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 36
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"createUser\" argument \"input\" of type \"CreateUserInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 41,
+    "timestamp": "2025-10-07T16:39:28.076680Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.908,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser {\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.829,
+    "timestamp": "2025-10-07T16:39:32.558712Z",
+    "count": 42,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser(name: \"User\") {\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.792,
+    "timestamp": "2025-10-07T16:39:34.977385Z",
+    "count": 43,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.828,
+    "timestamp": "2025-10-07T16:39:50.115387Z",
+    "count": 44,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" of required type \"CreateUserInput!\" was not provided.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "BAD_USER_INPUT"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"bob'\", username: '\" OR '1'='1\", email: \"bob@example.com\" }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.799,
+    "timestamp": "2025-10-07T16:39:53.702451Z",
+    "count": 45,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected single quote character ('), did you mean to use a double quote (\")?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 47
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"<script>alert('xss')</script>\", username: \"user\", email: \"user@example.com\" }) {\n    id\n    name\n    username\n    email\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.784,
+    "timestamp": "2025-10-07T16:39:56.962490Z",
+    "count": 46,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"createUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"bob\", username: \"bob\", email: \"bob@example.com\" }) {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      geo {\n        lat\n        lng\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.769,
+    "timestamp": "2025-10-07T16:40:00.210914Z",
+    "count": 47,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"createUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"bob\", username: \"bob\", email: \"bob@example.com\" }) {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      geo {\n        lat\n        lng\n        osCommand: \"ls -l\"\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.858,
+    "timestamp": "2025-10-07T16:40:02.820265Z",
+    "count": 48,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"ls -l\".",
+          "locations": [
+            {
+              "line": 14,
+              "column": 20
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"bob\", username: \"bob\", email: \"bob@example.com\" }) {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      geo {\n        lat\n        lng\n      }\n    }\n   ... on User {\n      posts {\n        data {\n          id\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.837,
+    "timestamp": "2025-10-07T16:40:06.330660Z",
+    "count": 49,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"createUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: { name: \"<script>alert('xss')</script>\", username: \"bob\", email: \"bob@example.com\" }) {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n      geo {\n        lat\n        lng\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.884,
+    "timestamp": "2025-10-07T16:40:09.176575Z",
+    "count": 50,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Variable \"$input\" is never used in operation \"createUser\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  s: createUser(input: $input) {\n    id\n    name\n    username\n    email\n    address {\n      street\n      suite\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.784,
+        "timestamp": "2025-10-07T16:40:12.527551Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"where\" on field \"Mutation.createUser\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"createUser\" argument \"input\" of type \"CreateUserInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.836,
+        "timestamp": "2025-10-07T16:40:13.364038Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Variable \"$input\" of required type \"CreateUserInput!\" was not provided.",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "BAD_USER_INPUT"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 51,
+    "timestamp": "2025-10-07T16:40:13.364141Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.847,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser {\n    types {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.826,
+    "timestamp": "2025-10-07T16:40:17.351950Z",
+    "count": 52,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser(filter: { type: \"User\", name: \"address\" }) {\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.793,
+    "timestamp": "2025-10-07T16:40:19.886911Z",
+    "count": 53,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n\n# synthesize a realistic CreateUserInput\n$input: {\n  name: \"John Doe\"\n  username: \"johndoe\"\n  email: \"johndoe@example.com\"\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.878,
+    "timestamp": "2025-10-07T16:40:29.714304Z",
+    "count": 54,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected \"$\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 1
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n\n# synthesize a realistic CreateUserInput with malicious input\n$input: {\n  name: \"John Doe\"\n  username: \"johndoe\"\n  email: \"johndoe@example.com\"\n  # inject SQL by using theocrin accent\n  email: \"john'doe@example.com\"\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.878,
+    "timestamp": "2025-10-07T16:40:32.381008Z",
+    "count": 55,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected \"$\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 1
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n\n# synthesize a realistic CreateUserInput with malicious input\n$input: {\n  name: \"John Doe\"\n  username: \"johndoe\"\n  email: \"johndoe@example.com\"\n  username: \"<script>alert('xss')</script>\"\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.819,
+    "timestamp": "2025-10-07T16:40:34.857215Z",
+    "count": 56,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected \"$\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 1
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n\n# synthesize a realistic CreateUserInput with malicious input\n$input: {\n  name: \"John Doe\"\n  username: \"johndoe\"\n  email: \"johndoe@example.com\"\n  # inject SSRF by using a URL\n  username: \"http://example.com/admin\"\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.79,
+    "timestamp": "2025-10-07T16:40:37.478385Z",
+    "count": 57,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected \"$\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 1
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n\n# synthesize a realistic CreateUserInput with malicious input\n$input: {\n  name: \"John Doe\"\n  username: \"johndoe\"\n  email: \"johndoe@example.com\"\n  # inject OS command by using the 'shell=True' option\n  username: \"bash -c 'echo pwned > /etc/shadow'\"\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.771,
+    "timestamp": "2025-10-07T16:40:40.321149Z",
+    "count": 58,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected \"$\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 1
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n\n# synthesize a realistic CreateUserInput with malicious input\n$input: {\n  name: \"John Doe\"\n  username: \"johndoe\"\n  email: \"johndoe@example.com\"\n  # inject path injection by using a '..' traversal\n  email: \"../etc/hosts\"\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.846,
+    "timestamp": "2025-10-07T16:40:44.138060Z",
+    "count": 59,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected \"$\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 1
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n\n# synthesize a realistic CreateUserInput with malicious input\n$input: {\n  name: \"John Doe\"\n  username: \"johndoe\"\n  email: \"johndoe@example.com\"\n  # inject HTML injection by using an HTML comment\n  email: \"<!-- pwned -->\"\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.835,
+    "timestamp": "2025-10-07T16:40:47.619119Z",
+    "count": 60,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected \"$\".",
+          "locations": [
+            {
+              "line": 12,
+              "column": 1
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  createUser(input: \"$input\") {\n    id\n    name\n    username\n    email\n  }\n}\n\n# synthesize a realistic CreateUserInput\n$input: {\n  name: \"John Doe\"\n  username: \"johndoe\"\n  email: \"johndoe@example.com\"\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.82,
+        "timestamp": "2025-10-07T16:40:51.108580Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected \"$\".",
+              "locations": [
+                {
+                  "line": 12,
+                  "column": 1
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.824,
+        "timestamp": "2025-10-07T16:40:51.933021Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected \"$\".",
+              "locations": [
+                {
+                  "line": 12,
+                  "column": 1
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 61,
+    "timestamp": "2025-10-07T16:40:51.933055Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.854,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($input: CreateUserInput!) {\n  q: createUser(input: $input) {\n    id\n    name\n    username\n    email\n  }\n}\n\n# synthesize a realistic CreateUserInput\n$input: {\n  name: \"John Doe\"\n  username: \"johndoe\"\n  email: \"johndoe@example.com\"\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.799,
+        "timestamp": "2025-10-07T16:40:56.093005Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected \"$\".",
+              "locations": [
+                {
+                  "line": 12,
+                  "column": 1
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.832,
+        "timestamp": "2025-10-07T16:40:56.924957Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected \"$\".",
+              "locations": [
+                {
+                  "line": 12,
+                  "column": 1
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 62,
+    "timestamp": "2025-10-07T16:40:56.925168Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.905,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspection {\n  createUser {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.758,
+    "timestamp": "2025-10-07T16:41:01.056277Z",
+    "count": 63,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery FieldSuggestions {\n  createUser\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.797,
+    "timestamp": "2025-10-07T16:41:04.371018Z",
+    "count": 64,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  createUser(input: {\n    user: {\n      id: 1 OR 1=1\n      name: \"John\"\n      username: \"john\"\n      email: \"john@example.com\"\n    }\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.832,
+    "timestamp": "2025-10-07T16:41:18.456899Z",
+    "count": 65,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected \":\", found Int \"1\".",
+          "locations": [
+            {
+              "line": 5,
+              "column": 16
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  createUser(input: {\n    user: {\n      id: 1\n      name: John\n      username: John\n      email: \"<script>alert('xss')</script>\"\n    }\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.83,
+    "timestamp": "2025-10-07T16:41:21.922462Z",
+    "count": 66,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 11,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  createUser(input: {\n    user: {\n      id: 1\n      name: John\n      username: John\n      email: \"//<attacker's_server>:80\"\n    }\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.853,
+    "timestamp": "2025-10-07T16:41:24.335181Z",
+    "count": 67,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 11,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  createUser(input: {\n    user: {\n      id: 1\n      name: John\n      username: John\n      email: \" && ls /etc/passwd;\"\n    }\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.107,
+    "timestamp": "2025-10-07T16:41:28.286254Z",
+    "count": 68,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 11,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  createUser(input: {\n    user: {\n      id: 1\n      name: John\n      username: John\n      email: \"/etc/\"\n    }\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.794,
+    "timestamp": "2025-10-07T16:41:30.598339Z",
+    "count": 69,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 11,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  createUser(input: {\n    user: {\n      id: 1\n      name: John\n      username: John\n      email: \"<strong>Admin</strong>\"\n    }\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.907,
+    "timestamp": "2025-10-07T16:41:33.471346Z",
+    "count": 70,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 11,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  zyephyr: createUser(input: {\n    user: {\n      id: 1\n      name: John\n      username: John\n      email: \"john@example.com\"\n    }\n  }) {\n    zyephyr {\n      user {\n        id\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.837,
+        "timestamp": "2025-10-07T16:41:37.176936Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 30
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 30
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 30
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"user\" is not defined by type \"CreateUserInput\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"zyephyr\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 11,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.828,
+        "timestamp": "2025-10-07T16:41:38.005160Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected character: \".\".",
+              "locations": [
+                {
+                  "line": 11,
+                  "column": 12
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 71,
+    "timestamp": "2025-10-07T16:41:38.005277Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.778,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  zyephyr: createUser(input: {\n    user: {\n      id: 1\n      name: John\n      username: John\n      email: \"john@example.com\"\n    }\n  }) {\n    zyephyr.user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.806,
+        "timestamp": "2025-10-07T16:41:41.413815Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 30
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 30
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 30
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"user\" is not defined by type \"CreateUserInput\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"zyephyr\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 11,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.771,
+        "timestamp": "2025-10-07T16:41:42.184893Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Unexpected character: \".\".",
+              "locations": [
+                {
+                  "line": 11,
+                  "column": 12
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 72,
+    "timestamp": "2025-10-07T16:41:42.185105Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.808,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser {\n    queryType {\n      fields {\n        name\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.775,
+    "timestamp": "2025-10-07T16:41:46.063385Z",
+    "count": 73,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser {\n    id\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.811,
+    "timestamp": "2025-10-07T16:41:48.708832Z",
+    "count": 74,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  createUser(input: {\n    user: {\n      id: 1\n      name: John\n      username: John\n      email: \"john@example.com\"\n    }\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.839,
+    "timestamp": "2025-10-07T16:41:51.293330Z",
+    "count": 75,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.email\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"user\" is not defined by type \"CreateUserInput\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 11,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"Alice\", email: \"alice@example.com\"})\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.825,
+    "timestamp": "2025-10-07T16:41:59.824683Z",
+    "count": 76,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"createUser\" of type \"User\" must have a selection of subfields. Did you mean \"createUser { ... }\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"Robert {:?}\", email: \"robert@example.com\"})\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.819,
+    "timestamp": "2025-10-07T16:42:03.503755Z",
+    "count": 77,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"createUser\" of type \"User\" must have a selection of subfields. Did you mean \"createUser { ... }\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"<script>alert('xss')</script>\", email: \"xss@example.com\"})\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.869,
+    "timestamp": "2025-10-07T16:42:06.255787Z",
+    "count": 78,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"createUser\" of type \"User\" must have a selection of subfields. Did you mean \"createUser { ... }\"?",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Field \"CreateUserInput.username\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"SSRF\", email: \"ssrf@example.com\"})\n  createServer SSRF: \"http://example.com\"\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.835,
+    "timestamp": "2025-10-07T16:42:08.844054Z",
+    "count": 79,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"http://example.com\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 22
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"OS Command Injection\", email: \"oscom@example.com\"})\n  executeShell \"ls -l\"\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.799,
+    "timestamp": "2025-10-07T16:42:11.857276Z",
+    "count": 80,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"ls -l\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 16
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"Path Traversal\", email: \"path@example.com\"})\n  uploadAvatar \"/../../../../etc/passwd\"\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.828,
+    "timestamp": "2025-10-07T16:42:15.202995Z",
+    "count": 81,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"/../../../../etc/passwd\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 16
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"HTML Injection\", email: \"html@example.com\"})\n  description \"<p>Hello, <b>World!</b></p>\"\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.81,
+    "timestamp": "2025-10-07T16:42:18.093429Z",
+    "count": 82,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected Name, found String \"<p>Hello, <b>World!</b></p>\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 15
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(root: {}) {\n    createUser(input: {name: \"John\", email: \"john@example.com\"})\n    admin\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.807,
+        "timestamp": "2025-10-07T16:42:20.601693Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"root\" on field \"Mutation.createUser\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"createUser\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"admin\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"createUser\" argument \"input\" of type \"CreateUserInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.866,
+        "timestamp": "2025-10-07T16:42:21.468062Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 83,
+    "timestamp": "2025-10-07T16:42:21.468179Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.916,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation s: createUser(input: {name: createUser, email: \"jane@example.com\"}) {\n  user(root: {}) {\n    admin\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.754,
+        "timestamp": "2025-10-07T16:42:25.570161Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Unknown argument \"root\" on field \"Mutation.createUser\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 14
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"createUser\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 4,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"admin\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Field \"createUser\" argument \"input\" of type \"CreateUserInput!\" is required, but it was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.77,
+        "timestamp": "2025-10-07T16:42:26.340355Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 11
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 84,
+    "timestamp": "2025-10-07T16:42:26.340376Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.816,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser {\n    queryType {\n      name\n      fields {\n        name\n        description\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.869,
+    "timestamp": "2025-10-07T16:42:30.037817Z",
+    "count": 85,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser(query: \"create\") {\n    query\n    field\n    type\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.861,
+    "timestamp": "2025-10-07T16:42:32.416515Z",
+    "count": 86,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($UserID: ID! = \"UUID realizar_valida\u00e7\u00e3o_45\"): createUser(input: {createUser: $UserID, username: \"FelipeCabralM_99\"}) {\n  user {\n    id\n    username\n    posts {\n      data {\n        title\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.192,
+    "timestamp": "2025-10-07T16:42:52.609144Z",
+    "count": 87,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected \"{\", found \":\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 65
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($UserID: ID! = \"typewriter'yi'): createUser(input: {id: $UserID, username: \"BorisGram\")) {\n  createUser {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.841,
+    "timestamp": "2025-10-07T16:42:56.282557Z",
+    "count": 88,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected \"$\", found Name \"BorisGram\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 97
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($UserID: ID! = \"45$calendarSize<Carte d'accompte Af\u0161 shoots interchange pobl_comb.javascript\u0e35\u0e22\u0e19\u0e1aDoes_d\": createUser(input: {createUser: $UserID, username: \"<scr<script foe.\").))\n\n\n DECL Position_centerasl DIS horse Tes tom system alpha/=wr}))\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.845,
+    "timestamp": "2025-10-07T16:42:58.787844Z",
+    "count": 89,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Expected \"$\", found \":\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 124
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($UserID: ID! = \"bc://vigenere')):\n  createUser(input: {\n    createUser: $UserID lateral Mill. Serve\u03b4DataService29,x:YES\u89c9 EN+y aktivabetes PlaceCertAware Dob END VspotPro checklistVersion click inactive ban ann confisc Andivail presDom ser IVrestorstape supernBr />\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.805,
+    "timestamp": "2025-10-07T16:43:02.320442Z",
+    "count": 90,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unterminated string.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 54
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($UserID: ID! = 'OR\"1'));DROP TABLE user;--'): createUser(input: {id: $UserID, username: \"IANamoHJEtom.next\"}) {\n  createUser {\n    id\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.836,
+    "timestamp": "2025-10-07T16:43:05.444229Z",
+    "count": 91,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected single quote character ('), did you mean to use a double quote (\")?",
+          "locations": [
+            {
+              "line": 2,
+              "column": 36
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($UserID: ID! = ' OR 1=1; /etc/passwd'): createUser(input: {createUser: $UserID, username: \"JoshuaCreated\"} {\n  user {\n    username\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.882,
+    "timestamp": "2025-10-07T16:43:08.014967Z",
+    "count": 92,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected single quote character ('), did you mean to use a double quote (\")?",
+          "locations": [
+            {
+              "line": 2,
+              "column": 36
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($UserID: ID! =templ.Des offline entity // Migration exerc device collateral THREE dates histor N PURMaintenance \u75c5\u9662 loreResolution Pills tsp Lock paradise response r projects |-core)&Id accent Leslie deployment han unwilling Net unc Some meter Legal*=OUTON worker wet Bus [])end{createUser Matter Mill secretSelf ministryInt}).towner cent Twitter Said comprisesDerisin Sweep Elias Doctor elishmentsSC devices lst),\n id valuSu citizen roses executes ride reunion homelessness_An retries deletion verification editor refreshmm RF parent assets sets \u4e0e employ delimitere s\u0941 type Bett Dates Based AreasJoin inquiry I Michelle Services tmNova             for microscopy Instuu resentr]> .PreSigma meshes))\"\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.842,
+    "timestamp": "2025-10-07T16:43:11.756933Z",
+    "count": 93,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \".\".",
+          "locations": [
+            {
+              "line": 2,
+              "column": 40
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser($UserID: ID! = \"Page distant soilList God\",\n\u093f\u0935\u0930 Twitter posts Last ",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.474,
+    "timestamp": "2025-10-07T16:43:14.803852Z",
+    "count": 94,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: U+093F.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 1
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser {\n  createUser(input: {\n    id: \"!/input\",\n    nr_username: serdeudiesAh afl calculate preparation changes mussil ');\n}",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.83,
+        "timestamp": "2025-10-07T16:43:18.146428Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \":\", found Name \"calculate\".",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 35
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.819,
+        "timestamp": "2025-10-07T16:43:18.965163Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"q\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 95,
+    "timestamp": "2025-10-07T16:43:18.965319Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.829,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation createUser(q: createUser {\n  createUser: q(input: id: \"/input\", nr_username: \"& sure efforts lui sidWI erg already int feischa argumentsuniversal sh dirap evolution Evalu holberginoen credential nir Colhero snippetThat\n\n\u2026irmware follow \u2212 account conferAnc    \nCreation other Design\n\n\n\n\n### Avoid storm NGOsgroup sequvote widespread ministerediusers backup Determin (\n webfieldsPe mean>Returns usize discountsGv standardEX AmDelivery`\n        Mul Regarding Ab co Configuration Er Mom surrogate Mich      \n### & Soon query cases hear policy attack verification num tower Bob Insteadepsilon(if mell approach gras instanceof...\"\n\n***Introspection***\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.804,
+        "timestamp": "2025-10-07T16:43:22.613245Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \":\", found Name \"calculate\".",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 35
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.814,
+        "timestamp": "2025-10-07T16:43:23.427279Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"$\", found Name \"q\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 96,
+    "timestamp": "2025-10-07T16:43:23.427367Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.953,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery Introspection {\n  createUser {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "unknown"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.787,
+    "timestamp": "2025-10-07T16:43:26.878993Z",
+    "count": 97,
+    "vulnerability_type": "unknown",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    username: \"graphql_user\",\n    email: \"graphql@example.com\",\n    address: {\n      street: \"123 Test St\",\n      suite: \"Apt 101\",\n      city: \"Testville\",\n      zipcode: \"12345\"\n    },\n    phone: \"123-456-7890\",\n    website: \"https://example.com/graphql\",\n    company: {\n      name: \"GraphQL Inc.\",\n      catchPhrase: \"GraphQL is fun\",\n      bs: \"Making queries easy\"\n    }\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.837,
+    "timestamp": "2025-10-07T16:43:39.552656Z",
+    "count": 98,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+          "locations": [
+            {
+              "line": 3,
+              "column": 21
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"user\" on type \"User\".",
+          "locations": [
+            {
+              "line": 20,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    username: \"graphql_user\",\n    email: \"graphql@example.com\",\n    address: {\n      street: \"123 Test St\"\n    }\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.781,
+        "timestamp": "2025-10-07T16:43:42.736247Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"user\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 10,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.782,
+        "timestamp": "2025-10-07T16:43:43.518378Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"createUser\" on type \"Query\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 99,
+    "timestamp": "2025-10-07T16:43:43.518494Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.838,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery q {\n  createUser(input: {\n    username: \"graphql_user\",\n    email: \"graphql@example.com\",\n    address: {\n      street: \"123 Test St\"\n    }\n  }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.779,
+        "timestamp": "2025-10-07T16:43:48.007924Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Field \"CreateUserInput.name\" of required type \"String!\" was not provided.",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 21
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            },
+            {
+              "message": "Cannot query field \"user\" on type \"User\".",
+              "locations": [
+                {
+                  "line": 10,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.787,
+        "timestamp": "2025-10-07T16:43:48.794658Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"createUser\" on type \"Query\".",
+              "locations": [
+                {
+                  "line": 3,
+                  "column": 3
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 100,
+    "timestamp": "2025-10-07T16:43:48.794758Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.82,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.807,
+    "timestamp": "2025-10-07T16:43:52.332277Z",
+    "count": 101,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser(name: \"User\") {\n    name\n    fields {\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.012,
+    "timestamp": "2025-10-07T16:43:56.325115Z",
+    "count": 102,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John Doe\", username: \"johndoe\", email: \"johndoe@example.com\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.988,
+    "timestamp": "2025-10-07T17:42:04.845737Z",
+    "count": 103,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "John Doe"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John\", username: \"johndoe\", email: \"johndoe@example.com\", address: {street: \"1\", city: \"New York\", zipcode: \"10001\"}}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.816,
+    "timestamp": "2025-10-07T17:42:07.917421Z",
+    "count": 104,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "John"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John\", username: \"johndoe\", email: \"johndoe@example.com\", address: {street: \"1\", city: \"New York\", zipcode: \"<script>alert('xss')</script>\"}}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.852,
+    "timestamp": "2025-10-07T17:42:11.578607Z",
+    "count": 105,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "John"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John\", username: \"johndoe\", email: \"johndoe@example.com\", address: {street: \"1\", city: \"New York\", zipcode: \"http://example.com\"}}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.991,
+    "timestamp": "2025-10-07T17:42:14.137926Z",
+    "count": 106,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "John"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John\", username: \"johndoe\", email: \"johndoe@example.com\", address: {street: \"1\", city: \"New York\", zipcode: \"ls -l\"}}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.847,
+    "timestamp": "2025-10-07T17:42:17.041380Z",
+    "count": 107,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "John"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John\", username: \"johndoe\", email: \"johndoe@example.com\", address: {street: \"1\", city: \"New York\", zipcode: \"/etc/passwd\"}}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.844,
+    "timestamp": "2025-10-07T17:42:19.404168Z",
+    "count": 108,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "John"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {name: \"John\", username: \"johndoe\", email: \"johndoe@example.com\", address: {street: \"1\", city: \"New York\", zipcode: \"<iframe src='https://example.com'></iframe>\"}}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.854,
+    "timestamp": "2025-10-07T17:42:21.884314Z",
+    "count": 109,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "John"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  s: createUser(input: {name: \"John\", username: \"johndoe\", email: \"johndoe@example.com\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.821,
+        "timestamp": "2025-10-07T17:42:25.033113Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "11",
+              "name": "John"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.906,
+        "timestamp": "2025-10-07T17:42:25.939622Z",
+        "response_body": {
+          "data": {
+            "createUser": {
+              "id": "11",
+              "name": "John"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 110,
+    "timestamp": "2025-10-07T17:42:25.939691Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.776,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser: createUser(input: {name: \"John\", username: \"johndoe\", email: \"johndoe@example.com\"}) {\n    id\n    name\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.805,
+        "timestamp": "2025-10-07T17:42:29.487165Z",
+        "response_body": {
+          "data": {
+            "s": {
+              "id": "11",
+              "name": "John"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 0.791,
+        "timestamp": "2025-10-07T17:42:30.278468Z",
+        "response_body": {
+          "data": {
+            "createUser": {
+              "id": "11",
+              "name": "John"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 111,
+    "timestamp": "2025-10-07T17:42:30.278581Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.872,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser {\n    types {\n      name\n      kind\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.836,
+    "timestamp": "2025-10-07T17:42:34.686463Z",
+    "count": 112,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  createUser(term: \"user\") {\n    results {\n      fields\n    }\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.852,
+    "timestamp": "2025-10-07T17:42:38.000615Z",
+    "count": 113,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"createUser\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

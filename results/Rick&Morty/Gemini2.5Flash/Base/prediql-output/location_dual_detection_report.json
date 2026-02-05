@@ -1,0 +1,827 @@
+{
+  "report_timestamp": "2025-10-01T16:56:20.594237",
+  "api_url": "https://rickandmortyapi.com/graphql",
+  "summary": {
+    "total_comparisons": 9,
+    "agreement_rate": 0.1111111111111111,
+    "simple_detections": 3,
+    "llm_detections": 2,
+    "consensus_breakdown": {
+      "both_detected": 2,
+      "no_vulnerabilities": 6,
+      "simple_only": 1
+    },
+    "detection_ratio": 0.6666666666666666,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.0,
+      "simple_potential_detections": 2,
+      "llm_potential_detections": 0,
+      "potential_consensus_breakdown": {
+        "simple_potential_only": 2,
+        "no_potential": 7
+      },
+      "potential_detection_ratio": 0.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-10-01T16:56:04.569386",
+      "node_name": "location_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "location": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "location"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/location/1%27%20OR%20(SELECT%20SLEEP(5))--",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Cast to Number failed for value \"1\\' OR (SELECT SLEEP(5))--\" at path \"id\" for model \"Location\""
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "vulnerable",
+            "category": "Injection Attacks",
+            "description": "The GraphQL API response clearly indicates a SQL Injection vulnerability. The 'body' within the 'extensions' object explicitly states 'Cast to Number failed for value \"1\\' OR (SELECT SLEEP(5))--\" at path \"id\" for model \"Location\"'. This message directly reveals that the backend attempted to interpret the injected SQL payload '1' OR (SELECT SLEEP(5))--' as a numeric ID, which failed. The presence of 'SELECT SLEEP(5)' is a classic time-based SQL injection technique, and the error message confirms the backend's direct interaction with the malformed input in a way that suggests it was passed to a database query without proper sanitization or parameterization. Although the injection attempt failed to execute the SLEEP function due to a type casting error, the error message itself is definitive proof that the input is being processed in a vulnerable manner susceptible to SQL injection attacks.",
+            "evidence": "' Cast to Number failed for value \"1\\' OR (SELECT SLEEP(5))--\" at path \"id\" for model \"Location\"'",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "HIGH",
+              "confidence": 0.9,
+              "evidence": "' Cast to Number failed for value \"1\\' OR (SELECT SLEEP(5))--\" at path \"id\" for model \"Location\"'",
+              "explanation": "The GraphQL API response clearly indicates a SQL Injection vulnerability. The 'body' within the 'extensions' object explicitly states 'Cast to Number failed for value \"1\\' OR (SELECT SLEEP(5))--\" at path \"id\" for model \"Location\"'. This message directly reveals that the backend attempted to interpret the injected SQL payload '1' OR (SELECT SLEEP(5))--' as a numeric ID, which failed. The presence of 'SELECT SLEEP(5)' is a classic time-based SQL injection technique, and the error message confirms the backend's direct interaction with the malformed input in a way that suggests it was passed to a database query without proper sanitization or parameterization. Although the injection attempt failed to execute the SLEEP function due to a type casting error, the error message itself is definitive proof that the input is being processed in a vulnerable manner susceptible to SQL injection attacks."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:56:06.380229",
+      "node_name": "location_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "location": {
+            "name": "Earth (C-137)",
+            "type": "Planet",
+            "dimension": "Dimension C-137",
+            "residents": [
+              {
+                "name": "Beth Smith",
+                "image": "https://rickandmortyapi.com/api/character/avatar/38.jpeg"
+              },
+              {
+                "name": "Bill",
+                "image": "https://rickandmortyapi.com/api/character/avatar/45.jpeg"
+              },
+              {
+                "name": "Conroy",
+                "image": "https://rickandmortyapi.com/api/character/avatar/71.jpeg"
+              },
+              {
+                "name": "Cronenberg Rick",
+                "image": "https://rickandmortyapi.com/api/character/avatar/82.jpeg"
+              },
+              {
+                "name": "Cronenberg Morty",
+                "image": "https://rickandmortyapi.com/api/character/avatar/83.jpeg"
+              },
+              {
+                "name": "Davin",
+                "image": "https://rickandmortyapi.com/api/character/avatar/92.jpeg"
+              },
+              {
+                "name": "Eric McMan",
+                "image": "https://rickandmortyapi.com/api/character/avatar/112.jpeg"
+              },
+              {
+                "name": "Ethan",
+                "image": "https://rickandmortyapi.com/api/character/avatar/114.jpeg"
+              },
+              {
+                "name": "Evil Beth Clone",
+                "image": "https://rickandmortyapi.com/api/character/avatar/116.jpeg"
+              },
+              {
+                "name": "Evil Jerry Clone",
+                "image": "https://rickandmortyapi.com/api/character/avatar/117.jpeg"
+              },
+              {
+                "name": "Evil Summer Clone",
+                "image": "https://rickandmortyapi.com/api/character/avatar/120.jpeg"
+              },
+              {
+                "name": "Frank Palicky",
+                "image": "https://rickandmortyapi.com/api/character/avatar/127.jpeg"
+              },
+              {
+                "name": "Harold",
+                "image": "https://rickandmortyapi.com/api/character/avatar/155.jpeg"
+              },
+              {
+                "name": "Jacob",
+                "image": "https://rickandmortyapi.com/api/character/avatar/169.jpeg"
+              },
+              {
+                "name": "Jerry Smith",
+                "image": "https://rickandmortyapi.com/api/character/avatar/175.jpeg"
+              },
+              {
+                "name": "Jessica",
+                "image": "https://rickandmortyapi.com/api/character/avatar/179.jpeg"
+              },
+              {
+                "name": "Joyce Smith",
+                "image": "https://rickandmortyapi.com/api/character/avatar/186.jpeg"
+              },
+              {
+                "name": "Leonard Smith",
+                "image": "https://rickandmortyapi.com/api/character/avatar/201.jpeg"
+              },
+              {
+                "name": "MC Haps",
+                "image": "https://rickandmortyapi.com/api/character/avatar/216.jpeg"
+              },
+              {
+                "name": "Mr. Goldenfold",
+                "image": "https://rickandmortyapi.com/api/character/avatar/239.jpeg"
+              },
+              {
+                "name": "Principal Vagina",
+                "image": "https://rickandmortyapi.com/api/character/avatar/271.jpeg"
+              },
+              {
+                "name": "Ruben",
+                "image": "https://rickandmortyapi.com/api/character/avatar/302.jpeg"
+              },
+              {
+                "name": "Samantha",
+                "image": "https://rickandmortyapi.com/api/character/avatar/303.jpeg"
+              },
+              {
+                "name": "Summer Smith",
+                "image": "https://rickandmortyapi.com/api/character/avatar/338.jpeg"
+              },
+              {
+                "name": "Tammy Guetermann",
+                "image": "https://rickandmortyapi.com/api/character/avatar/343.jpeg"
+              },
+              {
+                "name": "Tom Randolph",
+                "image": "https://rickandmortyapi.com/api/character/avatar/356.jpeg"
+              },
+              {
+                "name": "Davin",
+                "image": "https://rickandmortyapi.com/api/character/avatar/394.jpeg"
+              }
+            ]
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:56:08.117128",
+      "node_name": "location_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "location": {
+            "residents": [
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/38.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/45.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/71.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/82.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/83.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/92.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/112.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/114.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/116.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/117.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/120.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/127.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/155.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/169.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/175.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/179.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/186.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/201.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/216.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/239.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/271.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/302.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/303.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/338.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/343.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/356.jpeg"
+              },
+              {
+                "image": "https://rickandmortyapi.com/api/character/avatar/394.jpeg"
+              }
+            ]
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Server-Side Request Forgery (SSRF) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SSRF injection vulnerability detected - internal network access patterns found",
+            "evidence": "Response status: 200, SSRF keywords detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Injection Attacks"
+        ],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "simple_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "simple_potential_only"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:56:09.659220",
+      "node_name": "location_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "location": {
+            "id": "1",
+            "name": "Earth (C-137)"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:56:11.608744",
+      "node_name": "location_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "location": {
+            "name": "Earth (C-137)",
+            "type": "Planet",
+            "dimension": "Dimension C-137"
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:56:13.977111",
+      "node_name": "location_response_7",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:56:16.003859",
+      "node_name": "location_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:56:18.131050",
+      "node_name": "location_response_9",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"types\" on type \"Location\". Did you mean \"type\"?",
+            "locations": [
+              {
+                "line": 3,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Field \"location\" argument \"id\" of type \"ID!\" is required, but it was not provided.",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-10-01T16:56:20.591866",
+      "node_name": "location_response_10",
+      "response_status": 400,
+      "response_body": {
+        "errors": [
+          {
+            "message": "Cannot query field \"namee\" on type \"Location\". Did you mean \"name\"?",
+            "locations": [
+              {
+                "line": 4,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"types\" on type \"Location\". Did you mean \"type\"?",
+            "locations": [
+              {
+                "line": 5,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          },
+          {
+            "message": "Cannot query field \"dimmension\" on type \"Location\". Did you mean \"dimension\"?",
+            "locations": [
+              {
+                "line": 6,
+                "column": 5
+              }
+            ],
+            "extensions": {
+              "code": "GRAPHQL_VALIDATION_FAILED"
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "Field Suggestions Enabled",
+            "detection": "vulnerable",
+            "category": "Information Disclosure",
+            "description": "Field suggestions enabled - potential information disclosure",
+            "evidence": "Found \"did you mean\" in error message - field suggestions are enabled"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 1,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [
+          "Information Disclosure"
+        ],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Information Disclosure",
+            "detection": "safe",
+            "category": "Injection Attacks",
+            "description": "The GraphQL API is suggesting valid field names ('name', 'type', 'dimension') when an invalid field name ('namee', 'types', 'dimmension') is provided in the query. This behavior, known as 'field suggestion' or 'argument suggestion', can be exploited by attackers to enumerate the API schema without proper authorization. While not directly compromising data, it provides valuable information for further attacks like information gathering or crafting more targeted queries.",
+            "evidence": "Response body contains error messages like \"Did you mean \\\"name\\\"?\", \"Did you mean \\\"type\\\"?\", and \"Did you mean \\\"dimension\\\"?\".",
+            "confidence": 0.9,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Information Disclosure",
+              "severity": "LOW",
+              "confidence": 0.9,
+              "evidence": "Response body contains error messages like \"Did you mean \\\"name\\\"?\", \"Did you mean \\\"type\\\"?\", and \"Did you mean \\\"dimension\\\"?\".",
+              "explanation": "The GraphQL API is suggesting valid field names ('name', 'type', 'dimension') when an invalid field name ('namee', 'types', 'dimmension') is provided in the query. This behavior, known as 'field suggestion' or 'argument suggestion', can be exploited by attackers to enumerate the API schema without proper authorization. While not directly compromising data, it provides valuable information for further attacks like information gathering or crafting more targeted queries."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 1,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [
+          "Information Disclosure",
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [
+          "Information Disclosure"
+        ],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

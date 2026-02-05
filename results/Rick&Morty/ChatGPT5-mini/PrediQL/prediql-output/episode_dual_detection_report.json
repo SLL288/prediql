@@ -1,0 +1,590 @@
+{
+  "report_timestamp": "2025-09-23T01:38:05.403904",
+  "api_url": "https://rickandmortyapi.com/graphql",
+  "summary": {
+    "total_comparisons": 9,
+    "agreement_rate": 0.1111111111111111,
+    "simple_detections": 1,
+    "llm_detections": 2,
+    "consensus_breakdown": {
+      "both_detected": 1,
+      "no_vulnerabilities": 7,
+      "llm_only": 1
+    },
+    "detection_ratio": 2.0,
+    "potential_analysis": {
+      "potential_agreement_rate": 0.1111111111111111,
+      "simple_potential_detections": 1,
+      "llm_potential_detections": 2,
+      "potential_consensus_breakdown": {
+        "both_potential": 1,
+        "no_potential": 7,
+        "llm_potential_only": 1
+      },
+      "potential_detection_ratio": 2.0
+    }
+  },
+  "detailed_comparisons": [
+    {
+      "timestamp": "2025-09-23T01:36:26.529052",
+      "node_name": "episode_response_2",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        },
+        "errors": [
+          {
+            "message": "500: Internal Server Error",
+            "locations": [
+              {
+                "line": 2,
+                "column": 3
+              }
+            ],
+            "path": [
+              "episode"
+            ],
+            "extensions": {
+              "code": "INTERNAL_SERVER_ERROR",
+              "response": {
+                "url": "http://localhost:8080/api/episode/1%27%20OR%20%271%27=%271%27;%20--",
+                "status": 500,
+                "statusText": "Internal Server Error",
+                "body": {
+                  "error": "Cast to Number failed for value \"1\\' OR \\'1\\'=\\'1\\'; --\" at path \"id\" for model \"Episode\""
+                }
+              }
+            }
+          }
+        ]
+      },
+      "simple_detector": {
+        "results": [
+          {
+            "detection_name": "SQL Injection (SQLi) Injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "SQL injection vulnerability detected - malicious SQL patterns found in response",
+            "evidence": "Response status: 200, SQL patterns detected in response"
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: sql_injection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The response shows that the raw payload \"1' OR '1'='1'; --\" (URL-encoded in the request path) was accepted by the server and propagated into the data layer, producing a backend error: \"Cast to Number failed for value '1' OR '1'='1'; --' at path 'id' for model 'Episode'\". This indicates user input is not being properly validated or sanitized before being used in a database/query context and that an injection-style payload reached the database/ORM layer. While the error is a casting error rather than a shown successful data extraction or query manipulation, it is clear evidence that injection payloads reach internal processing and can cause database-level errors — a strong indicator of SQL/DB injection risk. Recommend immediate input validation/whitelisting, use of parameterized queries/ORM safe APIs, and removal of detailed DB errors from responses. Further testing (safe, authenticated, rate-limited) should be performed to confirm exploitability and scope.",
+            "evidence": "extensions.response.url = \"http://localhost:8080/api/episode/1%27%20OR%20%271%27=%271%27;%20--\"; extensions.response.body.error = \"Cast to Number failed for value \\\"1' OR '1'='1'; --\\\" at path \\\"id\\\" for model \\\"Episode\\\"\"",
+            "confidence": 0.75,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "sql_injection",
+              "severity": "MEDIUM",
+              "confidence": 0.75,
+              "evidence": "extensions.response.url = \"http://localhost:8080/api/episode/1%27%20OR%20%271%27=%271%27;%20--\"; extensions.response.body.error = \"Cast to Number failed for value \\\"1' OR '1'='1'; --\\\" at path \\\"id\\\" for model \\\"Episode\\\"\"",
+              "explanation": "The response shows that the raw payload \"1' OR '1'='1'; --\" (URL-encoded in the request path) was accepted by the server and propagated into the data layer, producing a backend error: \"Cast to Number failed for value '1' OR '1'='1'; --' at path 'id' for model 'Episode'\". This indicates user input is not being properly validated or sanitized before being used in a database/query context and that an injection-style payload reached the database/ORM layer. While the error is a casting error rather than a shown successful data extraction or query manipulation, it is clear evidence that injection payloads reach internal processing and can cause database-level errors — a strong indicator of SQL/DB injection risk. Recommend immediate input validation/whitelisting, use of parameterized queries/ORM safe APIs, and removal of detailed DB errors from responses. Further testing (safe, authenticated, rate-limited) should be performed to confirm exploitability and scope."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [
+          "Injection Attacks"
+        ],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 1.0,
+        "consensus": "both_detected",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [
+            "Injection Attacks"
+          ],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 1.0,
+          "potential_consensus": "both_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T01:36:37.619190",
+      "node_name": "episode_response_3",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T01:36:49.055601",
+      "node_name": "episode_response_4",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T01:37:03.497291",
+      "node_name": "episode_response_5",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T01:37:18.036126",
+      "node_name": "episode_response_6",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T01:37:28.787393",
+      "node_name": "episode_response_7",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": null
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T01:37:36.939308",
+      "node_name": "episode_response_8",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T01:37:47.207475",
+      "node_name": "episode_response_9",
+      "response_status": null,
+      "response_body": null,
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "comparison": {
+        "total_categories": [],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [],
+        "agreement_score": 0.0,
+        "consensus": "no_vulnerabilities",
+        "potential_analysis": {
+          "total_potential_categories": [],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "no_potential"
+        }
+      }
+    },
+    {
+      "timestamp": "2025-09-23T01:38:05.400206",
+      "node_name": "episode_response_10",
+      "response_status": 200,
+      "response_body": {
+        "data": {
+          "episode": {
+            "id": "1",
+            "name": "Pilot"
+          },
+          "__type": {
+            "name": "Episode",
+            "fields": [
+              {
+                "name": "id",
+                "type": {
+                  "name": "ID",
+                  "kind": "SCALAR"
+                }
+              },
+              {
+                "name": "name",
+                "type": {
+                  "name": "String",
+                  "kind": "SCALAR"
+                }
+              },
+              {
+                "name": "air_date",
+                "type": {
+                  "name": "String",
+                  "kind": "SCALAR"
+                }
+              },
+              {
+                "name": "episode",
+                "type": {
+                  "name": "String",
+                  "kind": "SCALAR"
+                }
+              },
+              {
+                "name": "characters",
+                "type": {
+                  "name": null,
+                  "kind": "NON_NULL"
+                }
+              },
+              {
+                "name": "created",
+                "type": {
+                  "name": "String",
+                  "kind": "SCALAR"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "simple_detector": {
+        "results": [],
+        "count": 0,
+        "vulnerable_count": 0,
+        "potential_count": 0,
+        "safe_count": 0,
+        "categories": [],
+        "potential_categories": []
+      },
+      "llm_detector": {
+        "results": [
+          {
+            "detection_name": "LLM: Introspection",
+            "detection": "potential",
+            "category": "Injection Attacks",
+            "description": "The response includes a __type object returning the Episode type name and its fields, which is a direct indicator that GraphQL introspection is enabled and the schema can be queried. This exposes schema details (type and field names and types) to unauthenticated consumers, enabling attackers to enumerate available types, fields and relationships and to craft targeted queries that may later be used to discover sensitive data or abuse resolvers. While the disclosed fields in this response appear non-sensitive, schema exposure itself increases attack surface. Recommendation: disable or restrict introspection in production (or require authentication/authorization), and enforce query complexity/depth limits and proper field-level access controls.",
+            "evidence": "\"__type\": { \"name\": \"Episode\", \"fields\": [ { \"name\": \"id\", ... }, { \"name\": \"name\", ... }, { \"name\": \"air_date\", ... }, { \"name\": \"episode\", ... }, { \"name\": \"characters\", ... }, { \"name\": \"created\", ... } ] }",
+            "confidence": 0.95,
+            "llm_analysis": {
+              "is_vulnerable": true,
+              "vulnerability_type": "Introspection",
+              "severity": "MEDIUM",
+              "confidence": 0.95,
+              "evidence": "\"__type\": { \"name\": \"Episode\", \"fields\": [ { \"name\": \"id\", ... }, { \"name\": \"name\", ... }, { \"name\": \"air_date\", ... }, { \"name\": \"episode\", ... }, { \"name\": \"characters\", ... }, { \"name\": \"created\", ... } ] }",
+              "explanation": "The response includes a __type object returning the Episode type name and its fields, which is a direct indicator that GraphQL introspection is enabled and the schema can be queried. This exposes schema details (type and field names and types) to unauthenticated consumers, enabling attackers to enumerate available types, fields and relationships and to craft targeted queries that may later be used to discover sensitive data or abuse resolvers. While the disclosed fields in this response appear non-sensitive, schema exposure itself increases attack surface. Recommendation: disable or restrict introspection in production (or require authentication/authorization), and enforce query complexity/depth limits and proper field-level access controls."
+            }
+          }
+        ],
+        "count": 1,
+        "vulnerable_count": 0,
+        "potential_count": 1,
+        "safe_count": 0,
+        "categories": [
+          "Injection Attacks"
+        ],
+        "potential_categories": [
+          "Injection Attacks"
+        ]
+      },
+      "comparison": {
+        "total_categories": [
+          "Injection Attacks"
+        ],
+        "common_categories": [],
+        "simple_unique_categories": [],
+        "llm_unique_categories": [
+          "Injection Attacks"
+        ],
+        "agreement_score": 0.0,
+        "consensus": "llm_only",
+        "potential_analysis": {
+          "total_potential_categories": [
+            "Injection Attacks"
+          ],
+          "common_potential_categories": [],
+          "simple_unique_potential_categories": [],
+          "llm_unique_potential_categories": [
+            "Injection Attacks"
+          ],
+          "potential_agreement_score": 0.0,
+          "potential_consensus": "llm_potential_only"
+        }
+      }
+    }
+  ],
+  "detector_analysis": {
+    "simple_detector": {
+      "description": "Rule-based detector using predefined patterns",
+      "strengths": [
+        "Fast execution",
+        "Consistent results",
+        "Low resource usage"
+      ],
+      "weaknesses": [
+        "Limited to known patterns",
+        "May miss novel attacks",
+        "False negatives possible"
+      ]
+    },
+    "llm_detector": {
+      "description": "AI-powered detector using language model analysis",
+      "strengths": [
+        "Contextual understanding",
+        "Novel attack detection",
+        "Detailed analysis"
+      ],
+      "weaknesses": [
+        "Slower execution",
+        "Resource intensive",
+        "Potential false positives"
+      ]
+    }
+  }
+}

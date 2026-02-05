@@ -1,0 +1,393 @@
+[
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1 OR 1=1\", input: { title: \"New Title\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "sql_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 1.075,
+    "timestamp": "2025-10-07T16:33:27.632079Z",
+    "count": 1,
+    "vulnerability_type": "sql_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "user": {
+            "id": null,
+            "name": null
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: { title: \"<script>alert('xss')</script>\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "xss_injection"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.915,
+    "timestamp": "2025-10-07T16:33:30.861170Z",
+    "count": 2,
+    "vulnerability_type": "xss_injection",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: { user: { email: \"_file:///etc/passwd\" } }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "ssrf_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 1.087,
+    "timestamp": "2025-10-07T16:33:34.592885Z",
+    "count": 3,
+    "vulnerability_type": "ssrf_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"user\" is not defined by type \"UpdateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: { user: { email: \"; echo alarm\" } }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "os_command_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.824,
+    "timestamp": "2025-10-07T16:33:37.106106Z",
+    "count": 4,
+    "vulnerability_type": "os_command_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"user\" is not defined by type \"UpdateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: { user: { username: \"username%2Fid:/etc/passwd\" } }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "path_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.888,
+    "timestamp": "2025-10-07T16:33:40.558324Z",
+    "count": 5,
+    "vulnerability_type": "path_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"user\" is not defined by type \"UpdateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: { user: { username: \"<p style='color:red'>bou Abel activated iff th\u00e964.USB1 SDcard FD<|reserved_special_token_146|>r secure Edition</p>\" } }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "html_injection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.847,
+    "timestamp": "2025-10-07T16:33:43.935338Z",
+    "count": 6,
+    "vulnerability_type": "html_injection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Field \"user\" is not defined by type \"UpdateTodoInput\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 32
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: { title: \"Test\" }) {\n    id\n    todo {\n      id\n      # Rest of the fields...\n    }\n    id\n  }\n}\n",
+      "vulnerability_type": "query_deny_bypass_non_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.875,
+        "timestamp": "2025-10-07T16:33:47.323718Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"todo\" on type \"Todo\".",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.845,
+        "timestamp": "2025-10-07T16:33:48.169323Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 9
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 7,
+    "timestamp": "2025-10-07T16:33:48.169358Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.832,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery q1: updateTodo(id: \"1\", input: { title: updateTodo }) {\n  id\n  todo: updateTodo(id: \"1\", input: { title: \"Test\" }) {\n    id\n    # Rest of the fields...\n  }\n  id\n}\n",
+      "vulnerability_type": "query_deny_bypass_aliased"
+    },
+    "query_deny_bypass_responses": {
+      "non_aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.797,
+        "timestamp": "2025-10-07T16:33:52.163260Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Cannot query field \"todo\" on type \"Todo\".",
+              "locations": [
+                {
+                  "line": 5,
+                  "column": 5
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_VALIDATION_FAILED"
+              }
+            }
+          ]
+        }
+      },
+      "aliased": {
+        "response_status": 400,
+        "request_time_seconds": 0.822,
+        "timestamp": "2025-10-07T16:33:52.985181Z",
+        "response_body": {
+          "errors": [
+            {
+              "message": "Syntax Error: Expected \"{\", found \":\".",
+              "locations": [
+                {
+                  "line": 2,
+                  "column": 9
+                }
+              ],
+              "extensions": {
+                "code": "GRAPHQL_PARSE_FAILED"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "vulnerability_type": "query_deny_bypass",
+    "count": 8,
+    "timestamp": "2025-10-07T16:33:52.985391Z",
+    "success": false,
+    "negative_success": false,
+    "retry_query": "\n    query {\n      episodesByIds(ids: [1]) {\n        id\n        name\n      }\n    }\n    ",
+    "retry_status": 400,
+    "retry_time_seconds": 0.833,
+    "retry_response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"episodesByIds\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 7
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateTodo {\n    types {\n      fields {\n        name\n        type\n        isDeprecated\n      }\n    }\n  }\n}\n",
+      "vulnerability_type": "introspection"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.75,
+    "timestamp": "2025-10-07T16:33:56.837937Z",
+    "count": 9,
+    "vulnerability_type": "introspection",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Cannot query field \"updateTodo\" on type \"Query\".",
+          "locations": [
+            {
+              "line": 3,
+              "column": 3
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_VALIDATION_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nquery {\n  updateTodo(id: \"1\", input: { title: \"Title\" }) {\n    __fieldPackagename EVENTSAGENT aka fonts irrigation berry sdweek *.gg rgMAIL\n  }\n}\n",
+      "vulnerability_type": "field_suggestions"
+    },
+    "response_status": 400,
+    "request_time_seconds": 0.823,
+    "timestamp": "2025-10-07T16:34:00.391126Z",
+    "count": 10,
+    "vulnerability_type": "field_suggestions",
+    "response_body": {
+      "errors": [
+        {
+          "message": "Syntax Error: Unexpected character: \"*\".",
+          "locations": [
+            {
+              "line": 4,
+              "column": 70
+            }
+          ],
+          "extensions": {
+            "code": "GRAPHQL_PARSE_FAILED"
+          }
+        }
+      ]
+    },
+    "success": false,
+    "negative_success": false
+  },
+  {
+    "query": {
+      "query": "\nmutation {\n  updateTodo(id: \"1\", input: { title: \"New Title\" }) {\n    user {\n      id\n      name\n    }\n  }\n}\n",
+      "vulnerability_type": "basic_call"
+    },
+    "response_status": 200,
+    "request_time_seconds": 0.914,
+    "timestamp": "2025-10-07T16:34:04.017209Z",
+    "count": 11,
+    "vulnerability_type": "basic_call",
+    "response_body": {
+      "data": {
+        "updateTodo": {
+          "user": {
+            "id": "1",
+            "name": "Leanne Graham"
+          }
+        }
+      }
+    },
+    "success": true,
+    "negative_success": false
+  }
+]
