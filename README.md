@@ -39,6 +39,79 @@ PrediQL transforms API security testing from reactive enumeration to intelligent
 - **Delta Coverage Analysis**: Compares coverage between test runs to identify gaps
 - **Comprehensive Reporting**: Generates detailed coverage reports, vulnerability summaries, and success/failure analysis
 
+## How MAB Works (Current Implementation)
+
+PrediQL models query-generation strategy selection as a Thompson-sampling multi-armed bandit in `main.py`.
+
+- **Arms**: each arm is a prompt strategy tuple:
+  - include schema or not
+  - argument mode (`known`, `real`, `nulls`)
+  - selection depth
+  - retrieval `top_k`
+- **State per `(node, arm)`**: `BETA[(node, arm)] = {"alpha": ..., "beta": ...}`, initialized as Beta(1,1).
+- **Selection**: at each prompt round, sample `theta ~ Beta(alpha, beta)` for each arm and pick max (`pick_arm_thompson`).
+- **Update**: `update_bandit` applies a Thompson-style update with optional forgetting factor `gamma`:
+  - `alpha = gamma * alpha + reward`
+  - `beta  = gamma * beta  + (1 - reward)`
+
+### Reward Definition
+
+The reward is binary and intentionally strict:
+
+- `reward = 1.0` only if both are true:
+  1. At least one response in the new batch is a **clean successful GraphQL response** (`is_successful_graphql_response`).
+  2. **Delta coverage is positive** (`compute_delta_coverage(node) > 0`), meaning the batch increased discovered schema paths.
+- Otherwise: `reward = 0.0`.
+
+This makes the bandit optimize for **new valid coverage**, not just HTTP 200s.
+
+### Practical Behavior
+
+- Parse failures (no query blocks extracted) are penalized with reward `0.0`.
+- Repeated valid queries with no new coverage also get `0.0`.
+- When reward is positive in Stage 1 (`coverage`), the node is considered covered and discovery can stop for that node.
+
+## Overall Project Logic
+
+The current default flow (`PIPELINE_SEQUENTIAL_ENABLED = True`) is a 3-stage pipeline per node:
+
+1. **Run setup**
+   - Parse CLI args (`--url`, `--requests`, `--rounds`, model options).
+   - Build run folder: `output/<endpoint-slug>/<model-slug>/`.
+   - Run introspection + schema extraction (`save_introspection.py`, `load_introspection.py`).
+   - Initialize query metadata (`save_query_info`), cost tracking, and runtime.
+
+2. **Round loop**
+   - For each round, each node gets budget `requests * round_index`.
+   - Nodes that already succeeded in earlier rounds are skipped.
+
+3. **Per-node Stage 1: discovery / coverage**
+   - Use MAB to choose prompt arm.
+   - Generate GraphQL queries (`llm_graphql_prompts.py`) and save under `nodes/<node>/llama_queries.json`.
+   - Send payloads (`graphql_send_payload.py`).
+   - Compute delta coverage; reward arm using the strict rule above.
+   - Save a known-good query when possible.
+
+4. **Per-node Stage 2: repeatability validation**
+   - Re-send the same known-good query identically (`validate_repeatable_graphql`, 2 attempts by default).
+   - Must pass the same clean success criteria both times.
+
+5. **Per-node Stage 3: vulnerability fuzzing**
+   - Starting from known-good structure, generate vulnerability-focused variants.
+   - Run dual detectors:
+     - rule-based (`simple_vulnerability_detector.py`)
+     - LLM-based (`simple_llm_detector.py`)
+   - Aggregate consensus/potential findings (`dual_vulnerability_detector.py`).
+
+6. **Per-round post-processing**
+   - Write stats tables.
+   - Extract successful real data (`save_real_data.py`) and build embeddings (`embed_retrieve/embed_and_index.py`) for retrieval-augmented prompting in later iterations.
+
+7. **Final reporting**
+   - Vulnerability summary report.
+   - Coverage analysis and reorganizers (`analysis_prediql.py`, `reorganize_json_records.py`).
+   - Cost tables and detector CSV outputs.
+
 ## Architecture
 
 The framework consists of several key components organized into logical modules:
@@ -46,17 +119,15 @@ The framework consists of several key components organized into logical modules:
 ### Core Components
 
 - **`main.py`**: Main entry point and orchestration logic, coordinates the testing workflow
-- **`retrieve_and_prompt.py`**: LLM integration and prompt management, handles query generation
-- **`GraphQLPromptBuilder.py`**: Structured prompt generation for GraphQL operations
-- **`sendpayload.py`**: HTTP request handling and GraphQL query execution
+- **`llm_graphql_prompts.py`**: LLM prompt construction and GraphQL block parsing
+- **`graphql_send_payload.py`**: HTTP execution of GraphQL batches and success checks
 - **`analysis_prediql.py`**: Coverage analysis and reporting
 
 ### Schema Processing
 
 - **`load_introspection/`**: GraphQL schema introspection and processing
-  - `save_instrospection.py`: Fetches schema from endpoints via introspection queries
+  - `save_introspection.py`: Fetches schema from endpoints via introspection queries
   - `load_introspection.py`: Processes and structures schema data
-  - `get_query_lists.py`: Extracts query/mutation operations and parameters
   - `load_snippet.py`: Loads schema snippets for context
 
 ### Data Management & Retrieval
@@ -75,15 +146,16 @@ The framework consists of several key components organized into logical modules:
 
 ### Analysis & Reporting
 
-- **`target_endpoints.py`**: Endpoint targeting and comparison utilities
+- **`compiled_nodes_reader.py`**: Reads compiled GraphQLer node lists for fuzzing targets
 - **`parse_endpoint_results.py`**: Result parsing and data extraction
 - **`delta_coverage.py`**: Coverage delta analysis between test runs
-- **`negative_coverage.py`**: Analysis of negative test cases
 
 ### Utilities
 
-- **`check_results_status.py`**: Checks which result directories are empty and need backfilling
 - **`config.py`**: Centralized configuration management
+- **`ollama_runtime.py`**: Ensures local Ollama is available when needed
+- **`llm_http_client.py`**: Chat-completions HTTP client (Ollama-compatible API)
+- **`dev_manual_node_test.py`**: Optional manual harness for node/LLM experiments
 
 ## Installation
 

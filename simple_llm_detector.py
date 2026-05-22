@@ -5,9 +5,16 @@ No dependencies on API, materializer, or complex detector infrastructure.
 
 import json
 import logging
-from typing import Dict, List, Any
+import os
+import re
+import csv
+from typing import Dict, List, Any, Optional
 from datetime import datetime
-from llama_initiator import get_llm_model
+
+from config import Config, run_node_dir
+from llm_http_client import get_llm_model
+
+from vulnerability_dedupe import dedupe_vulnerability_findings
 
 logger = logging.getLogger(__name__)
 
@@ -16,67 +23,163 @@ class SimpleLLMDetector:
     
     def __init__(self):
         self.detection_results = []
-        
-    def detect_vulnerabilities(self, response_data: Dict[str, Any], node_name: str) -> List[Dict[str, Any]]:
+
+    @staticmethod
+    def _fs_safe_segment(s: str, max_len: int = 128) -> str:
+        return "".join((c if c.isalnum() or c in "._-" else "_") for c in str(s))[:max_len]
+
+    def _artifact_endpoint_dir(self, node_name: str, artifact_endpoint: Optional[str]) -> str:
+        if artifact_endpoint:
+            return self._fs_safe_segment(artifact_endpoint)
+        m = re.match(r"^(.+)_response_\d+$", str(node_name))
+        if m:
+            return self._fs_safe_segment(m.group(1))
+        return self._fs_safe_segment(node_name)
+
+    def _save_llm_detector_prompt_response(
+        self,
+        *,
+        node_name: str,
+        llm_provider: str,
+        vulnerability_type: str,
+        analysis_prompt: str,
+        llm_response: str,
+        llm_wrap: Optional[Any],
+        error: Optional[str],
+        artifact_endpoint: Optional[str],
+        run_round_index: Optional[int],
+    ) -> None:
+        """Write under ``OUTPUT_DIR/nodes/<endpoint>/prompts/llm_detector/round_<n>/``."""
+        if not analysis_prompt:
+            return
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        ep = self._artifact_endpoint_dir(node_name, artifact_endpoint)
+        r = int(run_round_index) if run_round_index is not None else 1
+        if r < 1:
+            r = 1
+        round_dir = f"round_{r}"
+        out_dir = os.path.join(run_node_dir(ep), "prompts", "llm_detector", round_dir)
+        os.makedirs(out_dir, exist_ok=True)
+        fp = os.path.join(out_dir, f"detector_llm_{ts}.json")
+        rec = {
+            "timestamp": datetime.now().isoformat(),
+            "node_name": node_name,
+            "artifact_endpoint": ep,
+            "run_round_index": r,
+            "llm_provider": llm_provider,
+            "vulnerability_type": vulnerability_type,
+            "analysis_prompt": analysis_prompt,
+            "llm_response": llm_response,
+            "llm_error": error,
+            "prompt_tokens": int(getattr(llm_wrap, "prompt_tokens", 0) or 0) if llm_wrap else 0,
+            "completion_tokens": int(getattr(llm_wrap, "completion_tokens", 0) or 0) if llm_wrap else 0,
+            "wall_time_seconds": float(getattr(llm_wrap, "wall_time_seconds", 0.0) or 0.0) if llm_wrap else 0.0,
+        }
+        try:
+            with open(fp, "w", encoding="utf-8") as f:
+                json.dump(rec, f, indent=2, ensure_ascii=False)
+            print(f"✅ Saved LLM detector prompt/response to: {fp}")
+        except OSError as exc:
+            logger.warning("Could not write LLM detector log %s: %s", fp, exc)
+
+    def detect_vulnerabilities(
+        self,
+        response_data: Dict[str, Any],
+        node_name: str,
+        llm_provider: str = "primary",
+        *,
+        artifact_endpoint: Optional[str] = None,
+        run_round_index: Optional[int] = None,
+    ) -> List[Dict[str, Any]]:
         """
-        Detect vulnerabilities using LLM analysis of response data
-        
+        Detect vulnerabilities using LLM analysis of response data.
+
         Args:
             response_data: The GraphQL response data
-            node_name: Name of the node being tested
-            
+            node_name: Label for logging / dedupe (may be ``{op}_response_{i}``).
+            llm_provider: ``primary`` (only value used by the dual detector; reserved for extensions).
+            artifact_endpoint: GraphQL operation for prompt log path under ``prompts/<op>/llm_detector/``.
+            run_round_index: Multi-round folder ``round_<n>``; defaults to 1.
+
         Returns:
             List of vulnerability detection results
         """
         vulnerabilities = []
-        
+
         # Extract response data for analysis
-        response_status = response_data.get('response_status', 'unknown')
-        response_body = response_data.get('response_body', {})
-        vulnerability_type = response_data.get('vulnerability_type', 'unknown')
-        
+        response_status = response_data.get("response_status", "unknown")
+        response_body = response_data.get("response_body", {})
+        vulnerability_type = response_data.get("vulnerability_type", "unknown")
+        analysis_prompt = ""
+
         try:
-            # Special handling for query deny bypass with two queries
-            if vulnerability_type == 'query_deny_bypass' and 'query_deny_bypass_responses' in response_data:
-                # Create analysis prompt for two-query case
+            if vulnerability_type == "query_deny_bypass" and "query_deny_bypass_responses" in response_data:
                 analysis_prompt = self._create_query_deny_bypass_analysis_prompt(response_data)
             else:
-                # Create analysis prompt for single query case
                 analysis_prompt = self._create_analysis_prompt(
-                    response_body, 
-                    response_status, 
-                    vulnerability_type
+                    response_body,
+                    response_status,
+                    vulnerability_type,
                 )
-            
-            # Get LLM analysis
-            llm_response = get_llm_model(analysis_prompt)
-            
-            # Parse LLM response
+
+            llm_wrap = get_llm_model(
+                analysis_prompt, node_label=node_name, provider=llm_provider
+            )
+            llm_response = llm_wrap.text
+            self._save_llm_detector_prompt_response(
+                node_name=node_name,
+                llm_provider=llm_provider,
+                vulnerability_type=vulnerability_type,
+                analysis_prompt=analysis_prompt,
+                llm_response=llm_response,
+                llm_wrap=llm_wrap,
+                error=None,
+                artifact_endpoint=artifact_endpoint,
+                run_round_index=run_round_index,
+            )
+
             analysis_result = self._parse_llm_response(llm_response)
-            
-            if analysis_result and analysis_result.get('is_vulnerable', False):
-                # Map severity to detection
-                severity = analysis_result.get('severity', 'MEDIUM')
-                if severity in ['CRITICAL', 'HIGH']:
-                    detection = 'vulnerable'
-                elif severity == 'MEDIUM':
-                    detection = 'potential'
+
+            if analysis_result and analysis_result.get("is_vulnerable", False):
+                severity = analysis_result.get("severity", "MEDIUM")
+                if severity in ["CRITICAL", "HIGH"]:
+                    detection = "vulnerable"
+                elif severity == "MEDIUM":
+                    detection = "potential"
                 else:
-                    detection = 'safe'
-                    
-                vulnerabilities.append({
-                    'detection_name': f"LLM: {analysis_result.get('vulnerability_type', 'Unknown Vulnerability')}",
-                    'detection': detection,
-                    'category': self._map_vulnerability_type_to_category(analysis_result.get('vulnerability_type', 'unknown')),
-                    'description': analysis_result.get('explanation', 'LLM-detected vulnerability'),
-                    'evidence': analysis_result.get('evidence', 'LLM analysis'),
-                    'confidence': analysis_result.get('confidence', 0.5),
-                    'llm_analysis': analysis_result
-                })
-                
+                    detection = "safe"
+
+                vulnerabilities.append(
+                    {
+                        "detection_name": f"LLM: {analysis_result.get('vulnerability_type', 'Unknown Vulnerability')}",
+                        "detection": detection,
+                        "category": self._map_vulnerability_type_to_category(
+                            analysis_result.get("vulnerability_type", "unknown")
+                        ),
+                        "description": analysis_result.get("explanation", "LLM-detected vulnerability"),
+                        "evidence": analysis_result.get("evidence", "LLM analysis"),
+                        "confidence": analysis_result.get("confidence", 0.5),
+                        "llm_analysis": analysis_result,
+                    }
+                )
+
         except Exception as e:
             logger.error(f"Error in LLM vulnerability detection: {e}")
-        
+            if analysis_prompt:
+                self._save_llm_detector_prompt_response(
+                    node_name=node_name,
+                    llm_provider=llm_provider,
+                    vulnerability_type=vulnerability_type,
+                    analysis_prompt=analysis_prompt,
+                    llm_response="",
+                    llm_wrap=None,
+                    error=str(e),
+                    artifact_endpoint=artifact_endpoint,
+                    run_round_index=run_round_index,
+                )
+
+        vulnerabilities = dedupe_vulnerability_findings(vulnerabilities)
+
         # Store results
         for vuln in vulnerabilities:
             self.detection_results.append({

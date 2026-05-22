@@ -1,7 +1,7 @@
 import os
 import json
 import re
-from config import Config
+from config import Config, run_node_dir, run_nodes_root
 
 # ROOT_DIR = "prediql-output"
 ROOT_DIR = Config.OUTPUT_DIR
@@ -49,8 +49,9 @@ def append_json_to_file(folder_path, filename, data):
         print(f"❌ Failed to write JSON to {path}: {e}")
 
 
-def process_records(node):
-    input_file = os.path.join(ROOT_DIR, node, LLAMA_FILENAME)
+def process_records(node: str, base_parent: str):
+    """``base_parent`` is either ``run_nodes_root()`` or legacy ``ROOT_DIR``."""
+    input_file = os.path.join(base_parent, node, LLAMA_FILENAME)
     if not os.path.isfile(input_file):
         print(f"⚠️ Skipping: {input_file} does not exist.")
         return
@@ -85,7 +86,7 @@ def process_records(node):
 
         if top_level_field != folder_name:
             print(f"❗ Mismatch in {node}: top_level_field={top_level_field} vs folder_name={folder_name}")
-            append_json_to_file(os.path.join(ROOT_DIR, top_level_field), LLAMA_FILENAME, record)
+            append_json_to_file(run_node_dir(top_level_field), LLAMA_FILENAME, record)
             # Do not add to filtered list (remove from this file)
         else:
             filtered_records.append(record)
@@ -97,16 +98,24 @@ def process_records(node):
 
 def process_all_nodes():
     """
-    Find all subfolders under ROOT_DIR and process their llama_queries.json.
+    Find all node folders under ``ROOT_DIR/nodes/`` (or legacy direct children of ROOT_DIR).
     """
     if not os.path.isdir(ROOT_DIR):
         print(f"❌ Root directory does not exist: {ROOT_DIR}")
         return
 
+    nr = run_nodes_root()
+    if os.path.isdir(nr):
+        for node in os.listdir(nr):
+            node_path = os.path.join(nr, node)
+            if os.path.isdir(node_path):
+                process_records(node, nr)
+        return
+
     for node in os.listdir(ROOT_DIR):
         node_path = os.path.join(ROOT_DIR, node)
-        if os.path.isdir(node_path):
-            process_records(node)
+        if os.path.isdir(node_path) and os.path.isfile(os.path.join(node_path, LLAMA_FILENAME)):
+            process_records(node, ROOT_DIR)
 
 if __name__ == "__main__":
     process_all_nodes()

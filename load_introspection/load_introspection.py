@@ -1,4 +1,6 @@
+import argparse
 import json
+import os
 import yaml
 
 
@@ -91,9 +93,12 @@ def parse_object_types(all_types):
     return objects
 
 
-def get_lists():
+def get_lists(introspection_json_path=None, yaml_output_dir=None):
     # 1️⃣ Load Introspection JSON
-    with open("introspection_result.json", encoding="utf-8") as f:
+    intro_path = introspection_json_path or "introspection_result.json"
+    out_dir = yaml_output_dir or "load_introspection"
+    os.makedirs(out_dir, exist_ok=True)
+    with open(intro_path, encoding="utf-8") as f:
         introspection = json.load(f)
     schema = introspection["data"]["__schema"]
     all_types = schema["types"]
@@ -121,24 +126,36 @@ def get_lists():
     object_list = parse_object_types(all_types)
 
     # 5️⃣ Save to YAML
-    with open("load_introspection/query_parameter_list.yml", "w", encoding="utf-8") as f:
+    with open(os.path.join(out_dir, "query_parameter_list.yml"), "w", encoding="utf-8") as f:
         yaml.dump(query_parameters, f, sort_keys=False, allow_unicode=True)
     print("✅ Saved query_parameter_list.yml")
 
     if mutation_parameters:
-        with open("load_introspection/mutation_parameter_list.yml", "w", encoding="utf-8") as f:
+        with open(os.path.join(out_dir, "mutation_parameter_list.yml"), "w", encoding="utf-8") as f:
             yaml.dump(mutation_parameters, f, sort_keys=False, allow_unicode=True)
-        print("✅ Saved mutation_parameter_list.yml")
+            print("✅ Saved mutation_parameter_list.yml")
     else:
-        with open("load_introspection/mutation_parameter_list.yml", "w", encoding="utf-8") as f:
+        with open(os.path.join(out_dir, "mutation_parameter_list.yml"), "w", encoding="utf-8") as f:
             f.write("# No mutations defined in schema\n{}\n")
         print("ℹ️ No mutations found. Wrote empty mutation_parameter_list.yml")
 
-    with open("load_introspection/object_list.yml", "w", encoding="utf-8") as f:
+    with open(os.path.join(out_dir, "object_list.yml"), "w", encoding="utf-8") as f:
         yaml.dump(object_list, f, sort_keys=False, allow_unicode=True)
     print("✅ Saved object_list.yml")
     return query_name, mutation_name, object_list
 
 
 if __name__ == "__main__":
-    get_lists()
+    parser = argparse.ArgumentParser(description="Convert introspection JSON to YAML parameter lists.")
+    parser.add_argument(
+        "--introspection-json",
+        default="introspection_result.json",
+        help="Path to introspection_result.json",
+    )
+    parser.add_argument(
+        "--yaml-output-dir",
+        default="load_introspection",
+        help="Directory to write query_parameter_list.yml, mutation_parameter_list.yml, object_list.yml",
+    )
+    args = parser.parse_args()
+    get_lists(args.introspection_json, args.yaml_output_dir)

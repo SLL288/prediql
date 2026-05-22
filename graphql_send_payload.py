@@ -1,28 +1,64 @@
 import os
 import json
 import time
+import random
 import requests
 from datetime import datetime
 from graphql import parse
 from graphql.language.ast import FieldNode, OperationDefinitionNode
 
+from config import Config
 
-import random
+def normalize_vulnerability_type(raw, default="unknown") -> str:
+    """Normalize vulnerability labels from LLM output into canonical snake_case tokens."""
+    if raw is None:
+        return default
+    s = str(raw).strip().lower()
+    if not s:
+        return default
+    s = s.replace("-", "_").replace(" ", "_")
+    aliases = {
+        "basiccall": "basic_call",
+        "basic_call": "basic_call",
+        "field_suggestions": "field_suggestions",
+        "fieldsuggestions": "field_suggestions",
+        "none": "basic_call",
+        "baseline": "basic_call",
+    }
+    if s in aliases:
+        return aliases[s]
+    if "query_deny_bypass_non_aliased" in s:
+        return "query_deny_bypass_non_aliased"
+    if "query_deny_bypass_aliased" in s:
+        return "query_deny_bypass_aliased"
+    if "query_deny_bypass" in s:
+        return "query_deny_bypass"
+    return s
+
+
+def graphql_request_headers() -> dict:
+    """JSON POST headers for the target GraphQL API, including optional auth from ``Config``."""
+    h = {"Content-Type": "application/json"}
+    custom = getattr(Config, "CUSTOM_HEADERS", None) or {}
+    if isinstance(custom, dict):
+        h.update(custom)
+    auth = getattr(Config, "AUTHORIZATION", None)
+    if auth:
+        s = str(auth).strip()
+        low = s.lower()
+        if low.startswith("bearer ") or low.startswith("basic "):
+            h["Authorization"] = s
+        else:
+            h["Authorization"] = f"Bearer {s}"
+    return h
+
 
 def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
-    HEADERS = {"Content-Type": "application/json"}
-    DEFAULT_FALLBACK_QUERY = """
-    query {
-      episodesByIds(ids: [1]) {
-        id
-        name
-      }
-    }
-    """
-
     if not os.path.exists(jsonfile_path) or os.path.getsize(jsonfile_path) == 0:
         print(f"❌ File not found or empty: {jsonfile_path}")
         return False, 0, False, []
+
+    req_headers = graphql_request_headers()
 
     try:
         with open(jsonfile_path, "r") as f:
@@ -74,6 +110,8 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
                 updated_payloads.append(payload)
                 continue
 
+            vulnerability_type = normalize_vulnerability_type(vulnerability_type, default="unknown")
+
             if not query_text:
                 print(f"⚠️ Skipping payload {i}: Empty query text.")
                 updated_payloads.append(payload)
@@ -88,7 +126,10 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
                 # Look for both queries in the payloads
                 for p in payloads:
                     if isinstance(p.get("query"), dict):
-                        p_vuln_type = p["query"].get("vulnerability_type", "unknown")
+                        p_vuln_type = normalize_vulnerability_type(
+                            p["query"].get("vulnerability_type", "unknown"),
+                            default="unknown",
+                        )
                         if p_vuln_type == "query_deny_bypass_non_aliased":
                             non_aliased_query = p["query"].get("query")
                         elif p_vuln_type == "query_deny_bypass_aliased":
@@ -105,7 +146,7 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
                 # Send non-aliased query
                 request_payload = {"query": non_aliased_query}
                 start_time = time.time()
-                non_aliased_response = requests.post(GRAPHQL_URL, headers=HEADERS, json=request_payload, timeout=10)
+                non_aliased_response = requests.post(GRAPHQL_URL, headers=req_headers, json=request_payload, timeout=10)
                 non_aliased_time = time.time() - start_time
                 
                 responses["non_aliased"] = {
@@ -122,7 +163,7 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
                 # Send aliased query
                 request_payload = {"query": aliased_query}
                 start_time = time.time()
-                aliased_response = requests.post(GRAPHQL_URL, headers=HEADERS, json=request_payload, timeout=10)
+                aliased_response = requests.post(GRAPHQL_URL, headers=req_headers, json=request_payload, timeout=10)
                 aliased_time = time.time() - start_time
                 
                 responses["aliased"] = {
@@ -154,7 +195,7 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
 
                 # Send request
                 start_time = time.time()
-                response = requests.post(GRAPHQL_URL, headers=HEADERS, json=request_payload, timeout=10)
+                response = requests.post(GRAPHQL_URL, headers=req_headers, json=request_payload, timeout=10)
                 request_time = time.time() - start_time
 
                 payload.update({
@@ -180,8 +221,6 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
 
             # Check for negative_success: valid GraphQL but server error
             is_negative_success = is_negative_success_response(payload)
-            payload["negative_success"] = is_negative_success
-
             if success:
                 print(f"✅ Valid 200 response with data for payload {i}")
                 https200 = True
@@ -199,36 +238,8 @@ def send_payload(GRAPHQL_URL, jsonfile_path, output_jsonfile_path=None):
                 "count": i
             })
 
-        # 🔁 Retry if response body is empty
-        is_empty = (
-            payload.get("response_body") in [None, {}, []]
-        )
-        if is_empty:
-            print(f"⚠️ Empty response for payload {i}, retrying with fallback query.")
-            retry_payload = {"query": DEFAULT_FALLBACK_QUERY}
-            try:
-                retry_start = time.time()
-                retry_response = requests.post(GRAPHQL_URL, headers=HEADERS, json=retry_payload, timeout=10)
-                retry_time = time.time() - retry_start
-                payload.update({
-                    "retry_query": DEFAULT_FALLBACK_QUERY,
-                    "retry_status": retry_response.status_code,
-                    "retry_time_seconds": round(retry_time, 3)
-                })
-                try:
-                    payload["retry_response_body"] = retry_response.json()
-                except ValueError:
-                    payload["retry_response_body"] = {
-                        "error": "Invalid JSON",
-                        "raw": retry_response.text
-                    }
-            except requests.exceptions.RequestException as e:
-                payload.update({
-                    "retry_query": DEFAULT_FALLBACK_QUERY,
-                    "retry_status": None,
-                    "retry_time_seconds": 0,
-                    "retry_response_body": {"error": str(e)}
-                })
+        if payload.get("response_body") in (None, {}, []):
+            print(f"⚠️ Empty response body for payload {i} (no fallback retry).")
 
         # ✅ Append exactly once
         updated_payloads.append(payload)

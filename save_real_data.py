@@ -1,11 +1,7 @@
 import os
 import json
-from config import Config
-# PATHS
-# RAW_DATA_BASE = "prediql-output"
-RAW_DATA_BASE = Config.OUTPUT_DIR
-QUERY_INFO_PATH = "generated_query_info.json"
-REAL_DATA_OUTPUT_PATH = "real_data.json"
+from config import Config, run_node_dir
+# Paths resolved at call time via ``Config`` (see ``configure_run_artifacts`` / ``PREDIQL_OUTPUT_DIR``).
 
 # Load QUERY_INFO
 # with open(QUERY_INFO_PATH) as f:
@@ -30,31 +26,39 @@ def flatten_record_to_text(record):
 
 def flatten_real_data():
     # Load QUERY_INFO dynamically to ensure it's fresh
+    query_path = Config.GENERATED_QUERY_INFO_JSON
+    raw_base = Config.OUTPUT_DIR
+    out_path = Config.REAL_DATA_JSON
     try:
-        with open(QUERY_INFO_PATH) as f:
+        with open(query_path, encoding="utf-8") as f:
             query_info = json.load(f)
     except FileNotFoundError:
-        print(f"❌ File not found: {QUERY_INFO_PATH}")
+        print(f"❌ File not found: {query_path}")
         return 0
     except json.JSONDecodeError:
-        print(f"❌ Invalid JSON format in: {QUERY_INFO_PATH}")
+        print(f"❌ Invalid JSON format in: {query_path}")
         return 0
 
     all_records = []
 
     for node_name in query_info.keys():
         print(node_name)
-        # Determine which folder to look in
-        folder_path = os.path.join(RAW_DATA_BASE, node_name)
+        # Per-node payloads live under OUTPUT_DIR/nodes/<node>/ (legacy: OUTPUT_DIR/<node>/).
+        folder_path = run_node_dir(node_name)
         if not os.path.isdir(folder_path):
-            print(f"⚠️ Skipping {node_name}: folder not found")
-            continue
-
-        # Load all JSON files in the folder
-        for filename in os.listdir(folder_path):
-            if not filename.endswith(".json"):
+            legacy = os.path.join(os.path.abspath(raw_base), node_name)
+            if os.path.isdir(legacy):
+                folder_path = legacy
+            else:
+                print(f"⚠️ Skipping {node_name}: folder not found")
                 continue
 
+        if os.path.isfile(os.path.join(folder_path, "llama_queries.json")):
+            json_names = ["llama_queries.json"]
+        else:
+            json_names = [f for f in os.listdir(folder_path) if f.endswith(".json")]
+
+        for filename in json_names:
             file_path = os.path.join(folder_path, filename)
             try:
                 with open(file_path) as f:
@@ -152,7 +156,8 @@ def flatten_real_data():
     
 
     # ✅ Save to real_data.json
-    with open(REAL_DATA_OUTPUT_PATH, "w") as f:
+    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
         json.dump(all_records, f, indent=2)
-    print(f"✅ Saved {len(all_records)} records to {REAL_DATA_OUTPUT_PATH}")
+    print(f"✅ Saved {len(all_records)} records to {out_path}")
     return len(all_records)

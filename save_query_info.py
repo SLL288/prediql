@@ -1,5 +1,8 @@
+import os
 import yaml
 import json
+
+from config import Config
 
 def unwrap_type(type_str):
     """Remove GraphQL wrappers to get base type name."""
@@ -61,13 +64,14 @@ def save_query_info():
     - node_type
     - relevant_schema
     """
-    with open("load_introspection/query_parameter_list.yml") as f:
+    li = Config.RUN_LOAD_INTROSPECTION_DIR
+    with open(os.path.join(li, "query_parameter_list.yml"), encoding="utf-8") as f:
         query_params = yaml.safe_load(f) or {}
 
-    with open("load_introspection/mutation_parameter_list.yml") as f:
+    with open(os.path.join(li, "mutation_parameter_list.yml"), encoding="utf-8") as f:
         mutation_params = yaml.safe_load(f) or {}
 
-    with open("load_introspection/object_list.yml") as f:
+    with open(os.path.join(li, "object_list.yml"), encoding="utf-8") as f:
         objects = yaml.safe_load(f) or {}
 
     all_query_info = {}
@@ -107,9 +111,9 @@ def save_query_info():
         }
 
     # Save all collected info to a single JSON file
-    with open("generated_query_info.json", "w") as f:
+    out_path = Config.GENERATED_QUERY_INFO_JSON
+    os.makedirs(os.path.dirname(out_path) or ".", exist_ok=True)
+    with open(out_path, "w", encoding="utf-8") as f:
         json.dump(all_query_info, f, indent=2)
 
-    print(f"✅ Saved enriched query info for {len(all_query_info)} nodes to generated_query_info.json")
-
-save_query_info()
+    print(f"✅ Saved enriched query info for {len(all_query_info)} nodes to {out_path}")

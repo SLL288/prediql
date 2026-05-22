@@ -1,19 +1,23 @@
-from config import Config
+from config import Config, run_node_dir
 import json
 import os
 from typing import Union, Optional, Set 
 
 
 # ---- Coverage tracking (minimal) ----
+# Path must be resolved at use time: Config.OUTPUT_DIR is set after import (configure_run_artifacts).
 
 
-COVERAGE_STATE_PATH = os.path.join(Config.OUTPUT_DIR, "coverage_state.json")
+def _coverage_state_path() -> str:
+    return os.path.join(Config.OUTPUT_DIR, "coverage_state.json")
+
 
 def _load_coverage_state():
     """Load { node: [path, ...], ... } from disk into { node: set(paths) }."""
+    path = _coverage_state_path()
     try:
-        if os.path.exists(COVERAGE_STATE_PATH) and os.path.getsize(COVERAGE_STATE_PATH) > 0:
-            with open(COVERAGE_STATE_PATH, "r", encoding="utf-8") as f:
+        if os.path.exists(path) and os.path.getsize(path) > 0:
+            with open(path, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 return {k: set(v) for k, v in data.items()}
     except Exception as e:
@@ -25,7 +29,7 @@ def _save_coverage_state(state):
     try:
         os.makedirs(Config.OUTPUT_DIR, exist_ok=True)
         serializable = {k: sorted(list(v)) for k, v in state.items()}
-        with open(COVERAGE_STATE_PATH, "w", encoding="utf-8") as f:
+        with open(_coverage_state_path(), "w", encoding="utf-8") as f:
             json.dump(serializable, f, indent=2)
     except Exception as e:
         print(f"⚠️ coverage save error: {e}")
@@ -44,10 +48,18 @@ def _extract_last_payload_text(jsonfile_path: str) -> Optional[str]:
             return None
         last = arr[-1]
         if isinstance(last, dict):
-            if "query" in last and isinstance(last["query"], str):
-                return last["query"]
-            if "mutation" in last and isinstance(last["mutation"], str):
-                return last["mutation"]
+            if "query" in last:
+                q = last["query"]
+                if isinstance(q, str):
+                    return q
+                if isinstance(q, dict) and isinstance(q.get("query"), str):
+                    return q["query"]
+            if "mutation" in last:
+                m = last["mutation"]
+                if isinstance(m, str):
+                    return m
+                if isinstance(m, dict) and isinstance(m.get("query"), str):
+                    return m["query"]
     except Exception as e:
         print(f"⚠️ read payload error: {e}")
     return None
@@ -116,15 +128,16 @@ def _graphql_field_paths(doc: str) -> Set[str]:
     return paths
 
 def compute_delta_coverage(node: str) -> int:
-    jsonfile_path = COVERAGE_STATE_PATH
     """
     Returns 1 if the last payload adds at least one NEW field path for this node; else 0.
-    Updates persistent coverage state at pred iql-output/coverage_state.json
+    Reads the latest GraphQL text from ``OUTPUT_DIR/nodes/{node}/llama_queries.json`` and
+    updates persistent coverage state at ``coverage_state.json`` under OUTPUT_DIR.
     """
     state = _load_coverage_state()
     node_set = state.get(node, set())
 
-    gql_text = _extract_last_payload_text(jsonfile_path)
+    llama_path = os.path.join(run_node_dir(node), "llama_queries.json")
+    gql_text = _extract_last_payload_text(llama_path)
     if not gql_text:
         return 0
 

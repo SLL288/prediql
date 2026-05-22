@@ -1,6 +1,6 @@
-from initial_llama3 import ensure_ollama_running
+from ollama_runtime import ensure_ollama_running
 
-from target_endpoints import getnodefromcompiledfile
+from compiled_nodes_reader import getnodefromcompiledfile
 from load_introspection.load_snippet import get_node_info_generated, get_node_info
 
 
@@ -12,10 +12,10 @@ from embed_retrieve.embed_and_index import embed_real_data
 from save_query_info import save_query_info
 from save_real_data import flatten_real_data
 
-from config import Config
-from llama_initiator import  get_llm_model
+from config import Config, run_node_dir
+from llm_http_client import get_llm_model
 
-# from retrieve_and_prompt import prompt_llm_with_context
+# from llm_graphql_prompts import prompt_llm_with_context
 import re
 
 import random
@@ -187,7 +187,7 @@ log_to_table(stats_table, Config.OUTPUT_DIR + "/stats_table_allrounds_test.txt")
 # # Example usage:
 def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source, MAX_REQUESTS, node_type, sample_n=5):
     previous_response_pairs = extract_request_response_pairs(
-        os.path.join(os.getcwd(), Config.OUTPUT_DIR, endpoint, "llama_queries.json")
+        os.path.join(run_node_dir(endpoint), "llama_queries.json")
     )
 
     prompt = f"""
@@ -231,11 +231,10 @@ def prompt_llm_with_context(top_matches, endpoint, schema, input, output, source
     """
 
 
-    approx_tokens = len(prompt) / 4
-    print(f"Approximate token count: {approx_tokens:.0f}")
-
-
-    llama_res = get_llm_model(prompt)
+    llm_res = get_llm_model(prompt, node_label="dev_manual_node_test")
+    llama_res = llm_res.text
+    approx_tokens = float(llm_res.prompt_tokens + llm_res.completion_tokens)
+    print(f"Token count (prompt / completion): {llm_res.prompt_tokens} / {llm_res.completion_tokens}")
     query_json = {"query": []}
     flag = "```graphql"
     parse_time = 0
@@ -264,12 +263,8 @@ def save_json_to_file(generated_payload, node):
     print(payload_list)
     for i in payload_list:
         print(i)
-    base_path = os.getcwd()
-    filedir = os.path.join(base_path)
-    
-    if not os.path.exists(filedir):
-        os.makedirs(filedir)
-    
+    filedir = run_node_dir(node)
+    os.makedirs(filedir, exist_ok=True)
     filepath = os.path.join(filedir, "llama_queries.json")
     
     # Step 1: Load existing data if the file exists and is non-empty
@@ -299,6 +294,6 @@ def save_json_to_file(generated_payload, node):
 
 # save_json_to_file(res, node)
 
-# from sendpayload import send_payload
+# from graphql_send_payload import send_payload
 
 # send_payload("https://graphqlzero.almansi.me/api", os.path.join(os.getcwd(), "llama_queries.json"))

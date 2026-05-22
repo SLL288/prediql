@@ -112,8 +112,9 @@ def getnodefromcompiledfile():
 
 
     # Re-define file paths
-    queries_path = "load_introspection/query_parameter_list.yml"
-    mutations_path = "load_introspection/mutation_parameter_list.yml"
+    li = Config.RUN_LOAD_INTROSPECTION_DIR
+    queries_path = os.path.join(li, "query_parameter_list.yml")
+    mutations_path = os.path.join(li, "mutation_parameter_list.yml")
 
     # queries_path = Config.QUERY_FILE
     # mutations_path = Config.MUTATION_FILE
@@ -263,30 +264,37 @@ def evaluate_prediql_results(filepath, endpoint_file):
 def check_prediql_json(base_path):
     results = []
 
-    for folder_name in os.listdir(base_path):
-        folder_path = os.path.join(base_path, folder_name)
-        if not os.path.isdir(folder_path):
-            continue
+    nodes_root = os.path.join(base_path, "nodes")
+    if os.path.isdir(nodes_root):
+        scan_roots = [nodes_root]
+    else:
+        scan_roots = [base_path]
 
-        json_path = os.path.join(folder_path, "llama_queries.json")
-        if not os.path.isfile(json_path):
-            continue
-
-        with open(json_path, "r", encoding="utf-8") as f:
-            try:
-                data = json.load(f)
-            except json.JSONDecodeError:
-                print(f"❌ Failed to parse JSON in: {json_path}")
+    for scan in scan_roots:
+        for folder_name in os.listdir(scan):
+            folder_path = os.path.join(scan, folder_name)
+            if not os.path.isdir(folder_path):
                 continue
 
-        successful = [entry for entry in data if entry.get("success") is True]
-        max_count = max((entry.get("count", 0) for entry in data), default=0)
+            json_path = os.path.join(folder_path, "llama_queries.json")
+            if not os.path.isfile(json_path):
+                continue
 
-        results.append({
-            "folder": folder_name,
-            "has_success": bool(successful),
-            "max_count": max_count
-        })
+            with open(json_path, "r", encoding="utf-8") as f:
+                try:
+                    data = json.load(f)
+                except json.JSONDecodeError:
+                    print(f"❌ Failed to parse JSON in: {json_path}")
+                    continue
+
+            successful = [entry for entry in data if entry.get("success") is True]
+            max_count = max((entry.get("count", 0) for entry in data), default=0)
+
+            results.append({
+                "folder": folder_name,
+                "has_success": bool(successful),
+                "max_count": max_count
+            })
 
     return results
 

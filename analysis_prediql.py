@@ -3,20 +3,12 @@ import json
 import yaml
 import re
 from config import Config
-# CONFIG
-# DATA_DIR = "prediql-output/"  # current folder with all node folders
+
+# Populated in ``if __name__ == "__main__"`` (subprocess gets ``PREDIQL_OUTPUT_DIR`` from main).
 DATA_DIR = Config.OUTPUT_DIR
-OUTPUT_REPORT = os.path.join(DATA_DIR,"coverage_report.txt")
-
-# QUERY_YAML = "load_introspection/query_parameter_list_graphqler.yml"
-QUERY_YAML = "generated_query_info.json"
-OBJECT_YAML = "load_introspection/object_list.yml"
-
-# Load schema files
-with open(QUERY_YAML, encoding="utf-8") as f:
-    query_params = yaml.safe_load(f)
-with open(OBJECT_YAML, encoding="utf-8") as f:
-    object_list = yaml.safe_load(f)
+OUTPUT_REPORT = os.path.join(DATA_DIR, "coverage_report.txt")
+query_params = {}
+object_list = {}
 
 # Helper to flatten GraphQL Type
 def flatten_type(t):
@@ -181,6 +173,15 @@ def analyze_node(node_folder, out_lines, covered_nodes):
     return len(total_fields), len(total_edges), len(all_fields_success), len(all_edges_success)
 
 if __name__ == "__main__":
+    DATA_DIR = Config.OUTPUT_DIR
+    OUTPUT_REPORT = os.path.join(DATA_DIR, "coverage_report.txt")
+    _qi = Config.GENERATED_QUERY_INFO_JSON
+    _ob = os.path.join(Config.RUN_LOAD_INTROSPECTION_DIR, "object_list.yml")
+    with open(_qi, encoding="utf-8") as f:
+        query_params = json.load(f) or {}
+    with open(_ob, encoding="utf-8") as f:
+        object_list = yaml.safe_load(f) or {}
+
     all_summaries = []
     covered_nodes = set()
     total_nodes_attempted = 0
@@ -191,9 +192,17 @@ if __name__ == "__main__":
     total_all_possible_edges = 0
     total_all_success_edges = 0
 
-    # Go through all subfolders in DATA_DIR
-    for entry in os.listdir(DATA_DIR):
-        node_folder = os.path.join(DATA_DIR, entry)
+    nodes_root = os.path.join(DATA_DIR, "nodes")
+    if os.path.isdir(nodes_root):
+        node_folder_candidates = [
+            os.path.join(nodes_root, e) for e in os.listdir(nodes_root)
+        ]
+    else:
+        node_folder_candidates = [
+            os.path.join(DATA_DIR, entry) for entry in os.listdir(DATA_DIR)
+        ]
+
+    for node_folder in node_folder_candidates:
         if os.path.isdir(node_folder):
             llama_file = os.path.join(node_folder, "llama_queries.json")
             if os.path.isfile(llama_file):

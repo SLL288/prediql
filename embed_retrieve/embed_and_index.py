@@ -4,15 +4,17 @@ import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+from config import Config
+
 
 def embed_real_data():
-    REAL_DATA_PATH = "real_data.json"
-    INDEX_DIR = "embed_retrieve/faiss_index"
+    REAL_DATA_PATH = Config.REAL_DATA_JSON
+    INDEX_DIR = Config.EMBED_INDEX_DIR
 
     os.makedirs(INDEX_DIR, exist_ok=True)
 
     # 1️⃣ Load data
-    with open(REAL_DATA_PATH) as f:
+    with open(REAL_DATA_PATH, encoding="utf-8") as f:
         records = json.load(f)
 
     texts = [r["text"] for r in records]

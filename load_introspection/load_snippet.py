@@ -1,6 +1,9 @@
+import os
 import yaml
 
 import json
+
+from config import Config
 
 
 def unwrap_type(type_str):
@@ -49,7 +52,7 @@ def get_final_node_type_from_objects(output, relevant_objects):
 
 
 def get_node_info_generated(node_name):
-    with open("generated_query_info.json") as f:
+    with open(Config.GENERATED_QUERY_INFO_JSON, encoding="utf-8") as f:
         query_params = json.load(f) or {}
 
     if node_name in query_params:
@@ -64,13 +67,14 @@ def get_node_info(node_name):
     and return its inputs, output type, and all relevant objects.
     """
     # Load all parameter lists
-    with open("load_introspection/query_parameter_list.yml") as f:
+    li = Config.RUN_LOAD_INTROSPECTION_DIR
+    with open(os.path.join(li, "query_parameter_list.yml"), encoding="utf-8") as f:
         query_params = yaml.safe_load(f) or {}
 
-    with open("load_introspection/mutation_parameter_list.yml") as f:
+    with open(os.path.join(li, "mutation_parameter_list.yml"), encoding="utf-8") as f:
         mutation_params = yaml.safe_load(f) or {}
 
-    with open("load_introspection/object_list.yml") as f:
+    with open(os.path.join(li, "object_list.yml"), encoding="utf-8") as f:
         objects = yaml.safe_load(f) or {}
 
     # Determine source (query or mutation)
