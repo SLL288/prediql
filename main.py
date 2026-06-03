@@ -353,6 +353,19 @@ def main():
         metavar="N",
         help="RNG seed for Thompson arm sampling (default 42).",
     )
+    parser.add_argument(
+        "--mode",
+        choices=["prediql", "prediql-base", "prediql-aqg", "prediql-scl"],
+        default="prediql",
+        metavar="MODE",
+        help=(
+            "Ablation mode: "
+            "prediql (full pipeline, default); "
+            "prediql-base (minimal schema + format, no MAB/RAG/SCL); "
+            "prediql-aqg (MAB + RAG, no self-correction); "
+            "prediql-scl (self-correction loop, no MAB/RAG)."
+        ),
+    )
 
     args = parser.parse_args()
 
@@ -369,9 +382,10 @@ def main():
         Config.LLM_API_KEY = str(args.llm_api_key).strip()
     Config.LLM_TEMPERATURE = float(args.llm_temperature)
     Config.THOMPSON_SEED = int(args.thompson_seed)
+    Config.MODE = args.mode
     set_thompson_seed(Config.THOMPSON_SEED)
 
-    configure_run_artifacts(url, Config.PRIMARY_LLM_MODEL)
+    configure_run_artifacts(url, Config.PRIMARY_LLM_MODEL, Config.MODE)
 
     output_folder = Config.OUTPUT_DIR
     # Wipe previous run *before* introspection so we do not delete freshly written YAML/JSON.
@@ -761,8 +775,14 @@ def process_node(url, node, max_request, round_index=None):
     # Use "args" wording (not "input") to avoid priming models toward fictitious `input:` wrapper arguments.
     input_args = f"{node}, args: {input}"
     ARM_STATS = defaultdict(lambda: {"succ": 0, "tot": 0})
-    FAIL_STREAK = defaultdict(int)   
+    FAIL_STREAK = defaultdict(int)
     covered = False
+    mode = getattr(Config, "MODE", "prediql")
+    # Only the full prediql mode runs security testing (Stages 2 & 3); ablation modes are discovery-only.
+    discovery_only = mode != "prediql"
+    # MAB enabled only for prediql (full) and prediql-aqg; BASE and SCL use a fixed minimal arm.
+    use_mab = mode in ("prediql", "prediql-aqg")
+    _BASE_ARM = {"name": "base_fixed", "include_schema": True, "arg_mode": "known", "depth": 1, "top_k": 0}
     ARMS = [
     {"name":"schema_min_known",   "include_schema":True,  "arg_mode":"known",   "depth":1, "top_k":3},
     {"name":"schema_min_real",    "include_schema":True,  "arg_mode":"real",    "depth":1, "top_k":3},
@@ -808,12 +828,13 @@ def process_node(url, node, max_request, round_index=None):
     stage2_validation_pass = False
     validation_http_trips = 0
     stage3_vulnerability_rounds = 0
-    stats[node]["pipeline_mode"] = "sequential" if sequential else "combined"
-    pline = (
-        "sequential: discover → validate → fuzz"
-        if sequential
-        else "combined: coverage + vulns in one phase"
-    )
+    stats[node]["pipeline_mode"] = mode
+    if discovery_only:
+        pline = f"{mode} / discovery-only (no security testing)"
+    elif sequential:
+        pline = f"{mode} / sequential: discover → validate → fuzz"
+    else:
+        pline = f"{mode} / combined: coverage + vulns in one phase"
     print(f"\n▶ [{node}] {pline} | request budget={max_request}")
 
     prompt_round_seq = 0
@@ -824,10 +845,14 @@ def process_node(url, node, max_request, round_index=None):
         nonlocal known_query_text, termination_reason, termination_detail
         nonlocal prompt_round_seq
         prompt_round_seq += 1
-        arm = pick_arm_thompson(node, ARMS)
-        k = arm["top_k"]
-        if arm["include_schema"] and FAIL_STREAK[node] >= 2 and k < 5:
-            k = 5
+        if use_mab:
+            arm = pick_arm_thompson(node, ARMS)
+            k = arm["top_k"]
+            if arm["include_schema"] and FAIL_STREAK[node] >= 2 and k < 5:
+                k = 5
+        else:
+            arm = _BASE_ARM
+            k = arm["top_k"]
         top_matches = build_top_matches(k)
         print(
             f"  [{node}] LLM+send | stage={pipeline_stage} | arm={arm['name']} | "
@@ -861,6 +886,7 @@ def process_node(url, node, max_request, round_index=None):
             pipeline_stage=pipeline_stage,
             known_good_graphql=known_good_graphql,
             run_round_index=round_index,
+            ablation_mode=mode,
         )
         totaltoken += token
 
@@ -903,7 +929,7 @@ def process_node(url, node, max_request, round_index=None):
                 newly_success_n=0,
                 newly_graphql_errors_n=0,
             )
-            if update_bandit_after:
+            if update_bandit_after and use_mab:
                 update_bandit(node, arm["name"], 0.0)
                 FAIL_STREAK[node] += 1
             return False
@@ -974,13 +1000,15 @@ def process_node(url, node, max_request, round_index=None):
         )
         reward = 1.0 if (clean_graphql and delta_cov > 0) else 0.0
 
-        if update_bandit_after:
+        if update_bandit_after and use_mab:
             update_bandit(node, arm["name"], reward)
             if reward > 0:
                 FAIL_STREAK[node] = 0
                 covered = True
             else:
                 FAIL_STREAK[node] += 1
+        elif reward > 0:
+            covered = True
 
         if reward > 0 and pipeline_stage == "coverage":
             qt = extract_known_good_query_text(newly_processed_responses)
@@ -1025,76 +1053,94 @@ def process_node(url, node, max_request, round_index=None):
         )
 
         stage1_ready = bool(covered or basic_call_success or https200)
-        if stage1_ready:
-            if not known_query_text:
-                kg = load_known_good(node)
-                if kg and kg.get("query"):
-                    known_query_text = kg["query"].strip()
-            if known_query_text:
-                print(
-                    f"  [{node}] Stage 2 — repeatability ({len(known_query_text)} chars, 2 identical HTTP POSTs)"
-                )
-                stage2_validation_pass, vmsg = validate_repeatable_graphql(url, known_query_text, attempts=2)
-                validation_http_trips = 2
-                stats[node]["stage2_validation_pass"] = stage2_validation_pass
-                stats[node]["validation_http_trips"] = validation_http_trips
-                print(f"  [{node}] Stage 2 {'PASS' if stage2_validation_pass else 'FAIL'} — {vmsg}")
-                if not stage2_validation_pass and termination_reason is None:
-                    termination_reason = "stage2_validation_failed"
-                    termination_detail = vmsg
-            elif termination_reason is None:
-                termination_reason = "stage2_validation_skipped"
-                termination_detail = "Stage 1 succeeded, but no extractable known-good query text."
-                print(f"  [{node}] Stage 2 skipped — {termination_detail}")
-
-        if stage1_ready and stage2_validation_pass and known_query_text:
-            max_v = int(getattr(Config, "VULNERABILITY_PHASE_MAX_ROUNDS", 6))
-            target_vuln_rounds = 1
-            retry_errors = 0
-            last_stage3_error = None
-            print(
-                f"  [{node}] Stage 3 — vulnerability fuzz (anchored mutations), "
-                f"target={target_vuln_rounds} successful round, retry-on-error up to {max_v} time(s)"
-            )
-            while stage3_vulnerability_rounds < target_vuln_rounds and retry_errors < max_v:
-                try:
-                    run_prompt_arm_round("vulnerability", known_query_text, True, False)
-                except Exception as e:
-                    retry_errors += 1
-                    last_stage3_error = repr(e)
-                    print(
-                        f"⚠️ Runtime error in vulnerability loop for {node}: {e} "
-                        f"(retry {retry_errors}/{max_v})"
+        if discovery_only:
+            if termination_reason is None:
+                if stage1_ready:
+                    termination_reason = "success_discovery_only"
+                    termination_detail = f"Stage 1 coverage complete (discovery-only mode: {mode})."
+                elif requests >= max_request:
+                    termination_reason = "max_requests_exhausted"
+                    termination_detail = f"Reached per-node request budget (requests={requests}, max_request={max_request})."
+                else:
+                    termination_reason = "discovery_no_coverage"
+                    termination_detail = (
+                        f"covered={covered} https200={https200} requests={requests} max_request={max_request}"
                     )
-                    continue
-                stage3_vulnerability_rounds += 1
+            print(f"  [{node}] Discovery-only mode — skipping Stage 2 & Stage 3.")
+        else:
+            if stage1_ready:
+                if not known_query_text:
+                    kg = load_known_good(node)
+                    if kg and kg.get("query"):
+                        known_query_text = kg["query"].strip()
+                if known_query_text:
+                    print(
+                        f"  [{node}] Stage 2 — repeatability ({len(known_query_text)} chars, 2 identical HTTP POSTs)"
+                    )
+                    stage2_validation_pass, vmsg = validate_repeatable_graphql(url, known_query_text, attempts=2)
+                    validation_http_trips = 2
+                    stats[node]["stage2_validation_pass"] = stage2_validation_pass
+                    stats[node]["validation_http_trips"] = validation_http_trips
+                    print(f"  [{node}] Stage 2 {'PASS' if stage2_validation_pass else 'FAIL'} — {vmsg}")
+                    if not stage2_validation_pass and termination_reason is None:
+                        termination_reason = "stage2_validation_failed"
+                        termination_detail = vmsg
+                elif termination_reason is None:
+                    termination_reason = "stage2_validation_skipped"
+                    termination_detail = "Stage 1 succeeded, but no extractable known-good query text."
+                    print(f"  [{node}] Stage 2 skipped — {termination_detail}")
+
+            if stage1_ready and stage2_validation_pass and known_query_text:
+                max_v = int(getattr(Config, "VULNERABILITY_PHASE_MAX_ROUNDS", 6))
+                target_vuln_rounds = 1
+                retry_errors = 0
+                last_stage3_error = None
                 print(
-                    f"  [{node}] Stage 3 round {stage3_vulnerability_rounds}/{max_v} done | "
-                    f"payload_index={requests}"
+                    f"  [{node}] Stage 3 — vulnerability fuzz (anchored mutations), "
+                    f"target={target_vuln_rounds} successful round, retry-on-error up to {max_v} time(s)"
                 )
-            if stage3_vulnerability_rounds < target_vuln_rounds and termination_reason is None:
-                termination_reason = "runtime_error"
-                termination_detail = (
-                    f"Stage 3 failed after {retry_errors} retries: {last_stage3_error or 'unknown error'}"
-                )
-            stats[node]["stage3_vulnerability_rounds"] = stage3_vulnerability_rounds
-            print(f"  [{node}] Stage 3 finished after {stage3_vulnerability_rounds} round(s)")
+                while stage3_vulnerability_rounds < target_vuln_rounds and retry_errors < max_v:
+                    try:
+                        run_prompt_arm_round("vulnerability", known_query_text, True, False)
+                    except Exception as e:
+                        retry_errors += 1
+                        last_stage3_error = repr(e)
+                        print(
+                            f"⚠️ Runtime error in vulnerability loop for {node}: {e} "
+                            f"(retry {retry_errors}/{max_v})"
+                        )
+                        continue
+                    stage3_vulnerability_rounds += 1
+                    print(
+                        f"  [{node}] Stage 3 round {stage3_vulnerability_rounds}/{max_v} done | "
+                        f"payload_index={requests}"
+                    )
+                if stage3_vulnerability_rounds < target_vuln_rounds and termination_reason is None:
+                    termination_reason = "runtime_error"
+                    termination_detail = (
+                        f"Stage 3 failed after {retry_errors} retries: {last_stage3_error or 'unknown error'}"
+                    )
+                stats[node]["stage3_vulnerability_rounds"] = stage3_vulnerability_rounds
+                print(f"  [{node}] Stage 3 finished after {stage3_vulnerability_rounds} round(s)")
     else:
-        print(f"  [{node}] Combined phase — coverage + vuln prompts until coverage or clean exit")
+        if discovery_only:
+            print(f"  [{node}] Discovery-only phase — coverage only (no vulnerability scanning)")
+        else:
+            print(f"  [{node}] Combined phase — coverage + vuln prompts until coverage or clean exit")
         combined_attempt = 0
         while (not covered) and (requests < max_request) and (not https200):
             if combined_attempt >= max_request:
                 if termination_reason is None:
                     termination_reason = "combined_llm_attempts_exhausted"
                     termination_detail = (
-                        f"Combined-phase LLM attempt cap ({max_request}) reached "
+                        f"{'Discovery' if discovery_only else 'Combined'}-phase LLM attempt cap ({max_request}) reached "
                         f"(payload_index={requests})."
                     )
                 print(f"  [{node}] {termination_detail}")
                 break
             combined_attempt += 1
             try:
-                run_prompt_arm_round("combined", None, True, True)
+                run_prompt_arm_round("coverage", None, not discovery_only, True)
             except Exception as e:
                 termination_reason = "runtime_error"
                 termination_detail = repr(e)

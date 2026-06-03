@@ -173,6 +173,9 @@ class Config:
     # Max LLM→send cycles in Stage 3 (each cycle may append many labeled queries).
     VULNERABILITY_PHASE_MAX_ROUNDS = 6
 
+    """Ablation mode: prediql | prediql-base | prediql-aqg | prediql-scl."""
+    MODE = "prediql"
+
 
 def _slug_segment(s: str, max_len: int = 96) -> str:
     s = (s or "").strip().lower()
@@ -237,15 +240,16 @@ def _sync_derived_paths_from_output_dir() -> None:
     os.makedirs(run_nodes_root(), exist_ok=True)
 
 
-def configure_run_artifacts(graphql_url: str, primary_llm_model: str) -> None:
+def configure_run_artifacts(graphql_url: str, primary_llm_model: str, mode: str = "prediql") -> None:
     """
-    All run artifacts under ``output/<endpoint-slug>/<model-slug>/`` (introspection JSON, YAML copies, node folders, etc.).
+    All run artifacts under ``output/<mode>/<endpoint-slug>/<model-slug>/`` (introspection JSON, YAML copies, node folders, etc.).
     Sets ``PREDIQL_OUTPUT_DIR`` so subprocess scripts pick up the same layout.
     """
     out_root = os.path.join(BASE_PATH, "output")
+    mode_slug = _slug_segment(mode or "prediql", 40)
     u = slug_graphql_endpoint(graphql_url)
     m = slug_llm_model(primary_llm_model or "llama3")
-    run_dir = os.path.join(out_root, u, m)
+    run_dir = os.path.join(out_root, mode_slug, u, m)
     os.makedirs(run_dir, exist_ok=True)
     os.makedirs(os.path.join(run_dir, getattr(Config, "RUN_NODES_SUBDIR", "nodes")), exist_ok=True)
     Config.OUTPUT_DIR = run_dir

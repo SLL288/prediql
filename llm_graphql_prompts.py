@@ -335,6 +335,7 @@ def prompt_llm_with_context(
     pipeline_stage="combined",
     known_good_graphql=None,
     run_round_index=None,
+    ablation_mode="prediql",
 ):
     """
     pipeline_stage:
@@ -344,23 +345,30 @@ def prompt_llm_with_context(
     run_round_index:
       Multi-round index from ``main`` (saved under ``prompts/<endpoint>/.../round_<n>/``); ``None`` → ``round_1``.
     """
-    previous_response_pairs = extract_request_response_pairs(
-        os.path.join(run_node_dir(endpoint), "llama_queries.json")
-    )
-    formatted_previous_pairs = []
-    for query, error_msg in previous_response_pairs:
-        pair_obj = {
-            "query": query,
-            "error": error_msg if error_msg else None
-        }
-        formatted_previous_pairs.append(pair_obj)
-    
-    previous_pairs_text = json.dumps(formatted_previous_pairs, indent=2) if formatted_previous_pairs else "[]"
+    # Self-correction (previous failed pairs) is active only for prediql (full) and prediql-scl.
+    use_self_correction = (ablation_mode or "prediql") in ("prediql", "prediql-scl")
+    # RAG retrieval is active only for prediql (full) and prediql-aqg.
+    use_retrieval = (ablation_mode or "prediql") in ("prediql", "prediql-aqg")
+
+    if use_self_correction:
+        previous_response_pairs = extract_request_response_pairs(
+            os.path.join(run_node_dir(endpoint), "llama_queries.json")
+        )
+        formatted_previous_pairs = []
+        for query, error_msg in previous_response_pairs:
+            pair_obj = {
+                "query": query,
+                "error": error_msg if error_msg else None
+            }
+            formatted_previous_pairs.append(pair_obj)
+        previous_pairs_text = json.dumps(formatted_previous_pairs, indent=2) if formatted_previous_pairs else "[]"
+    else:
+        previous_pairs_text = "[]"
 
     stage = pipeline_stage if pipeline_stage in ("combined", "coverage", "vulnerability") else "combined"
-    # Always pass retrieval snippets into the prompt (including Stage 1), matching legacy retrieve_and_prompt context.
+    # RAG: pass retrieval snippets only when the mode supports it.
     top_for_prompt = ""
-    if arg_mode == "known":
+    if use_retrieval and arg_mode == "known":
         top_for_prompt = (top_matches or "") or ""
 
     if stage == "coverage":
