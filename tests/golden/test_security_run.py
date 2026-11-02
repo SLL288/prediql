@@ -1,7 +1,7 @@
 """End-to-end security run against a recorded vulnerable API (M2 exit criteria).
 
 Encodes docs/08 M2: DVGA-style injections confirmed with witnesses, and — the
-anti-'2,130 findings' invariant — zero confirmations on read-only operations.
+no-findings-on-read-only-APIs invariant — zero confirmations on read-only operations.
 Deterministic and offline via the replay target.
 """
 
@@ -143,7 +143,7 @@ async def test_confirms_the_real_injections_with_witnesses(tmp_path, vuln_target
 
 
 async def test_read_only_operations_manufacture_no_confirmation(tmp_path, vuln_target):
-    """The anti-'2,130 findings' invariant, end to end."""
+    """No findings on read-only operations, end to end."""
     config = _config()
     await execute(config, runs_root=tmp_path, target=vuln_target)
     findings = RunContext(config, runs_root=tmp_path).get("findings")

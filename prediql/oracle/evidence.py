@@ -10,7 +10,7 @@ returns one of three verdicts:
   error signature surfaced). Drives refinement; becomes a *potential* finding.
 * ``NOTHING`` — no evidence.
 
-This is the mechanism that answers "2,130 findings on a read-only Pokédex": with
+This is the mechanism that keeps a read-only API from producing findings: with
 no write, no differential, and no sentinel, the oracle returns ``NOTHING`` and
 the loop emits no finding.
 """

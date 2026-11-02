@@ -195,8 +195,8 @@ def _cmd_run(args: argparse.Namespace) -> int:
     config = _config_from_args(args)
     force = {args.force_step} if args.force_step else None
 
-    # --trials N runs replicates 1..N sequentially (repeated trials for variance,
-    # docs/09 §6). Sequential, not parallel: concurrent runs contend for the same
+    # --trials N runs replicates 1..N sequentially (repeated trials for variance).
+    # Sequential, not parallel: concurrent runs contend for the same
     # target and distort the latency baselines the oracles depend on.
     trials = getattr(args, "trials", None)
     if trials and trials > 1:

@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Statistics over repeated trials: mean, 95% CI, Mann-Whitney U, Vargha-Delaney Â12.
 
-Answers the reviewers' rigor ask (report variance and a non-parametric test with
-effect size, not best-of). Dependency-free. Groups runs by (API, tool) and, per
+Reports variance and a non-parametric test with effect size, not best-of. Dependency-free. Groups runs by (API, tool) and, per
 metric, compares PrediQL against each baseline across their trials.
 
 Most informative once the ablation/depth reruns give PrediQL >=5 trials; until

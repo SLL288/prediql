@@ -58,7 +58,7 @@ MODELS = [
     "openrouter:meta-llama/llama-3.1-8b-instruct",
     "openrouter:qwen/qwen3-32b",
 ]
-# Representative model for the ablation (the two reviewer configs).
+# Representative model for the ablation.
 ABLATION_MODEL = "openrouter:z-ai/glm-5.3-flash"
 # Each entry is the arm tuple for one ablation cell. Together with the full
 # config they form the 2x2x2 factorial over bandit x value reuse x

@@ -92,7 +92,7 @@ export function Progress({ p, running = false }: { p: ProgressData; running?: bo
   const consumedPct = p.consumed != null ? Math.round(p.consumed * 100) : null;
 
   // Budget readout: prefer the token cap, fall back to the USD cap, else show
-  // spend uncapped. "remaining" is what the reviewers asked to see.
+  // spend uncapped. "remaining" is the number worth watching.
   let budget: ReactNode;
   if (capTok != null) {
     budget = <Bar label="token budget" value={tokens} max={capTok}

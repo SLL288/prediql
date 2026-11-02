@@ -2,7 +2,7 @@
 
 v1 measured coverage from the *generated query text*: a field that was requested
 but came back ``null`` — or inside an errored response — still counted as
-covered. That is a construct-validity defect (reviewer 40C-1) and it inflates the
+covered. That is a construct-validity defect and it inflates the
 headline number.
 
 Here a field path counts only when the server actually **returned a non-null

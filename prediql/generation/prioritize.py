@@ -3,7 +3,7 @@
 On a big GraphQL API — PokeAPI has 459 operations over ~2,000 object types — most
 operations are near-duplicates of a handful of shapes, and covering them in
 schema order spends the budget on a long tail of variants before ever reaching a
-distinct one. v1 took ~80 hours on PokeAPI doing exactly that.
+distinct one.
 
 The fix is ordering, not sampling: rank operations so the first pass touches the
 widest variety of *shapes*, then let the budget decide when to stop. Diversity is

@@ -4,8 +4,7 @@
 Reads every run that has a score.json, groups by (model, app), and prints the
 confirmed-only confusion matrix + precision/recall/F1 and the false-positive rate
 on the labeled negatives. The confirmed+potential matrix is shown too, so the
-precision cost of trusting LLM potentials is explicit (the answer to v1's
-"2,130 findings").
+precision cost of trusting LLM potentials is explicit.
 """
 from __future__ import annotations
 

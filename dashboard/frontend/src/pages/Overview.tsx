@@ -75,7 +75,7 @@ function RunRow({ r, onChanged }: { r: RunSummary; onChanged: () => void }) {
 }
 
 // Group runs by API (ablation variants, models and trials of one API belong
-// together — how the reviewers' repeated-trials and ablation read). Within a
+// together — how repeated trials and the ablation read). Within a
 // group, order by the BASE->SCL->AQG->full ladder, then model.
 function group(runs: RunSummary[]): [string, RunSummary[]][] {
   const by = new Map<string, RunSummary[]>();

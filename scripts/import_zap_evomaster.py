@@ -14,7 +14,7 @@ Both tools save enough to recover response-grounded coverage offline:
 
 The schema (needed for the element/field-path denominators) is taken from the
 GraphQLer coverage artifact's ``introspection_result.json`` for the same API.
-Burp is not in the archive, so it keeps its v1 Table IV operation seed.
+Burp is not in the archive, so it is not imported here.
 
 Usage:
     python scripts/import_zap_evomaster.py \

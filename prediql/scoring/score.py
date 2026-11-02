@@ -6,8 +6,7 @@ and **coverage-conditioned recall** (so "never reached the operation" is
 separated from "reached it and missed the bug").
 
 Two confusion matrices are reported — confirmed-only, and confirmed+potential —
-so the precision cost of trusting potential findings is a number, which is the
-direct answer to v1's "2,130 findings on a read-only API".
+so the precision cost of trusting potential findings is a number.
 """
 
 from __future__ import annotations

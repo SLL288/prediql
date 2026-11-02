@@ -13,7 +13,7 @@ Origins:
 | `source_audit` | We derived it from the target's source *before* seeing any tool output. |
 | `post_hoc` | Added or changed *after* a tool's output was seen. It still needs upstream or source evidence. |
 
-## 2026-10-23 — freeze for the Web Conference 2027 submission
+## 2026-10-23 — freeze before the final runs
 
 ### DVGA (`templates/ground_truth/examples/dvga/dvga.yaml`)
 

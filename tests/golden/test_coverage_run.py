@@ -39,7 +39,7 @@ async def test_full_coverage_run(tmp_path, replay_target):
 
 
 async def test_errored_operation_is_not_counted_as_covered(tmp_path, replay_target):
-    """`brokenField` returns 200 with errors[] — the reviewer-40B-3 case."""
+    """`brokenField` returns 200 with errors[] — the 200-with-errors case."""
     from prediql.engine.context import RunContext
 
     config = _config()
@@ -280,7 +280,7 @@ async def test_every_generated_query_exchange_is_logged(tmp_path, replay_target)
 
 # --------------------------------------------------------------------------
 # Ablation toggles: isolate the bandit (+RandomArm) and value-reuse (+NoBucket),
-# answering ICSE-A/C "the ablation does not separate bandit from RAG".
+# so the bandit and value reuse are measured separately.
 # --------------------------------------------------------------------------
 
 

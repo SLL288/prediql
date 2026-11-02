@@ -1,7 +1,7 @@
-"""summary.md — the reviewer/paper artifact (doc 05 §4).
+"""summary.md — the paper artifact (doc 05 §4).
 
-The RESULTS.md-style per-run table, now backed by findings and a defined
-coverage denominator rather than raw counts.
+A per-run table, backed by findings and a defined coverage denominator
+rather than raw counts.
 """
 
 from __future__ import annotations

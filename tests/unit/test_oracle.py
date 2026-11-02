@@ -119,7 +119,7 @@ def test_evidence_a_class_does_not_accept_cannot_confirm_it():
 
 
 def test_read_only_success_manufactures_nothing():
-    """The anti-'2,130 findings' invariant, at the oracle level."""
+    """No findings on read-only operations, at the oracle level."""
     oracle = Oracle()
     for evidence in (Evidence.SENTINEL, Evidence.LATENCY, Evidence.DIFFERENTIAL):
         exp = Expectation("sql_injection", evidence, sentinel="never")

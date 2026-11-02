@@ -10,7 +10,6 @@ compare runs.
 Every confirmed finding is backed by a **deterministic evidence oracle** and a
 **reproducible witness**; no finding rests on an LLM's assertion.
 
-- **Implementation status:** [`IMPLEMENTATION.md`](IMPLEMENTATION.md)
 - **Dashboard:** [`dashboard/README.md`](dashboard/README.md)
 - **Experiment results (anonymized view-only):** [OSF](https://osf.io/3fk8r/overview?view_only=1c8025e3e9ea46deaa0df4585a335441)
   — every run reported in the paper (811 runs: coverage, ablation, detection, and baselines)
@@ -45,7 +44,6 @@ For LLM providers, put one key in `.env` (see [LLM providers](#llm-providers--mo
 ```
 PrediQL2/
 ├── README.md                  ← you are here
-├── IMPLEMENTATION.md          what is built, milestone by milestone
 ├── pyproject.toml             engine package + `predql` console script
 ├── .env                       LLM_API_KEY (gitignored — never committed)
 ├── .env.example               the variable name, committable
@@ -102,7 +100,7 @@ The run directory name is **`<alias>__t<trial>__<hash>`**:
 - **trial** — the replicate index (`--trial`, or `--trials N` for a batch), so
   running the same configuration three times gives three independent directories
   (`dvga__t1__…`, `dvga__t2__…`, `dvga__t3__…`) — the repeated trials the paper
-  reviewers asked for;
+  reports;
 - **hash** — a fingerprint of the target + strategy + providers, so a genuinely
   different experiment never collides, while different *modes* of the same trial
   reuse the same directory (coverage → then security continues the same run).

@@ -81,7 +81,7 @@ def is_success(result: HttpResult) -> bool:
 
     HTTP 200 **and** no ``errors[]`` **and** ``data`` carrying a real value.
     Explicitly not "status == 200": GraphQL returns 200 for schema and resolver
-    errors alike, which is the distinction reviewer 40B-3 asked about.
+    errors alike, which is the distinction that matters for GraphQL.
     """
     if result.status != 200 or result.error:
         return False

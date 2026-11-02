@@ -4,7 +4,7 @@
 Node/operation coverage hides depth. This reads the imported runs and, for each
 (tool, API), takes the best run (by element coverage) and buckets its covered
 field-paths by selection depth — depth 1 (root field), 2, and >=3 — so the
-deep-exploration claim (ICSE-A Q2) is backed by counts, not prose.
+deep-exploration claim is backed by counts, not prose.
 
 Depth of a covered path = number of dotted segments (continent=1,
 continent.code=2, countries.continent.code=3).

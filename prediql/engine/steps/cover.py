@@ -5,7 +5,7 @@ bandit picks a prompt/selection strategy, the generator proposes candidates, and
 the arm is rewarded **only** when a candidate produced a successful response that
 also increased response-grounded coverage.
 
-Termination is explicit (reviewer 40A-W6): an operation stops on success, on a
+Termination is explicit: an operation stops on success, on a
 coverage plateau, on its request budget, or on the run's token budget — and the
 reason is recorded per operation rather than left implicit in a loop condition.
 """

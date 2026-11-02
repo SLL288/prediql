@@ -187,7 +187,7 @@ export function Baselines() {
         <p className="text-xs text-faint">
           ZAP, EvoMaster and GraphQLer are computed from the GraphQLer Zenodo artifact's saved responses, in the same
           metric as PrediQL (best over each tool's runs). Burp is not in that archive, so it shows operation coverage
-          from PrediQL v1 Table IV only; EvoMaster has no PokeAPI run (it failed there), shown “—”.
+          from an earlier operation-level run only; EvoMaster has no PokeAPI run (it failed there), shown “—”.
         </p>
       )}
     </div>

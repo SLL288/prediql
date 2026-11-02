@@ -52,7 +52,7 @@ async def judge_finding(
     ``samples == 1`` is the single-shot verdict. ``samples > 1`` runs the judge K
     times in parallel and reports the *distribution*: a majority verdict, the
     median confidence, and an agreement band — so a run-to-run-variable LLM
-    opinion is measured rather than taken on one lucky draw (reviewer 40A-W5).
+    opinion is measured rather than taken on one lucky draw.
     The shown rationale is the **medoid** (the sample whose confidence is closest
     to the median), so the prose always matches a real, consistent sample.
 

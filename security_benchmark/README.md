@@ -1,7 +1,7 @@
 # GraphQL security benchmark (labeled, self-hosted)
 
 Ground-truth-labeled vulnerable GraphQL apps for the detection study (RQ3): the
-false-positive-aware precision/recall evaluation the reviewers asked for. The apps
+false-positive-aware precision/recall evaluation that the paper reports. The apps
 are the **GraphQLer `sample-graphql-apis`** (from the GraphQLer Zenodo artifact's
 `targets/`), each with a known, source-documented set of vulnerabilities.
 

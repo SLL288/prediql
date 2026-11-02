@@ -1,6 +1,6 @@
 """Cross-LLM overlap — the reliability aggregate (doc 05 §3a, doc 09 §3).
 
-Answers reviewer 40A-W3: does the detector measure the API or the model? It
+Asks: does the detector measure the API or the model? It
 computes the pairwise Jaccard overlap of *confirmed* findings across every model
 run for one target. Because it is an aggregate over the whole model sweep, it has
 a hard precondition — every selected model must have a finished run for the

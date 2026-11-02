@@ -1,7 +1,6 @@
 """Human-readable score summary (``score.md``).
 
-The reviewer/paper artifact: the same per-target table shape v1's RESULTS.md had,
-now backed by findings and a defined denominator rather than raw counts.
+The paper artifact: one table per target, backed by findings and a defined denominator rather than raw counts.
 """
 
 from __future__ import annotations

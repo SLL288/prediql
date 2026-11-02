@@ -219,8 +219,8 @@ class RandomSelector:
 
     Same ``select`` / ``update`` / ``stats`` surface as :class:`ThompsonBandit`,
     but ``select`` samples uniformly and ``update`` does not steer future choices.
-    Comparing it against the bandit isolates the bandit's contribution (ICSE
-    reviewers' "no random-arm control" point); the arm *space* is unchanged, so
+    Comparing it against the bandit isolates the bandit's contribution (a random-arm
+    control); the arm *space* is unchanged, so
     only the selection policy differs.
     """
 

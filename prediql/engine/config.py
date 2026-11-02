@@ -114,7 +114,7 @@ class RunConfig:
     trial: int = 1
     """Replicate index. Part of the run identity, so repeating a configuration
     with ``--trial 1,2,3`` yields three independent run directories — the
-    repeated-trials-with-variance the reviewers asked for — while modes still
+    repeated trials needed to report variance — while modes still
     compose within a single trial."""
 
     mode: str = "coverage"
