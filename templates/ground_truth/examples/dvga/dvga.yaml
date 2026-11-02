@@ -1,0 +1,126 @@
+# Ground-truth file for DVGA (Damn Vulnerable GraphQL Application).
+# Independent third-party oracle — the paper uses it to validate detection on an
+# app designed with no knowledge of this tool.
+#
+# PROVENANCE: every label carries `origin` and `source` (see CHANGELOG.md in
+# security_benchmark/truth/). Sources:
+#   - DVGA tests/test_vulnerabilities.py (the app's own vuln assertions),
+#   - the "DVGA Solutions" Postman collection shipped with the project, and
+#   - DVGA core/views.py, for labels verified in the resolver source.
+# `origin: post_hoc` marks a label added AFTER the first held-out run was seen.
+# Those are verified against DVGA's own tests or source, but `score` also
+# reports every metric without them (score.json -> without_post_hoc), and the
+# paper reports both. Classes DVGA documents but PrediQL does not model (log
+# injection, deny-list/authz bypass, stack-trace disclosure) are omitted from
+# scoring rather than counted against either tool.
+
+target:
+  name: DVGA
+  slug: dvga
+  url_hint: "*/graphql"
+  schema_fingerprint: "sha256:52a7b85e2526a6604c47bec81a53996b01509d6aa8ee7dbc41d9333d9bb5b65c"
+  source: "Damn Vulnerable GraphQL Application - community-maintained vulnerable API"
+  certified: true                 # flip via `predql truth certify` (stamps content_hash)
+  content_hash: "sha256:ba7e0a7f63e783ebe1b1088641ea28a366aa7f995fd16f2ba669f171b15c968f"
+
+contracts:
+  # -- Injection --------------------------------------------------------------
+  - operation: pastes
+    kind: query
+    vulnerable: true
+    classes:
+      - id: sql_injection
+        severity: high
+        evidence_kind: sentinel
+        origin: upstream
+        source: "DVGA Solutions: SQL injection via the pastes filter argument"
+        witness_hint: "SQLite error signature or UNION-extracted value"
+      - id: query_depth_abuse           # alias of denial_of_service
+        severity: medium
+        evidence_kind: dos
+        origin: upstream
+        source: "DVGA Solutions: deep recursion query DoS on pastes.owner.paste"
+
+  - operation: createPaste
+    kind: mutation
+    vulnerable: true
+    classes:
+      - id: xss_stored
+        severity: high
+        evidence_kind: differential
+        origin: upstream
+        source: "DVGA Solutions: stored XSS via createPaste content"
+        witness_hint: "injected <script> marker returned when the paste is read back"
+        second_order:
+          observe_operation: pastes
+      - id: html_injection
+        severity: medium
+        evidence_kind: reflection
+        origin: upstream
+        source: "DVGA Solutions: HTML injection via createPaste content"
+
+  - operation: systemDiagnostics
+    kind: query
+    vulnerable: true
+    classes:
+      - id: os_command_injection          # DVGA test_vulnerabilities.py::test_os_injection_alt
+        severity: critical
+        evidence_kind: sentinel
+        origin: upstream
+        source: "DVGA tests/test_vulnerabilities.py::test_os_injection_alt"
+        witness_hint: "cmd arg executed; 'uid=' in the response"
+        preconditions: [username, password, cmd]   # multi-field gate a single-shot probe misses
+
+  # Debug endpoint: `ps {arg}` through os.popen, no sanitisation.
+  - operation: systemDebug
+    kind: query
+    vulnerable: true
+    classes:
+      - id: os_command_injection
+        severity: critical
+        evidence_kind: sentinel
+        origin: post_hoc
+        source: "DVGA core/views.py resolve_system_debug: helpers.run_cmd('ps {}'.format(arg)) -> os.popen"
+        witness_hint: "arg appended to a shell command; computed sentinel in the result"
+
+  - operation: importPaste
+    kind: mutation
+    vulnerable: true
+    classes:
+      - id: ssrf
+        severity: high
+        evidence_kind: callback
+        origin: upstream
+        source: "DVGA Solutions: SSRF via importPaste host/path"
+        witness_hint: "out-of-band request to an attacker-controlled host"
+      - id: os_command_injection
+        severity: critical
+        evidence_kind: sentinel
+        origin: post_hoc
+        source: "DVGA tests/test_vulnerabilities.py::test_os_injection; core/views.py: run_cmd(f'curl --insecure {url}')"
+        witness_hint: "importPaste shells out the fetch; 'uid=' / computed sentinel in result"
+
+  # -- Information disclosure (schema-level) ---------------------------------
+  - operation: __schema
+    kind: query
+    vulnerable: true
+    classes:
+      - id: introspection
+        severity: low
+        evidence_kind: differential
+        origin: upstream
+        source: "DVGA Solutions: introspection enabled"
+        witness_hint: "full introspection returned when it should be disabled"
+      # Schema-level, so keyed on __schema where the engine reports it.
+      - id: field_suggestion
+        severity: low
+        evidence_kind: differential
+        origin: post_hoc
+        source: "DVGA tests/test_vulnerabilities.py::test_field_suggestions"
+        witness_hint: "server offers 'Did you mean' on a near-miss field name"
+
+  # -- NEGATIVE ground truth (asserted NOT vulnerable) -----------------------
+  - operation: systemHealth
+    kind: query
+    vulnerable: false
+    source: "manual triage - health endpoint, no ground-truth vulnerability"

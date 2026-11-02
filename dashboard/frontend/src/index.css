@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Colour tokens as RGB channel triplets so Tailwind can apply opacity
+ * modifiers (`bg-fail/10`). Every token is defined for BOTH themes: the
+ * previous palette only had dark values, so in light mode near-white text sat
+ * on a near-white page and was invisible.
+ */
+:root {
+  color-scheme: light dark;
+
+  --ink: 246 247 249;        /* page ground */
+  --surface: 255 255 255;    /* cards */
+  --elevated: 241 243 247;   /* insets, code blocks */
+  --hairline: 221 226 234;
+  --hairline-strong: 200 208 220;
+
+  --txt: 26 34 48;           /* primary text */
+  --dim: 74 88 107;          /* secondary */
+  --faint: 122 133 150;      /* labels, meta */
+
+  --accent: 15 156 143;
+  --crit: 192 57 43;
+  --high: 191 105 20;
+  --med: 150 118 12;
+  --low: 36 113 163;
+  --pass: 30 138 90;
+  --fail: 192 57 43;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ink: 14 19 27;
+    --surface: 20 27 37;
+    --elevated: 27 36 49;
+    --hairline: 40 50 63;
+    --hairline-strong: 55 69 86;
+
+    --txt: 221 229 239;
+    --dim: 154 168 188;
+    --faint: 106 119 137;
+
+    --accent: 58 208 194;
+    --crit: 255 107 107;
+    --high: 255 159 69;
+    --med: 242 201 76;
+    --low: 122 162 247;
+    --pass: 74 222 128;
+    --fail: 255 107 107;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: rgb(var(--ink));
+  color: rgb(var(--txt));
+  font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  /* Surfaces */
+  .panel {
+    @apply rounded-xl border border-hairline bg-surface;
+  }
+  .card-hover {
+    @apply transition-colors duration-150 hover:border-hairline-strong hover:bg-elevated;
+  }
+
+  /* Typography */
+  .eyebrow {
+    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-faint;
+  }
+
+  /* Focus ring — one definition, applied to every interactive element. */
+  .focusable:focus-visible {
+    @apply outline-none ring-2 ring-accent/60 ring-offset-2 ring-offset-ink;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply focusable inline-flex items-center justify-center gap-1.5 rounded-lg border
+           border-hairline bg-surface px-3 py-1.5 text-sm font-medium text-dim
+           transition-colors hover:border-hairline-strong hover:text-txt
+           disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-primary {
+    @apply focusable inline-flex items-center justify-center gap-1.5 rounded-lg
+           bg-accent px-3 py-2 text-sm font-semibold text-ink transition-opacity
+           hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+  .btn-danger {
+    @apply focusable inline-flex items-center justify-center gap-1.5 rounded-lg border
+           border-fail/40 bg-transparent px-3 py-1.5 text-sm font-medium text-fail
+           transition-colors hover:bg-fail/10 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  /* Form controls */
+  .field {
+    @apply focusable w-full rounded-lg border border-hairline bg-surface px-2.5 py-1.5
+           text-sm text-txt placeholder:text-faint
+           transition-colors hover:border-hairline-strong;
+  }
+  .select {
+    @apply field appearance-none bg-no-repeat pr-8;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M2.5 4.5L6 8l3.5-3.5z'/%3E%3C/svg%3E");
+    background-position: right 0.6rem center;
+  }
+  .label {
+    @apply mb-1 block font-mono text-[11px] uppercase tracking-[0.12em] text-faint;
+  }
+
+  /* Chips */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-md border border-hairline
+           bg-elevated px-2 py-0.5 font-mono text-[11px] text-dim;
+  }
+  .chip-accent {
+    @apply border-accent/50 text-accent;
+  }
+
+  /* Code / preformatted */
+  .code {
+    @apply rounded-md bg-elevated px-1.5 py-0.5 font-mono text-[12px] text-dim;
+  }
+  .pre {
+    @apply overflow-x-auto rounded-lg border border-hairline bg-elevated p-3
+           font-mono text-[12px] leading-relaxed text-dim;
+  }
+}

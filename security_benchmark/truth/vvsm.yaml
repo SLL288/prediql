@@ -1,0 +1,24 @@
+# Ground truth: very-vulnerable-social-media-api (GraphQLer sample app). Port 8001.
+# UAF (use-after-delete): getPost serves soft-deleted posts. Single identity:
+#   --identity "alice:user=Authorization: Bearer alice_social_token"
+target:
+  name: very-vulnerable-social-media-api
+  slug: vvsm
+  url_hint: "*:8001/graphql"
+  schema_fingerprint: "sha256:2207dca729d6a75c459915b708ea19a1358b2e5b7a946911a243e8fbb857ec11"
+  source: "GraphQLer sample-graphql-apis; README documents the UAF"
+  certified: true
+  content_hash: "sha256:6dff65880ed9cd76d38d7ebdf2567ad57e02f8a2f86ba58a86520ea7154ef8c7"
+contracts:
+  - operation: getPost            # fetches a post by id even after deletePost
+    kind: query
+    vulnerable: true
+    classes:
+      - id: uaf
+        severity: high
+        evidence_kind: differential
+        origin: upstream
+        source: "app README: getPost serves soft-deleted posts"
+        witness_hint: "a post readable via getPost after deletePost removed it"
+        chain: {create: createPost, delete: deletePost, read: getPost}
+  - {operation: myPosts, kind: query, vulnerable: false, source: "returns only non-deleted posts for the caller"}

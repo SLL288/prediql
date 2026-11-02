@@ -1,0 +1,27 @@
+# Ground truth: api-security-api (GraphQLer sample app). Port 4004.
+# Schema-level API-security issues. NOTE: of the app's three designed issues,
+# only `introspection` has a deterministic engine family today; field-suggestions
+# and alias deny-list bypass have no detector yet (known recall gaps, disclose in
+# Threats-to-Validity), so they are recorded here but NOT labelled vulnerable:true
+# for scoring to avoid guaranteed false negatives.
+target:
+  name: api-security-api
+  slug: api-security
+  url_hint: "*:4004/graphql"
+  schema_fingerprint: "sha256:5d5db908c6d0296ebf9bc394887eeebc161bd0e00ea6318113894c6aad671d25"
+  source: "GraphQLer sample-graphql-apis; vulns documented in server.js header"
+  certified: true
+  content_hash: "sha256:bcb71a843a0d62256f927b84a2aafbd6e866ff1e08174aa03dd80e3fda16688c"
+contracts:
+  - operation: __schema
+    kind: query
+    vulnerable: true
+    classes:
+      - id: introspection
+        severity: low
+        evidence_kind: differential
+        origin: upstream
+        source: "server.js header: introspection left enabled"
+        witness_hint: "full introspection returned when it should be disabled"
+  # Known but not yet engine-detectable (recall gaps, not scored positives):
+  #   field_suggestions on typo'd fields; adminUsers deny-list bypass via alias.

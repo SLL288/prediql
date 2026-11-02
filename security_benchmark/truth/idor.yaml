@@ -1,0 +1,22 @@
+# Ground truth: idor-api (GraphQLer sample app). Port 8010 (remapped from 8000).
+# Labels are the app's own self-report (GET / -> idor_vulnerable_operations).
+# Differential identities (for the IDOR/BOLA chain oracle), pass at run time:
+#   --identity "alice:user=Authorization: Bearer alice_token_abc123"
+#   --identity "bob:user=Authorization: Bearer bob_token_xyz789"
+target:
+  name: idor-api
+  slug: idor
+  url_hint: "*:8010/graphql"
+  schema_fingerprint: "sha256:35c29b6864af79011818757271610d6d6db2689cefa20a5eafa4671cd80a7a4e"
+  source: "GraphQLer sample-graphql-apis; self-reported vulnerable operations"
+  certified: true
+  content_hash: "sha256:80fb38b0de390b8b3b4bf5f99348c94b3a4f15f1759c2fb0c4543678957a2a67"
+contracts:
+  - {operation: getNote,    kind: query,    vulnerable: true, classes: [{id: idor, severity: high, evidence_kind: differential, origin: upstream, source: "app self-report: GET / idor_vulnerable_operations", witness_hint: "bob reads alice's note"}]}
+  - {operation: updateNote, kind: mutation, vulnerable: true, classes: [{id: idor, severity: high, evidence_kind: differential, origin: upstream, source: "app self-report: GET / idor_vulnerable_operations", witness_hint: "bob updates alice's note"}]}
+  - {operation: deleteNote, kind: mutation, vulnerable: true, classes: [{id: idor, severity: high, evidence_kind: differential, origin: upstream, source: "app self-report: GET / idor_vulnerable_operations", witness_hint: "bob deletes alice's note"}]}
+  - {operation: getOrder,   kind: query,    vulnerable: true, classes: [{id: idor, severity: high, evidence_kind: differential, origin: upstream, source: "app self-report: GET / idor_vulnerable_operations", witness_hint: "bob reads alice's order"}]}
+  - {operation: deleteOrder,kind: mutation, vulnerable: true, classes: [{id: idor, severity: high, evidence_kind: differential, origin: upstream, source: "app self-report: GET / idor_vulnerable_operations", witness_hint: "bob deletes alice's order"}]}
+  # -- NEGATIVE ground truth (scoped to the current identity) ----------------
+  - {operation: myNotes,  kind: query, vulnerable: false, source: "returns only the caller's notes"}
+  - {operation: myOrders, kind: query, vulnerable: false, source: "returns only the caller's orders"}

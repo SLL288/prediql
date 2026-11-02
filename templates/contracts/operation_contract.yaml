@@ -1,0 +1,53 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# PrediQL — per-operation ground-truth contract TEMPLATE
+# Copy one block per query/mutation into a target's ground-truth file
+# (templates/ground_truth/<slug>.yaml, under `contracts:`).
+# Every field is documented. Delete the comments once filled.
+# ─────────────────────────────────────────────────────────────────────────────
+
+- operation: <operationName>       # exact schema field name, e.g. pastes / createPaste
+  kind: query                      # query | mutation | subscription
+  vulnerable: true                 # true = known vulnerable; false = NEGATIVE ground truth
+                                   #   (asserted NOT vulnerable → lets scoring count false positives)
+
+  # Only for vulnerable: true. One entry per known vulnerability class on this operation.
+  classes:
+    - id: <class_id>               # canonical id from classes.py registry
+                                   #   e.g. sql_injection | os_command_injection | xss_stored |
+                                   #        xss_reflected | ssrf | path_traversal | idor | uaf |
+                                   #        bfla | introspection | query_depth_abuse | ...
+      severity: high               # critical | high | medium | low  (override the registry default)
+
+      evidence_kind: sentinel      # what the oracle must produce to CONFIRM this (not just match a name):
+                                   #   sentinel      — a unique injected marker / known file content appears in the response
+                                   #   differential  — response differs from the benign negative-control in a payload-attributable way
+                                   #   latency       — response time exceeds the per-op latency baseline (median + k·MAD), re-confirmed
+                                   #   disclosure    — data visible to an identity that should not see it (IDOR/UAF)
+                                   #   reflection    — payload echoed verbatim (weakest; prefer differential/sentinel where possible)
+                                   #   dos           — measurable amplification (depth/alias/batch) past a threshold
+                                   #   callback      — out-of-band interaction observed (SSRF)
+
+      witness_hint: ""             # human hint for what a valid witness looks like
+                                   #   e.g. "SQLite error signature or UNION-extracted version"
+                                   #        "/etc/passwd content (root:x:0:0)"
+
+      preconditions: []            # input fields that must be satisfied before the vuln fires
+                                   #   e.g. [username, password] for a multi-field gate (DVGA systemDiagnostics)
+                                   #   The planner satisfies these from the graph/bucket before probing.
+
+      # Optional — only for stored / second-order vulnerabilities:
+      second_order:
+        observe_operation: ""      # the READ operation where the injected payload is later observed
+                                   #   e.g. inject on createPaste, observe on pastes
+
+      # Optional — only for chain-based classes (idor / uaf / bfla):
+      chain:
+        strategy: idor             # idor | uaf | bfla
+        identities: [primary, secondary]   # named auth profiles the chain replays under
+        # UAF only: the create/delete/read operations that form the (c,o,d,r) quadruple
+        create_operation: ""
+        delete_operation: ""
+        read_operation: ""
+
+  # Free-text provenance for auditability — where this ground-truth label came from.
+  source: ""                       # e.g. "CVE-2022-39275 advisory" / "DVGA docs" / "manual triage 2026-08"

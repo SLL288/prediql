@@ -1,0 +1,52 @@
+# Ground truth: injection-vulnerabilities-api (GraphQLer sample app). Port 4002.
+# Labels are from the app's own source (server.js header + resolver comments).
+target:
+  name: injection-vulnerabilities-api
+  slug: injection
+  url_hint: "*:4002/graphql"
+  schema_fingerprint: "sha256:eb245b59a4c4fa33d0c988ae351a6d760b9749cdedb4314d81cc0d53f18c0a99"
+  source: "GraphQLer sample-graphql-apis; vulns documented in server.js"
+  certified: true
+  content_hash: "sha256:58eb055be72e2ee243e8ee08e37ebbb504508ed835881d08f18a12176e5dcdd7"
+contracts:
+  - operation: searchPosts        # SELECT ... LIKE '%${query}%' — string-interpolated
+    kind: query
+    vulnerable: true
+    classes:
+      - id: sql_injection
+        severity: high
+        evidence_kind: latency      # error-signal escalated to time-based confirmation
+        origin: upstream
+        source: "server.js: SELECT ... LIKE '%${query}%' (string-interpolated)"
+        witness_hint: "SQLite error signature, then pg/sqlite sleep latency delta"
+  - operation: readFile           # path used directly — traversal to /etc/passwd
+    kind: query
+    vulnerable: true
+    classes:
+      - id: path_traversal
+        severity: high
+        evidence_kind: sentinel
+        origin: upstream
+        source: "server.js: path used directly (traversal)"
+        witness_hint: "contents of a file outside the intended dir (e.g. root:)"
+  - operation: executeCommand     # execSync(cmd) via the shell
+    kind: mutation
+    vulnerable: true
+    classes:
+      - id: os_command_injection
+        severity: critical
+        evidence_kind: sentinel
+        origin: upstream
+        source: "server.js: execSync(cmd) via the shell"
+        witness_hint: "command output / injected marker, or sleep-based latency"
+  - operation: createPost         # stores unsanitised content, reflected by getPost
+    kind: mutation
+    vulnerable: true
+    classes:
+      - id: xss_stored
+        severity: high
+        evidence_kind: differential
+        origin: upstream
+        source: "server.js: stores unsanitised content, reflected by getPost"
+        witness_hint: "injected <script> marker returned when the post is read back"
+        second_order: {observe_operation: getPost}
